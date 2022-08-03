@@ -1,0 +1,7 @@
+분석단계
+- 비식별화조치 가이드라인(한국인터넷진흥원(KISA)
+https://kisa.or.kr/public/laws/laws2_View.jsp?cPage=1&mode=view&p_No=282&b_No=282&d_No=3&ST=T&SV=
+
+설계단계
+- 씨아이보드 매뉴얼
+http://www.ciboard.co.kr/manual/tables/
