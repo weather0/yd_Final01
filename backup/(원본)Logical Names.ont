@@ -1,0 +1,122 @@
+//**************************************************************************************************
+// TLX macros for customizing object display names within Model Explorer (logical display).
+//
+// Add or edit entries in this file to customize the display of object names within Model Explorer.
+// Each entry consists of two parts; an object type name, and TLX macro code for that object type.
+//
+// For each object type referenced in this file, Model Explorer will expand the specified macro
+// when creating the display names for objects in the tree.  These entries are optional.  If no
+// macro is specified for an object type, Model Explorer will simply use the object's name.
+//
+// Below is a sample entry:
+//
+//        SPItemBegin = Relationship
+//        {#
+//          Property( "Name" )
+//          " "
+//          PushReference( "Child_Entity_Ref" )
+//          Property( "Name" )
+//          Pop
+//        #}
+//        SPItemEnd
+//
+// In this example the word "Relationship" on the first line specifies the object type for which
+// the TLX macro is applicable.  The lines of text between "SPItemBegin" and "SPItemEnd" contain
+// the TLX macro code.
+//
+//**************************************************************************************************
+
+//<f>***********************************************************************************************
+// Relation (logical)
+//
+// Displays parent name, the relationship's name, and then the child's name.
+//
+//**************************************************************************************************
+SPItemBegin = Relationship
+/* Is this a subtype relation? */
+@if ( Equal( Property( "Type" ), "Subtype" ) )
+{
+    PushReference( "Parent_Entity_Ref" )
+
+    @if ( NotEqual( "Subtype_Symbol", ObjectType ) )
+    {
+        /* Status: The relation's child is a subtype symbol */
+
+        /* Emit the supertype name */
+        Property( "Name" )
+
+        /* Go back to the relationship */
+        Pop
+        " " Property( "Name" )
+
+        /* Go to the subtype symbol */
+        PushReference( "Child_Entity_Ref" )
+
+        /* Process the subtype entities */
+        ForEachReference( "Parent_Relationships_Ref" )
+        {
+            ListSeparator( ", a" )
+            " "
+            PropertyThrough( "Child_Entity_Ref", "Name" )
+        }
+
+        /* Go back to the relationship */
+        Pop
+    }
+    @else
+    {
+        /* Status: The relation's parent is a subtype symbol */
+
+        /* Return to the relation */
+        Pop
+
+        /* Go to the subtype entity */
+        /*PushReference( "Child_Entity_Ref" )*/
+
+        /* Emit the subtype entity's name */
+        PropertyThrough( "Child_Entity_Ref", "Name" )
+        " "
+
+        /* Emit the relation's name */
+        Property( "Name" )
+        " "
+
+        /* Go to the subtype symbol */
+        PushReference( "Parent_Entity_Ref" )
+
+        /* Emit the supertype entity name */
+        ForEachReference( "Child_Relationships_Ref" )
+        {
+            /* Emit the supertype entity's name */
+            PropertyThrough( "Parent_Entity_Ref", "Name" )
+        }
+    }
+}
+@else
+{
+    /* Status: relation is not a subtype */
+
+    /* Look for the relation's verb phrase */
+    Set( "sPhrase", "" )
+    @if ( IsPropertyNotNull( "Parent_To_Child_Verb_Phrase" ) )
+    {
+        Set( "sPhrase", Trim( Property( "Parent_To_Child_Verb_Phrase" ) ) )
+    }
+
+    Set( "sParent", PropertyThrough( "Parent_Entity_Ref", "Name" ) )
+    Set( "sChild", PropertyThrough( "Child_Entity_Ref", "Name" ) )
+    Set( "sRelName", Property( "Name" ) )
+
+    /* Is a verb phrase available? */
+    @if ( Equal( Value( "sPhrase" ), "" ) )
+    {
+        /* Verb phrase is not available. */
+        Property( "Name" ) " (" Value( "sParent" ) " to " Value( "sChild" ) ")"
+    }
+    @else
+    {
+        /* Verb phrase is available. */
+        Value( "sParent" ) " " Value( "sPhrase" ) " " Value( "sChild" )
+    }
+}
+SPItemEnd

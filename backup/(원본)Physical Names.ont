@@ -1,0 +1,231 @@
+//**************************************************************************************************
+// TLX macros for customizing object display names within Model Explorer (physical display).
+//
+// Add or edit entries in this file to customize the display of object names within Model Explorer.
+// Each entry consists of two parts; an object type name, and TLX macro code for that object type.
+//
+// For each object type referenced in this file, Model Explorer will expand the specified macro
+// when creating the display names for objects in the tree.  These entries are optional.  If no
+// macro is specified for an object type, Model Explorer will simply use the object's name.
+//
+// Below is a sample entry:
+//
+//        SPItemBegin = Entity
+//        {#
+//          [Property( "Schema_Name", "fail_if_empty" ) "."]
+//          Property( "Physical_Name" )
+//        #}
+//        SPItemEnd
+//
+// In this example the word "Entity" on the first line specifies the object type for which
+// the TLX macro is applicable.  The lines of text between "SPItemBegin" and "SPItemEnd" contain
+// the TLX macro code.
+//
+//**************************************************************************************************
+
+//<f>***********************************************************************************************
+// Relation (physical)
+//
+// Displays parent name, the relationship's name, and then the child's name.
+//
+//**************************************************************************************************
+SPItemBegin = Relationship
+/* Is this a subtype relation? */
+
+@if ( Equal( Property( "Type" ), "Subtype" ) )
+{
+    PushReference( "Parent_Entity_Ref" )
+
+    @if ( NotEqual( "Subtype_Symbol", ObjectType ) )
+    {
+        /* Status: The relation's child is a subtype symbol */
+
+        /* Emit the supertype name */
+        @if ( Equal( "Entity", ObjectType ) )
+        {
+            Property( "Physical_Name" )
+        }
+        @elseif ( NotEqual( "Subtype_Symbol", ObjectType ) )
+        {
+            Property( "Name" )
+        }
+
+        /* Go back to the relationship */
+        Pop
+        " " Property( "Physical_Name" )
+
+        /* Go to the subtype symbol */
+        PushReference( "Child_Entity_Ref" )
+
+        /* Process the subtype entities */
+        ForEachReference( "Parent_Relationships_Ref" )
+        {
+            ListSeparator( ", a" )
+            " "
+
+            PushReference( "Child_Entity_Ref" )
+
+            @if ( Equal( "Entity", ObjectType ) )
+            {
+                Property( "Physical_Name" )
+            }
+            @else
+            {
+                Property( "Name" )
+            }
+
+            Pop
+        }
+
+        /* Go back to the relationship */
+        Pop
+    }
+    @else
+    {
+        /* Status: The relation's parent is a subtype symbol */
+
+        /* Go to the subtype entity */
+        Pop
+        PushReference( "Child_Entity_Ref" )
+
+        /* Emit the subtype entity's name */
+        @if ( Equal( "Entity", ObjectType ) )
+        {
+            Property( "Physical_Name" )
+        }
+        @else
+        {
+            Property( "Name" )
+        }
+        " "
+
+        /* Go back to the relationship */
+        Pop
+        Property( "Physical_Name" )
+        " "
+
+        /* Go to the subtype symbol */
+        PushReference( "Parent_Entity_Ref" )
+
+        ForEachReference( "Child_Relationships_Ref" )
+        {
+            /* Go to the supertype entity */
+            PushReference( "Parent_Entity_Ref" )
+
+            /* Emit the supertype entity's name */
+            @if ( Equal( "Entity", ObjectType ) )
+            {
+                Property( "Physical_Name" )
+            }
+            @else
+            {
+                Property( "Name" )
+            }
+        }
+    }
+}
+@else
+{
+    Set( "sParentName", "" )
+    Set( "sChildName", "" )
+    Set( "sVerbPhrase", "" )
+    Set( "sAlias", "" )
+    Set( "sRelName", Property( "Physical_Name" ) )
+
+    /* If the physical name is not available, use the logical name. */
+    @if ( AreStringsEqual( Value("sRelName"), "" ) )
+    {
+        Set( "sRelName", Property( "Name" ) )
+    }
+        
+    @if ( Equal( "Derived", Property( "Type" ) ) )
+    {
+        SetGlobalFlag( "Is view relation" )
+
+        /* Is an alias available? */
+        @if ( IsPropertyNotNull( "Alias_Name" ) )
+        {
+            Set( "sAlias", Property( "Alias_Name" ) )
+        }
+    }
+    @else
+    {
+        /* Is a verb phrase available? */
+        @if ( IsPropertyNotNull( "Parent_To_Child_Verb_Phrase" ) )
+        {
+            Set( "sVerbPhrase", Property( "Parent_To_Child_Verb_Phrase" ) )
+        }
+    }
+
+    /* Go to the relationship's parent */
+    PushReference( "Parent_Entity_Ref" )
+
+    /* Is the parent an Entity? */
+    @if ( Equal( "Entity", ObjectType ) )
+    {
+        Set( "sParentName", Property( "Physical_Name" ) )
+    }
+    @else
+    {
+        Set( "sParentName", Property( "Name" ) )
+    }
+
+    /* Go back to the relationship */
+    Pop
+
+    /* Go to the relationship's child */
+    PushReference( "Child_Entity_Ref" )
+
+    /* Is the child an Entity? */
+    @if ( Equal( "Entity", ObjectType ) )
+    {
+        Set( "sChildName", Property( "Physical_Name" ) )
+    }
+    @else
+    {
+        Set( "sChildName", Property( "Name" ) )
+    }
+
+    /* Go back to the relationship */
+    Pop
+
+    @if ( IsGlobalFlagSet( "Is view relation" ) )
+    {
+       Value( "sParentName" ) " " Value( "sRelName" )  " "
+
+        @if ( Equal( Value("sAlias"), "" ) )
+        {
+            Value( "sChildName" )
+        }
+        @else
+        {
+            Value( "sAlias" )
+        }
+    }
+    @else
+    {
+        /* Not a view relation. */
+        @if ( Equal( Value("sVerbPhrase"), "" ) )
+        {
+            Value( "sRelName" ) " (" Value( "sParentName" ) " to " Value( "sChildName" ) ")"
+        }
+        @else
+        {
+            Value( "sParentName" ) " " Value( "sVerbPhrase" ) " " Value( "sChildName" )
+        }
+    }
+}
+SPItemEnd
+
+//<f>***********************************************************************************************
+// Entity (physical)
+//
+// If property "Schema_Name" is available, prepends it to the table's name.
+//
+//**************************************************************************************************
+//SPItemBegin = Entity
+//{#
+//  [Property( "Schema_Name","fail_if_empty" )"."]
+//  Property( "Physical_Name" )
+//#}
+//SPItemEnd
