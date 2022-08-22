@@ -1,8 +1,10 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
+    <div id="nav">
+      <router-link to="/">Home</router-link> |
+      <router-link to="/room">room</router-link> |
+    </div>
     <router-view/>
-    맨처음 보이는 페이지
   </div>
 </template>
 
