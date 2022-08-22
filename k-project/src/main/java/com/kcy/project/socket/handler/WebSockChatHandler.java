@@ -1,4 +1,4 @@
-package com.kcy.project.handler;
+package com.kcy.project.socket.handler;
 
 
 import org.springframework.stereotype.Component;
@@ -7,9 +7,9 @@ import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kcy.project.service.ChatService;
-import com.kcy.project.vo.ChatMessage;
-import com.kcy.project.vo.ChatRoom;
+import com.kcy.project.socket.service.ChatService;
+import com.kcy.project.socket.vo.ChatMessage;
+import com.kcy.project.socket.vo.ChatRoom;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

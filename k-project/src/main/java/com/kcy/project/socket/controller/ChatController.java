@@ -1,4 +1,4 @@
-package com.kcy.project.controller;
+package com.kcy.project.socket.controller;
 
 import java.util.List;
 
@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.kcy.project.service.ChatService;
-import com.kcy.project.vo.ChatRoom;
+import com.kcy.project.socket.service.ChatService;
+import com.kcy.project.socket.vo.ChatRoom;
 
 import lombok.RequiredArgsConstructor;
 

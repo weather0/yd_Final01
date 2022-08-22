@@ -1,4 +1,4 @@
-package com.kcy.project.vo;
+package com.kcy.project.socket.vo;
 
 import lombok.Data;
 

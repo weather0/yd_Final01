@@ -2,6 +2,7 @@
   <div id="app">
     <img src="./assets/logo.png">
     <router-view/>
+    맨처음 보이는 페이지
   </div>
 </template>
 

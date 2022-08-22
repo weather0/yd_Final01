@@ -1,4 +1,4 @@
-package com.kcy.project.configuration;
+package com.kcy.project.socket.configuration;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.socket.WebSocketHandler;

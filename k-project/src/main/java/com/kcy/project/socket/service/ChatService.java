@@ -1,4 +1,4 @@
-package com.kcy.project.service;
+package com.kcy.project.socket.service;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -14,7 +14,7 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kcy.project.vo.ChatRoom;
+import com.kcy.project.socket.vo.ChatRoom;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

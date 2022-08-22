@@ -1,11 +1,11 @@
-package com.kcy.project.vo;
+package com.kcy.project.socket.vo;
 
 import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.web.socket.WebSocketSession;
 
-import com.kcy.project.service.ChatService;
+import com.kcy.project.socket.service.ChatService;
 
 import lombok.Builder;
 import lombok.Data;
