@@ -28,16 +28,5 @@ public class UsersController {
 		return mapper.usersList();
 	}
 	
-	@GetMapping("/login")
-	public String viewLoginPage() {
-		return "<h1>로그인</h1>";
-	}
-	
-	@GetMapping("/loginSuccess")
-	public String viewLoginSuccessPage(@AuthenticationPrincipal User user, Model model) {
-		model.addAttribute("userId", user.getUsername());
-		model.addAttribute("userType", user.getAuthorities());
-		return "<h1>로그인성공</h1>";
-	}
 	
 }
