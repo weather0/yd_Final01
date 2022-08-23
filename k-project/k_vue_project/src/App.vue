@@ -1,23 +1,33 @@
+
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
+    <Sidebar />
+      <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
+    <Header />
     <router-view/>
+    <Footer />
+      </main>
   </div>
 </template>
 
 <script>
+  import Header from '@/components/Header.vue';
+  import Footer from '@/components/Footer.vue';
+  import Sidebar from '@/components/SideBar.vue';
 export default {
-  name: 'App'
+    components: {
+    Header,
+    Footer,
+    Sidebar
+}
 }
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+  @import "../src/assets/css/material-dashboard.css";
+  @import "../src/assets/css/material-dashboard.min.css";
+  @import "../src/assets/css/nucleo-icons.css";
+  @import "../src/assets/css/nucleo-svg.css";
+
 </style>
+

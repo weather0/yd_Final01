@@ -1,16 +1,14 @@
 <template>
-<div class="hello">
+<div class="test">
    <div class="container-fluid py-4">
-    <h1>안녕하세요 여기는 메인화면 입니다</h1>
-    <p>메인화면은 나중에 꾸미겠습니다</p>
+    <h1>Test입니다</h1>
     </div>
 </div>
 </template>
 
-
 <script>
 export default {
-  name: 'Hello',
+  name: 'Test',
   data () {
     return {
     }
