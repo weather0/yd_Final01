@@ -12,4 +12,9 @@ public interface UsersMapper {
 	public UsersVO login(UsersVO vo);
 	public void UsersInsert(UsersVO vo);
 
+	public UsersVO getUsersList(String insertedId);
+
 }
+
+
+

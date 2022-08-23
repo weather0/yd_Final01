@@ -4,7 +4,6 @@ import lombok.Data;
 
 @Data
 public class UsersVO {
-
 	String userId;
 	String userType;
 	String userName;

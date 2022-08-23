@@ -3,7 +3,11 @@ package com.kcy.project.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.kcy.project.vo.UsersVO;
@@ -22,6 +26,18 @@ public class UsersController {
 		log.info("xxx", mapper.usersList());
 		
 		return mapper.usersList();
+	}
+	
+	@GetMapping("/login")
+	public String viewLoginPage() {
+		return "<h1>로그인</h1>";
+	}
+	
+	@GetMapping("/loginSuccess")
+	public String viewLoginSuccessPage(@AuthenticationPrincipal User user, Model model) {
+		model.addAttribute("userId", user.getUsername());
+		model.addAttribute("userType", user.getAuthorities());
+		return "<h1>로그인성공</h1>";
 	}
 	
 }
