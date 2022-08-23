@@ -1,20 +1,22 @@
 package com.kcy.common.controller;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-@RequestMapping("/")
 public class LayoutController {
-	
-	@GetMapping("")
-	public ModelAndView main() {
-		ModelAndView mdv = new ModelAndView();
-//		mdv.setViewName("page/main");
-		mdv.setViewName("index");
-		return mdv;
-	}
+
+    @RequestMapping("/")
+    public String dashboard(Model model) {
+        model.addAttribute("active","click_studentInfo");
+        return "pages/studentInfo";
+    }
+
+    @RequestMapping("/tables")
+    public String tables(Model model) {
+        model.addAttribute("active","click_classInfo");
+        return "pages/classInfo";
+    }
 
 }

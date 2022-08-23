@@ -21,7 +21,8 @@ public class LoginController {
     }
     
     @GetMapping("/login")
-    public String login(){
+    public String login(Model model){
+        model.addAttribute("active","click_login");
         return "login";
     }
     
