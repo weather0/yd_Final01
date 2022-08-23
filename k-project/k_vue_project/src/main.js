@@ -13,8 +13,13 @@ Vue.use(BootstrapVue)
 
 /* eslint-disable no-new */
 new Vue({
+  el: '#app',
   router,
   components: { App },
   template: '<App/>',
   render: h => h(App)
+<<<<<<< HEAD
 }).$mount('#app')
+=======
+})
+>>>>>>> branch 'master' of https://github.com/weather0/yd_Final01
