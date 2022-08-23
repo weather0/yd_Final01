@@ -21,7 +21,9 @@ repositories {
 dependencies {
 	// 하경
 	implementation 'org.springframework.boot:spring-boot-starter-security'
-
+	
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf:2.7.3'
+	implementation 'org.apache.tiles:tiles-core:3.0.8'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
 	implementation 'org.mybatis:mybatis:3.5.10'
