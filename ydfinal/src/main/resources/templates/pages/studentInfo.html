@@ -4,7 +4,7 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/layout}">
       
-<div layout:fragment="content">
+<th:block layout:fragment="content">
 
   <!-- 상단 내비바 -->
   <th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
@@ -747,5 +747,5 @@
     });
   </script>
 
-</div>
+</th:block>
 </html>

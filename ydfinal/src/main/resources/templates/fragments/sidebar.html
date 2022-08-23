@@ -13,14 +13,26 @@
   <hr class="horizontal light mt-0 mb-2">
   <div class="collapse navbar-collapse  w-auto  max-height-vh-100" id="sidenav-collapse-main">
     <ul class="navbar-nav">
+    
+    
       <li class="nav-item">
-        <a class="nav-link text-white" th:classappend="${active} == 'click_studentInfo' ? 'active bg-gradient-primary'" href="./">
+        <a class="nav-link text-white btn btn-primary" th:classappend="${active} == 'click_studentInfo' ? 'active bg-gradient-primary'" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
           <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
             <i class="material-icons opacity-10">dashboard</i>
           </div>
           <span class="nav-link-text ms-1">학적관리</span>
         </a>
       </li>
+      
+
+<div class="collapse" id="collapseExample">
+  <div class="card card-body">
+    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
+  </div>
+</div>
+
+
+      
       <li class="nav-item">
         <a class="nav-link text-white" th:classappend="${active} == 'click_classInfo' ? 'active bg-gradient-primary'" href="./tables">
           <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
