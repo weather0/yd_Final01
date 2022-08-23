@@ -8,5 +8,8 @@ import com.kcy.project.vo.UsersVO;
 @Mapper
 public interface UsersMapper {
 	public List<UsersVO> usersList();
+	
+	public UsersVO login(UsersVO vo);
+	public void UsersInsert(UsersVO vo);
 
 }
