@@ -19,7 +19,7 @@ public class UsersController {
 	@ResponseBody
 	public List<UsersVO> usersList(UsersVO vo) {
 		
-		
 		return mapper.usersList(vo);
 	}
+
 }
