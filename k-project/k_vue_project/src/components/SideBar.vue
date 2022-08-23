@@ -35,11 +35,11 @@
           </router-link>
         </li>
            <li class="nav-item">
-          <router-link to="/test" class="nav-link text-white ">
+          <router-link to="/room" class="nav-link text-white ">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">dashboard</i>
             </div>
-            <span class="nav-link-text ms-1">테스트</span>
+            <span class="nav-link-text ms-1">상담</span>
           </router-link>
         </li>
       </ul>
