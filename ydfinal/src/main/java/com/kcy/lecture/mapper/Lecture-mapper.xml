@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kcy.lecture.mapper.LectureMapper">
+
+		<insert id="LectureInsert">
+			insert into k_class_reg
+			
+			values(
+				   #{classRegId},
+				   #{courseId},
+				   #{userId},
+				   #{classRegTo},
+				   #{classRegYear},
+				   #{classRegSem},
+				   #{classRegSyl},
+				   default
+				   )
+		
+		</insert>
+		
+		<select id="LectureList" resultType="com.kcy.lecture.service.LectureVO">
+			select * from k_class_reg
+		
+		
+		</select>
+	
+</mapper>
