@@ -1,6 +1,5 @@
 package com.kcy.chat.model;
 
-import java.io.Serializable;
 import java.util.UUID;
 
 import lombok.Getter;
@@ -10,14 +9,16 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class ChatRoom implements Serializable {
-    private static final long serialVersionUID = 6494678977089006639L;
+public class ChatRoom {
+
     private String roomId;
-    private String name;
+    private String roomName;
+
+
     public static ChatRoom create(String name) {
-        ChatRoom chatRoom = new ChatRoom();
-        chatRoom.roomId = UUID.randomUUID().toString();
-        chatRoom.name = name;
-        return chatRoom;
+        ChatRoom room = new ChatRoom();
+        room.roomId = UUID.randomUUID().toString();
+        room.roomName = name;
+        return room;
     }
 }
