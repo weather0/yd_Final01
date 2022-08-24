@@ -1,5 +1,12 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+<style>
+  #sidenav-collapse-main {
+  height: 10px;
+  }
+</style>
+</head>
 
 <div th:fragment="sidebarFragment">
   <div class="sidenav-header">
@@ -16,7 +23,7 @@
     
     
       <li class="nav-item">
-        <a class="nav-link text-white btn btn-primary" data-bs-toggle="collapse" href="#studentInfo" role="button" aria-expanded="false" aria-controls="studentInfo">
+        <a class="nav-link text-white btn btn-primary" data-bs-toggle="collapse" href="#userMgr" role="button" aria-expanded="false" aria-controls="userMgr">
           <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
             <i class="material-icons opacity-10">dashboard</i>
           </div>
@@ -24,7 +31,7 @@
         </a>
       </li>
 
-      <div class="collapse" id="studentInfo">
+      <div class="collapse" id="userMgr">
         <div class="card card-body">
           <a href="/">학적조회</a>
           <a href="/studentChangeApply">학적변동 신청</a>
@@ -35,15 +42,27 @@
       </div>
 
 
-
       <li class="nav-item">
-        <a class="nav-link text-white btn btn-primary" data-bs-toggle="collapse" href="#room" role="button" aria-expanded="false" aria-controls="room">
+        <a class="nav-link text-white btn btn-primary" data-bs-toggle="collapse" href="#mentorMgr" role="button" aria-expanded="false" aria-controls="mentorMgr">
           <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
             <i class="material-icons opacity-10">dashboard</i>
           </div>
           <span class="nav-link-text ms-1">상담관리</span>
         </a>
       </li>
+      
+      <div class="collapse" id="mentorMgr">
+        <div class="card card-body">
+          <a href="#">담당교수 확인</a>
+          <a href="#">담당학생 확인</a>
+          <a href="#">상담스케줄</a>
+          <a href="#">진로탐색 검사</a>
+          <a href="#">진로탐색 검사 관리</a>
+          <a href="#">상담신청</a>
+          <a href="#">채팅</a>
+          <a href="#">상담일지</a>
+        </div>
+      </div>
 
 
 
@@ -121,6 +140,8 @@
       </li>
     </ul>
   </div>
+  
+  <!-- 
   <div class="sidenav-footer position-absolute w-100 bottom-0 ">
     <div class="mx-3">
       <a class="btn bg-gradient-primary mt-4 w-100"
@@ -128,6 +149,7 @@
         pro</a>
     </div>
   </div>
+  -->
 
 </div>
 
