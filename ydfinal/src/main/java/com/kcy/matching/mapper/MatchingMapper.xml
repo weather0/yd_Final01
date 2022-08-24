@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kcy.matching.mapper.MatchingMapper">
+
+<select id="matchingList" resultType="com.kcy.matching.service.MatchingListVO">
+  	SELECT m.matching_id,
+  		   u.user_name AS pr_name, 
+  		   u.user_dept AS pr_dept, 
+  		   ku.user_name AS st_name, 
+		   ku.user_dept AS st_dept, 
+		   m.matching_type, 
+		   m.matching_date
+	FROM k_matching AS m 
+	JOIN k_users AS u 
+	ON u.user_id = m.user_id 
+	JOIN k_users AS ku 
+	ON ku.user_id = m.student_id   
+  </select>
+
+<select id="matchingStdList" resultType="com.kcy.matching.service.MatchingStdVO">
+	SELECT s.user_id, 
+	   u.user_name,
+	   s.student_aca_yn,
+	   u.user_dept,
+	   s.student_grade, 
+	   u.user_phone,
+	   s.student_prof 
+	FROM k_users AS u 
+	JOIN k_students AS s
+	ON u.user_id = s.user_id  
+	WHERE user_type = 'std' AND s.student_prof IS NULL
+</select>
+
+<select id="matchingProfList" resultType="com.kcy.matching.service.MatchingProfVO">
+	SELECT DISTINCT p.user_id, 
+				    u.user_name, 
+				    p.prof_field, 
+				    p.prof_lab, 
+				    p.prof_mentee - count(m.user_id) AS mentee
+	FROM k_professors p 
+	JOIN k_matching m
+	ON p.user_id = m.user_id
+	JOIN k_users u
+	ON p.user_id = u.user_id
+	GROUP BY user_id
+	<![CDATA[HAVING mentee < 10]]>
+</select>
+
+</mapper>
