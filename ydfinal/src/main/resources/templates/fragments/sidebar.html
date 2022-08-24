@@ -16,20 +16,23 @@
     
     
       <li class="nav-item">
-        <a class="nav-link text-white btn btn-primary" th:classappend="${active} == 'click_studentInfo' ? 'active bg-gradient-primary'" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+        <a class="nav-link text-white btn btn-primary" data-bs-toggle="collapse" href="#studentInfo" role="button" aria-expanded="false" aria-controls="studentInfo">
           <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
             <i class="material-icons opacity-10">dashboard</i>
           </div>
           <span class="nav-link-text ms-1">학적관리</span>
         </a>
       </li>
-      
 
-<div class="collapse" id="collapseExample">
-  <div class="card card-body">
-    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
-  </div>
-</div>
+      <div class="collapse" id="studentInfo">
+        <div class="card card-body">
+          <a href="./">학적조회</a>
+          <a href="./studentChangeApply">학적변동 신청</a>
+          <a href="#">학적변동 이력</a>
+          <a href="#">졸업요건 확인</a>
+          <a href="#">증명서 출력</a>
+        </div>
+      </div>
 
 
       
