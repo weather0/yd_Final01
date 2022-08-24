@@ -26,5 +26,11 @@ public class LectureServiceImpl implements LectureService {
 		
 		return mapper.LectureList(vo) ;
 	}
+
+	@Override
+	public void LectureUpdate(LectureVO vo) {
+		
+		mapper.LectureUpdate(vo);
+	}
 	
 }

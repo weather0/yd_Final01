@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.kcy.lecture.mapper.CourseMapper;
 import com.kcy.lecture.service.CourseVO;
@@ -40,7 +41,7 @@ public class LectureController {
 		logger.info(vo.toString());
 		LectureService.LectureInsert(vo);
 		
-		return "pages/classMgr/classInfo";
+		return "redirect:leturelist";
 	}
 	
 	
@@ -58,4 +59,16 @@ public class LectureController {
 		return "pages/classMgr/LetureList";
 	}
 	
+	@GetMapping("/letureupdate")
+	public void letureUpdateForm(Model model, LectureVO vo) {
+		
+		model.addAttribute("Id",LectureService.LectureList(vo));
+	}
+	
+	@PostMapping("/letureupdate")
+	public String letureUpdate(LectureVO vo) {
+		LectureService.LectureUpdate(vo);
+		return "redirect:leturelist";
+	}
+
 }
