@@ -63,14 +63,7 @@ public class LectureController {
 	@PostMapping("/letureupdate")
 	public String letureUpdate(LectureVO vo) {
 		LectureService.LectureUpdate(vo);
-		return "redirect:leturelist";
-	}
-	
-	@PostMapping("/letureinsertclass")
-	public String LetureInsertClass(LectureClassVO vo) {
-		logger.info(vo.toString());
 		LectureService.LectureInsertClass(vo);
-		
 		return "redirect:leturelist";
 	}
 

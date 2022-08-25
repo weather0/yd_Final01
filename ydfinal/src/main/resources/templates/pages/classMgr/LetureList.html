@@ -13,10 +13,11 @@
   <!-- 본문 start -->
  <div style="width: 90%; padding: 10px">
  
- <form action="letureinsertclass" method="post">
+ <form action="letureupdate" method="post">
  <table id="letureTable" class="table table-striped" style="width:100%;" >
         <thead>
             <tr>
+            	<th>강좌 번호</th>
             	<th>제목</th>
                 <th>교과목</th>
                 <th>교번</th>
@@ -29,46 +30,43 @@
         </thead>
         <tbody>
         
-        	<tr th:each="data : ${ltrList}" th:if="${data.classRegYn} == 'n'">
-        		<td th:text="${data.classRegTitle}"></td>
+        	<tr th:each="data : ${ltrList}" th:if="${data.classYn} == 'n'">
+        		<td th:text="${data.classId}"></td>
+        		<td th:text="${data.classTitle}"></td>
         		<td th:text="${data.courseId}"></td>
         		<td th:text="${data.userId}"></td>
-        		<td th:text="${data.classRegTo}"></td>
-        		<td th:text="${data.classRegYear}"></td>
-        		<td th:text="${data.classRegSem}"></td>
-        		<td th:text="${data.classRegSyl}"></td>
-        		<td><button class="btn bg-gradient-primary" id="btn1" th:data-class_reg_id="${data.classRegId}"  th:text="승인"></button></td>
+        		<td th:text="${data.classTo}"></td>
+        		<td th:text="${data.classYear}"></td>
+        		<td th:text="${data.classSem}"></td>
+        		<td th:text="${data.classSyl}"></td>
+        		<td><button class="btn bg-gradient-primary" id="btn1" th:data-class_id="${data.classId}"  th:text="승인"></button></td>
         	</tr>
         	
         </tbody>
   <!-- 본문 end-->
 </table>
- </form>
+</form>
  </div>
-<script th:inline="javascript">
+<script>
+
 $("#btn1").on("click",update1);
 
 $('#letureTable').DataTable({});
+
+
     
     function update1(){
-    	let update = $(this).data("class_reg_id")
-    	console.log(test)
+    	let update = $(this).data("class_id")
+    	console.log(update)
      	$.ajax({
      		url:"http://localhost/letureupdate",
     		type:"post",
      		data:{
-     			classRegId : update 
-     		},
-     		success : function(data){
-     			location.reload();
-     		},
-     		 error : function(error) { 
-     			       alert("Error!");
-     	 }
+     			classId : update 
+     		}
+     	
     	})
     }
-	
-	
 </script>
 </th:block>
 </html>
