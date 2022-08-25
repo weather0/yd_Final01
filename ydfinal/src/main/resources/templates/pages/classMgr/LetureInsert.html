@@ -12,11 +12,18 @@
   <!-- 본문 start -->
  		<h1>강좌개설 페이지</h1>
  		
- 		<form action="letureinsert" method="post">
+ 		<form action="letureinsert" method="post" enctype="multipart/form-data">
+ 		
+ 	 <div class="input-group input-group-outline my-3">
+      <label class="form-label">제목</label>
+      <input type="text" class="form-control" name="classTitle">
+    </div>	
+ 		
     <div class="input-group input-group-outline my-3">
       <label class="form-label">강좌코드</label>
-      <input type="text" class="form-control" name="classRegId">
+      <input type="text" class="form-control" name="classId">
     </div>
+    
     
    <div class="input-group input-group-static mb-4">
   
@@ -35,22 +42,22 @@
     
     <div class="input-group input-group-outline my-3">
       <label class="form-label">정원</label>
-      <input type="number" class="form-control" name="classRegTo">
+      <input type="number" class="form-control" name="classTo">
     </div>
     
     <div class="input-group input-group-outline my-3">
       <label class="form-label">개설연도</label>
-      <input type="number" class="form-control" name="classRegYear">
+      <input type="number" class="form-control" name="classYear">
     </div>
     
     <div class="input-group input-group-outline my-3">
       <label class="form-label">개설학기</label>
-      <input type="number" class="form-control" name="classRegSem">
+      <input type="number" class="form-control" name="classSem">
     </div>
     
     <div class="input-group input-group-outline my-3">
       <label class="form-label">강의계획서</label>
-      <input type="text" class="form-control" name="classRegSyl">
+      <input type="file" class="form-control" multiple="multiple" name="classSyl">
     </div>
     
     <button class="btn bg-gradient-primary">신청하기</button>

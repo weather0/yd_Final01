@@ -10,5 +10,7 @@ public interface LectureService {
 	public List<LectureVO> LectureList(LectureVO vo);
 	
 	public void LectureUpdate(LectureVO vo);
+	
+	public void LectureInsertClass(LectureVO vo);
 
 }

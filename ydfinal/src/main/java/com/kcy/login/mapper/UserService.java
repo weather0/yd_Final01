@@ -1,12 +1,7 @@
 package com.kcy.login.mapper;
 
-import java.sql.Date;
-import java.text.SimpleDateFormat;
-
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,25 +11,29 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class UserService implements UserDetailsService {
-	private final UserMapper userMapper;
-	
-    @Transactional
-    public void joinUser(UserVo userVo){
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        userVo.setUserPw(passwordEncoder.encode(userVo.getPassword()));
-        userVo.setUserType("학생");
-        userMapper.saveUser(userVo);
-    }
+@Transactional(readOnly = true)
+public class UserService {
+	@Autowired 
+	UserMapper userMapper;
+	@Autowired
+	PasswordEncoder passwordEncoder;
 
+	public boolean login(String userId, String userPw) {
+		UserVo uservo = userMapper.findById(userId);
+		if(passwordEncoder.matches(userPw, uservo.getUserPw())) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 	
-	@Override
-	public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
-        UserVo userVo = userMapper.getUserAccount(userId);
-        if (userVo == null){
-            throw new UsernameNotFoundException("User not authorized.");
-        }
-		return userVo;
-	} 
-
+	public boolean userEmailCheck(String userEmail, String userName) {
+		UserVo uservo = userMapper.findUserByUserId(userEmail);
+		if(uservo != null && uservo.getUsername().equals(userName)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
 }
