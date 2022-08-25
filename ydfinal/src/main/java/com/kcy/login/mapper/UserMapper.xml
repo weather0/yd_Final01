@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.kcy.login.mapper.userMpper">
+<mapper namespace="com.kcy.login.mapper.UserMapper">
 
 	<select id="getUserAccount" resultType="com.kcy.login.service.UserVo">
 		SELECT * FROM k_users
         WHERE USER_ID= #{userId}
 	</select>
+	
+	<update id="findUserByUserId" parameterType="com.kcy.login.mapper.MailDto">
+		UPDATE k_users SET
+			user_pw = #{userPw}
+		WHERE user_email = #{userEmail}
+	</update>
 	
 </mapper>

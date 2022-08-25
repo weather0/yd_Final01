@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kcy.lecture.mapper.LectureMapper">
+
+		<insert id="LectureInsert">
+			insert into k_class_reg
+			
+			values(
+				   #{classRegId},
+				   #{courseId},
+				   #{userId},
+				   #{classRegTo},
+				   #{classRegYear},
+				   #{classRegSem},
+				   #{classRegSyl},
+				   default,
+				   #{classRegTitle}
+				   )
+		
+		</insert>
+		
+		<select id="LectureList" resultType="com.kcy.lecture.service.LectureVO">
+			select * from k_class_reg
+		
+		
+		</select>
+		
+		<update id="LectureUpdate" parameterType="com.kcy.lecture.service.LectureVO">
+				
+			UPDATE k_class_reg SET class_reg_yn = 'y'
+			WHERE class_reg_id = #{classRegId}
+			
+		</update>
+		
+		<insert id="LectureInsertClass">
+			insert into k_class(class_id, course_id, user_id, class_to, class_year, class_sem, class_syl)
+			values(
+				   classId_seq.nextval(),
+				   #{courseId},
+				   #{userId},
+				   #{classRegTo},
+				   #{classRegYear},
+				   #{classRegSem},
+				   #{classRegSyl},
+				   )
+		</insert>
+	
+</mapper>

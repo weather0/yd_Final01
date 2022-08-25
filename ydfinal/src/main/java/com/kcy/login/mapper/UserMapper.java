@@ -7,6 +7,8 @@ import com.kcy.login.service.UserVo;
 @Mapper
 public interface UserMapper {
 	UserVo getUserAccount(String userId);
-	
-	void saveUser(UserVo userVo);
-}
+	UserVo updateUserPassword(String userId, String userPw);
+	UserVo findById(String userId);
+	boolean userEmailCheck(String userEmail, String userName);
+	UserVo findUserByUserId(String userEmail);
+	}

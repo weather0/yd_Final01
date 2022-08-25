@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 
-<div th:fragment="sidebarFragment">
+<th:block th:fragment="sidebarFragment">
   <div class="sidenav-header">
     <i class="fas fa-times p-3 cursor-pointer text-white opacity-5 position-absolute end-0 top-0 d-none d-xl-none"
       aria-hidden="true" id="iconSidenav"></i>
@@ -16,7 +16,7 @@
     
     
       <li class="nav-item">
-        <a class="nav-link text-white btn btn-primary" data-bs-toggle="collapse" href="#studentInfo" role="button" aria-expanded="false" aria-controls="studentInfo">
+        <a class="nav-link text-white btn btn-primary" data-bs-toggle="collapse" href="#userMgr" role="button" aria-expanded="false" aria-controls="userMgr">
           <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
             <i class="material-icons opacity-10">dashboard</i>
           </div>
@@ -24,7 +24,7 @@
         </a>
       </li>
 
-      <div class="collapse" id="studentInfo">
+      <div class="collapse" id="userMgr">
         <div class="card card-body">
           <a href="/">학적조회</a>
           <a href="/studentChangeApply">학적변동 신청</a>
@@ -37,13 +37,54 @@
 
 
       <li class="nav-item">
-        <a class="nav-link text-white btn btn-primary" data-bs-toggle="collapse" href="#room" role="button" aria-expanded="false" aria-controls="room">
+        <a class="nav-link text-white btn btn-primary" data-bs-toggle="collapse" href="#classMgr" role="button" aria-expanded="false" aria-controls="classMgr">
+          <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+            <i class="material-icons opacity-10">dashboard</i>
+          </div>
+          <span class="nav-link-text ms-1">강의관리</span>
+        </a>
+      </li>
+      
+      <div class="collapse" id="classMgr">
+        <div class="card card-body">
+          <a href="#">수강신청</a>
+          <a href="#">담당학생 확인</a>
+          <a href="#">강의 시간표 조회</a>
+          <a href="#">공지 및 강의자료</a>
+          <a href="#">과제 게시판</a>
+          <a href="#">만족도 평가</a>
+          <br> ---- 교수 전용 메뉴 --- <br>
+          <a href="/letureinsert">강의 개설 신청</a>
+          <a href="#">성적 입력</a>
+          <a href="#">만족도 평가 열람</a>
+          <br> ---- 행정 전용 메뉴 --- <br>
+          <a href="/leturelist">강의 개설 승인</a>
+        </div>
+      </div>
+
+
+
+      <li class="nav-item">
+        <a class="nav-link text-white btn btn-primary" data-bs-toggle="collapse" href="#mentorMgr" role="button" aria-expanded="false" aria-controls="mentorMgr">
           <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
             <i class="material-icons opacity-10">dashboard</i>
           </div>
           <span class="nav-link-text ms-1">상담관리</span>
         </a>
       </li>
+      
+      <div class="collapse" id="mentorMgr">
+        <div class="card card-body">
+          <a href="#">담당교수 확인</a>
+          <a href="#">담당학생 확인</a>
+          <a href="#">상담스케줄</a>
+          <a href="#">진로탐색 검사</a>
+          <a href="#">진로탐색 검사 관리</a>
+          <a href="#">상담신청</a>
+          <a href="#">채팅</a>
+          <a href="#">상담일지</a>
+        </div>
+      </div>
 
 
 
@@ -112,15 +153,17 @@
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link text-white " href="/pages/sign-up.html">
+        <a class="nav-link text-white " href="/doLogout">
           <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
             <i class="material-icons opacity-10">assignment</i>
           </div>
-          <span class="nav-link-text ms-1">Sign Up</span>
+          <span class="nav-link-text ms-1">Logout</span>
         </a>
       </li>
     </ul>
   </div>
+  
+  <!-- 
   <div class="sidenav-footer position-absolute w-100 bottom-0 ">
     <div class="mx-3">
       <a class="btn bg-gradient-primary mt-4 w-100"
@@ -128,8 +171,11 @@
         pro</a>
     </div>
   </div>
+  -->
 
-</div>
+</th:block>
+
+
 
 
 </html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+      
+<th:block layout:fragment="content">
+
+  <!-- 상단 내비바 -->
+  <th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
+
+  <!-- 본문 start -->
+ 		<h1>강좌개설 페이지</h1>
+ 		
+ 		<form action="letureinsert" method="post">
+ 		
+ 	 <div class="input-group input-group-outline my-3">
+      <label class="form-label">제목</label>
+      <input type="text" class="form-control" name="classRegTitle">
+    </div>	
+ 		
+    <div class="input-group input-group-outline my-3">
+      <label class="form-label">강좌코드</label>
+      <input type="text" class="form-control" name="classRegId">
+    </div>
+    
+    
+   <div class="input-group input-group-static mb-4">
+  
+    <select class="form-control" name="courseId" id="courseId">
+    	<option value="">교과목 선택</option>
+    	<th:block  th:each="course : ${course}">
+    	<option th:text="${course.courseTitle}" th:value="${course.courseId}"></option>
+    	</th:block>
+    </select>
+    </div>
+    
+    <div class="input-group input-group-outline my-3">
+      <label class="form-label">교번</label>
+      <input type="text" class="form-control" name="userId">
+    </div>
+    
+    <div class="input-group input-group-outline my-3">
+      <label class="form-label">정원</label>
+      <input type="number" class="form-control" name="classRegTo">
+    </div>
+    
+    <div class="input-group input-group-outline my-3">
+      <label class="form-label">개설연도</label>
+      <input type="number" class="form-control" name="classRegYear">
+    </div>
+    
+    <div class="input-group input-group-outline my-3">
+      <label class="form-label">개설학기</label>
+      <input type="number" class="form-control" name="classRegSem">
+    </div>
+    
+    <div class="input-group input-group-outline my-3">
+      <label class="form-label">강의계획서</label>
+      <input type="text" class="form-control" name="classRegSyl">
+    </div>
+    
+    <button class="btn bg-gradient-primary">신청하기</button>
+</form>
+    
+  <!-- 본문 end-->
+
+
+</th:block>
+</html>
