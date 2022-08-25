@@ -41,7 +41,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class LectureController {
 
-	@Autowired CourseMapper mapper;
+	@Autowired
+	CourseMapper mapper;
 	private final LectureService LectureService;
 	
 	
