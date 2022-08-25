@@ -20,10 +20,25 @@
           </div>
         </div>
         <ul class="navbar-nav  justify-content-end">
+        	<li class="nav-item d-flex align-items-center">
+        	    <span>환영합니다,&nbsp;&nbsp;</span>
+        	 	<span sec:authentication="name"></span>
+        	 	<span>님&nbsp;&nbsp;</span>
+        	 	<span th:text="${info}"></span>
+        	</li>
+        	<li class="nav-item d-flex align-items-center">
+        	 <span class="d-sm-inline d-none">
+              	    <h6 class="font-weight-bolder mb-0" sec:authorize="hasRole('ROLE_STU')">학생&nbsp;</h6>
+        			<h6 class="font-weight-bolder mb-0" sec:authorize="hasRole('ROLE_PROF')">교수&nbsp;</h6>
+        			<h6 class="font-weight-bolder mb-0" sec:authorize="hasRole('ROLE_ADMIN')">행정처&nbsp;</h6>
+             </span>
+        	</li>
           <li class="nav-item d-flex align-items-center">
             <a href="javascript:;" class="nav-link text-body font-weight-bold px-0">
               <i class="fa fa-user me-sm-1"></i>
-              <span class="d-sm-inline d-none">Sign In</span>
+              <span class="d-sm-inline d-none">
+              	<a href="#"></a>
+              </span>
             </a>
           </li>
           <li class="nav-item d-xl-none ps-3 d-flex align-items-center">

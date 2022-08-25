@@ -2,6 +2,8 @@ package com.kcy.lecture.service.Impl;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,9 +30,19 @@ public class LectureServiceImpl implements LectureService {
 	}
 
 	@Override
+	@Transactional
 	public void LectureUpdate(LectureVO vo) {
 		
 		mapper.LectureUpdate(vo);
+		mapper.LectureInsertClass(vo);
 	}
+
+	@Override
+	public void LectureInsertClass(LectureVO vo) {
+		
+		mapper.LectureInsertClass(vo);
+	}
+
+
 	
 }

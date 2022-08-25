@@ -26,13 +26,13 @@ public class ChatRoomController {
 
 	@GetMapping("/room")
 	public String rooms(Model model) {
-		return "/pages/mentorMgr/chat/room";
+		return "pages/mentorMgr/chat/room";
 	}
 
 	// 채팅 리스트 화면 test
 	@GetMapping("/room2")
 	public String rooms2(Model model) {
-		return "/pages/mentorMgr/chat/room2";
+		return "pages/mentorMgr/chat/room2";
 	}
 
 	// 모든 채팅방 목록 반환
@@ -53,7 +53,7 @@ public class ChatRoomController {
 	@GetMapping("/room/enter/{roomId}")
 	public String roomDetail(Model model, @PathVariable String roomId) {
 		model.addAttribute("roomId", roomId);
-		return "/pages/mentorMgr/chat/roomdetail";
+		return "pages/mentorMgr/chat/roomdetail";
 	}
 
 	// 특정 채팅방 조회
