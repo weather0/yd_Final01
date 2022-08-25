@@ -13,7 +13,8 @@
 				   #{classRegYear},
 				   #{classRegSem},
 				   #{classRegSyl},
-				   default
+				   default,
+				   #{classRegTitle}
 				   )
 		
 		</insert>
@@ -27,8 +28,21 @@
 		<update id="LectureUpdate" parameterType="com.kcy.lecture.service.LectureVO">
 				
 			UPDATE k_class_reg SET class_reg_yn = 'y'
-			WHERE CLASS_REG_ID = #{classRegId}
+			WHERE class_reg_id = #{classRegId}
 			
 		</update>
+		
+		<insert id="LectureInsertClass">
+			insert into k_class(class_id, course_id, user_id, class_to, class_year, class_sem, class_syl)
+			values(
+				   classId_seq.nextval(),
+				   #{courseId},
+				   #{userId},
+				   #{classRegTo},
+				   #{classRegYear},
+				   #{classRegSem},
+				   #{classRegSyl},
+				   )
+		</insert>
 	
 </mapper>

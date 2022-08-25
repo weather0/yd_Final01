@@ -12,9 +12,12 @@
   <th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
   <!-- 본문 start -->
  <div style="width: 90%; padding: 10px">
+ 
+ <form action="letureinsertclass" method="post">
  <table id="letureTable" class="table table-striped" style="width:100%;" >
         <thead>
             <tr>
+            	<th>제목</th>
                 <th>교과목</th>
                 <th>교번</th>
                 <th>정원</th>
@@ -27,35 +30,45 @@
         <tbody>
         
         	<tr th:each="data : ${ltrList}" th:if="${data.classRegYn} == 'n'">
+        		<td th:text="${data.classRegTitle}"></td>
         		<td th:text="${data.courseId}"></td>
         		<td th:text="${data.userId}"></td>
         		<td th:text="${data.classRegTo}"></td>
         		<td th:text="${data.classRegYear}"></td>
         		<td th:text="${data.classRegSem}"></td>
         		<td th:text="${data.classRegSyl}"></td>
-        		<td><button onclick="permission()">승인</button></td>
+        		<td><button class="btn bg-gradient-primary" id="btn1" th:data-class_reg_id="${data.classRegId}"  th:text="승인"></button></td>
         	</tr>
         	
         </tbody>
   <!-- 본문 end-->
 </table>
+ </form>
  </div>
-<script>
-    $('#letureTable').DataTable({ });
+<script th:inline="javascript">
+$("#btn1").on("click",update1);
+
+$('#letureTable').DataTable({});
     
-   	function permission(){
-   		$.ajax({
-   			type:"post",
-   			url:"http://localhost/letureupdate",
-   			data:{
-   				classRegId: 
-   			},
-   			success: function(data){
-   				alert(data);
-   			}
-   		})
-   	}
-    
+    function update1(){
+    	let update = $(this).data("class_reg_id")
+    	console.log(test)
+     	$.ajax({
+     		url:"http://localhost/letureupdate",
+    		type:"post",
+     		data:{
+     			classRegId : update 
+     		},
+     		success : function(data){
+     			location.reload();
+     		},
+     		 error : function(error) { 
+     			       alert("Error!");
+     	 }
+    	})
+    }
+	
+	
 </script>
 </th:block>
 </html>

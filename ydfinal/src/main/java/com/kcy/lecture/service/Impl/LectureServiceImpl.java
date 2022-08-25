@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.kcy.lecture.mapper.LectureMapper;
+import com.kcy.lecture.service.LectureClassVO;
 import com.kcy.lecture.service.LectureService;
 import com.kcy.lecture.service.LectureVO;
 
@@ -31,6 +32,12 @@ public class LectureServiceImpl implements LectureService {
 	public void LectureUpdate(LectureVO vo) {
 		
 		mapper.LectureUpdate(vo);
+	}
+
+	@Override
+	public void LectureInsertClass(LectureClassVO vo) {
+		
+		mapper.LectureInsertClass(vo);
 	}
 	
 }

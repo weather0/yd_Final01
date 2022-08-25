@@ -10,10 +10,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.kcy.lecture.mapper.CourseMapper;
 import com.kcy.lecture.service.CourseVO;
+import com.kcy.lecture.service.LectureClassVO;
 import com.kcy.lecture.service.LectureService;
 import com.kcy.lecture.service.LectureVO;
 
@@ -59,15 +59,18 @@ public class LectureController {
 		return "pages/classMgr/LetureList";
 	}
 	
-	@GetMapping("/letureupdate")
-	public void letureUpdateForm(Model model, LectureVO vo) {
-		
-		model.addAttribute("Id",LectureService.LectureList(vo));
-	}
 	
 	@PostMapping("/letureupdate")
 	public String letureUpdate(LectureVO vo) {
 		LectureService.LectureUpdate(vo);
+		return "redirect:leturelist";
+	}
+	
+	@PostMapping("/letureinsertclass")
+	public String LetureInsertClass(LectureClassVO vo) {
+		logger.info(vo.toString());
+		LectureService.LectureInsertClass(vo);
+		
 		return "redirect:leturelist";
 	}
 
