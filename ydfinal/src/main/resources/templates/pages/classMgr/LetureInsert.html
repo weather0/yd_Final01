@@ -12,7 +12,7 @@
   <!-- 본문 start -->
  		<h1>강좌개설 페이지</h1>
  		
- 		<form action="letureinsert" method="post">
+ 		<form action="letureinsert" method="post" enctype="multipart/form-data">
  		
  	 <div class="input-group input-group-outline my-3">
       <label class="form-label">제목</label>
@@ -57,10 +57,10 @@
     
     <div class="input-group input-group-outline my-3">
       <label class="form-label">강의계획서</label>
-      <input type="text" class="form-control" name="classRegSyl">
+      <input type="file" class="form-control" name="classRegSyl">
     </div>
     
-    <button class="btn bg-gradient-primary">신청하기</button>
+    <button type="submit" class="btn bg-gradient-primary">신청하기</button>
 </form>
     
   <!-- 본문 end-->
