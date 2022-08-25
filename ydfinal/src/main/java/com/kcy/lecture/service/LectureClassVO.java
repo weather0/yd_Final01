@@ -8,8 +8,8 @@ public class LectureClassVO {
 	private String classId;
 	private String courseId;
 	private String userId;
-	private int classRegTo;
-	private int classRegYear;
-	private int classRegSem;
-	private String classRegSyl;
+	private int classTo;
+	private int classYear;
+	private int classSem;
+	private String classSyl;
 }

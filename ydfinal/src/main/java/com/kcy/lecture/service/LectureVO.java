@@ -5,14 +5,14 @@ import lombok.Data;
 @Data
 public class LectureVO {
 	
-	private String classRegId;
+	private String classId;
 	private String courseId;
 	private String userId;
-	private int classRegTo;
-	private int classRegYear;
-	private int classRegSem;
-	private String classRegSyl;
-	private String classRegYn;
-	private String classRegTitle;
+	private int classTo;
+	private int classYear;
+	private int classSem;
+	private String classSyl;
+	private String classYn;
+	private String classTitle;
 
 }
