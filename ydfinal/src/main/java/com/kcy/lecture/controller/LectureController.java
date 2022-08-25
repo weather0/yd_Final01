@@ -6,7 +6,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -58,23 +57,21 @@ public class LectureController {
 	}
 	
 	@PostMapping("/letureinsert")
-	public String LetureInsert(LectureVO vo, @RequestParam("classRegSyl") MultipartFile[] classRegSyl, Model model) throws IllegalStateException, IOException {
+	public String LetureInsert(LectureVO vo, @RequestParam("classFileSyl") MultipartFile classFileSyl, Model model) throws IllegalStateException, IOException {
 		
 		logger.info(vo.toString());
-		LectureService.LectureInsert(vo);
 		
-		List<FileDto> list = new ArrayList<>();
-		for (MultipartFile file : classRegSyl) {
-			if(!file.isEmpty()) {
+			if(!classFileSyl.isEmpty()) {
 				FileDto dto = new FileDto(UUID.randomUUID().toString(),
-						file.getOriginalFilename(),
-						file.getContentType());
-				list.add(dto);
-				File newFileName = new File(dto.getUuid() + "_" + dto.getFileName());
-			file.transferTo(newFileName);
+						classFileSyl.getOriginalFilename(),
+						classFileSyl.getContentType());
+				String fileName = dto.getUuid() + "_" + dto.getFileName();
+				File newFileName = new File(fileName);
+				classFileSyl.transferTo(newFileName);
+				vo.setClassSyl(fileName);
 			}				
-		}
-		model.addAttribute("files", list);
+			
+			LectureService.LectureInsert(vo);
 		
 		return "redirect:leturelist";
 	}
@@ -103,14 +100,16 @@ public class LectureController {
 	}
 	
 	@GetMapping("/download")
-	public ResponseEntity<Resource> download(@ModelAttribute FileDto dto) throws IOException {
+	public ResponseEntity<Resource> download(@ModelAttribute LectureVO dto) throws IOException {
 		
-		Path path = Paths.get(filePath + "/" + dto.getUuid() + "_" + dto.getFileName());
+		System.out.println("ㅎㅇ");
+		
+		Path path = Paths.get(filePath + "/" + dto.getClassSyl());
 		String contentType = Files.probeContentType(path);
 		HttpHeaders headers = new HttpHeaders();
 		
 		headers.setContentDisposition(ContentDisposition.builder("attachment").
-				filename(dto.getFileName(), StandardCharsets.UTF_8)
+				filename(dto.getClassSyl(), StandardCharsets.UTF_8)
 				.build());
 	
 		headers.add(HttpHeaders.CONTENT_TYPE, contentType);
@@ -118,4 +117,5 @@ public class LectureController {
 		return new ResponseEntity<>(resource, headers, HttpStatus.OK);
 	}
 
+	
 }

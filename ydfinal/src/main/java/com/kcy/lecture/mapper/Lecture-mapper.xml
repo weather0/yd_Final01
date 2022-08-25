@@ -19,10 +19,10 @@
 		
 		</insert>
 		
+		
+		
 		<select id="LectureList" resultType="com.kcy.lecture.service.LectureVO">
-			select * from k_class_reg
-		
-		
+			select * from k_class_reg		
 		</select>
 		
 		<update id="LectureUpdate" parameterType="com.kcy.lecture.service.LectureVO">
