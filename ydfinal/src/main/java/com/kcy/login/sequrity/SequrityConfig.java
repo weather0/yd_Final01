@@ -24,10 +24,10 @@ public class SequrityConfig extends WebSecurityConfigurerAdapter  {
 	protected void configure(HttpSecurity http) throws Exception{
 		http
 			.authorizeRequests()
-			.antMatchers("/login").permitAll()
-			.antMatchers("/access").hasRole("stu")
-			.antMatchers("/access").hasRole("pro")
-			.antMatchers("/access").hasRole("admin")
+			.antMatchers("/login", "/check/findPw").permitAll()
+			.antMatchers("/userMgr/prof").access("hasRole('ROLE_PROF')")
+			.antMatchers("/userMgr/stu").access("hasRole('ROLE_STU')")
+			.antMatchers("/admin").hasAuthority("admin")
 			.anyRequest()
 			.authenticated()
 			.and()
@@ -37,7 +37,11 @@ public class SequrityConfig extends WebSecurityConfigurerAdapter  {
 			.defaultSuccessUrl("/")
 			.failureUrl("/denied")
 			.and()
-		.csrf().disable();
+		.csrf().disable()
+		.logout()
+			.logoutUrl("/doLogout")
+			.invalidateHttpSession(true)
+			.logoutSuccessUrl("/login");
 		
 		 http.sessionManagement()
          .maximumSessions(1) //세션 최대 허용 수 
@@ -46,7 +50,9 @@ public class SequrityConfig extends WebSecurityConfigurerAdapter  {
 	
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userServiceImpl).passwordEncoder(new BCryptPasswordEncoder());
+        auth.
+        	userDetailsService(userServiceImpl).
+        	passwordEncoder(new BCryptPasswordEncoder());
     }
     
     @Bean

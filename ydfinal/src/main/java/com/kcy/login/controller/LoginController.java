@@ -23,6 +23,7 @@ public class LoginController {
 	private final UserService userService;
 	private final SendEmailService sendEmailService;
     
+	// 공통
     @GetMapping("/login")
     public String login(){
         return "login";
@@ -37,12 +38,10 @@ public class LoginController {
     public String userAccess(Model model, Authentication authentication) {
         //Authentication 객체를 통해 유저 정보를 가져올 수 있다.
         UserVo userVo = (UserVo) authentication.getPrincipal();  //userDetail 객체를 가져옴
-        // model.addAttribute("info", userVo.getUserId() +"의 "+ userVo.getUsername()+ "님 " + userVo.getUserType() + "권한");      //유저 아이디
+        model.addAttribute("info", userVo.getUserId() +"의 "+ userVo.getUsername()+ "님 " + userVo.getUserType() + "권한");      //유저 아이디
         return "";
     }
-    
-    
-    
+     
     @GetMapping("/check/findPw")
     public @ResponseBody Map<String, Boolean> userfindPw(String userEmail, String userName) {
     		Map<String, Boolean> json = new HashMap<>();
@@ -58,4 +57,19 @@ public class LoginController {
     	MailDto dto = sendEmailService.createMailAndChangePassword(userEmail, userName);
     	sendEmailService.mailSend(dto);
     }
+    
+    // 행정
+    
+    // 학생
+    @GetMapping("/userMgr/stu")
+    public String stu() {
+    	return "pages/userMgr/stu/stu";
+    }
+    
+    // 교수
+	@GetMapping("/userMgr/prof")
+	public String prof() {
+		return "pages/userMgr/prof/prof";
+	}
+    
 }

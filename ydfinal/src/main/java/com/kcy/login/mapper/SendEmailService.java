@@ -15,8 +15,9 @@ public class SendEmailService {
 	UserMapper userMapper;
 	@Autowired
 	BCryptPasswordEncoder password;
+	@Autowired
+	JavaMailSender ms;
 	
-	private JavaMailSender ms;
 	private static final String FROM_ADDRESS = "xorganism09@gmail.com";
 	
 	public MailDto createMailAndChangePassword(String userEmail, String userName) {
@@ -53,11 +54,15 @@ public class SendEmailService {
 	public void mailSend(MailDto mailDto) {
         System.out.println("이멜 전송 완료!");
         SimpleMailMessage message = new SimpleMailMessage();
+        
         message.setTo(mailDto.getAddress());
         message.setFrom(SendEmailService.FROM_ADDRESS);
         message.setSubject(mailDto.getTitle());
         message.setText(mailDto.getMessage());
         
         System.out.println(message);
+        ms.send(message);
 	}
+	
+    
 }

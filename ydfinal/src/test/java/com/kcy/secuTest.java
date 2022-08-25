@@ -12,7 +12,7 @@ public class secuTest {
 	
 	@Test	
 	public void test1() {
-		String raw = password.encode("test");
+		String raw = password.encode("test2");
 		System.out.println(raw);
 	}
 }
