@@ -6,6 +6,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+/*
+ * 작성자:
+ * 작성일자:
+ * 내용:
+ * 수정일자:
+ * 수정내용:
+ */
+
 @Controller
 public class LayoutController {
 
