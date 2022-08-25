@@ -3,21 +3,16 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/layout}">
- <head>
- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/css/bootstrap.min.css"/>
+<th:block layout:fragment="content">
   <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css"/>  
   <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
   <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
   <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
- </head>
-<th:block layout:fragment="content">
-
   <!-- 상단 내비바 -->
   <th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
-
-
   <!-- 본문 start -->
- <table id="letureTable" class="table table-striped" style="width:100%">
+ <div style="width: 90%; padding: 10px">
+ <table id="letureTable" class="table table-striped" style="width:100%;" >
         <thead>
             <tr>
                 <th>교과목</th>
@@ -26,27 +21,41 @@
                 <th>개설연도</th>
                 <th>개설학기</th>
                 <th>계획서</th>
-                <th>승인여부</th>
+                <th>승인확인</th>
             </tr>
         </thead>
         <tbody>
-        	<tr th:each="data : ${ltrList}">
+        
+        	<tr th:each="data : ${ltrList}" th:if="${data.classRegYn} == 'n'">
         		<td th:text="${data.courseId}"></td>
         		<td th:text="${data.userId}"></td>
         		<td th:text="${data.classRegTo}"></td>
         		<td th:text="${data.classRegYear}"></td>
         		<td th:text="${data.classRegSem}"></td>
         		<td th:text="${data.classRegSyl}"></td>
-        		<td><button>승인</button></td>
+        		<td><button onclick="permission()">승인</button></td>
         	</tr>
+        	
         </tbody>
   <!-- 본문 end-->
-
-
-</th:block>
-<script type="text/javascript">
-$(document).ready(function () {
-    $('#"letureTable"').DataTable();
-});
+</table>
+ </div>
+<script>
+    $('#letureTable').DataTable({ });
+    
+   	function permission(){
+   		$.ajax({
+   			type:"post",
+   			url:"http://localhost/letureupdate",
+   			data:{
+   				classRegId: 
+   			},
+   			success: function(data){
+   				alert(data);
+   			}
+   		})
+   	}
+    
 </script>
+</th:block>
 </html>

@@ -23,5 +23,12 @@
 		
 		
 		</select>
+		
+		<update id="LectureUpdate" parameterType="com.kcy.lecture.service.LectureVO">
+				
+			UPDATE k_class_reg SET class_reg_yn = 'y'
+			WHERE CLASS_REG_ID = #{classRegId}
+			
+		</update>
 	
 </mapper>
