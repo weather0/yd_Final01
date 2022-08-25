@@ -1,9 +1,11 @@
 package com.kcy.users.mapper;
 
 import java.util.List;
+import java.util.Map;
 
-import com.kcy.users.service.UsersVO;
 
 public interface UsersMapper {
-	public List<UsersVO> usersList(UsersVO vo);
+//	public List<UserVO> userList(UserVO vo);
+	
+    public Map<String, String> stuInfo(String id);
 }
