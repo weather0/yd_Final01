@@ -19,8 +19,7 @@ public class LayoutController {
 
 	@RequestMapping("/")
 	public String dashboard(Model model) {
-		model.addAttribute("active", "click_studentInfo");
-		return "pages/userMgr/studentInfo";
+		return "home";
 	}
 
 	@RequestMapping("/studentChangeApply")
@@ -29,11 +28,6 @@ public class LayoutController {
 		return "pages/userMgr/studentChangeApply";
 	}
 
-	@RequestMapping("/tables")
-	public String tables(Model model) {
-		model.addAttribute("active", "click_classInfo");
-		return "pages/classMgr/classInfo";
-	}
 
 
 }
