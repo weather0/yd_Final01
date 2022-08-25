@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kcy.mentoring.schedule.mapper.CalenMapper">
+
+	<select id="calenList" resultType="com.kcy.mentoring.schedule.vo.scheduleVO">
+		SELECT MTR_SCH_ID, USER_ID,
+		       DATE_FORMAT(MTR_SCH_STARTDATE, '%Y-%m-%d %H:%i:%s') as MTR_SCH_STARTDATE,
+		 	   DATE_FORMAT(MTR_SCH_ENDDATE, '%Y-%m-%d %H:%i:%s') as MTR_SCH_ENDDATE
+		FROM k_mentoring_schedule;
+	</select>
+</mapper>
