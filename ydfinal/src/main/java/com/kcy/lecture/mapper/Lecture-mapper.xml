@@ -39,5 +39,10 @@
 			where class_id = #{classId}
 	
 		</insert>
+		
+		<select id="OpenLectureList" resultType="com.kcy.lecture.service.OpenLectureVO">
+			select * from k_class
+			
+		</select>
 	
 </mapper>

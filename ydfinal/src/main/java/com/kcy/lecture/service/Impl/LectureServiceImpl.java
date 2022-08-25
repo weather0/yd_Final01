@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.kcy.lecture.mapper.LectureMapper;
 import com.kcy.lecture.service.LectureService;
 import com.kcy.lecture.service.LectureVO;
+import com.kcy.lecture.service.OpenLectureVO;
 
 @Service
 public class LectureServiceImpl implements LectureService {
@@ -41,6 +42,12 @@ public class LectureServiceImpl implements LectureService {
 	public void LectureInsertClass(LectureVO vo) {
 		
 		mapper.LectureInsertClass(vo);
+	}
+
+	@Override
+	public List<OpenLectureVO> OpenLectureList(OpenLectureVO vo) {
+		
+		return mapper.OpenLectureList(vo);
 	}
 
 

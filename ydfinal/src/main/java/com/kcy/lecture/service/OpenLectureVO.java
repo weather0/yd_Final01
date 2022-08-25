@@ -3,7 +3,7 @@ package com.kcy.lecture.service;
 import lombok.Data;
 
 @Data
-public class LectureClassVO {
+public class OpenLectureVO {
 	
 	private String classId;
 	private String courseId;
