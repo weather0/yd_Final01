@@ -11,6 +11,6 @@ public interface LectureService {
 	
 	public void LectureUpdate(LectureVO vo);
 	
-	public void LectureInsertClass(LectureClassVO vo);
+	public void LectureInsertClass(LectureVO vo);
 
 }
