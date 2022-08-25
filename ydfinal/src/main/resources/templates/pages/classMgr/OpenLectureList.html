@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+      
+<th:block layout:fragment="content">
+
+  <!-- 상단 내비바 -->
+  <th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
+
+
+  <!-- 본문 start -->
+  <div class="container-fluid py-4">
+    <div class="row">
+      <div class="col-12">
+        <div class="card my-4">
+          <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+            <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
+              <h6 class="text-white text-capitalize ps-3">수강신청</h6>
+            </div>
+          </div>
+          <div class="card-body px-0 pb-2">
+            <div class="table-responsive p-0">
+              <table class="table align-items-center mb-0">
+                <thead>
+                  <tr>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" th:text="강좌코드"></th>
+                   <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" th:text="교과목코드"></th>
+                   <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" th:text="정원"></th>
+                   <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" th:text="개설년도"></th>
+                   <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" th:text="개설학기"></th>
+                   <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" th:text="강의계획서"></th>
+                   <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" ></th>
+                  </tr>
+                </thead>
+                <tbody>
+       				<tr th:each="data:${openList}">
+       					<td th:text="${data.classId}"></td>
+       					<td th:text="${data.courseId}"></td>
+       					<td th:text="${data.classTo}"></td>
+       					<td th:text="${data.classYear}"></td>
+       					<td th:text="${data.classSem}"></td>
+       					<td><a th:href="${'/download?classSyl='+data.classSyl}" th:text="${data.classSyl}"></a></td>
+       					<td> <button class="btn bg-gradient-primary" th:text="신청"></button> </td>
+       				</tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <div class="card my-4">
+          <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+            <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
+              <h6 class="text-white text-capitalize ps-3">수강신청 완료</h6>
+            </div>
+          </div>
+          <div class="card-body px-0 pb-2">
+            <div class="table-responsive p-0">
+              <table class="table align-items-center justify-content-center mb-0">
+                <thead>
+                  <tr>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" th:text="강좌코드"></th>
+                   <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" th:text="교번"></th>
+                   <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" th:text="수강신청코드"></th>
+                   <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" ></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr th:each="data:${enrolmentlist}">
+                   	 <td th:text="${data.classId}"></td>
+                   	 <td th:text="${data.userId}"></td>
+                   	 <td th:text="${data.classMemberId}"></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- 하단 푸터(본문div 안에 있어야 안 어그러짐) -->
+    <th:block th:replace="fragments/footer :: footerFragment"></th:block>
+    
+  </div>
+  <!-- 본문 end-->
+
+
+</th:block>
+</html>

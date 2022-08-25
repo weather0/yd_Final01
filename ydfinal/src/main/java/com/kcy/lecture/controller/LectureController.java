@@ -6,7 +6,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -31,6 +30,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.kcy.file.test.FileDto;
 import com.kcy.lecture.mapper.CourseMapper;
 import com.kcy.lecture.service.CourseVO;
+import com.kcy.lecture.service.EnrolmentService;
 import com.kcy.lecture.service.LectureService;
 import com.kcy.lecture.service.LectureVO;
 
@@ -41,9 +41,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class LectureController {
 
-	@Autowired CourseMapper mapper;
+	@Autowired
+	CourseMapper mapper;
 	private final LectureService LectureService;
-	
+	private final EnrolmentService EnrolmentService;
 	
 	@Value("${spring.servlet.multipart.location}")
 	String filePath;
@@ -51,32 +52,32 @@ public class LectureController {
 	
 	Logger logger = LoggerFactory.getLogger(LectureController.class);
 	
-	@GetMapping("/letureinsert")
+	@GetMapping("/lectureinsert")
 	public String LetureInsertPage(LectureVO vo) {
 		
-		return "pages/classMgr/LetureInsert";
+		return "pages/classMgr/LectureInsert";
 	}
 	
-	@PostMapping("/letureinsert")
-	public String LetureInsert(LectureVO vo, @RequestParam("classSyl") MultipartFile[] classSyl, Model model ) throws IllegalStateException, IOException {
+
+	@PostMapping("/lectureinsert")
+	public String LetureInsert(LectureVO vo, @RequestParam("classFileSyl") MultipartFile classFileSyl, Model model) throws IllegalStateException, IOException {
 		
 		logger.info(vo.toString());
-		LectureService.LectureInsert(vo);
 		
-		List<FileDto> list = new ArrayList<>();
-		for (MultipartFile file : classSyl) {
-			if(!file.isEmpty()) {
+		
+			if(!classFileSyl.isEmpty()) {
 				FileDto dto = new FileDto(UUID.randomUUID().toString(),
-						file.getOriginalFilename(),
-						file.getContentType());
-				list.add(dto);
-				File newFileName = new File(dto.getUuid() + "_" + dto.getFileName());
-			file.transferTo(newFileName);
+						classFileSyl.getOriginalFilename(),
+						classFileSyl.getContentType());
+				String fileName = dto.getUuid() + "_" + dto.getFileName();
+				File newFileName = new File(fileName);
+				classFileSyl.transferTo(newFileName);
+				vo.setClassSyl(fileName);
 			}				
-		}
-		model.addAttribute("files", list);
+			
+			LectureService.LectureInsert(vo);
 		
-		return "redirect:leturelist";
+		return "redirect:lecturelist";
 	}
 	
 	
@@ -88,29 +89,31 @@ public class LectureController {
 	}
 	
 	
-	@GetMapping("/leturelist")
+	@GetMapping("/lecturelist")
 	public String letureList(Model model) {
 		model.addAttribute("ltrList",LectureService.LectureList(null));
-		return "pages/classMgr/LetureList";
+		return "pages/classMgr/LectureList";
 	}
 	
 	
-	@PostMapping("/letureupdate")
+	@PostMapping("/lectureupdate")
 	public String letureUpdate(LectureVO vo) {
 		LectureService.LectureUpdate(vo);
 		LectureService.LectureInsertClass(vo);
-		return "redirect:leturelist";
+		return "redirect:lecturelist";
 	}
 	
 	@GetMapping("/download")
-	public ResponseEntity<Resource> download(@ModelAttribute FileDto dto) throws IOException {
+	public ResponseEntity<Resource> download(@ModelAttribute LectureVO dto) throws IOException {
 		
-		Path path = Paths.get(filePath + "/" + dto.getUuid() + "_" + dto.getFileName());
+		System.out.println("ㅎㅇ");
+		
+		Path path = Paths.get(filePath + "/" + dto.getClassSyl());
 		String contentType = Files.probeContentType(path);
 		HttpHeaders headers = new HttpHeaders();
 		
 		headers.setContentDisposition(ContentDisposition.builder("attachment").
-				filename(dto.getFileName(), StandardCharsets.UTF_8)
+				filename(dto.getClassSyl(), StandardCharsets.UTF_8)
 				.build());
 	
 		headers.add(HttpHeaders.CONTENT_TYPE, contentType);
@@ -118,4 +121,14 @@ public class LectureController {
 		return new ResponseEntity<>(resource, headers, HttpStatus.OK);
 	}
 
+	
+	@GetMapping("/openlecturelist")
+	public String OpenletureList(Model model) {
+		model.addAttribute("openList",LectureService.OpenLectureList(null));
+		model.addAttribute("enrolmentlist", EnrolmentService.EnrolmentList(null));
+		return "pages/classMgr/OpenLectureList";
+	}
+	
+	
+	
 }

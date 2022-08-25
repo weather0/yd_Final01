@@ -19,10 +19,10 @@
 		
 		</insert>
 		
+		
+		
 		<select id="LectureList" resultType="com.kcy.lecture.service.LectureVO">
-			select * from k_class_reg
-		
-		
+			select * from k_class_reg		
 		</select>
 		
 		<update id="LectureUpdate" parameterType="com.kcy.lecture.service.LectureVO">
@@ -39,5 +39,10 @@
 			where class_id = #{classId}
 	
 		</insert>
+		
+		<select id="OpenLectureList" resultType="com.kcy.lecture.service.OpenLectureVO">
+			select * from k_class
+			
+		</select>
 	
 </mapper>
