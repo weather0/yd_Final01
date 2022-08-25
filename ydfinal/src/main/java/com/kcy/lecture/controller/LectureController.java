@@ -58,13 +58,13 @@ public class LectureController {
 	}
 	
 	@PostMapping("/letureinsert")
-	public String LetureInsert(LectureVO vo, @RequestParam("classRegSyl") MultipartFile[] classRegSyl, Model model) throws IllegalStateException, IOException {
+	public String LetureInsert(LectureVO vo, @RequestParam("classSyl") MultipartFile[] classSyl, Model model ) throws IllegalStateException, IOException {
 		
 		logger.info(vo.toString());
 		LectureService.LectureInsert(vo);
 		
 		List<FileDto> list = new ArrayList<>();
-		for (MultipartFile file : classRegSyl) {
+		for (MultipartFile file : classSyl) {
 			if(!file.isEmpty()) {
 				FileDto dto = new FileDto(UUID.randomUUID().toString(),
 						file.getOriginalFilename(),
