@@ -4,12 +4,17 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/layout}">  
 
-<th:block layout:fragment="content">	  
+<th:block layout:fragment="content">	 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/css/bootstrap.min.css"/>
   <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css"/>  
   <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
   <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
   <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
+<style>
+.stdactive {
+	background-color : gray
+}
+</style> 
     
   <!-- 상단 내비바 -->
   <th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
@@ -25,7 +30,7 @@
 			<th>학년</th>
 			<th>연락처</th>
 			<th>학적</th>
-			<th>지도교수</th>
+			<th>매칭</th>
 		</tr>
 	</thead>
 	<tbody>	
@@ -38,7 +43,7 @@
 			<td th:text="${std.studentAcaYn}"></td>
 			<td>
 				<span th:if="${std.studentProf == null}">
-				<button class="btn btn-primary">매칭</button>
+				<button class="btn btn-primary" onclick="onDisplay()">선택</button>
 				</span>
 			</td>		
 		</tr>
@@ -46,36 +51,51 @@
    </table>
    <br>
    <br>
-   <div>
+   <div id="profList" style="display: none;">
    <h3>매칭 가능한 교수 목록</h3>
-  <table class="table table-striped" id="matchingProf">
-	<thead>
-		<tr>
-			<th>교번</th>
-			<th>이름</th>
-			<th>전공</th>
-			<th>연구실</th>
-			<th>담당 가능 학생 수</th>
-			<th>매칭여부</th>
-		</tr>
-	</thead>
-	<tbody>	
-		<tr th:each="Prof:${matchingProf}">
-			<td th:text="${Prof.userId}"></td>
-			<td th:text="${Prof.userName}"></td>
-			<td th:text="${Prof.profField}"></td>
-			<td th:text="${Prof.profLab}"></td>
-			<td th:text="${Prof.mentee}"></td>
-			<td>				
-				<button class="btn btn-primary">매칭</button>				
-			</td>
-		</tr>
-	</tbody>
-   </table>
+	  <table class="table table-striped" id="matchingProf">
+		<thead>
+			<tr>
+				<th>교번</th>
+				<th>이름</th>
+				<th>전공</th>
+				<th>연구실</th>
+				<th>담당 가능 학생 수</th>
+				<th>매칭여부</th>
+			</tr>
+		</thead>
+		<tbody>	
+			<tr th:each="Prof:${matchingProf}">
+				<td th:text="${Prof.userId}"></td>
+				<td th:text="${Prof.userName}"></td>
+				<td th:text="${Prof.profField}"></td>
+				<td th:text="${Prof.profLab}"></td>
+				<td th:text="${Prof.mentee}"></td>
+				<td>				
+					<button class="btn btn-primary" onclick="matching()">매칭</button>				
+				</td>
+			</tr>
+		</tbody>
+	   </table>
    </div>
    <script>
    	$("#matchingStd").DataTable({ });
    	$("#matchingProf").DataTable({ });
+   	
+   	function onDisplay(e) {
+   		e = window.event || e; 
+   		$(".stdactive").css("backgroundColor","")
+   		$(".stdactive").removeClass("stdactive")
+   		$(e.target).closest("tr").addClass("stdactive")
+   		$(e.target).closest("tr").css("backgroundColor", "red")  
+   		$('#profList').show();
+   	}
+   	
+   	function matching() {
+   		console.log($(this).find("td:first").text())
+   		console.log($(".stdactive").find("td:first").text())
+   	}
+   	
    </script>
       	  
   <!-- 본문 end-->

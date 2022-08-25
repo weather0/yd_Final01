@@ -28,7 +28,7 @@
 	FROM k_users AS u 
 	JOIN k_students AS s
 	ON u.user_id = s.user_id  
-	WHERE user_type = 'std' AND s.student_prof IS NULL
+	WHERE user_type = 'ROLE_STU' AND s.student_prof IS NULL
 </select>
 
 <select id="matchingProfList" resultType="com.kcy.matching.service.MatchingProfVO">
@@ -45,5 +45,11 @@
 	GROUP BY user_id
 	<![CDATA[HAVING mentee < 10]]>
 </select>
+
+<insert id="matching">		
+		INSERT INTO EMPLOYEES 
+		( EMPLOYEE_ID, FIRST_NAME, LAST_NAME, EMAIL, HIRE_DATE, JOB_ID ) 
+		VALUES ( #{employeeId}, #{firstName}, #{lastName}, #{email}, #{hireDate}, #{jobId} )
+	</insert>
 
 </mapper>
