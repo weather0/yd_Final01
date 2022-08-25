@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml"
+	xmlns:v-bind="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/layout}">
+<th:block layout:fragment="content">
+	<!-- 상단 내비바 -->
+	<th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
+
+	<head>
+           
+<style>
+[v-cloak] {
+	display: none;
+}
+<!--
+-->
+<!--
+-->
+</style>
+	</head>
+
+	<body>
+	
+		<div>
+			<button onclick="location.href=`/chat/room`">채팅종료</button>
+		</div>
+		<div class="container" id="app" v-cloak>
+			<div>
+				<h2>{{room.roomName}}</h2>
+			</div>
+
+			<!-- 메모 모달창 -->
+
+		<!-- 	<button type="button" class="btn bg-gradient-primary"
+				data-bs-toggle="modal" data-bs-target="#exampleModal">
+				메모</button>
+ -->
+			<!--  -->
+			<div style="overflow: auto; width: 80%; height: 600px;">
+				<ul class="list-group">
+					<li class="list-group-item" v-for="message in messages"
+						:key="idx">{{message.sender}} - {{message.message}}</li>
+				</ul>
+			</div>
+
+
+			<div class="p-4">
+				<div class="input-group input-group-sm input-group-outline mb-4">
+					<label class="form-label">내용</label> <input type="text"
+						class="form-control" v-model="message"
+						v-on:keypress.enter="sendMessage">
+
+					<button class="btn btn-primary" type="button" @click="sendMessage">보내기</button>
+				</div>
+			</div>
+		</div>
+
+		<!-- Modal -->
+		<!-- <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+			aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title font-weight-normal" id="exampleModalLabel">상담 메모</h5>
+						<button type="button" class="btn-close text-dark"
+							data-bs-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+					<form class="form-horizontal form-view">
+					  <input type="hidden" th:value="505505" id="505505">
+					 <input type="text" id="contents" width="450px" height="400px" th:value="${contents}"></textarea>
+					<div class="modal-footer">
+						<button type="button" class="btn bg-gradient-primary"  th:onclick="insertMemo([[ ${board.idx} ]])">저장</button>
+						<button type="button" class="btn bg-gradient-primary"  th:onclick="insertMemo(dd)">저장</button>
+						<button type="button" class="btn bg-gradient-secondary"	data-bs-dismiss="modal">닫기</button>
+					</div>
+					 </form>
+					</div>
+				</div>
+			</div>
+		</div> -->
+		<!-- JavaScript -->
+		<script
+			src="https://cdn.jsdelivr.net/npm/vue-chat-scroll/dist/vue-chat-scroll.min.js"></script>
+		<script src="/webjars/vue/2.5.16/dist/vue.min.js"></script>
+		<script src="/webjars/axios/0.17.1/dist/axios.min.js"></script>
+		<script src="/webjars/sockjs-client/1.1.2/sockjs.min.js"></script>
+		<script src="/webjars/stomp-websocket/2.3.3-1/stomp.min.js"></script>
+		<script>
+            //alert(document.title);
+            // websocket & stomp initialize
+            var sock = new SockJS("/ws/chat");
+            var ws = Stomp.over(sock);
+            var reconnect = 0;
+            // vue.js
+            var vm = new Vue({
+                el: '#app',
+                data: {
+                    roomId: '',
+                    room: {},
+                    sender: '',
+                    message: '',
+                    messages: []
+
+                },
+                created() {
+                    this.roomId = localStorage.getItem('wschat.roomId');
+                    this.sender = localStorage.getItem('wschat.sender');
+                    this.findRoom();
+                },
+                methods: {
+                    findRoom: function () {
+                        axios.get('/chat/room/' + this.roomId).then(response => { this.room = response.data; });
+                    },
+                    sendMessage: function () {
+                        ws.send("/app/chat/message", {}, JSON.stringify({ type: 'TALK', roomId: this.roomId, sender: this.sender, message: this.message }));
+                        this.message = '';
+                    },
+                    recvMessage: function (recv) {
+                        this.messages.unshift({ "type": recv.type, "sender": recv.type == 'ENTER' ? '[알림]' : recv.sender, "message": recv.message })
+                    }
+                },
+                watch: {
+                    messages() {
+                        // 화면에 추가된 후 동작하도록
+                        this.$nextTick(() => {
+                            let messages = this.$refs.messages;
+
+                            messages.scrollTo({ top: messages.scrollHeight, behavior: 'smooth' });
+                        });
+                    },
+                }
+            });
+            
+           /*  function insertMemo(String code) {
+
+            	var content = document.getElementById("contents");
+            	if (isEmpty(contents.value) == true) {
+            		content.setAttribute("placeholder", "내용을 입력해 주세요.");
+            		content.focus();
+            		return false;
+            	}
+
+            	var uri = [[ @{/mentoring/memo} ]];
+            	var headers = {"Content-Type": "application/json", "X-HTTP-Method-Override": "POST"};
+            	var params = {"mtrId": '505505', "mtrMemoContent": contents.value};
+
+            	$.ajax({
+            		url: uri,
+            		type: "POST",
+            		headers: headers,
+            		dataType: "json",
+            		data: JSON.stringify(params),
+            		success: function(response) {
+            			if (response.result == false) {
+            				alert("메모 등록에 실패하였습니다.");
+            				return false;
+            			}
+
+            			printCommentList();
+            			contents.value = "";
+            		},
+            		error: function(xhr, status, error) {
+            			alert("에러가 발생하였습니다.");
+            			return false;
+            		}
+            	});
+            } */
+
+            function connect() {
+                // pub/sub event
+                ws.connect({}, function (frame) {
+                    ws.subscribe("/topic/chat/room/" + vm.$data.roomId, function (message) {
+                        var recv = JSON.parse(message.body);
+                        vm.recvMessage(recv);
+                    });
+                    ws.send("/app/chat/message", {}, JSON.stringify({ type: 'ENTER', roomId: vm.$data.roomId, sender: vm.$data.sender }));
+                }, function (error) {
+                    if (reconnect++ <= 5) {
+                        setTimeout(function () {
+                            console.log("connection reconnect");
+                            sock = new SockJS("/ws/chat");
+                            ws = Stomp.over(sock);
+                            connect();
+                        }, 10 * 1000);
+                    }
+                });
+            }
+            connect();
+        </script>
+</th:block>
+</body>
+
+</html>

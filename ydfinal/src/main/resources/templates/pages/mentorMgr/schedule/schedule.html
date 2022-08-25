@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml"
+	xmlns:v-bind="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/layout}">
+<th:block layout:fragment="content">
+<!-- 상단 내비바 -->
+  <th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
+<head>
+
+  <link href='fullcalendar-5.11.0/lib/main.css' rel='stylesheet' />
+  <script src='fullcalendar-5.11.0/lib/main.js'></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var calendarEl = document.getElementById('calendar');
+      var calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        headerToolbar: {
+            right: 'dayGridMonth, timeGridWeek, timeGridDay',
+            center: 'prev title next',
+            left: 'today',
+          },
+      });
+      calendar.render();
+    });
+
+  
+  </script>
+  <style>
+	  .fc-toolbar-chunk {
+	    display: flex;      // 일렬로 나란히
+	    align-items: center; // 수직 가운데 정렬
+	}
+</style>
+  <title>MyCalendar</title>
+</head>
+<body>
+  <h1>MyCalendar</h1>
+  <div id='calendar'></div>
+</body>
+</th:block>
+</html>
