@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kcy.mentoring.mapper.MentoringMapper">
+	<insert id="mentoringMemoInsert"
+		parameterType="com.kcy.mentoring.service.MentoringMemoVO">
+		insert into k_mentoring_memo values(#{mtrId},#{mtrMemoContent});
+	</insert>
+
+
+</mapper>
