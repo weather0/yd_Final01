@@ -38,14 +38,14 @@
         		<td th:text="${data.classTo}"></td>
         		<td th:text="${data.classYear}"></td>
         		<td th:text="${data.classSem}"></td>
-        		<td th:text="${data.classSyl}"></td>
+        		<td><a th:href="${'/download?classSyl='+data.classSyl}" th:text="${data.classSyl}"></a></td>
         		<td><button class="btn bg-gradient-primary" id="btn1" th:data-class_id="${data.classId}"  th:text="승인"></button></td>
         	</tr>
         	
         </tbody>
   <!-- 본문 end-->
 </table>
-</form>
+</form>.
  </div>
 <script>
 
@@ -53,8 +53,6 @@ $("#btn1").on("click",update1);
 
 $('#letureTable').DataTable({});
 
-
-    
     function update1(){
     	let update = $(this).data("class_id")
     	console.log(update)

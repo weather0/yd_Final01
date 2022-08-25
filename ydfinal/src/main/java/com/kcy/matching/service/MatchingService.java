@@ -6,4 +6,6 @@ public interface MatchingService {
 	public List<MatchingListVO> matchingList(MatchingListVO vo);
 	public List<MatchingStdVO> matchingStdList(MatchingStdVO vo); 
 	public List<MatchingProfVO> matchingProfList(MatchingProfVO vo); 
+	public void matching(MatchingVO vo);
+	public void matchingStd(MatchingVO vo);
 }

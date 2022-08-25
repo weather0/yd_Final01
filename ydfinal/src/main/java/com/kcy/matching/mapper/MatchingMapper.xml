@@ -28,13 +28,13 @@
 	FROM k_users AS u 
 	JOIN k_students AS s
 	ON u.user_id = s.user_id  
-	WHERE user_type = 'std' AND s.student_prof IS NULL
+	WHERE user_type = 'ROLE_STU' AND s.student_prof = 'none'
 </select>
 
 <select id="matchingProfList" resultType="com.kcy.matching.service.MatchingProfVO">
 	SELECT DISTINCT p.user_id, 
 				    u.user_name, 
-				    p.prof_field, 
+				    u.user_dept, 
 				    p.prof_lab, 
 				    p.prof_mentee - count(m.user_id) AS mentee
 	FROM k_professors p 
@@ -45,5 +45,16 @@
 	GROUP BY user_id
 	<![CDATA[HAVING mentee < 10]]>
 </select>
+
+<insert id="matching" parameterType="com.kcy.matching.service.MatchingVO">		
+		INSERT INTO k_matching 
+		( user_id, matching_date, matching_type, matching_id, student_id ) 
+		VALUES (#{userId}, NOW(), '매칭변경', 'M0006', #{studentId})
+</insert>
+
+<update id="matchingStd" parameterType="com.kcy.matching.service.MatchingVO">		
+		UPDATE k_students SET student_prof = #{userId}
+		WHERE user_id = #{studentId}
+</update>
 
 </mapper>
