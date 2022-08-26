@@ -26,5 +26,5 @@
 		WHERE 
 			cn.class_id = 'A100'
 	</select>
-	
+
 </mapper>

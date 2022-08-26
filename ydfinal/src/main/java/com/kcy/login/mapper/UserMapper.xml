@@ -3,7 +3,9 @@
 <mapper namespace="com.kcy.login.mapper.UserMapper">
 
 	<select id="getUserAccount" resultType="com.kcy.login.service.UserVo">
-		SELECT * FROM k_users
+		SELECT 
+		*
+		 FROM k_users
         WHERE USER_ID= #{userId}
 	</select>
 	
