@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kcy.notice.mapper.NoticeMapper">
+	<insert id="NoticeInsert">
+		INSERT INTO k_class_notice
+		(class_notice_id, class_id, class_notice_no, class_notice_title, class_notice_con, class_notice_date, class_notice_hit, class_notice_file, class_notice_type)
+		VALUES
+		(102, 'A100', 1, #{classNoticeTitle}, #{classNoticeCon}, date_format(now(), '%Y%m%d'), 1, #{classNoticeFile}, #{classNoticeType} )
+	</insert>
+	
+	<select id="NoticeList" resultType="map">
+		SELECT
+			cn.class_id, cn.class_notice_no, cn.class_notice_type, cn.class_notice_title, cn.class_notice_date,
+			c.class_id, c.prof_id,
+			u.user_id, u.user_name
+		FROM
+			k_class_notice as cn
+		JOIN
+			k_class as c
+		ON
+			cn.class_id = c.class_id
+		JOIN
+			k_users as u
+		ON
+			c.prof_id = u.user_id
+		WHERE 
+			cn.class_id = 'A100'
+	</select>
+	
+</mapper>

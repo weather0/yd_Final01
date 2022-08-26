@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+<th:block layout:fragment="content">
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css"/>  
+  <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+  <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
+  <!-- 상단 내비바 -->
+  <th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
+  <!-- 본문 start -->
+<div class="container-fluid py-4">
+    <div class="row"> 
+ <table id="noticeTable" class="table table-striped" style="width:100%;" >
+        <thead>
+            <tr>
+            	<th>No.</th>
+            	<th>class_id</th>
+            	<th>자료구분</th>
+            	<th>제목</th>
+                <th>작성자</th>
+                <th>등록일</th>
+            </tr>
+        </thead>
+        <tbody>
+        	<input type="text" value="메롱"/>
+        	<tr th:each="data : ${noticeList}">
+        		<td th:text="${data.class_notice_no}"></td>
+        		<td th:text="${data.class_id}"></td>
+        		<td th:text="${data.class_notice_type}"></td>
+        		<td th:text="${data.class_notice_title}"></td>
+        		<td th:text="${data.user_name}"></td>
+        		<td th:text="${data.class_notice_date}"></td>
+        	</tr>
+        </tbody>
+  <!-- 본문 end-->
+</table>
+ </div>
+ </div>
+ <script>
+ 	$('#noticeTable').DataTable({});
+ </script>
+</th:block>
+</html>
