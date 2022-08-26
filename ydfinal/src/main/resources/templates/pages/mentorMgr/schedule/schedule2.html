@@ -1,0 +1,79 @@
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml"
+	xmlns:v-bind="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/layout}">
+<th:block layout:fragment="content">
+	<!-- 상단 내비바 -->
+	<th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
+	<head>
+<link href='./css/calendar/main.css' rel='stylesheet' />
+<link href='./css/all.css' rel='stylesheet' />
+<script src='./js/calendar/main.js'></script>
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+<script>
+  $.ajax({
+			url: "/schedules",
+			type: "get",
+			dataType: "json",
+			success: function(data) {
+			fullCalendar(data);
+			}
+		});
+	
+
+
+function fullCalendar(data){
+	var calendarEl = document.getElementById('calendar');
+
+  var calendar = new FullCalendar.Calendar(calendarEl, {
+    headerToolbar: {
+      left: 'prev,next today',
+      center: 'title',
+      right: 'dayGridMonth'
+    },
+    initialDate: '2022-06-15',
+    selectable: true,
+    selectMirror: true,
+    select: function(arg) { // 등록 이벤트
+    	$("#calendar_insert_modal").modal("show");
+    
+  	  var start = arg.startStr;
+  	  $("#calendar_start_date").val(start);
+  
+    },
+    eventClick: function(info) { // 수정 이벤트
+  	  console.log(info);
+  	  calendarSelect(info.event._def.extendedProps.calendar_id);
+  	  calendarUpdate(info.event._def.extendedProps.calendar_id);
+  	  calendarDelete(info.event._def.extendedProps.calendar_id);
+  	  
+  	  $("#calendar_update_modal").modal("show");
+    },
+    dateClick: function(info) {
+  	    info.dayEl.style.backgroundColor = '#DAEAF1'; // 클릭 시 배경색 바꾸는 속성
+  	},
+    dayMaxEvents: true, // allow "more" link when too many events
+    events: function (info, successCallback) {
+			for(var i = 0; i < data.length; i++) {
+				data[i].section_id = data[i].section_id;
+				data[i].calendar_id = data[i].calendar_id;
+				data[i].title = data[i].calendar_title;
+				data[i].start = data[i].calendar_start_date;
+				data[i].end = data[i].calendar_end_date;	
+			}
+  	    successCallback(data);
+    } 
+  });
+  calendar.render();
+} 	
+
+  </script>
+<title>MyCalendar</title>
+	</head>
+	<body>
+		<h1>MyCalendar</h1>
+		<div id='calendar'></div>
+	</body>
+</th:block>
+</html>
