@@ -7,6 +7,7 @@ public class EnrolmentVO {
 	
 	
 	private String classId;
+	private String stuId;
 	private String userId;
 	private String classMemberId;
 

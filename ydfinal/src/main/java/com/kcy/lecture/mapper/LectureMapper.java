@@ -17,4 +17,6 @@ public interface LectureMapper {
 	public void LectureInsertClass(LectureVO vo);
 	
 	public List<OpenLectureVO> OpenLectureList(OpenLectureVO vo);
+	
+	public void OpenLectureUpdate(OpenLectureVO vo);
 }

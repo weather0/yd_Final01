@@ -5,7 +5,7 @@
       layout:decorate="~{layouts/layout}">
       
 <th:block layout:fragment="content">
-
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
   <!-- 상단 내비바 -->
   <th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
 
@@ -18,6 +18,7 @@
           <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
             <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
               <h6 class="text-white text-capitalize ps-3">수강신청</h6>
+              <input  th:value="${#authentication.principal.username}" type="hidden" id="userid">
             </div>
           </div>
           <div class="card-body px-0 pb-2">
@@ -26,23 +27,25 @@
                 <thead>
                   <tr>
                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" th:text="강좌코드"></th>
-                   <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" th:text="교과목코드"></th>
-                   <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" th:text="정원"></th>
-                   <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" th:text="개설년도"></th>
-                   <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" th:text="개설학기"></th>
-                   <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" th:text="강의계획서"></th>
-                   <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" ></th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" th:text="교수코드"></th>
+                   	<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" th:text="교과목코드"></th>
+                   	<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" th:text="정원"></th>
+                   	<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" th:text="개설년도"></th>
+                   	<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" th:text="개설학기"></th>
+                   	<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" th:text="강의계획서"></th>
+                   	<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" ></th>
                   </tr>
                 </thead>
                 <tbody>
-       				<tr th:each="data:${openList}">
+       				<tr th:each="data:${openList}" th:if="${data.classCk} == '0'">
        					<td th:text="${data.classId}"></td>
+       					<td th:text="${data.profId}"></td>
        					<td th:text="${data.courseId}"></td>
        					<td th:text="${data.classTo}"></td>
        					<td th:text="${data.classYear}"></td>
        					<td th:text="${data.classSem}"></td>
        					<td><a th:href="${'/download?classSyl='+data.classSyl}" th:text="${data.classSyl}"></a></td>
-       					<td> <button class="btn bg-gradient-primary" th:text="신청"></button> </td>
+       					<td><button class="btn bg-gradient-primary btn1" th:text="신청"  th:data-class_id="${data.classId}" ></button></td>
        				</tr>
                 </tbody>
               </table>
@@ -65,16 +68,28 @@
                 <thead>
                   <tr>
                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" th:text="강좌코드"></th>
-                   <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" th:text="교번"></th>
-                   <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" th:text="수강신청코드"></th>
-                   <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" ></th>
+                   	<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" th:text="전공"></th>
+                   	<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" th:text="교수이름"></th>
+					<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" th:text="교과명"></th>
+					<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" th:text="교과코드"></th>
+					<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" th:text="이수구분"></th>
+					<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" th:text="정원"></th>
+					<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" th:text="학점"></th>
+					<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" th:text="강의계획서"></th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr th:each="data:${enrolmentlist}">
-                   	 <td th:text="${data.classId}"></td>
-                   	 <td th:text="${data.userId}"></td>
-                   	 <td th:text="${data.classMemberId}"></td>
+                   	 <td th:text="${data.class_id}"></td>
+                   	 <td th:text="${data.major_name}"></td>
+                   	 <td th:text="${data.user_name}"></td>
+                   	 <td th:text="${data.course_title}"></td>
+                   	 <td th:text="${data.course_id}"></td>
+                   	 <td th:text="${data.course_type}"></td>
+                   	 <td th:text="${data.class_to}"></td>
+                   	 <td th:text="${data.course_credit}"></td>
+                   	 <td><a th:href="${'/download?classSyl='+data.class_syl}" th:text="${data.class_syl}"></a></td>
+                   	 <td><button class="btn bg-gradient-primary" th:text="삭제"></button> </td>
                   </tr>
                 </tbody>
               </table>
@@ -88,8 +103,33 @@
     <th:block th:replace="fragments/footer :: footerFragment"></th:block>
     
   </div>
+  
+    <script>
+
+    
+    	$(".btn1").on("click",insert);
+    	function insert(){
+    		let insert = $(this).data("class_id")
+        	console.log(insert)
+        	let id = $("#userid").val()
+        	console.log(id)
+        	
+        	 $.ajax({
+     		url:"http://localhost/openlectureinsert",
+    		type:"post",
+     		data:{
+     			classId : insert,
+     			userId: id
+     		},
+     		success:function(){
+     			location.reload();
+     		}
+    	});
+    	
+    	}
+    	
+
+    </script>
   <!-- 본문 end-->
-
-
 </th:block>
 </html>

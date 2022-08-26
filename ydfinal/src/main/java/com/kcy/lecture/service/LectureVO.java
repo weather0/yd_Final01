@@ -9,7 +9,7 @@ public class LectureVO {
 	
 	private String classId;
 	private String courseId;
-	private String userId;
+	private String profId;
 	private int classTo;
 	private int classYear;
 	private int classSem;
@@ -17,6 +17,7 @@ public class LectureVO {
 	private String classYn;
 	private String classTitle;
 	private MultipartFile classFileSyl;
+	
 	
 	// 하경
 	private String uuid;

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kcy.bill.mapper.BillsMapper">
+
+<select id="majorbList" resultType="com.kcy.bill.service.MajorbVO">
+	SELECT major_id, major_name FROM k_major
+</select>
+
+<insert id="billsInsert">
+INSERT INTO k_bills 
+( bill_id, bill_year, bill_sem, bill_amount, major_id)
+VALUES ( #{billId}, #{billYear}, #{billSem}, #{billAmount}, #{majorbId})
+</insert>
+</mapper>
+
