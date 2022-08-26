@@ -1,23 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kcy.users.mapper.UsersMapper">
-<!-- <select id="usersList" resultType="com.kcy.users.service.UsersVO"> -->
-<!-- select * from k_users -->
-<!-- where user_sex = #{userSex} -->
-<!-- </select> -->
 
-<select id="stuInfo" resultType="map">
+<select id="stuInfo" resultType="CustomMap">
+
   select u.user_id, u.user_name, 
-  s.student_grade, s.student_sem, SUBSTR(u.user_ssn,1,6) user_birth,
-  u.user_dept, if(u.user_sex = 'f','여','남') user_sex, 
-  s.student_aca_yn, u.user_nation,
-  s.student_regdate, u.user_phone, 
-  s.student_graddate, u.user_email,
-  c.credit_total
-  from k_users u join k_students s using(user_id) 
-           join k_credit c using(user_id) 
-  where u.user_id = #{param}
+         s.student_grade, s.student_sem, substr(u.user_ssn,1,6) user_birth,
+         u.user_dept, if(u.user_sex = 'f','여','남') user_sex, 
+         s.student_aca_yn, u.user_nation,
+         s.student_regdate, u.user_phone, 
+         s.student_graddate, u.user_email,
+         c.credit_total,
+         u.user_pic
+         
+    from k_users u 
+    join k_students s on (u.user_id = s.stu_id) 
+    join k_credit c using (stu_id) 
+    
+   where u.user_id = #{param} <!-- get방식으로 파라미터 id 하나만 들어가므로 임의로 적어도 됨(예:param) -->
 
 </select>
+
+
+<select id="stuAcaInfo" resultType="CustomMap">
+
+  select u.user_name, u.user_id,
+         u.user_dept, u.user_phone,
+         sa.aca_type, sa.aca_start, sa.aca_end, sa.aca_reason, 
+         sa.aca_yn, sa.aca_reject, sa.aca_date, sa.aca_file
+         
+    from k_users u 
+    join k_student_aca sa on (u.user_id = sa.stu_id)
+    
+   where u.user_id = #{param}
+
+</select>
+
+
+
+
 
 </mapper>
