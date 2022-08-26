@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">  
+
+<th:block layout:fragment="content">
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css"/>  
+  <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+  <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
+<style>
+.stdactive {
+	background-color : gray
+}
+</style> 
+    
+  <!-- 상단 내비바 -->
+  <th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
+
+  <!-- 본문 start -->
+  <div class="container-fluid py-4">
+  	<div class="row">
+	 <h1>지도교수 변경 신청</h1>
+	  	
+	 <form action="matchingChangeOrder" method="post" >
+	 	
+    	<div class="row">
+	      <div class="col-md-4">
+	    	<div class="input-group input-group-outline my-3">
+		      <label class="form-label">신청자</label>
+		      <input type="text" class="form-control" value="테스트중" readonly="readonly">		      
+	        </div>
+	      </div>    	
+	      <div class="col-md-4">
+	    	<div class="input-group input-group-outline my-3">
+		      <label class="form-label">학번</label>
+		      <input type="text" class="form-control" name="stuId" id="stuId">
+	        </div>
+	      </div>
+	      <div class="col-md-4">
+	    	<div class="input-group input-group-outline my-3">
+		      <label class="form-label">현재 지도교수</label>
+		      <input type="text" class="form-control" name="profId" id="profId">
+	        </div>
+	      </div>
+    	</div>
+    	
+    	<div class="input-group input-group-outline my-3">
+<!-- 	      <label class="form-label">지도교수 변경사유</label> -->
+	      <textarea class="form-control" name="matchingChangeReason" id="matchingChangeReason" placeholder="지도교수 변경사유를 입력해주세요"></textarea>
+    	</div>
+    	
+    	<div class="input-group input-group-outline my-3">
+<!-- 	      <label class="form-label">지도교수 지정</label> -->
+	      <input type="text" class="form-control" name="matchingWant" id="matchingWant" placeholder="변경을 원하는 지도교수를 입력해주세요. 미입력시 무작위로 선별됩니다">
+    	</div>	
+	  	
+	  	<button class="btn bg-gradient-primary">변경 신청</button>
+	  	
+	 </form>
+  	</div>
+  	<div id="profList" class="text-center">
+   <h3>매칭 가능한 교수 목록</h3>
+	  <table class="table table-striped" id="matchingProf">
+		<thead>
+			<tr>
+				<th>교번</th>
+				<th>이름</th>
+				<th>전공</th>
+				<th>연구실</th>
+				<th>담당 가능 학생 수</th>
+			</tr>
+		</thead>
+		<tbody>	
+			<tr th:each="Prof:${matchingProf}">
+				<td th:text="${Prof.profId}"></td>
+				<td th:text="${Prof.userName}"></td>
+				<td th:text="${Prof.userDept}"></td>
+				<td th:text="${Prof.profLab}"></td>
+				<td th:text="${Prof.mentee}"></td>				
+			</tr>
+		</tbody>
+	   </table>
+   	</div>   
+  </div> 
+   
+   <script>
+   	$("#matchingProf").DataTable({ });
+   	</script>
+  <!-- 본문 end-->
+</th:block>	
+</html>

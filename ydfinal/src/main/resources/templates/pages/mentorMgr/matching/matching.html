@@ -34,14 +34,14 @@
 	</thead>
 	<tbody>	
 		<tr th:each="std:${matchingStd}">
-			<td th:text="${std.userId}"></td>
+			<td th:text="${std.stuId}"></td>
 			<td th:text="${std.userName}"></td>
 			<td th:text="${std.userDept}"></td>
 			<td th:text="${std.studentGrade}"></td>
 			<td th:text="${std.userPhone}"></td>
 			<td th:text="${std.studentAcaYn}"></td>
 			<td>
-				<span th:if="${std.studentProf.toString().equals('none')}">
+				<span th:if="${std.studentProf == null}">
 				<button class="btn btn-primary" onclick="onDisplay()">선택</button>
 				</span>
 			</td>		
@@ -65,7 +65,7 @@
 		</thead>
 		<tbody>	
 			<tr th:each="Prof:${matchingProf}">
-				<td th:text="${Prof.userId}"></td>
+				<td th:text="${Prof.profId}"></td>
 				<td th:text="${Prof.userName}"></td>
 				<td th:text="${Prof.userDept}"></td>
 				<td th:text="${Prof.profLab}"></td>
@@ -94,6 +94,8 @@
    	$(".prof").on("click", function () {
    		var matchingP = ($(this).closest("tr").find("td:first").text())
    		var matchingS = ($(".stdactive").find("td:first").text())
+   		console.log(matchingP)
+   		console.log(matchingS)
    		$.ajax({
    			type: "post",
    			url: "/matching",
