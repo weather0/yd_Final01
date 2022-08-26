@@ -5,8 +5,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.kcy.matching.service.MatchingChangeVO;
 import com.kcy.matching.service.MatchingService;
 import com.kcy.matching.service.MatchingVO;
 
@@ -44,5 +46,21 @@ public class MatchingController {
 		return "1";
 	}
 	
-
+	@RequestMapping("/matchingChange")
+	public String matchingChangePage(MatchingChangeVO vo, Model model) {
+		model.addAttribute("matchingProf", service.matchingProfList(null));
+		return "pages/mentorMgr/matching/matchingChange";
+	}
+	
+	@RequestMapping(value = "/matchingChangeOrder", method = RequestMethod.POST)
+	public String matchingChangeOrder(MatchingChangeVO vo) {
+		service.matchingChangeOrder(vo);
+		return "pages/mentorMgr/matching/matchingChangeList";
+	}
+	
+	@RequestMapping("/matchingChangeList")
+	public String matchingChangeList(Model model) {
+		model.addAttribute("matchingChange", service.matchingChangeList(null));
+		return "pages/mentorMgr/matching/matchingChangeList";
+	}
 }

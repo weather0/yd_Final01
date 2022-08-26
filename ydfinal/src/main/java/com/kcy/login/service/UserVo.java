@@ -17,7 +17,15 @@ public class UserVo implements UserDetails {
 	private String userPw;
 	private String userEmail;
 	private String userName;
+	private String userSsn;
+	private String userSex;
+	private String userDept;
+	private String userAddr;
+	private String userPhone;
+	private String userNation;
 	
+	// join
+	private String classId;
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {

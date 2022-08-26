@@ -9,6 +9,8 @@ import com.kcy.matching.mapper.MatchingMapper;
 import com.kcy.matching.service.MatchingService;
 import com.kcy.matching.service.MatchingStdVO;
 import com.kcy.matching.service.MatchingVO;
+import com.kcy.matching.service.MatchingChangeListVO;
+import com.kcy.matching.service.MatchingChangeVO;
 import com.kcy.matching.service.MatchingListVO;
 import com.kcy.matching.service.MatchingProfVO;
 
@@ -41,6 +43,16 @@ public class MatchingServiceImpl implements MatchingService {
 	public void matchingStd(MatchingVO vo) {
 		mapper.matchingStd(vo);
 		
+	}
+
+	@Override
+	public void matchingChangeOrder(MatchingChangeVO vo) {		
+		mapper.matchingChangeOrder(vo);
+	}
+
+	@Override
+	public List<MatchingProfVO> matchingChangeList(MatchingChangeListVO vo) {		
+		return mapper.matchingChangeList(vo);
 	}
 
 }

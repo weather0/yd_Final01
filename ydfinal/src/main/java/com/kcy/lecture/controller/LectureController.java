@@ -6,8 +6,11 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.security.Principal;
 import java.util.List;
 import java.util.UUID;
+
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +22,8 @@ import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,8 +36,10 @@ import com.kcy.file.test.FileDto;
 import com.kcy.lecture.mapper.CourseMapper;
 import com.kcy.lecture.service.CourseVO;
 import com.kcy.lecture.service.EnrolmentService;
+import com.kcy.lecture.service.EnrolmentVO;
 import com.kcy.lecture.service.LectureService;
 import com.kcy.lecture.service.LectureVO;
+import com.kcy.lecture.service.OpenLectureVO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -45,7 +52,6 @@ public class LectureController {
 	CourseMapper mapper;
 	private final LectureService LectureService;
 	private final EnrolmentService EnrolmentService;
-	
 	@Value("${spring.servlet.multipart.location}")
 	String filePath;
 	
@@ -123,12 +129,21 @@ public class LectureController {
 
 	
 	@GetMapping("/openlecturelist")
-	public String OpenletureList(Model model) {
+	public String OpenletureList(Model model, Principal principal) {
+		System.out.println(principal.getName());
+		EnrolmentVO vo = new EnrolmentVO();
+		vo.setUserId(principal.getName());
 		model.addAttribute("openList",LectureService.OpenLectureList(null));
-		model.addAttribute("enrolmentlist", EnrolmentService.EnrolmentList(null));
+		model.addAttribute("enrolmentlist", EnrolmentService.EnrolmentList(vo));
 		return "pages/classMgr/OpenLectureList";
 	}
 	
+	@PostMapping("/openlectureinsert")
+	public String OpenlectureInsert(EnrolmentVO vo, OpenLectureVO vo1) {
+		LectureService.OpenLectureUpdate(vo1);
+		EnrolmentService.EnrolmentInsert(vo);
+		return "redirect:openlecturelist";
+	}
 	
 	
 }

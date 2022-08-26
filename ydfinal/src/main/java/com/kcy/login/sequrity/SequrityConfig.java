@@ -28,14 +28,16 @@ public class SequrityConfig extends WebSecurityConfigurerAdapter  {
 	//		.antMatchers("/userMgr/prof").access("hasRole('ROLE_PROF')")
 	//		.antMatchers("/userMgr/stu").access("hasRole('ROLE_STU')")
 	//		.antMatchers("/admin").hasAuthority("admin")
-	//		.anyRequest()
-	//		.authenticated()
+			//.anyRequest()
+			//.authenticated()
 			.and()
 		.formLogin()
 			.loginPage("/login")
 			.loginProcessingUrl("/login_proc")
 			.defaultSuccessUrl("/")
 			.failureUrl("/denied")
+			.usernameParameter("username")
+			.passwordParameter("password")
 			.and()
 		.csrf().disable()
 		.logout()
@@ -52,7 +54,7 @@ public class SequrityConfig extends WebSecurityConfigurerAdapter  {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.
         	userDetailsService(userServiceImpl).
-        	passwordEncoder(new BCryptPasswordEncoder());
+        	passwordEncoder(passwordEncoder());
     }
     
     @Bean
