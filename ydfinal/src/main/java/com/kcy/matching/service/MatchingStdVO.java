@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class MatchingStdVO {
-	private String userId;
+	private String stuId;
 	private String userName;
 	private String studentAcaYn;
 	private String userDept;

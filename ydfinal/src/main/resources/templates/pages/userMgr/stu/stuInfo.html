@@ -1,5 +1,8 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/layout}">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:th="http://www.thymeleaf.org" 
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+      layout:decorate="~{layouts/layout}">
 
 <th:block layout:fragment="content">
 
@@ -8,11 +11,14 @@
 
   <!-- 본문 start -->
   <div class="container-fluid py-4">
+  
+  <th:block th:replace="pages/userMgr/stu/stuNavbar :: stuNavbarFragment"></th:block>
+            
     <div class="row">
     
       <div class="col-md-3 mb-4">
         <div class="card">
-          <img src="aa/userImg/01174314.jpg" class="img-fluid border-radius-lg shadow" alt="01174314.jpg">
+          <img th:src="@{ '../aa/userImg/'+ ${myInfo.userPic} }" class="img-fluid border-radius-lg shadow" th:alt="${myInfo.userPic}">
         
         </div>
       </div>
@@ -21,47 +27,47 @@
       <div class="col-md-9 mb-4">
         <div class="card">
 
-          <div class="table-responsive">
+          <div class="table-responsive border-radius-lg">
             <table class="table align-items-center text-center mb-0" style="height: 60vh">
              <tr>
                 <td class="table-secondary">학번</td>
-                <td>[[${myInfo.user_id}]]</td> <!-- 값호출방법1: 대괄호 두개 -->
+                <td>[[${myInfo.userId}]]</td> <!-- 값호출방법1: 대괄호 두개 -->
                 <td class="table-secondary">성명</td>
-                <td th:text="${myInfo.user_name}"></td> <!-- 방법2: 태그속성 th:text -->
+                <td th:text="${myInfo.userName}"></td> <!-- 방법2: 태그속성 th:text -->
               </tr>
               <tr>
                 <td class="table-secondary">학년/학차</td>
-                <td>[[${myInfo.student_grade}]]학년/[[${myInfo.student_sem}]]학기</td>
+                <td>[[${myInfo.studentGrade}]]학년/[[${myInfo.studentSem}]]학기</td>
                 <td class="table-secondary">생년월일</td>
-                <td>[[${myInfo.user_birth}]]</td>
+                <td>[[${myInfo.userBirth}]]</td>
               </tr>
               <tr>
                 <td class="table-secondary">전공</td>
-                <td>[[${myInfo.user_dept}]]</td>
+                <td>[[${myInfo.userDept}]]</td>
                 <td class="table-secondary">성별</td>
-                <td>[[${myInfo.user_sex}]]</td>
+                <td>[[${myInfo.userSex}]]</td>
               </tr>
               <tr>
                 <td class="table-secondary">학적상태</td>
-                <td>[[${myInfo.student_aca_yn}]]</td>
+                <td>[[${myInfo.studentAcaYn}]]</td>
                 <td class="table-secondary">국적</td>
-                <td>[[${myInfo.user_nation}]]</td>
+                <td>[[${myInfo.userNation}]]</td>
               </tr>
               <tr>
                 <td class="table-secondary">입학일</td>
-                <td>[[${myInfo.student_regdate}]]</td>
+                <td>[[${myInfo.studentRegdate}]]</td>
                 <td class="table-secondary">연락처</td>
-                <td>[[${myInfo.user_phone}]]</td>
+                <td>[[${myInfo.userPhone}]]</td>
               </tr>
               <tr>
                 <td class="table-secondary">졸업일</td>
-                <td>[[${myInfo.student_graddate}]]</td>
+                <td>[[${myInfo.studentGraddate}]]</td>
                 <td class="table-secondary">이메일</td>
-                <td>[[${myInfo.user_email}]]</td>
+                <td>[[${myInfo.userEmail}]]</td>
               </tr>
               <tr>
                 <td class="table-secondary">학점<sub>(이수/졸업)</sub></td>
-                <td>[[${myInfo.credit_total}]]</td>
+                <td>[[${myInfo.creditTotal}]]</td>
                 <td class="table-secondary">최종성적</td>
                 <td>..</td>
               </tr>

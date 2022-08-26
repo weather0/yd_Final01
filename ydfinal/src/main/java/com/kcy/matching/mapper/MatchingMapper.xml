@@ -12,13 +12,13 @@
 		   m.matching_date
 	FROM k_matching AS m 
 	JOIN k_users AS u 
-	ON u.user_id = m.user_id 
+	ON u.user_id = m.prof_id  
 	JOIN k_users AS ku 
-	ON ku.user_id = m.student_id   
+	ON ku.user_id = m.stu_id   
   </select>
 
 <select id="matchingStdList" resultType="com.kcy.matching.service.MatchingStdVO">
-	SELECT s.user_id, 
+	SELECT s.stu_id, 
 	   u.user_name,
 	   s.student_aca_yn,
 	   u.user_dept,
@@ -27,34 +27,60 @@
 	   s.student_prof 
 	FROM k_users AS u 
 	JOIN k_students AS s
-	ON u.user_id = s.user_id  
-	WHERE user_type = 'ROLE_STU' AND s.student_prof = 'none'
+	ON u.user_id = s.stu_id  
+	WHERE user_type = 'ROLE_STU' AND s.student_prof IS NULL
 </select>
 
 <select id="matchingProfList" resultType="com.kcy.matching.service.MatchingProfVO">
-	SELECT DISTINCT p.user_id, 
-				    u.user_name, 
-				    u.user_dept, 
-				    p.prof_lab, 
-				    p.prof_mentee - count(m.user_id) AS mentee
+	SELECT DISTINCT p.prof_id, 
+					u.user_name, 
+					u.user_dept, 
+					p.prof_lab, 
+					p.prof_mentee - count(s.stu_id) AS mentee
 	FROM k_professors p 
-	JOIN k_matching m
-	ON p.user_id = m.user_id
 	JOIN k_users u
-	ON p.user_id = u.user_id
-	GROUP BY user_id
+	ON p.prof_id = u.user_id
+	JOIN k_students s
+	ON p.prof_id = s.student_prof 
+	GROUP BY prof_id
 	<![CDATA[HAVING mentee < 10]]>
 </select>
 
 <insert id="matching" parameterType="com.kcy.matching.service.MatchingVO">		
 		INSERT INTO k_matching 
-		( user_id, matching_date, matching_type, matching_id, student_id ) 
-		VALUES (#{userId}, NOW(), '매칭변경', 'M0006', #{studentId})
+		( prof_id, matching_date, matching_type, matching_id, stu_id ) 
+		VALUES (#{userId}, NOW(), '매칭중', nextval(matchigId_seq), #{studentId})
 </insert>
 
 <update id="matchingStd" parameterType="com.kcy.matching.service.MatchingVO">		
 		UPDATE k_students SET student_prof = #{userId}
-		WHERE user_id = #{studentId}
+		WHERE stu_id = #{studentId}
 </update>
+
+<insert id="matchingChangeOrder" parameterType="com.kcy.matching.service.MatchingChangeVO">
+		INSERT INTO k_matching_change
+		( stu_id, matching_change_yn, matching_change_date, prof_id, matching_change_reason, matching_want )
+		VALUES ( #{stuId}, '검토중', NOW(), #{profId}, #{matchingChangeReason}, #{matchingWant} )
+</insert>
+
+<select id="matchingChangeList" resultType="com.kcy.matching.service.MatchingChangeListVO">
+		SELECT c.stu_id, 
+		       u.user_name, 
+		       u.user_dept, 
+		       s.student_grade, 
+		       s.student_aca_yn, 
+		       ku.user_name AS prof, 
+		       c.matching_change_reason, 
+		       ku2.user_name AS wantprof
+		FROM k_matching_change c
+		JOIN k_users u
+		ON c.stu_id = u.user_id 
+		JOIN k_students s 
+		ON c.stu_id = s.stu_id 
+		JOIN k_users ku
+		ON ku.user_id = c.matching_want 
+		JOIN k_users ku2 
+		ON ku2.user_id = s.student_prof 
+</select>
 
 </mapper>

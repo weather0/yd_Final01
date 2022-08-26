@@ -22,12 +22,5 @@ public class LayoutController {
 		return "home";
 	}
 
-	@RequestMapping("/studentChangeApply")
-	public String studentChangeApply(Model model) {
-//        model.addAttribute("active","click_studentInfo");
-		return "pages/userMgr/studentChangeApply";
-	}
-
-
 
 }
