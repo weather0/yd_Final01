@@ -8,7 +8,7 @@
 			values(
 				   #{classId},
 				   #{courseId},
-				   #{userId},
+				   #{profId},
 				   #{classTo},
 				   #{classYear},
 				   #{classSem},
@@ -33,8 +33,8 @@
 		</update>
 		
 		<insert id="LectureInsertClass">
-			insert into k_class(class_id, course_id, user_id, class_to, class_year, class_sem, class_syl)
-			select class_id, course_id, user_id, class_to, class_year, class_sem, class_syl
+			insert into k_class(class_id, course_id, prof_id, class_to, class_year, class_sem, class_syl)
+			select class_id, course_id, prof_id, class_to, class_year, class_sem, class_syl
 			from k_class_reg
 			where class_id = #{classId}
 	
@@ -44,5 +44,12 @@
 			select * from k_class
 			
 		</select>
+		
+		<update id="OpenLectureUpdate" parameterType="com.kcy.lecture.service.OpenLectureVO">
+		
+				UPDATE k_class SET class_ck = '1'
+				WHERE class_id = #{classId}
+		
+		</update>
 	
 </mapper>
