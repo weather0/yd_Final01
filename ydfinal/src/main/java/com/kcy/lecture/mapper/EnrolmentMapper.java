@@ -11,6 +11,8 @@ public interface EnrolmentMapper  {
 	
 	public void EnrolmentInsert(EnrolmentVO vo);
 	
+	public void EnrolmentDelete(EnrolmentVO vo);
+	
 	
 
 }

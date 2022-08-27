@@ -18,5 +18,4 @@ public interface LectureMapper {
 	
 	public List<OpenLectureVO> OpenLectureList(OpenLectureVO vo);
 	
-	public void OpenLectureUpdate(OpenLectureVO vo);
 }

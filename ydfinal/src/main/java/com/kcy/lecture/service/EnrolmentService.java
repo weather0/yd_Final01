@@ -11,5 +11,7 @@ public interface EnrolmentService {
 
 	void EnrolmentInsert(EnrolmentVO vo);
 	
+	public void EnrolmentDelete(EnrolmentVO vo);
+	
 
 }

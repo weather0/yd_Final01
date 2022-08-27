@@ -26,9 +26,11 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -132,18 +134,24 @@ public class LectureController {
 	public String OpenletureList(Model model, Principal principal) {
 		System.out.println(principal.getName());
 		EnrolmentVO vo = new EnrolmentVO();
+		OpenLectureVO vo1 = new OpenLectureVO();
 		vo.setUserId(principal.getName());
-		model.addAttribute("openList",LectureService.OpenLectureList(null));
+		vo1.setUserId(principal.getName());
+		model.addAttribute("openList",LectureService.OpenLectureList(vo1));
 		model.addAttribute("enrolmentlist", EnrolmentService.EnrolmentList(vo));
 		return "pages/classMgr/OpenLectureList";
 	}
 	
 	@PostMapping("/openlectureinsert")
-	public String OpenlectureInsert(EnrolmentVO vo, OpenLectureVO vo1) {
-		LectureService.OpenLectureUpdate(vo1);
+	public String OpenlectureInsert(EnrolmentVO vo) {
 		EnrolmentService.EnrolmentInsert(vo);
 		return "redirect:openlecturelist";
 	}
 	
+	@RequestMapping("/enrolmentdelete")
+	public String openlectureDelete(EnrolmentVO vo) {
+		EnrolmentService.EnrolmentDelete(vo);
+		return "redirect:openlecturelist";
+	}
 	
 }

@@ -37,7 +37,8 @@
                   </tr>
                 </thead>
                 <tbody>
-       				<tr th:each="data:${openList}" th:if="${data.classCk} == '0'">
+                
+       				<tr th:each="data:${openList}">
        					<td th:text="${data.classId}"></td>
        					<td th:text="${data.profId}"></td>
        					<td th:text="${data.courseId}"></td>
@@ -89,7 +90,7 @@
                    	 <td th:text="${data.class_to}"></td>
                    	 <td th:text="${data.course_credit}"></td>
                    	 <td><a th:href="${'/download?classSyl='+data.class_syl}" th:text="${data.class_syl}"></a></td>
-                   	 <td><button class="btn bg-gradient-primary" th:text="삭제"></button> </td>
+                   	 <td><button class="btn bg-gradient-primary enbtn" th:text="삭제" th:data-en_class_id="${data.class_id}" ></button> </td>
                   </tr>
                 </tbody>
               </table>
@@ -110,10 +111,7 @@
     	$(".btn1").on("click",insert);
     	function insert(){
     		let insert = $(this).data("class_id")
-        	console.log(insert)
         	let id = $("#userid").val()
-        	console.log(id)
-        	
         	 $.ajax({
      		url:"http://localhost/openlectureinsert",
     		type:"post",
@@ -128,6 +126,19 @@
     	
     	}
     	
+    	$(".enbtn").on("click", Endelete);
+    	function Endelete(){
+    		let deletes = $(this).data("en_class_id")
+    		$.ajax({
+    			url:"http://localhost/enrolmentdelete",
+    			data:{
+    				classId : deletes
+    			},
+    			success:function(){
+         			location.reload();
+         		}
+    		})
+    	}
 
     </script>
   <!-- 본문 end-->

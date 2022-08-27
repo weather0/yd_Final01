@@ -37,19 +37,14 @@
 			select class_id, course_id, prof_id, class_to, class_year, class_sem, class_syl
 			from k_class_reg
 			where class_id = #{classId}
-	
 		</insert>
 		
 		<select id="OpenLectureList" resultType="com.kcy.lecture.service.OpenLectureVO">
-			select * from k_class
+		
+			SELECT * from k_class where class_id not in   (SELECT class_id  from k_class_member where stu_id =#{userId}); 
 			
 		</select>
 		
-		<update id="OpenLectureUpdate" parameterType="com.kcy.lecture.service.OpenLectureVO">
-		
-				UPDATE k_class SET class_ck = '1'
-				WHERE class_id = #{classId}
-		
-		</update>
+
 	
 </mapper>

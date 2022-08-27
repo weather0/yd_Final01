@@ -30,6 +30,12 @@ public class EnrolmentServiceImpl implements EnrolmentService {
 		mapper.EnrolmentInsert(vo);
 	}
 
+	@Override
+	public void EnrolmentDelete(EnrolmentVO vo) {
+
+		mapper.EnrolmentDelete(vo);
+	}
+
 
 
 	

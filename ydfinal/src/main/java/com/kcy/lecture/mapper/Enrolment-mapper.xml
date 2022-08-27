@@ -24,4 +24,8 @@
 </insert>
 
 
+		<delete id="EnrolmentDelete" parameterType="com.kcy.lecture.service.EnrolmentVO">
+			DELETE FROM k_class_member WHERE class_id = #{classId};
+		</delete>
+
 </mapper>
