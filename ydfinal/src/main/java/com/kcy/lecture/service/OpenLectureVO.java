@@ -13,5 +13,5 @@ public class OpenLectureVO {
 	private int classYear;
 	private int classSem;
 	private String classSyl;
-	private String classCk;
+	private int classCk;
 }

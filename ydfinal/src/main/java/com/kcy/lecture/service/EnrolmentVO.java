@@ -10,5 +10,6 @@ public class EnrolmentVO {
 	private String stuId;
 	private String userId;
 	private String classMemberId;
+	private int classCk;
 
 }

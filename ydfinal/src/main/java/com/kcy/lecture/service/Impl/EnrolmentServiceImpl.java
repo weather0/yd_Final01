@@ -18,6 +18,7 @@ public class EnrolmentServiceImpl implements EnrolmentService {
 	
 	@Autowired EnrolmentMapper mapper;
 	@Autowired LectureMapper LectureMapper;
+	
 
 	@Override
 	public List<Map<String, String>> EnrolmentList(EnrolmentVO vo) {
@@ -26,15 +27,26 @@ public class EnrolmentServiceImpl implements EnrolmentService {
 
 	@Override
 	public void EnrolmentInsert(EnrolmentVO vo) {
-	
+		mapper.TotalPlusUpdate(vo);
 		mapper.EnrolmentInsert(vo);
 	}
 
 	@Override
 	public void EnrolmentDelete(EnrolmentVO vo) {
-
+		mapper.TotalMinusUpdate(vo);
 		mapper.EnrolmentDelete(vo);
 	}
+
+	@Override
+	public void TotalPlusUpdate(EnrolmentVO vo) {
+		
+	}
+
+	@Override
+	public void TotalMinusUpdate(EnrolmentVO vo) {
+		
+	}
+
 
 
 

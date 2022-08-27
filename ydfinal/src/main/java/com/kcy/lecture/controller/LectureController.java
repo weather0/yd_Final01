@@ -144,12 +144,14 @@ public class LectureController {
 	
 	@PostMapping("/openlectureinsert")
 	public String OpenlectureInsert(EnrolmentVO vo) {
+		EnrolmentService.TotalPlusUpdate(vo);
 		EnrolmentService.EnrolmentInsert(vo);
 		return "redirect:openlecturelist";
 	}
 	
 	@RequestMapping("/enrolmentdelete")
 	public String openlectureDelete(EnrolmentVO vo) {
+		EnrolmentService.TotalMinusUpdate(vo);
 		EnrolmentService.EnrolmentDelete(vo);
 		return "redirect:openlecturelist";
 	}

@@ -27,5 +27,18 @@
 		<delete id="EnrolmentDelete" parameterType="com.kcy.lecture.service.EnrolmentVO">
 			DELETE FROM k_class_member WHERE class_id = #{classId};
 		</delete>
+		
+		
+		<update id="TotalPlusUpdate" parameterType="com.kcy.lecture.service.EnrolmentVO">
+	 		
+	 			UPDATE k_class set class_ck = class_ck + 1 WHERE class_id = #{classId};
+	 			
+	    </update>
+	    
+	    
+	    <update id="TotalMinusUpdate" parameterType="com.kcy.lecture.service.EnrolmentVO">
+	    
+	    	UPDATE k_class set class_ck = class_ck - 1 WHERE class_id = #{classId};
+	    </update>
 
 </mapper>
