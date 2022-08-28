@@ -17,5 +17,7 @@ public interface EnrolmentMapper  {
 	public void TotalPlusUpdate(EnrolmentVO vo);
 	
 	public void TotalMinusUpdate(EnrolmentVO vo);
+	
+	public List<Map<String,String>> creitCheck(EnrolmentVO vo);
 
 }

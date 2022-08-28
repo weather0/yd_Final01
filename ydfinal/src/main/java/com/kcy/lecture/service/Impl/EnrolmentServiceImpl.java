@@ -47,6 +47,12 @@ public class EnrolmentServiceImpl implements EnrolmentService {
 		
 	}
 
+	@Override
+	public List<Map<String, String>> creitCheck(EnrolmentVO vo) {
+		
+		return mapper.creitCheck(vo);
+	}
+
 
 
 

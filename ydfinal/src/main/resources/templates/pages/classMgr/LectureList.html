@@ -18,9 +18,9 @@
  <table id="letureTable" class="table table-striped" style="width:100%;" >
         <thead>
             <tr>
-            	<th>강좌 번호</th>
             	<th>제목</th>
-                <th>교과목</th>
+            	<th>강좌 번호</th>
+                <th>교과목코드</th>
                 <th>교번</th>
                 <th>정원</th>
                 <th>개설연도</th>
@@ -32,8 +32,8 @@
         <tbody>
         
         	<tr th:each="data : ${ltrList}" th:if="${data.classYn} == 'n'">
-        		<td th:text="${data.classId}"></td>
         		<td th:text="${data.classTitle}"></td>
+        		<td th:text="${data.classId}"></td>
         		<td th:text="${data.courseId}"></td>
         		<td th:text="${data.profId}"></td>
         		<td th:text="${data.classTo}"></td>

@@ -16,7 +16,7 @@
 
 <insert id="EnrolmentInsert">
 			insert into k_class_member(class_id,stu_id,class_member_id)
-			select class_id,#{userId},NEXTVAL(class_member_seq)
+			select class_id,#{userId},CONCAT('CMI',NEXTVAL(class_member_seq))
 			from k_class
 			where class_id = #{classId};
 	
@@ -40,5 +40,14 @@
 	    
 	    	UPDATE k_class set class_ck = class_ck - 1 WHERE class_id = #{classId};
 	    </update>
+	    
+	    
+	    <select id="creitCheck" resultType="map">
+	    	select nvl(sum(i.course_credit),0) as courseCredit
+			from k_class as c join k_course as i on i.course_id  = c.course_id
+			JOIN k_class_member as m on c.class_id  = m.class_id 
+			WHERE m.stu_id = #{userId};
+	    
+	    </select>
 
 </mapper>
