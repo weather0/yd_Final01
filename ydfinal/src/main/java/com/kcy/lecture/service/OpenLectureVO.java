@@ -11,7 +11,13 @@ public class OpenLectureVO {
 	private String userId;
 	private int classTo;
 	private int classYear;
-	private int classSem;
+	private String classSem;
 	private String classSyl;
 	private int classCk;
+	private String majorName;
+	private String userName;
+	private String courseType;
+	private double courseCredit;
+	private String courseTitle;
+	
 }

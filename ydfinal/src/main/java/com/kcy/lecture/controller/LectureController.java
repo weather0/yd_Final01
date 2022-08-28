@@ -131,14 +131,13 @@ public class LectureController {
 
 	
 	@GetMapping("/openlecturelist")
-	public String OpenletureList(Model model, Principal principal) {
-		System.out.println(principal.getName());
-		EnrolmentVO vo = new EnrolmentVO();
-		OpenLectureVO vo1 = new OpenLectureVO();
+	public String OpenletureList(Model model, Principal principal,EnrolmentVO vo,OpenLectureVO vo1 ) {
 		vo.setUserId(principal.getName());
 		vo1.setUserId(principal.getName());
+		
 		model.addAttribute("openList",LectureService.OpenLectureList(vo1));
 		model.addAttribute("enrolmentlist", EnrolmentService.EnrolmentList(vo));
+		model.addAttribute("credit",EnrolmentService.creitCheck(vo));
 		return "pages/classMgr/OpenLectureList";
 	}
 	
@@ -156,4 +155,5 @@ public class LectureController {
 		return "redirect:openlecturelist";
 	}
 	
+
 }

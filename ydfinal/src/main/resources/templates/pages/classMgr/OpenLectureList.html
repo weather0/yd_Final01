@@ -27,12 +27,14 @@
                 <thead>
                   <tr>
                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" th:text="강좌코드"></th>
-                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" th:text="교수코드"></th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" th:text="전공"></th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" th:text="교수"></th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" th:text="교과목"></th>
                    	<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" th:text="교과목코드"></th>
-                   	<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" th:text="정원"></th>
-                   	<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" th:text="현재신청인원"></th>
-                   	<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" th:text="개설년도"></th>
-                   	<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" th:text="개설학기"></th>
+                   	<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" th:text="이수전공"></th>
+                   	<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" th:text="학점"></th>
+                   	<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" th:text="학기"></th>
+                   	<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" th:text="|현재신청인원/정원|"></th>
                    	<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" th:text="강의계획서"></th>
                    	<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" ></th>
                   </tr>
@@ -41,19 +43,36 @@
                 
        				<tr th:each="data:${openList}">
        					<td th:text="${data.classId}"></td>
-       					<td th:text="${data.profId}"></td>
+       					<td th:text="${data.majorName}"></td>
+       					<td th:text="${data.userName}"></td>
+       					<td th:text="${data.courseTitle}"></td>
        					<td th:text="${data.courseId}"></td>
-       					<td th:text="${data.classTo}"></td>
-       					<td th:text="${data.classCk}"></td>
-       					<td th:text="${data.classYear}"></td>
+       					<td th:text="${data.courseType}"></td>
+       					<td th:text="${data.courseCredit}"></td>
        					<td th:text="${data.classSem}"></td>
+       					<td th:text=|${data.classCk}/${data.classTo}|></td>
        					<td><a th:href="${'/download?classSyl='+data.classSyl}" th:text="${data.classSyl}"></a></td>
-       					<th:block th:if="${data.classCk} < ${data.classTo}" >
-       					<td><button class="btn bg-gradient-primary btn1" th:text="신청"  th:data-class_id="${data.classId}"></button></td>
+       					
+       					<th:block th:each="credit:${credit}">
+       					
+	       					<th:block th:if="${credit.courseCredit} + ${data.courseCredit} <= 21">
+	       					
+		       					<th:block th:if="${data.classCk} < ${data.classTo}" >
+		       						<td><button class="btn bg-gradient-primary btn1" th:text="신청"  th:data-class_id="${data.classId}"></button></td>
+		       					</th:block>
+		       					
+		       					<th:block th:if="${data.classCk} >= ${data.classTo}" >
+		       						 <td><button class="btn bg-gradient-primary btn1" th:text="인원완료" disabled='disabled' th:data-class_id="${data.classId}"></button></td>
+		       					</th:block>
+	       					</th:block>
+		       					
+		       					<th:block th:if="${credit.courseCredit} + ${data.courseCredit} > 21">
+		       						<td><button class="btn bg-gradient-primary btn2" th:text="신청"></button></td>
+		       					</th:block>
+	       					
+       					
        					</th:block>
-       					<th:block th:if="${data.classCk} >= ${data.classTo}" >
-       					 <td><button class="btn bg-gradient-primary btn1" th:text="인원완료" disabled='disabled' th:data-class_id="${data.classId}"></button></td>
-       					</th:block>
+       					
        				</tr>
                 </tbody>
               </table>
@@ -145,6 +164,12 @@
          			location.reload();
          		}
     		})
+    	}
+    	
+    	$(".btn2").on("click",CreditCk);
+    	
+    	function CreditCk(){
+    		alert("21학점을 초과하였습니다")
     	}
 
     </script>
