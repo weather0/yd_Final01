@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.kcy.users.mapper.UsersMapper;
+import com.kcy.users.service.UsersService;
 
 /*
  * 작성자: 곽주엽
@@ -18,18 +19,24 @@ import com.kcy.users.mapper.UsersMapper;
 @Controller
 public class UsersController {
     @Autowired
-    UsersMapper mapper;
+    UsersService service;
 
     @RequestMapping("/stuInfo/{id}")
     public String stuInfo(Model model, @PathVariable String id) {
-        model.addAttribute("myInfo", mapper.stuInfo(id));
+        model.addAttribute("myInfo", service.stuInfo(id));
         return "pages/userMgr/stu/stuInfo";
     }
 
     @RequestMapping("/stuAcaInfo/{id}")
     public String stuAcaInfo(Model model, @PathVariable String id) {
-        model.addAttribute("myAcaInfo", mapper.stuAcaInfo(id));
+        model.addAttribute("myAcaInfos", service.stuAcaInfo(id));
         return "pages/userMgr/stu/stuAcaInfo";
+    }
+    
+    @RequestMapping("/stuAcaInsert/{id}")
+    public String stuAcaInsert(Model model, @PathVariable String id) {
+        model.addAttribute("myInfo", service.stuInfo(id));
+        return "pages/userMgr/stu/stuAcaInsert";
     }
 
 }
