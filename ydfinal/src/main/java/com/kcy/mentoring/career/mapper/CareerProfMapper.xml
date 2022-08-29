@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kcy.mentoring.career.mapper.CareerProfMapper">
+	<select id="careerList" resultType="com.kcy.mentoring.career.vo.CareerProfVO">
+		SELECT li.career_list_id ,li.major_id, li.prof_id, li.career_list_date, q.career_q_id, q.career_q_content
+		FROM k_career_list li join k_career_q q
+		on li.career_list_id = q.career_list_id
+	</select>
+	<select id="careerSelectList" resultType="com.kcy.mentoring.career.vo.CareerProfVO">
+		SELECT li.career_list_id ,li.major_id, li.prof_id, li.career_list_date, q.career_q_id, q.career_q_content
+		FROM k_career_list li join k_career_q q
+		on li.career_list_id = q.career_list_id
+		WHERE li.prof_id=#{id}
+	</select>
+</mapper>

@@ -10,4 +10,9 @@
 	 insert into k_mentoring_schedule values
 	 (nextval(scheduleSeq),#{profId},#{mtrSchDate},#{mtrSchTimecode})
 	</insert>
+	
+	<delete id="calendarDelete" parameterType="com.kcy.mentoring.schedule.vo.scheduleVO">
+		delete from k_mentoring_schedule 
+		where mtr_sch_id = #{mtrSchId}
+	</delete>
 </mapper>

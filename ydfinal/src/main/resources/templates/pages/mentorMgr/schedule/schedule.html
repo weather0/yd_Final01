@@ -184,6 +184,7 @@
   			success: function() {
   				console.log('성공')
   				 alert("완료");
+  				location.href="/schedule"
   			}, 
   			error: function() {
   			
@@ -196,10 +197,10 @@
 	
 	function calendarDelete(calendar_id) {
  		$.ajax({
- 			url: "calendarDelete.do",
+ 			url: "/",
  			type: "get",
  			data: {
- 				"calendar_id": $("#calendar_id").val()
+ 				"mtr_sch_id": $("#calendar_id").val()
  			},
  			dataType: "json",
  			success: function(result) {
@@ -207,7 +208,7 @@
 					title: "일정이 삭제되었습니다.",
 					icon: "success"
 				}).then((willDelete) => {
-					location.href="calendar.do";
+					location.href="/schedule";
 				})
  				
  			}
@@ -215,15 +216,15 @@
  	}
 	function calendarSelect(calendar_id) {
  		$.ajax({
- 			url: "calendarSelect.do",
+ 			url: "/scheduleSelect",
  			type: "post",
  			data: {
- 				"calendar_id" : calendar_id
+ 				"mtr_sch_id" : calendar_id
  			},
  			dataType: "json",
  			success: function(result) {
  				
- 				$("#calendar_id").val(result.calendar_id);
+ 				$("#calendar_id").val(result.mtr_sch_id);
  				$("#calendar_title2").val(result.calendar_title);
  				$("#calendar_subject2").val(result.calendar_subject);
  				$("#calendar_start_date2").val(result.calendar_start_date);
@@ -295,10 +296,8 @@
 						enctype="application/x-www-form-urlencoded">
 							<input type="date" id="calendar_start_date" name="mtrSchDate" required="required"> 
 							<input type="text" id="profId" name="profId" th:value="00265609">
-							<input type="checkbox" id="time" name="mtrSchTimecode" value="">
 						<div class="modal-footer">
-							<input type="button" class="btn-dark" id="update"
-								onclick="calendarUpdate();" value="수정"> <input
+						 <input
 								type="reset" class="modal_close btn-dark"
 								onclick="calendarDelete();" value="삭제">
 						</div>

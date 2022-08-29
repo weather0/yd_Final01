@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml"
+	xmlns:v-bind="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/layout}">
+<th:block layout:fragment="content">
+<!-- 상단 내비바 -->
+  <th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
+<head>
+<meta charset='utf-8' />
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+	 
+	$.ajax({
+			url: "/schedulesAllList",
+			type: "post",
+			success: function(data) {
+				AllList(data);
+			}
+		});
+})
+		function AllList(data){
+		
+	
+}
+
+</script>
+
+</head>
+<body>
+
+	<div>교수가 질응답 문항을 추가하는 폼 입니다 </div>
+	<table>
+		<th>추가할 질문을 입력해주세</th>
+		<td><input type="text" ></td>
+	</table>
+
+</body>
+</th:block>
+</html>
