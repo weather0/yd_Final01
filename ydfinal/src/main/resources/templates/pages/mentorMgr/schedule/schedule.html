@@ -51,6 +51,9 @@
 		$.ajax({
    			url: "/schedules",
    			type: "get",
+   			data: {
+   				id : $('#userId').val()
+   			},
    			dataType: "json",
    			success: function(data) {
    				fullCalendar(data);
@@ -85,9 +88,9 @@
 	
 				},
 				eventClick : function(info) { // 수정 이벤트
-					console.log(info);
-					calendarSelect(info.event._def.extendedProps.mtrSchId);
-					calendarDelete(info.event._def.extendedProps.mtrSchId);
+					console.log(info.event._def.extendedProps.MtrSchId);
+					calendarSelect(info.event._def.extendedProps.MtrSchId);
+					//calendarDelete(info.event._def.extendedProps.MtrSchId);
 	
 					$("#calendar_update_modal").modal("show");
 				},
@@ -98,14 +101,10 @@
 			    events: function (info, successCallback) {
 			    	
 					for(var i = 0; i < data.length; i++) {
-						
-						
-						
+
 						data[i].id = data[i].MtrSchId;
-						//data[i].title = data[i].ProfId;
 						data[i].title = "";
 						
-						//data[i].date = data[i].date;
 						data[i].start = data[i].date+"T"+data[i].timeStart;
 						data[i].end = data[i].date+"T"+data[i].timeEnd;	
 					}
@@ -121,7 +120,7 @@
 	function calendarInsert() {
 		var cob_check = document.querySelectorAll('input[name="mtrSchTimecode"]:checked');
 		var mtrSchDate = document.getElementById('calendar_start_date').value;
-		var profId = document.getElementById('profId').value;
+		var userId = document.getElementById('userId').value;
 		
 		var chk_arr = [];
 		
@@ -143,7 +142,7 @@
 				// 객체 생성
 					var data = new Object() ;
 					
-					data.profId = profId ;
+					data.userId = userId ;
 					data.mtrSchDate =  mtrSchDate ;
 					data.mtrSchTimecode = chk_arr[i] ;
 					
@@ -166,7 +165,7 @@
 		  			dataType: "json",
 		  			success: function() {
 		  				console.log('성공')
-		  				 alert("완료");
+		  				 location.reload();
 		  			}, 
 		  			error: function() {
 		  			
@@ -183,8 +182,7 @@
   			dataType: "json",
   			success: function() {
   				console.log('성공')
-  				 alert("완료");
-  				location.href="/schedule"
+  				 location.reload();
   			}, 
   			error: function() {
   			
@@ -196,39 +194,35 @@
 	
 	
 	function calendarDelete(calendar_id) {
+		 if (!confirm("정말 삭제 하시겠습니까? 확인(예) 또는 취소(아니오)를 선택해주세요.")) {
+		        return;
+		    } 
  		$.ajax({
- 			url: "/",
+ 			url: "/scheduleDelete",
  			type: "get",
  			data: {
- 				"mtr_sch_id": $("#calendar_id").val()
+ 				"mtrSchId": $("#mtrSchId").val()
  			},
- 			dataType: "json",
  			success: function(result) {
- 				swal({
-					title: "일정이 삭제되었습니다.",
-					icon: "success"
-				}).then((willDelete) => {
-					location.href="/schedule";
-				})
+ 				location.reload();
  				
  			}
  		});
  	}
 	function calendarSelect(calendar_id) {
+		
+		console.log(calendar_id);
  		$.ajax({
  			url: "/scheduleSelect",
- 			type: "post",
+ 			type: "get",
  			data: {
- 				"mtr_sch_id" : calendar_id
+ 				"mtrSchId" : calendar_id
  			},
  			dataType: "json",
  			success: function(result) {
- 				
- 				$("#calendar_id").val(result.mtr_sch_id);
- 				$("#calendar_title2").val(result.calendar_title);
- 				$("#calendar_subject2").val(result.calendar_subject);
- 				$("#calendar_start_date2").val(result.calendar_start_date);
- 				$("#calendar_end_date2").val(result.calendar_end_date);
+ 				console.log(result);
+ 				$("#mtrSchId").val(result.mtrSchId);
+ 	
  			}
  		});
  	}
@@ -249,7 +243,7 @@
 						<form id="frm" th:action="@{/scheduleInsert}" method="post"
 							class="text-start">
 							<input type="date" id="calendar_start_date" name="mtrSchDate" required="required"> 
-							<input type="text" id="profId" name="profId" th:value="00265609">
+							<input type="text" id="userId" name="userId" th:value="${#authentication.name}">
 							<br/>
 							<input type="checkbox" id="time0" name="mtrSchTimecode" value="0"> 09:00 ~ 09:50 </input>
 							<br/>
@@ -292,13 +286,14 @@
 					</button>
 				</div>
 				<div class="modal-body">
-					<form id="frm" action="calendarUpdate.do" method="post"
+					<form id="frm" action="#" method="post"
 						enctype="application/x-www-form-urlencoded">
-							<input type="date" id="calendar_start_date" name="mtrSchDate" required="required"> 
-							<input type="text" id="profId" name="profId" th:value="00265609">
+						     
+							<input type="text" id="mtrSchId" name="mtrSchId" >
+							<input type="text" id="userId" name="userId" th:value="${#authentication.name}">
 						<div class="modal-footer">
 						 <input
-								type="reset" class="modal_close btn-dark"
+								type="button" class="modal_close btn-dark"
 								onclick="calendarDelete();" value="삭제">
 						</div>
 					</form>

@@ -7,11 +7,13 @@ import org.springframework.stereotype.Repository;
 import com.kcy.mentoring.career.vo.CareerProfVO;
 @Repository
 public interface CareerProfService {
-	public ArrayList<CareerProfVO> careerList();
+	public String careerList(String id);
 	public ArrayList<CareerProfVO> careerSelectList(String id);
-	public String careerInsert(CareerProfVO vo);
-	public String careerDelete(CareerProfVO vo);
-	public String careerUpdate(CareerProfVO vo);
+	public void careerInsert(CareerProfVO vo);
+	public void careerListInsert(String id);
+	public void careerDelete(String id);
+	public void careerUpdateY(String id);
+	public void careerUpdateN(String id);
 	
 
 }
