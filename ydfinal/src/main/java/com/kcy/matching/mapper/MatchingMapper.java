@@ -23,4 +23,5 @@ public interface MatchingMapper {
 	public void matchingChangeOrder(MatchingChangeVO vo);
 	public void matchingType(MatchingVO vo);
 	public void matchingYes(MatchingVO vo);
+	public void matchingNo(MatchingChangeVO vo);
 }

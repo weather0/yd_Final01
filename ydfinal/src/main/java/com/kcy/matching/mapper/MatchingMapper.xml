@@ -115,4 +115,11 @@
 		AND matching_want = #{userId}
 </update>
 
+<update id="matchingNo" parameterType="com.kcy.matching.service.MatchingChangeVO">
+		UPDATE k_matching_change 
+		SET matching_change_yn = '거부', 
+			matching_change_reject = #{matchingChangeReject}
+		WHERE stu_id = #{stuId}
+</update>
+
 </mapper>
