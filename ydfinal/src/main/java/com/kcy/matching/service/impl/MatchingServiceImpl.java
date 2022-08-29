@@ -6,13 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.kcy.matching.mapper.MatchingMapper;
-import com.kcy.matching.service.MatchingService;
-import com.kcy.matching.service.MatchingStdVO;
-import com.kcy.matching.service.MatchingVO;
 import com.kcy.matching.service.MatchingChangeListVO;
 import com.kcy.matching.service.MatchingChangeVO;
 import com.kcy.matching.service.MatchingListVO;
 import com.kcy.matching.service.MatchingProfVO;
+import com.kcy.matching.service.MatchingService;
+import com.kcy.matching.service.MatchingStdVO;
+import com.kcy.matching.service.MatchingVO;
 
 @Service
 public class MatchingServiceImpl implements MatchingService {
@@ -53,6 +53,23 @@ public class MatchingServiceImpl implements MatchingService {
 	@Override
 	public List<MatchingProfVO> matchingChangeList(MatchingChangeListVO vo) {		
 		return mapper.matchingChangeList(vo);
+	}
+
+	@Override
+	public List<MatchingChangeVO> matchingName(MatchingStdVO vo) {
+		return mapper.matchingName(vo);
+	}
+
+	@Override
+	public void matchingType(MatchingVO vo) {
+		mapper.matchingType(vo);
+		
+	}
+
+	@Override
+	public void matchingYes(MatchingVO vo) {
+		mapper.matchingYes(vo);
+		
 	}
 
 }

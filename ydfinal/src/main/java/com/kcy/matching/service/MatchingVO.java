@@ -11,4 +11,5 @@ public class MatchingVO {
 	private String matchingType;
 	private String matchingId;
 	private String studentId;
+	private String beforeProf;
 }
