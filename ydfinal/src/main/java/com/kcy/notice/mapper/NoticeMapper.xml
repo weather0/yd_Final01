@@ -5,14 +5,16 @@
 		INSERT INTO k_class_notice
 		(class_notice_id, class_id, class_notice_no, class_notice_title, class_notice_con, class_notice_date, class_notice_hit, class_notice_file, class_notice_type)
 		VALUES
-		(102, 'A100', 1, #{classNoticeTitle}, #{classNoticeCon}, date_format(now(), '%Y%m%d'), 1, #{classNoticeFile}, #{classNoticeType} )
+		(105, 'Sc1000', 1, #{classNoticeTitle}, #{classNoticeCon}, date_format(now(), '%Y%m%d'), 1, #{classNoticeFile}, #{classNoticeType} )
+	<!-- class_notice_id 시퀀스 추가, clasS_id 전공값으로 불러 오기, class_notice_no 시퀀스 추가 -->
 	</insert>
 	
 	<select id="NoticeList" resultType="map">
 		SELECT
 			cn.class_id, cn.class_notice_no, cn.class_notice_type, cn.class_notice_title, cn.class_notice_date,
 			c.class_id, c.prof_id,
-			u.user_id, u.user_name
+			u.user_id, u.user_name,
+            m.major_id, m.major_name
 		FROM
 			k_class_notice as cn
 		JOIN
@@ -23,8 +25,20 @@
 			k_users as u
 		ON
 			c.prof_id = u.user_id
-		WHERE 
-			cn.class_id = 'A100'
+        JOIN
+            k_major as m
+        ON
+            m.major_name = u.user_dept
+        WHERE
+            cn.class_id in (select class_id from k_class_member where stu_id = #{userId});
 	</select>
-
+	<!-- class_id 전공값으로 불러 오기 -->
+	<select id="NoticeView" resultType="com.kcy.notice.service.NoticeVo">
+		SELECT
+			*
+		FROM
+			k_class_notice
+		WHERE
+			class_notice_no = #{classNoticeNo}
+	</select>
 </mapper>
