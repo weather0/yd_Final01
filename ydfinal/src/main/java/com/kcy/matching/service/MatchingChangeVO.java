@@ -12,6 +12,5 @@ public class MatchingChangeVO {
 	private String matchingChangeReject;
 	private String profId;
 	private String matchingChangeReason;
-	private String matchingWant;
-	
+	private String matchingWant;	
 }

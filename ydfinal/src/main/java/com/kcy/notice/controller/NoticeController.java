@@ -10,6 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -53,9 +55,17 @@ public class NoticeController {
 	}
 	
 	@GetMapping("/noticelist")
-	public String noticelist(Model model, String id, Principal principal) {
+	public String noticelist(Model model, String id, Principal principal, NoticeVo vo) {
 		System.out.println(principal.getName());
-		model.addAttribute("noticeList", noticeService.NoticeList(id));
+		vo.setUserId(principal.getName());
+		model.addAttribute("noticeList", noticeService.NoticeList(vo));
 		return "pages/classMgr/NoticeList";
+	}
+	
+	@GetMapping("/noticeview")
+	public String noticeview(@RequestParam final int classNoticeNo, Model model) {
+		NoticeVo vo = noticeService.NoticeView(classNoticeNo);
+		model.addAttribute("noticeList", vo);
+		return "/pages/classMgr/NoticeView";
 	}
 }

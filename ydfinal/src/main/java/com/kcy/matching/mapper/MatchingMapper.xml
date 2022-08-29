@@ -28,22 +28,23 @@
 	FROM k_users AS u 
 	JOIN k_students AS s
 	ON u.user_id = s.stu_id  
-	WHERE user_type = 'ROLE_STU' AND s.student_prof IS NULL
+	WHERE user_type = 'ROLE_STU' 
+	 AND s.student_prof IS NULL
 </select>
 
 <select id="matchingProfList" resultType="com.kcy.matching.service.MatchingProfVO">
-	SELECT DISTINCT p.prof_id, 
-					u.user_name, 
-					u.user_dept, 
-					p.prof_lab, 
-					p.prof_mentee - count(s.stu_id) AS mentee
+	SELECT p.prof_id, 
+		   u.user_name, 
+		   u.user_dept, 
+		   p.prof_lab, 
+		   p.prof_mentee - COUNT(CASE WHEN m.matching_type ='매칭중' THEN 1 END) AS mentee
 	FROM k_professors p 
 	JOIN k_users u
 	ON p.prof_id = u.user_id
-	JOIN k_students s
-	ON p.prof_id = s.student_prof 
-	GROUP BY prof_id
-	<![CDATA[HAVING mentee < 10]]>
+	JOIN k_matching m
+	ON p.prof_id = m.prof_id 
+	GROUP BY prof_id 	
+	<![CDATA[HAVING mentee > 0]]>
 </select>
 
 <insert id="matching" parameterType="com.kcy.matching.service.MatchingVO">		
@@ -53,7 +54,8 @@
 </insert>
 
 <update id="matchingStd" parameterType="com.kcy.matching.service.MatchingVO">		
-		UPDATE k_students SET student_prof = #{userId}
+		UPDATE k_students 
+		   SET student_prof = #{userId}
 		WHERE stu_id = #{studentId}
 </update>
 
@@ -68,9 +70,11 @@
 		       u.user_name, 
 		       u.user_dept, 
 		       s.student_grade, 
-		       s.student_aca_yn, 
+		       s.student_aca_yn,
+		       ku.user_id AS profId,
 		       ku.user_name AS prof, 
 		       c.matching_change_reason, 
+		       ku2.user_id AS wantprofId,
 		       ku2.user_name AS wantprof
 		FROM k_matching_change c
 		JOIN k_users u
@@ -78,9 +82,37 @@
 		JOIN k_students s 
 		ON c.stu_id = s.stu_id 
 		JOIN k_users ku
-		ON ku.user_id = c.matching_want 
+		ON ku.user_id = s.student_prof  
 		JOIN k_users ku2 
-		ON ku2.user_id = s.student_prof 
+		ON ku2.user_id = c.matching_want
+		WHERE c.matching_change_yn = '검토중'
 </select>
+
+<select id="matchingName" resultType="com.kcy.matching.service.MatchingStdVO">
+	SELECT s.stu_id, 
+	       u.user_name, 
+	       s.student_prof,
+	       ku.user_name AS profname
+	FROM k_students s 
+	JOIN k_users u 
+	ON s.stu_id = u.user_id
+	JOIN k_users ku
+	ON s.student_prof = ku.user_id
+	WHERE s.stu_id = #{userId}
+</select>
+
+<update id="matchingType" parameterType="com.kcy.matching.service.MatchingVO">		
+		UPDATE k_matching 
+		   SET matching_type = '매칭해지'
+		WHERE stu_id = #{studentId} AND prof_id = #{beforeProf}
+</update>
+
+<update id="matchingYes" parameterType="com.kcy.matching.service.MatchingVO">		
+		UPDATE k_matching_change 
+		SET matching_change_yn = '승인'
+		WHERE stu_id = #{studentId} 
+		AND prof_id = #{beforeProf} 
+		AND matching_want = #{userId}
+</update>
 
 </mapper>

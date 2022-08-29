@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+<th:block layout:fragment="content">
+
+  <!-- 상단 내비바 -->
+  <th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
+
+  <!-- 본문 start -->
+      <h1>과제등록페이지</h1>
+ 		
+ 		<form action="quizInsert" method="post" enctype="multipart/form-data">
+ 		
+ 	 <div class="input-group input-group-outline my-3">
+      <label class="form-label">제목</label>
+      <input type="text" class="form-control" name="quizHTitle">
+    </div>	
+    
+     <div class="input-group input-group-outline my-3">
+      <label class="form-label">내용</label>
+      <textarea type="text" class="form-control" name="quizHContent"></textarea>
+    </div>	
+      
+    <div class="input-group input-group-outline my-3">
+      <label class="form-label">강의계획서</label>
+      <input type="file" class="form-control" multiple="multiple" name="classQuizFileSyl">
+    </div>
+ 		
+    <div class="input-group input-group-outline my-3">
+      <label class="form-label">시작일</label>
+      <input type="date" class="form-control" name="quizDOpenday">
+    </div>
+    
+      <div class="input-group input-group-outline my-3">
+      <label class="form-label">종료일</label>
+      <input type="date" class="form-control" name="quizDCloseday">
+    </div>
+ 		
+    <button class="btn bg-gradient-primary">신청하기</button>
+</form>
+    
+  <!-- 본문 end-->
+
+
+</th:block>
+</html>

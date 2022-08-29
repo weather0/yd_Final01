@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kcy.lecture.mapper.EvaluationMapper">
+	
+	<select id="EvaluationQuiz" resultType="com.kcy.lecture.service.EvaluationVO">
+		SELECT prof_q_content FROM k_prof_q ;
+	</select>
+
+<insert id="EvaluationSubmission">
+
+	INSERT into k_prof_r(class_id,prof_r_result,prof_r_date,prof_q_id,class_member_id)
+	select class_id,#{profRResult},now(),#{profQId},class_member_id
+	from k_class_member
+	WHERE class_id = #{classId} and stu_id = #{userId} ;
+</insert>
+
+</mapper>

@@ -9,7 +9,11 @@ public class MatchingChangeListVO {
 	private String userDept;
 	private int studentGrade;
 	private String studentAcaYn;
+	private String profId;
 	private String prof;
 	private String matchingChangeReason;
-	private String wantprof;	
+	private String wantprofId;
+	private String wantprof;
+	
+	
 }

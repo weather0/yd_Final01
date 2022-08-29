@@ -22,9 +22,15 @@ public class NoticeServiceImpl implements NoticeService {
 	}
 
 	@Override
-	public List<Map<String, String>> NoticeList(String id) {
+	public List<Map<String, String>> NoticeList(NoticeVo vo) {
 		// TODO Auto-generated method stub
-		return map.NoticeList(id);
+		return map.NoticeList(vo);
+	}
+
+	@Override
+	public NoticeVo NoticeView(int classNoticeNo) {
+		// TODO Auto-generated method stub
+		return map.NoticeView(classNoticeNo);
 	}
 	
 }

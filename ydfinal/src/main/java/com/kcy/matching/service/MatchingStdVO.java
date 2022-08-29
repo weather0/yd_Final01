@@ -10,5 +10,7 @@ public class MatchingStdVO {
 	private String userDept;
 	private String studentGrade;
 	private String userPhone;
-	private String studentProf;	
+	private String studentProf;
+	private String userId;
+	private String profname;	
 }
