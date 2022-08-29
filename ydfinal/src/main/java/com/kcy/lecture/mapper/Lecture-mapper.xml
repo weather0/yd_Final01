@@ -22,7 +22,7 @@
 		
 		
 		<select id="LectureList" resultType="com.kcy.lecture.service.LectureVO">
-			select * from k_class_reg		
+			select * from k_class_reg
 		</select>
 		
 		<update id="LectureUpdate" parameterType="com.kcy.lecture.service.LectureVO">
@@ -37,19 +37,19 @@
 			select class_id, course_id, prof_id, class_to, class_year, class_sem, class_syl
 			from k_class_reg
 			where class_id = #{classId}
-	
 		</insert>
 		
 		<select id="OpenLectureList" resultType="com.kcy.lecture.service.OpenLectureVO">
-			select * from k_class
+		
+			SELECT c.class_id,j.major_name, u.user_name, co.course_title,c.course_id, co.course_type, co.course_credit,CONCAT(c.class_sem,'학기') as classSem , c.class_to,c.class_ck,c.class_syl
+			from k_class as c join k_course as co on c.course_id  = co.course_id 
+			join k_users  as u on u.user_id = c.prof_id  
+			join k_major as j on j.major_id = co.major_id 
+			where class_id not in   (SELECT class_id  from k_class_member where stu_id =#{userId});
 			
 		</select>
 		
-		<update id="OpenLectureUpdate" parameterType="com.kcy.lecture.service.OpenLectureVO">
-		
-				UPDATE k_class SET class_ck = '1'
-				WHERE class_id = #{classId}
-		
-		</update>
+
+
 	
 </mapper>

@@ -3,33 +3,23 @@
 
 <th:block th:fragment="stuNavbarFragment">
 
-  <div class="row">
-    <div class="col-md-3 mb-4">
-    </div>
-    
-    <div class="col-md-9 mb-4">
-    
-      <ul class="nav nav-pills nav-justified">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" th:href="@{ /stuInfo/{var}(var=${#authentication.name}) }">학적조회</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">학적변동신청</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" th:href="@{ /stuAcaInfo/{var}(var=${#authentication.name}) }">학적변동이력</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">졸업요건확인</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link">증명서출력</a>
-        </li>
-      </ul>
-      
-    </div>
-  </div>
-
+  <ul class="nav nav-pills nav-justified flex-sm-row">
+    <li class="nav-item">
+      <a class="nav-link active" th:href="@{ /stuInfo/{var}(var=${#authentication.name}) }">학적조회</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">학적변동신청</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" th:href="@{ /stuAcaInfo/{var}(var=${#authentication.name}) }">학적변동이력</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">졸업요건확인</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link">증명서출력</a>
+    </li>
+  </ul>
 
 </th:block>
 </html>

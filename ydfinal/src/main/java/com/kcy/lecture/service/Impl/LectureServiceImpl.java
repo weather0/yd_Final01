@@ -50,11 +50,8 @@ public class LectureServiceImpl implements LectureService {
 		return mapper.OpenLectureList(vo);
 	}
 
-	@Override
-	public void OpenLectureUpdate(OpenLectureVO vo) {
-		
-		mapper.OpenLectureUpdate(vo);
-	}
+
+
 
 
 

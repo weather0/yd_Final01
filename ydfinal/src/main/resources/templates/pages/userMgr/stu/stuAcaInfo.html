@@ -1,40 +1,122 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layouts/layout}">
-      
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/layout}">
+
+
+
 <th:block layout:fragment="content">
+
+  <link rel="stylesheet" href="https://cdn.datatables.net/v/bs5/dt-1.12.1/datatables.min.css" />
+  <script src="https://cdn.datatables.net/v/bs5/dt-1.12.1/datatables.min.js"></script>
+
+  <style>
+    #myAcaInfos_filter input{
+      border: 1px solid #d2d6da;
+    }
+    
+    .pagination .active .page-link {
+      background-color: #7b809a;
+      border-color: #7b809a;
+    }
+  </style>
+  <script>
+    $(function() {
+      $('#userMgr').addClass('show');
+      
+      $('#myAcaInfos').DataTable({
+        "language": {
+          "lengthMenu": "페이지 당: _MENU_",
+          "search": "검색:",
+          "searchPlaceholder": "키워드를 입력하세요",
+          "zeroRecords": "검색결과가 없습니다",
+          "info": "_START_ - _END_ (전체: _MAX_건)",
+          "infoFiltered": "(검색결과: _TOTAL_건)",
+          "infoEmpty": "",
+          "paginate": {
+            "previous": "<",
+            "next": ">",
+          }
+        }
+      });
+    })
+  </script>
 
   <!-- 상단 내비바 -->
   <th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
 
   <!-- 본문 start -->
   <div class="container-fluid py-4">
-  
-  <th:block th:replace="pages/userMgr/stu/stuNavbar :: stuNavbarFragment"></th:block>
-  
-    <div class="row">
-      <th:block th:each="item : ${myAcaInfo}">
-        <div>[[${item}]]</div>
-      </th:block>
 
-
-
-
-
-
-
-
-
-
-    
+    <div class="row justify-content-center">
+      <div class="col-lg-3 col-sm-3 mb-4"></div>
+      <div class="col-lg-7 col-sm-9 mb-4">
+        <!--         <th:block th:replace="pages/userMgr/stu/stuNavbar :: stuNavbarFragment"></th:block> -->
+      </div>
     </div>
+
+
+    <div class="row justify-content-center">
+      <div class="col-lg-5 mb-4">
+        <div class="card">
+
+          <div class="table-responsive border-radius-lg">
+            <table class="table text-center mb-0">
+              <tr>
+                <td class="table-secondary">성명</td>
+                <td>[[${myAcaInfos[1].userName}]]</td>
+                <td class="table-secondary">학번</td>
+                <td>[[${myAcaInfos[1].userId}]]</td>
+              </tr>
+              <tr>
+                <td class="table-secondary">전공</td>
+                <td>[[${myAcaInfos[1].userDept}]]</td>
+                <td class="table-secondary">연락처</td>
+                <td>[[${myAcaInfos[1].userPhone}]]</td>
+              </tr>
+            </table>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+
+
+    <div class="row justify-content-center">
+      <div class="card py-3">
+
+        <div class="table-responsive">
+          <table id="myAcaInfos" class="table align-items-center table-hover" style="width:100%">
+            <thead style="font-weight: bold">
+              <tr>
+                <td>구분</td>
+                <td>학적변동 기간</td>
+                <td>학적변동 사유</td>
+                <td>신청일자</td>
+                <td>승인 여부</td>
+                <td>반려 사유</td>
+                <td>첨부파일</td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr th:each="item : ${myAcaInfos}">
+                <td>[[${item.acaType}]]</td>
+                <td>[[${item.acaStart}]] ~ [[${item.acaEnd}]]</td>
+                <td>[[${item.acaReason}]]</td>
+                <td>[[${item.acaDate}]]</td>
+                <td>[[${item.acaYn}]]</td>
+                <td>[[${item.acaReject}]]</td>
+                <td>[[${item.acaFile}]]</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+    </div>
+
+
   </div>
-  
-  
   <!-- 본문 end-->
-
-
 </th:block>
 </html>

@@ -12,11 +12,14 @@ public class LectureVO {
 	private String profId;
 	private int classTo;
 	private int classYear;
-	private int classSem;
+	private String classSem;
 	private String classSyl;
 	private String classYn;
 	private String classTitle;
 	private MultipartFile classFileSyl;
+	private String courseType;
+	private double courseCredit;
+	private String courseTitle;
 	
 	
 	// 하경

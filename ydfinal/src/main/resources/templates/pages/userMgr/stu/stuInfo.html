@@ -1,39 +1,52 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" 
-      xmlns:th="http://www.thymeleaf.org" 
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
-      layout:decorate="~{layouts/layout}">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/layout}">
 
 <th:block layout:fragment="content">
 
+  <script>
+    $(function() {
+      $('#userMgr').addClass('show')
+      
+    })
+    
+  </script>
+  
   <!-- 상단 내비바 -->
   <th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
 
   <!-- 본문 start -->
   <div class="container-fluid py-4">
-  
-  <th:block th:replace="pages/userMgr/stu/stuNavbar :: stuNavbarFragment"></th:block>
-            
-    <div class="row">
-    
-      <div class="col-md-3 mb-4">
+
+
+    <div class="row justify-content-center">
+      <div class="col-lg-3 col-sm-3 mb-4"></div>
+      <div class="col-lg-7 col-sm-9 mb-4">
+<!--         <th:block th:replace="pages/userMgr/stu/stuNavbar :: stuNavbarFragment"></th:block> -->
+      </div>
+    </div>
+
+    <div class="row justify-content-center">
+      <div class="col-lg-3 col-sm-3 mb-4">
         <div class="card">
-          <img th:src="@{ '../aa/userImg/'+ ${myInfo.userPic} }" class="img-fluid border-radius-lg shadow" th:alt="${myInfo.userPic}">
-        
+          <img th:src="@{ '../aa/userImg/'+ ${myInfo.userPic} }" class="img-fluid border-radius-lg shadow"
+            th:alt="${myInfo.userPic}">
         </div>
       </div>
 
 
-      <div class="col-md-9 mb-4">
+      <div class="col-lg-7 col-sm-9 mb-4">
         <div class="card">
 
           <div class="table-responsive border-radius-lg">
-            <table class="table align-items-center text-center mb-0" style="height: 60vh">
-             <tr>
+            <table class="table align-items-center text-center mb-0 fw-bold" style="height: 60vh">
+              <tr>
                 <td class="table-secondary">학번</td>
-                <td>[[${myInfo.userId}]]</td> <!-- 값호출방법1: 대괄호 두개 -->
+                <td>[[${myInfo.userId}]]</td>
+                <!-- 값호출방법1: 대괄호 두개 -->
                 <td class="table-secondary">성명</td>
-                <td th:text="${myInfo.userName}"></td> <!-- 방법2: 태그속성 th:text -->
+                <td th:text="${myInfo.userName}"></td>
+                <!-- 방법2: 태그속성 th:text -->
               </tr>
               <tr>
                 <td class="table-secondary">학년/학차</td>
@@ -83,13 +96,10 @@
 
 
 
-
     <!-- 하단 푸터(본문div 안에 있어야 안 어그러짐) -->
     <!--     <th:block th:replace="fragments/footer :: footerFragment"></th:block> -->
 
   </div>
   <!-- 본문 end-->
-
-
 </th:block>
 </html>

@@ -11,5 +11,13 @@ public interface EnrolmentService {
 
 	void EnrolmentInsert(EnrolmentVO vo);
 	
+	public void EnrolmentDelete(EnrolmentVO vo);
+	
+
+	public void TotalPlusUpdate(EnrolmentVO vo);
+	
+	public void TotalMinusUpdate(EnrolmentVO vo);
+	
+	public List<Map<String,String>> creitCheck(EnrolmentVO vo);
 
 }
