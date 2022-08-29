@@ -39,7 +39,7 @@
     from k_schedule 
     
    where sch_type = 'SEMESTER' 
-     and sch_start > '2022-01-01' 
+     and sch_start > now() 
      
    order by 1;
 </select>
