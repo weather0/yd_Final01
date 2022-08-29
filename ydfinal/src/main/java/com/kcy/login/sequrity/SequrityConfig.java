@@ -46,8 +46,8 @@ public class SequrityConfig extends WebSecurityConfigurerAdapter  {
 			.logoutSuccessUrl("/login");
 		
 		 http.sessionManagement()
-         .maximumSessions(1) //세션 최대 허용 수 
-         .maxSessionsPreventsLogin(false); // false이면 중복 로그인하면 이전 로그인이 풀린다.
+         .maximumSessions(5) //세션 최대 허용 수 
+         .maxSessionsPreventsLogin(true); // false이면 중복 로그인하면 이전 로그인이 풀린다.
 	}
 	
     @Override

@@ -36,6 +36,7 @@ public class UsersController {
     @RequestMapping("/stuAcaInsert/{id}")
     public String stuAcaInsert(Model model, @PathVariable String id) {
         model.addAttribute("myInfo", service.stuInfo(id));
+        model.addAttribute("terms", service.stuAcaInsert());
         return "pages/userMgr/stu/stuAcaInsert";
     }
 
