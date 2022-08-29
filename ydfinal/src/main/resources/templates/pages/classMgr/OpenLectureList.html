@@ -16,7 +16,7 @@
       <div class="col-12">
         <div class="card my-4">
           <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-            <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
+            <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3" style="background: #fc9209">
               <h6 class="text-white text-capitalize ps-3">수강신청</h6>
               <input  th:value="${#authentication.principal.username}" type="hidden" id="userid">
             </div>
@@ -55,19 +55,19 @@
        					
        					<th:block th:each="credit:${credit}">
        					
-	       					<th:block th:if="${credit.courseCredit} + ${data.courseCredit} <= 21">
+	       					<th:block th:if="${credit.courseCredit} + ${data.courseCredit} <= 18">
 	       					
 		       					<th:block th:if="${data.classCk} < ${data.classTo}" >
-		       						<td><button class="btn bg-gradient-primary btn1" th:text="신청"  th:data-class_id="${data.classId}"></button></td>
+		       						<td><button class="btn bg-gradient-warning btn-sm btn1" th:text="신청"  th:data-class_id="${data.classId}"></button></td>
 		       					</th:block>
 		       					
 		       					<th:block th:if="${data.classCk} >= ${data.classTo}" >
-		       						 <td><button class="btn bg-gradient-primary btn1" th:text="인원완료" disabled='disabled' th:data-class_id="${data.classId}"></button></td>
+		       						 <td><button class="btn bg-gradient-warning btn-sm btn1" th:text="인원완료" disabled='disabled' th:data-class_id="${data.classId}"></button></td>
 		       					</th:block>
 	       					</th:block>
 		       					
-		       					<th:block th:if="${credit.courseCredit} + ${data.courseCredit} > 21">
-		       						<td><button class="btn bg-gradient-primary btn2" th:text="신청"></button></td>
+		       					<th:block th:if="${credit.courseCredit} + ${data.courseCredit} > 18">
+		       						<td><button class="btn bg-gradient-warning btn-sm btn2" th:text="신청"></button></td>
 		       					</th:block>
 	       					
        					
@@ -85,7 +85,7 @@
       <div class="col-12">
         <div class="card my-4">
           <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-            <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
+            <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3" style="background: #fc9209" >
               <h6 class="text-white text-capitalize ps-3">수강신청 완료</h6>
             </div>
           </div>
@@ -116,7 +116,7 @@
                    	 <td th:text="${data.class_to}"></td>
                    	 <td th:text="${data.course_credit}"></td>
                    	 <td><a th:href="${'/download?classSyl='+data.class_syl}" th:text="${data.class_syl}"></a></td>
-                   	 <td><button class="btn bg-gradient-primary enbtn" th:text="삭제" th:data-en_class_id="${data.class_id}" ></button> </td>
+                   	 <td><button class="btn bg-gradient-warning btn-sm enbtn" th:text="삭제" th:data-en_class_id="${data.class_id}" ></button></td>
                   </tr>
                 </tbody>
               </table>
@@ -169,7 +169,7 @@
     	$(".btn2").on("click",CreditCk);
     	
     	function CreditCk(){
-    		alert("21학점을 초과하였습니다")
+    		alert("18학점을 초과하였습니다")
     	}
 
     </script>

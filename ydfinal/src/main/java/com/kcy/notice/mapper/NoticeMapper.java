@@ -7,5 +7,6 @@ import com.kcy.notice.service.NoticeVo;
 
 public interface NoticeMapper {
 	public void NoticeInsert(NoticeVo vo);
-	public List<Map<String, String>> NoticeList(String id);
+	public List<Map<String, String>> NoticeList(NoticeVo vo);
+	public NoticeVo NoticeView(int classNoticeNo);
 }

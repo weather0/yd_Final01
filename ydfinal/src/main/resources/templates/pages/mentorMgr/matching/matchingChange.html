@@ -22,26 +22,28 @@
   <div class="container-fluid py-4">
   	<div class="row">
 	 <h1>지도교수 변경 신청</h1>
-	  	
-	 <form action="matchingChangeOrder" method="post" >
-	 	
+  	
+    <th:block th:each="matchingName:${matchingName}">	 		 	
+	 <form action="matchingChangeOrder" method="post">
     	<div class="row">
-	      <div class="col-md-4">
-	    	<div class="input-group input-group-outline my-3">
-		      <label class="form-label">신청자</label>
-		      <input type="text" class="form-control" value="테스트중" readonly="readonly">		      
+	      <div class="col-md-3">
+	    	<div class="input-group input-group-outline my-3">		      
+		      <input th:value="${matchingName.userName}" type="text" id="userName" readonly="readonly">		      
 	        </div>
 	      </div>    	
-	      <div class="col-md-4">
-	    	<div class="input-group input-group-outline my-3">
-		      <label class="form-label">학번</label>
-		      <input type="text" class="form-control" name="stuId" id="stuId">
+	      <div class="col-md-3">
+	    	<div class="input-group input-group-outline my-3">		      
+		      <input th:value="${matchingName.stuId}" type="text" name="stuId" id="stuId" readonly="readonly">
 	        </div>
 	      </div>
-	      <div class="col-md-4">
-	    	<div class="input-group input-group-outline my-3">
-		      <label class="form-label">현재 지도교수</label>
-		      <input type="text" class="form-control" name="profId" id="profId">
+	      <div class="col-md-3">
+	    	<div class="input-group input-group-outline my-3">		      
+		      <input th:value="${matchingName.profname}" type="text" id="profname" readonly="readonly">
+	        </div>
+	      </div>
+	      <div class="col-md-3">
+	    	<div class="input-group input-group-outline my-3">		      
+		      <input th:value="${matchingName.studentProf}" type="text" name="profId" id="profId" readonly="readonly">
 	        </div>
 	      </div>
     	</div>
@@ -53,14 +55,15 @@
     	
     	<div class="input-group input-group-outline my-3">
 <!-- 	      <label class="form-label">지도교수 지정</label> -->
-	      <input type="text" class="form-control" name="matchingWant" id="matchingWant" placeholder="변경을 원하는 지도교수를 입력해주세요. 미입력시 무작위로 선별됩니다">
+	      <input type="text" class="form-control" name="matchingWant" id="matchingWant" placeholder="변경을 원하는 지도교수를 선택해주세요. 미 선택시 무작위로 선별됩니다" readonly="readonly">
     	</div>	
 	  	
 	  	<button class="btn bg-gradient-primary">변경 신청</button>
-	  	
+	  	</th:block>
 	 </form>
   	</div>
-  	<div id="profList" class="text-center">
+  	<br>
+  	<div id="profList">
    <h3>매칭 가능한 교수 목록</h3>
 	  <table class="table table-striped" id="matchingProf">
 		<thead>
@@ -70,6 +73,7 @@
 				<th>전공</th>
 				<th>연구실</th>
 				<th>담당 가능 학생 수</th>
+				<th>선택</th>
 			</tr>
 		</thead>
 		<tbody>	
@@ -78,15 +82,33 @@
 				<td th:text="${Prof.userName}"></td>
 				<td th:text="${Prof.userDept}"></td>
 				<td th:text="${Prof.profLab}"></td>
-				<td th:text="${Prof.mentee}"></td>				
+				<td th:text="${Prof.mentee}"></td>		
+				<td>
+					<button class="btn btn-primary" onclick="select()">선택</button>
+				</td>		
 			</tr>
 		</tbody>
 	   </table>
    	</div>   
   </div> 
-   
+  
    <script>
    	$("#matchingProf").DataTable({ });
+   	
+   	function select(e) {
+   		e = window.event || e; 
+   		$(".profactive").css("backgroundColor","")
+   		$(".profactive").removeClass("profactive")
+   		$(e.target).closest("tr").addClass("profactive")
+   		$(e.target).closest("tr").css("backgroundColor", "aqua")
+   		
+   		let prof = document.getElementById('matchingWant')
+   		prof.value = ($(".profactive").find("td:first").text())
+		
+   	}      	
+		
+		
+   	
    	</script>
   <!-- 본문 end-->
 </th:block>	

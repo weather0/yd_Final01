@@ -13,28 +13,22 @@
   <!-- 본문 start -->
 <div class="container-fluid py-4">
     <div class="row"> 
- <table id="noticeTable" class="table table-striped" style="width:100%;" >
+ <table id="quizTable" class="table table-striped" style="width:100%;" >
         <thead>
             <tr>
-            	<th>No.</th>
-            	<th>전공</th>
-            	<th>자료구분</th>
             	<th>제목</th>
-                <th>작성자</th>
-                <th>등록일</th>
+            	<th>제출시작일</th>
+            	<th>제출종료일</th>
             </tr>
         </thead>
         <tbody>
         	<input  th:value="${#authentication.principal.username}" type="hidden" id="userid">
-        	<tr th:each="data : ${noticeList}">
-        		<td th:text="${data.class_notice_no}"></td>
-        		<td th:text="${data.class_id}"></td>
-        		<td th:text="${data.class_notice_type}"></td>
+        	<tr th:each="data : ${quizlist}">
         		<td>
-        		<a th:text="${data.class_notice_title}" th:href="@{/noticeview(classNoticeNo=${data.class_notice_no})}"></a>
+        		<a th:text="${data.quiz_h_title}" th:href="@{/quizaccept(quizHSeq=${data.quiz_h_seq})}"></a>
         		</td> 
-        		<td th:text="${data.user_name}"></td>
-        		<td th:text="${data.class_notice_date}"></td>
+        		<td th:text="${data.quiz_d_openday}"></td>
+        		<td th:text="${data.quiz_d_closeday}"></td>
         	</tr>
         </tbody>
   <!-- 본문 end-->
@@ -42,7 +36,7 @@
  </div>
  </div>
  <script>
- 	$('#noticeTable').DataTable({});
+ 	$('#quizTable').DataTable({});
  </script>
 </th:block>
 </html>
