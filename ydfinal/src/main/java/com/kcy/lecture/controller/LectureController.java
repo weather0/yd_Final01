@@ -10,8 +10,6 @@ import java.security.Principal;
 import java.util.List;
 import java.util.UUID;
 
-import javax.servlet.http.HttpSession;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,8 +54,10 @@ public class LectureController {
 	private final EnrolmentService EnrolmentService;
 	@Value("${spring.servlet.multipart.location}")
 	String filePath;
-	
-	
+
+
+
+
 	Logger logger = LoggerFactory.getLogger(LectureController.class);
 	
 	@GetMapping("/lectureinsert")
@@ -66,7 +66,6 @@ public class LectureController {
 		return "pages/classMgr/LectureInsert";
 	}
 	
-
 	@PostMapping("/lectureinsert")
 	public String LetureInsert(LectureVO vo, @RequestParam("classFileSyl") MultipartFile classFileSyl, Model model) throws IllegalStateException, IOException {
 		
@@ -78,8 +77,10 @@ public class LectureController {
 						classFileSyl.getOriginalFilename(),
 						classFileSyl.getContentType());
 				String fileName = dto.getUuid() + "_" + dto.getFileName();
+				String oriFileName = classFileSyl.getOriginalFilename();
 				File newFileName = new File(fileName);
 				classFileSyl.transferTo(newFileName);
+				vo.setClassSylOriginal(oriFileName);
 				vo.setClassSyl(fileName);
 			}				
 			
@@ -88,7 +89,8 @@ public class LectureController {
 		return "redirect:lecturelist";
 	}
 	
-	
+
+
 	@ModelAttribute("course")
 	public List<CourseVO> getDepartments(){
 		
