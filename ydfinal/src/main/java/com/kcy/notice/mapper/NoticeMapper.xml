@@ -5,8 +5,9 @@
 		INSERT INTO k_class_notice
 		(class_notice_id, class_id, class_notice_no, class_notice_title, class_notice_con, class_notice_date, class_notice_hit, class_notice_file, class_notice_original, class_notice_type)
 		VALUES
-		( nextval(notice_id_seq), 'A100', nextval(notice_no_seq), #{classNoticeTitle}, #{classNoticeCon}, date_format(now(), '%Y%m%d'), 1, #{classNoticeFile}, #{classNoticeOriginal}, #{classNoticeType} )
-	<!-- class_notice_id 시퀀스 추가, clasS_id 전공값으로 불러 오기, class_notice_no 시퀀스 추가 -->
+		( nextval(notice_id_seq), 'A100', nextval(notice_no_seq), #{classNoticeTitle}, #{classNoticeCon}, date_format(now(), '%Y
+'), 1, #{classNoticeFile}, #{classNoticeOriginal}, #{classNoticeType} )
+	<!-- , clasS_id 전공값으로 불러 오기 -->
 	</insert>
 	
 	<select id="NoticeList" resultType="map">

@@ -10,9 +10,18 @@
 
   <!-- 본문 start -->
       <h1>과제등록페이지</h1>
+ 
  		
  		<form action="quizInsert" method="post" enctype="multipart/form-data">
+ 	<input th:value="${#authentication.principal.username}" type="text" id="userId">
  		
+ 		<select name="classId">
+ 			<option>강좌 선택</option>
+			<th:block th:each="c : ${classId}">
+ 			<option th:text="${c.classId}" th:value="${c.classId}"></option>
+			</th:block> 		
+ 		</select>
+
  	 <div class="input-group input-group-outline my-3">
       <label class="form-label">제목</label>
       <input type="text" class="form-control" name="quizHTitle">
@@ -26,6 +35,7 @@
     <div class="input-group input-group-outline my-3">
       <label class="form-label">강의계획서</label>
       <input type="file" class="form-control" multiple="multiple" name="classQuizFileSyl">
+      <input type="hideen" class="form-control" multiple="multiple" name="quizHOriginal">
     </div>
  		
     <div class="input-group input-group-outline my-3">

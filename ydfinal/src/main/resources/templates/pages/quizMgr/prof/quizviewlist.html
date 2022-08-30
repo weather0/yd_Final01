@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+<th:block layout:fragment="content">
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css"/>  
+  <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+  <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
+  <!-- 상단 내비바 -->
+  <th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
+  <!-- 본문 start -->
+<div class="container-fluid py-4">
+    <div class="row"> 
+ <table id="quizTable" class="table table-striped" style="width:100%;" >
+        <thead>
+            <tr>
+            	<th>강좌 번호</th>
+            	<th>과제명</th>
+            	<th>제출자 수</th>
+            	<th>등록일</th>
+            </tr>
+        </thead>
+        <tbody>
+        	<input  th:value="${#authentication.principal.username}" type="hidden" id="userid">
+        	<tr th:each="data : ${quizviewlist}">
+        		<td th:text="${data.class_id}"></td>
+        		<td>
+        			<a th:text="${data.quiz_h_title}" th:href="@{/quizview(quizHSeq=${data.quiz_h_seq})}"></a>
+        		</td>
+        		<td th:text="${data.class_to}"></td>
+        		<td th:text="${data.quiz_d_date}"></td>
+        	</tr>
+        </tbody>
+  <!-- 본문 end-->
+</table>
+ </div>
+ </div>
+ <script>
+ 	$('#quizTable').DataTable({});
+ </script>
+</th:block>
+</html>
