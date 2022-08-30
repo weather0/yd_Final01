@@ -54,35 +54,10 @@ public class LectureController {
 	@Value("${spring.servlet.multipart.location}")
 	String filePath;
 
-<<<<<<< HEAD
+
 	Logger logger = LoggerFactory.getLogger(LectureController.class);
 
-=======
-	@PostMapping("/lectureinsert")
-	public String LetureInsert(LectureVO vo, @RequestParam("classFileSyl") MultipartFile classFileSyl, Model model) throws IllegalStateException, IOException {
-		
-		logger.info(vo.toString());
-		
-		
-			if(!classFileSyl.isEmpty()) {
-				FileDto dto = new FileDto(UUID.randomUUID().toString(),
-						classFileSyl.getOriginalFilename(),
-						classFileSyl.getContentType());
-				String fileName = dto.getUuid() + "_" + dto.getFileName();
-				String oriFileName = classFileSyl.getOriginalFilename();
-				File newFileName = new File(fileName);
-				classFileSyl.transferTo(newFileName);
-				vo.setClassSylOriginal(oriFileName);
-				vo.setClassSyl(fileName);
-			}				
-			
-			LectureService.LectureInsert(vo);
-		
-		return "redirect:lecturelist";
-	}
-	
-	
->>>>>>> branch 'master' of https://github.com/weather0/yd_Final01
+
 	@ModelAttribute("course")
 	public List<CourseVO> getDepartments() {
 
