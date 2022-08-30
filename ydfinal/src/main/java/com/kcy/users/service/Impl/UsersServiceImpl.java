@@ -24,8 +24,13 @@ public class UsersServiceImpl implements UsersService {
     }
 
     @Override
-    public List<Map<String, String>> stuAcaInsert() {
-        return mapper.stuAcaInsert();
+    public List<Map<String, String>> stuAcaInsertForm() {
+        return mapper.stuAcaInsertForm();
+    }
+
+    @Override
+    public void stuAcaInsertProc(Map<String, String> map) {
+        mapper.stuAcaInsertProc(map);
     }
 
 }
