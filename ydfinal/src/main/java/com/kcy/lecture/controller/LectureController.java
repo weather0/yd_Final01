@@ -20,11 +20,8 @@ import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -92,12 +89,10 @@ public class LectureController {
 
 
 	@ModelAttribute("course")
-	public List<CourseVO> getDepartments(){
-		
-		
-		return mapper.getCourse();
+	public List<CourseVO> getDepartments(Principal principal,CourseVO vo){
+		vo.setUserId(principal.getName());
+		return mapper.getCourse(vo);
 	}
-	
 	
 	@GetMapping("/lecturelist")
 	public String letureList(Model model) {

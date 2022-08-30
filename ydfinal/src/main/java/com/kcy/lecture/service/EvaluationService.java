@@ -1,9 +1,12 @@
 package com.kcy.lecture.service;
 
 import java.util.List;
+import java.util.Map;
 
 public interface EvaluationService {
 
-	public List<EvaluationVO> EvaluationQuiz(EvaluationVO vo);
-	public void EvaluationSubmission(EvaluationVO vo);
+	public List<EvaluationVO> evaluationQuiz(String classId);
+	public void evaluationSubmission(Map<String,String> map );
+	public List<Map<String,String>> evaluationSelectList(EvaluationVO vo);
+
 }
