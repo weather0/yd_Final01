@@ -13,11 +13,12 @@
   <!-- 본문 start -->
 <div class="container-fluid py-4">
     <div class="row"> 
-    		<h1 th:text="${noticeList.classNoticeType}"></h1>
-			<h1 th:text="${noticeList.classNoticeTitle}"></h1>
-			<h1 th:text="${noticeList.classNoticeDate}"></h1>
-			<a th:href="${'/noticedownload?classNoticeFile='+noticeList.classNoticeFile}"><h1 th:text="${noticeList.classNoticeOriginal}"></h1></a>
-  <!-- 본문 end-->
+ <input  th:value="${#authentication.principal.username}" type="hidden" id="userId" />
+	<h1 th:text="${quiz.userName}"></h1>
+			<h1 th:text="${quiz.quizRContent}"></h1>
+			<h1 th:text="${quiz.quizROrginal}"></h1>
+			<a th:href="${'/quizdownload?quizHFile='+c.quizHFile}">
+			<h1 th:text="${c.quizROrginal}" ></h1></a>
  </div>
  </div>
 </th:block>

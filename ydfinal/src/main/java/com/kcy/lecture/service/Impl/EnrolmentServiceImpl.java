@@ -3,6 +3,8 @@ package com.kcy.lecture.service.Impl;
 import java.util.List;
 import java.util.Map;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,12 +28,14 @@ public class EnrolmentServiceImpl implements EnrolmentService {
 	}
 
 	@Override
+	@Transactional
 	public void EnrolmentInsert(EnrolmentVO vo) {
 		mapper.TotalPlusUpdate(vo);
 		mapper.EnrolmentInsert(vo);
 	}
 
 	@Override
+	@Transactional
 	public void EnrolmentDelete(EnrolmentVO vo) {
 		mapper.TotalMinusUpdate(vo);
 		mapper.EnrolmentDelete(vo);

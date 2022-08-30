@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/layout}">
+
+<th:block layout:fragment="content">
+	<style>
+	.card {
+	margin-bottom: 20px;
+	}
+	</style>
+
+	<link rel="stylesheet" href="https://cdn.datatables.net/v/bs5/dt-1.12.1/datatables.min.css" />
+  	<script src="https://cdn.datatables.net/v/bs5/dt-1.12.1/datatables.min.js"></script>
+	<!-- 상단 내비바 -->
+	<th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
+
+	<!-- 본문 start -->
+	<div class="container-fluid py-4">
+		<div class="row">
+			<h1>등록금 납부 이력 조회</h1>
+			<form action="payListInfo">
+				<div class="row">
+					<div class="col-md-3">
+						<div class="input-group input-group-outline my-3">
+							<label class="form-label"></label> <input type="number"
+								class="form-control" name="billYear" id="billYear">
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="input-group input-group-outline my-3">
+							<label class="form-label"></label> <select class="form-control"
+								name="billSem" id="billSem">															
+								<option value="1">1학기</option>
+								<option value="2">2학기</option>
+							</select>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="input-group input-group-outline my-3">
+							<button class="btn bg-gradient-primary" onclick="onDisplay()">조회</button>
+						</div>
+					</div>
+			</form>
+			
+			<th:block th:each="payStd:${payStdInfo}">
+			<div class="row justify-content-center">
+				<div class="card">
+					<div class="table-responsive">
+						<table class="table text-center mb-0" id="payList">							
+							<tr>
+								<td class="table-secondary">학년</td>
+								<td th:text="${payStd.payHGrade}"></td>
+								<td class="table-secondary">학기</td>
+								<td th:text="${payStd.payHSem}"></td>
+							</tr>
+							<tr>
+								<td class="table-secondary">학과</td>
+								<td th:text="${payStd.userDept}"></td>
+								<td class="table-secondary">학적상태</td>
+								<td th:text="${payStd.studentAcaYn}"></td>
+							</tr>
+							<tr>
+								<td class="table-secondary">납부방식</td>
+								<td><span th:if="${payStd.payHTotal == 1}">일괄납부</span> <span
+									th:if="${payStd.payHTotal != 1}">분할납부</span></td>
+								<td class="table-secondary">납부여부</td>
+								<td><span th:if="${payStd.payHYn.toString().equals('y')}">완납</span>
+									<span th:if="${payStd.payHYn.toString().equals('n')}">미납</span>
+									<span th:if="${payStd.payHYn.toString().equals('s')}">부분미납</span>
+								</td>
+							</tr>							
+						</table>
+					</div>
+				</div>
+			</div>
+			</th:block>
+			
+			<h5>납부 내역</h5>						
+			<div class="card" id="ListInfo">
+				<div class="table-responsive">					
+					<table class="table align-items-center mb-0">						
+						<thead>
+							<tr>
+								<th>납부일자</th>
+								<th>납부유형</th>
+								<th>납부처</th>
+								<th>납부액</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="pay:${payList}">
+								<td th:text="${#calendars.format(pay.payDDay, 'yyyy-MM-dd')}"></td>
+								<td><span th:if="${pay.payHTotal == 1}">일괄</span> <span
+									th:if="${pay.payHTotal != 1}">분할</span></td>
+								<td th:text="${pay.payDBank}"></td>
+								<td th:text="${pay.payDAmount}"></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	 </div>
+		<script>	
+			let date = new Date();
+			let year = document.getElementById('billYear');
+			year.value = date.getFullYear();			
+		</script>
+			<!-- 본문 end-->
+</th:block>
+</html>

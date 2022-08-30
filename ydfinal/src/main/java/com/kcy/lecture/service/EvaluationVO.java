@@ -13,6 +13,7 @@ public class EvaluationVO {
 	private String profQId;
 	private String classMemberId;
 	private String profQContent;
+	private String userId;
 	
 	
 	

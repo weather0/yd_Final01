@@ -9,6 +9,7 @@ import com.kcy.bill.mapper.BillsMapper;
 import com.kcy.bill.service.BillsService;
 import com.kcy.bill.service.BillsVO;
 import com.kcy.bill.service.MajorbVO;
+import com.kcy.bill.service.PayVO;
 
 @Service
 public class BillsServiceImpl implements BillsService {
@@ -25,6 +26,18 @@ public class BillsServiceImpl implements BillsService {
 	@Override
 	public List<MajorbVO> majorbList(MajorbVO vo) {
 		return mapper.majorbList(vo);
+	}
+
+
+	@Override
+	public List<PayVO> payInfo(PayVO vo) {		 
+		return mapper.payInfo(vo);
+	}
+
+
+	@Override
+	public List<PayVO> payStdInfo(PayVO vo) {		
+		return mapper.payStdInfo(vo);
 	}
 
 }

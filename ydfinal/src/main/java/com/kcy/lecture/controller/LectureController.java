@@ -10,8 +10,6 @@ import java.security.Principal;
 import java.util.List;
 import java.util.UUID;
 
-import javax.servlet.http.HttpSession;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,11 +20,8 @@ import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -56,8 +51,10 @@ public class LectureController {
 	private final EnrolmentService EnrolmentService;
 	@Value("${spring.servlet.multipart.location}")
 	String filePath;
-	
-	
+
+
+
+
 	Logger logger = LoggerFactory.getLogger(LectureController.class);
 	
 	@GetMapping("/lectureinsert")
@@ -66,7 +63,6 @@ public class LectureController {
 		return "pages/classMgr/LectureInsert";
 	}
 	
-
 	@PostMapping("/lectureinsert")
 	public String LetureInsert(LectureVO vo, @RequestParam("classFileSyl") MultipartFile classFileSyl, Model model) throws IllegalStateException, IOException {
 		
@@ -78,8 +74,10 @@ public class LectureController {
 						classFileSyl.getOriginalFilename(),
 						classFileSyl.getContentType());
 				String fileName = dto.getUuid() + "_" + dto.getFileName();
+				String oriFileName = classFileSyl.getOriginalFilename();
 				File newFileName = new File(fileName);
 				classFileSyl.transferTo(newFileName);
+				vo.setClassSylOriginal(oriFileName);
 				vo.setClassSyl(fileName);
 			}				
 			
@@ -88,14 +86,13 @@ public class LectureController {
 		return "redirect:lecturelist";
 	}
 	
-	
+
+
 	@ModelAttribute("course")
-	public List<CourseVO> getDepartments(){
-		
-		
-		return mapper.getCourse();
+	public List<CourseVO> getDepartments(Principal principal,CourseVO vo){
+		vo.setUserId(principal.getName());
+		return mapper.getCourse(vo);
 	}
-	
 	
 	@GetMapping("/lecturelist")
 	public String letureList(Model model) {

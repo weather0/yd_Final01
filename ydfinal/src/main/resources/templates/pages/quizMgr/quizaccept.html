@@ -13,27 +13,23 @@
   <!-- 본문 start -->
 <div class="container-fluid py-4">
     <div class="row"> 
- <table id="noticeTable" class="table table-striped" style="width:100%;" >
-        <thead>
-            <tr>
-            	<th>No.</th>
-            	<th>전공</th>
-            	<th>자료구분</th>
-            	<th>제목</th>
-                <th>작성자</th>
-                <th>등록일</th>
-            </tr>
-        </thead>
-        <tbody>
-        <input  th:value="${#authentication.principal.username}" type="hidden" id="classMemberId">
+
+        <input th:value="${#authentication.principal.username}" type="hidden" id="userId" />
+        	<h1 th:text="${quizlist.classId}"></h1>
 			<h1 th:text="${quizlist.quizHTitle}"></h1>
-        </tbody>
+			<h1 th:text="${quizlist.quizHContent}"></h1>
+			<a th:href="${'/quizdownload?quizHFile='+quizlist.quizHFile}">
+			<h1 th:text="${quizlist.quizHOriginal}"></h1>
+			</a>
+			<h1 th:text="${quizlist.quizDOpenday}"></h1>
+			~
+			<h1 th:text="${quizlist.quizDCloseday}"></h1>
   <!-- 본문 end-->
-</table>
  </div>
  
   		<form action="quizAccept" method="post" enctype="multipart/form-data">
-
+		<input type="hidden" id="classId" name="classId" th:value="${quizlist.classId}"/>
+		<input type="hidden" id="quizDId" name="quizDId" th:value="${quizlist.quizDId}"/>
      <div class="input-group input-group-outline my-3">
       <label class="form-label">내용</label> 
       <textarea type="text" class="form-control" name="quizRContent"></textarea>
@@ -42,6 +38,7 @@
     <div class="input-group input-group-outline my-3">
       <label class="form-label">첨부파일</label>
       <input type="file" class="form-control" multiple="multiple" name="classQuizFileSyl">
+      <input type="hidden" class="form-control" multiple="multiple" name="quizROriginal">
     </div>
  		
     <div class="input-group input-group-outline my-3">

@@ -8,7 +8,7 @@ import lombok.Data;
 
 @Data
 public class CourseVO {
-
+	private String userId;
 	private String majorId;
 	private String courseId;
 	private String courseTitle;
@@ -19,5 +19,6 @@ public class CourseVO {
 	private Date courseOpenday;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date courseCloseday;
+	
 	
 }

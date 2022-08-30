@@ -2,16 +2,36 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kcy.lecture.mapper.EvaluationMapper">
 	
-	<select id="EvaluationQuiz" resultType="com.kcy.lecture.service.EvaluationVO">
-		SELECT prof_q_content FROM k_prof_q ;
+	<select id="evaluationQuiz" resultType="com.kcy.lecture.service.EvaluationVO">
+		SELECT prof_q_content FROM k_prof_q
 	</select>
 
-<insert id="EvaluationSubmission">
+<insert id="evaluationSubmission">
 
-	INSERT into k_prof_r(class_id,prof_r_result,prof_r_date,prof_q_id,class_member_id)
-	select class_id,#{profRResult},now(),#{profQId},class_member_id
-	from k_class_member
-	WHERE class_id = #{classId} and stu_id = #{userId} ;
+	insert into k_prof_r(
+		class_id, 
+		prof_r_result, 
+		prof_r_date, 
+		prof_q_id 
+		)
+		values(
+		#{classId},
+		#{profRResult},
+		now(),
+		#{profQId}
+		)
+
 </insert>
+
+	<select id="evaluationSelectList" resultType="map">
+		SELECT  m.class_id,
+				c.course_title,
+				u.user_name
+		from k_class_member as m
+		   join k_class     as cl on m.class_id = cl.class_id 
+		   join k_users     as u  on u.user_id  = cl.prof_id   
+		   join k_course    as c  on c.course_id  = cl.course_id 
+		where m.stu_id = #{userId} and m.class_id not in (select class_id from k_prof_r);
+	</select>
 
 </mapper>

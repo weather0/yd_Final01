@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.kcy.quiz.mapper.QuizMapper;
 import com.kcy.quiz.service.QuizService;
@@ -22,9 +23,10 @@ public class QuizServiceImpl implements QuizService {
 	}
 
 	@Override
+	@Transactional
 	public void QuizHInsert(QuizVo vo) {
 		map.QuizHInsert(vo);
-		
+		map.QuizDInsert(vo);
 	}
 
 	@Override
@@ -41,6 +43,21 @@ public class QuizServiceImpl implements QuizService {
 	@Override
 	public QuizVo QuizSelect(int quizHSeq) {
 		return map.QuizSelect(quizHSeq);
+	}
+
+	@Override
+	public List<Map<String, String>> QuizViewList(QuizVo vo) {
+		return map.QuizViewList(vo);
+	}
+
+	@Override
+	public List<QuizVo> QuizView(QuizVo vo) {
+		return map.QuizView(vo);
+	}
+
+	@Override
+	public QuizVo QuizDetailView(QuizVo vo) {
+		return map.QuizDetailView(vo);
 	}
 
 }

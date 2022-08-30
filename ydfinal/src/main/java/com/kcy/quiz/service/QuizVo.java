@@ -7,11 +7,17 @@ import lombok.Data;
 @Data
 public class QuizVo {
 	private String classId;
+	private String stuId;
 	private String userId;
+	private String userName;
+	
+	// k_class
+	private int classTo;
 	
 	// k_quiz_h 과제 헤더
 	private String quizHTitle;
 	private String quizHContent;
+	private String quizHOriginal;
 	private String quizHFile;
 	private String quizHId;
 	private String quizHSeq;
@@ -27,8 +33,23 @@ public class QuizVo {
 	private String quizRContent;
 	private Date quizRDate;
 	private String quizRFile;
+	private String quizROrginal;
 	// private String quizDId;
 	private int quizRPoint;
 	private String classMemberId;
 	private String quizRId;
+	
+	// 하경
+	private String uuid;
+	private String fileName;
+	private String contentType;
+	
+	public QuizVo() {}
+	
+	public QuizVo(String uuid, String fileName, String contentType) {
+		this.uuid = uuid;
+		this.fileName = fileName;
+		this.contentType = contentType;
+		System.out.println(contentType);
+	}	
 }

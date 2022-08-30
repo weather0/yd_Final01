@@ -9,4 +9,8 @@ public interface QuizService {
 	public List<Map<String, String>> QuizList(QuizVo vo);
 	public QuizVo QuizSelect(int quizHSeq);
 	public void QuizAccept(QuizVo vo);
+	
+	public List<Map<String, String>> QuizViewList(QuizVo vo);
+	public List<QuizVo> QuizView(QuizVo vo);
+	public QuizVo QuizDetailView(QuizVo vo);
 }
