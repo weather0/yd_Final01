@@ -62,8 +62,9 @@ $('#letureTable').DataTable({});
      		data:{
      			classId : update 
      		},
-     		success:function(){
-     		 location.reload();
+     		success:function(data){
+     		 alert('처리완료')
+     		 location.reload()
      		}
     	})
     }

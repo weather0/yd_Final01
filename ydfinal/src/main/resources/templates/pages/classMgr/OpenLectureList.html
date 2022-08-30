@@ -136,6 +136,7 @@
     
     	$(".btn1").on("click",insert);
     	function insert(){
+    		
     		let insert = $(this).data("class_id")
         	let id = $("#userid").val()
         	 $.ajax({
@@ -145,7 +146,8 @@
      			classId : insert,
      			userId: id
      		},
-     		success:function(){
+     		success:function(data){
+     			alert('신청완료')
      			location.reload();
      		}
     	});
@@ -160,7 +162,8 @@
     			data:{
     				classId : deletes
     			},
-    			success:function(){
+    			success:function(data){
+    				alert('삭제완료')
          			location.reload();
          		}
     		})
