@@ -226,7 +226,9 @@
  			}
  		});
  	}
-	
+	function close1(){
+		$('#calendar_insert_modal').modal('hide')
+	}
 	
 </script>
 <title>MyCalendar</title>
@@ -267,7 +269,7 @@
 							<br/>
 							<div class="modal-footer">
 								<input type="button" id="add" class="btn-dark" onclick="calendarInsert();" value="등록"> 
-								<input type="button" class="btn-dark btn-secondary" data-dismiss="modal" value="취소">
+								<input type="button" class="btn-dark btn-secondary" data-dismiss="modal"  onclick="close1();" value="닫기">
 							</div>
 						</form>
 					</div>

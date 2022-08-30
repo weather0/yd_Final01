@@ -15,9 +15,7 @@ public class scheduleVO {
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
 	private String mtrSchDate;
-
 	private String mtrSchTimecode;
-	
 	private String mtrSchStart;
 	private String mtrSchEnd;
 	

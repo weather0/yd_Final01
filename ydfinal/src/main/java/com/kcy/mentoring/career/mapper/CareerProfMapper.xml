@@ -12,7 +12,7 @@
 		SELECT li.career_list_id , li.prof_id, li.career_list_date, q.career_q_id, q.career_q_content,q.career_q_yn 
 		FROM k_career_list li join k_career_q q
 		on li.career_list_id = q.career_list_id
-		WHERE li.prof_id=#{id}
+		WHERE li.prof_id=#{profId}
 	</select>
 	
 	<insert id="careerListInsert" parameterType="String">

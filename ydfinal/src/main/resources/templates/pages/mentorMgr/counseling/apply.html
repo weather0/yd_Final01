@@ -1,0 +1,267 @@
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/layout}">
+<th:block layout:fragment="content">
+	<!-- 상단 내비바 -->
+	<th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
+
+	<head>
+		<link href='./css/calendar/main.css' rel='stylesheet' />
+		<link href='./css/all.css' rel='stylesheet' />
+		<script src='./js/calendar/main.js'></script>
+		<script src="https://code.jquery.com/jquery-3.6.0.js"
+			integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+		<link rel="stylesheet" href="https://cdn.datatables.net/v/bs5/dt-1.12.1/datatables.min.css" />
+		<script src="https://cdn.datatables.net/v/bs5/dt-1.12.1/datatables.min.js"></script>
+		<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+		<script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+		<style>
+			#calendar {
+				max-width: 1100px;
+				margin: 0 auto;
+				padding: 10px 30px 0 30px;
+				margin-bottom: 20px;
+				background: #fff;
+			}
+
+			.frm-div {
+				background: #fff;
+				max-width: 1100px;
+				margin: auto;
+				margin-top: 30px;
+				flex-direction: row;
+			}
+
+			.frm-div form {
+				display: flex;
+				flex-direction: row;
+				justify-content: flex-start;
+				align-items: center;
+				flex-wrap: wrap;
+			}
+
+			.select-box {
+				margin-right: 10px;
+				width: 93.56px;
+			}
+
+			.btn-dark {
+				width: 63.16px;
+			}
+		</style>
+		<script>
+			document.addEventListener('DOMContentLoaded', function () {
+				var name = $('#userId').val();
+				$.ajax({
+					url: "/applyList",
+					type: "post",
+					data: {
+						id: $('#userId').val()
+					},
+					dataType: "json",
+					success: function (data) {
+						fullCalendar(data);
+						if (data.length != 0) {
+							$('#profId').val(data[0].userId)
+						}
+					}
+				});
+			})
+			function fullCalendar(data) {
+				var calendarEl = document.getElementById('calendar');
+
+				var calendar = new FullCalendar.Calendar(calendarEl, {
+					initialDate: '2022-09-20',
+					initialView: 'dayGridMonth',
+					headerToolbar: {
+						left: 'prev,next today',
+						center: 'title',
+						right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+					},
+					editable: true,
+					droppable: true, // this allows things to be dropped onto the calendar
+					drop: function (arg) {
+						if (document.getElementById('drop-remove').checked) {
+							arg.draggedEl.parentNode.removeChild(arg.draggedEl);
+						}
+					},
+					selectable: true,
+					selectMirror: true,
+					select: function (arg) {
+
+						var start = arg.startStr;
+						$("#calendar_start_date").val(start);
+
+					},
+					eventClick: function (info) { // 상담신청 이벤트
+						console.log(info.event._def.extendedProps);
+						calendarSelect(info.event._def.extendedProps.userId);
+
+						$("#calendar_insert_modal").modal("show");
+					},
+
+					dayMaxEvents: true,
+					events: function (info, successCallback) {
+
+						for (var i = 0; i < data.length; i++) {
+
+							data[i].id = data[i].MtrSchId;
+							data[i].title = "";
+
+							data[i].start = data[i].date + "T" + data[i].timeStart;
+							data[i].end = data[i].date + "T" + data[i].timeEnd;
+						}
+						successCallback(data);
+					}
+
+				});
+
+				calendar.render();
+			}
+
+
+			function applyInsert() {
+				var req_check = document.querySelectorAll('input[name="careerQResult"]');
+				var userId = document.getElementById('userId').value;
+				
+				console.log(userId)
+				var chk_req_arr = [];
+				var chk_num_arr = [];
+				
+				$("input[name=careerQResult]").each(function(){
+					var chk = $(this).val();
+					if(chk == ""){
+						alert('뭐 안적었음!')
+						return false;
+					}
+					chk_req_arr.push(chk);
+				})
+				$("input[name=careerQId]").each(function(){
+					var chk = $(this).val();
+					chk_num_arr.push(chk);
+				})
+				
+				  
+					  var testList = new Array() ;
+					  
+					  for(var i = 0; i<chk_req_arr.length; i++){
+						  
+						// 객체 생성
+							var data = new Object() ;
+							data.userId = $('#userId').val();
+							data.careerQId = chk_num_arr[i] ;
+							data.careerQResult = chk_req_arr[i] ;
+							
+							
+							// 리스트에 생성된 객체 삽입
+							testList.push(data) ;
+							console.log(data)
+					  }
+						
+						// String 형태로 변환
+						var jsonData = JSON.stringify(testList) ;
+						
+						console.log(jsonData) ;
+						
+						$.ajax({
+				  			url: "/applyInsert",
+				  			type: "post",
+				  			data: jsonData,
+				  			contentType:'application/json; charset=UTF-8',
+				  			traditional: true,
+				  			dataType: "json",
+				  			success: function() {
+				  				console.log('성공')
+				  				 //location.reload();
+				  			}, 
+				  			error: function() {
+				  			
+									console.log('실패')
+				  			}
+				  		});
+						  return;
+					  
+			}
+
+	
+			function calendarSelect() {
+
+				$.ajax({
+					url: "/applySelect",
+					type: "post",
+					dataType: "json",
+					success: function (result) {
+						console.log(result);
+						$('#clone').empty();
+						for (var i = 0; i < result.length; i++) {
+							console.log(result[i].careerQContent);
+							console.log(result[i].careerQId);
+							let clo = `<tr>
+											 <td>${i + 1}</td>
+											 <td>${result[i].careerQContent}</td>
+											 <td><input type="hidden" name="careerQId" value="${result[i].careerQId}">
+											 	
+											 	 <input type="text" name="careerQResult" required ></td>
+										 </tr>`
+							$('#clone').append(clo)
+						}
+
+					},
+					error: function (result) {
+						console.log(result);
+					}
+				});
+			}
+
+			function close1(){
+				$('#calendar_insert_modal').modal('hide')
+			}
+
+
+		</script>
+		<title>MyCalendar</title>
+	</head>
+
+	<body>
+
+		<div class="modal fade" id="calendar_insert_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+			aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">상 담 신 청</h5>
+					</div>
+					<div class="modal-body">
+						<form id="frm" action="#" method="post" enctype="application/x-www-form-urlencoded">
+							<table class="table align-items-center table-hover" style="width:100%">
+								<thead style="font-weight: bold">
+									<tr>
+										<td>번호</td>
+										<td>진로탐색 질문</td>
+										<td>진로탐색 답변</td>
+									</tr>
+								</thead>
+								<tbody id="clone">
+									<tr>
+										<td><label></label></td>
+										<td><input type="text"></td>
+									</tr>
+
+								</tbody>
+								<input type="hidden" id="userId" name="userId" th:value="${#authentication.name}">
+							</table>
+								
+							<div class="modal-footer">
+								<input type="button" class="modal_close btn-dark" onclick="applyInsert();" value="신청">
+								<input type="button" class="btn-dark modal_close" data-dismiss="modal" onclick="close1();"  value="닫기">
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id='calendar'></div>
+	</body>
+</th:block>
+
+</html>/html>

@@ -1,6 +1,7 @@
 package com.kcy.mentoring.career.controller;
+/*작성자 : 정철우*/
 
-
+import java.security.Principal;
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,53 +40,32 @@ public class CareerProfController {
 	}
 	
 	//교수 개인
-	@RequestMapping("/careerSelectList/{id}")
+	@RequestMapping("/careerSelectList")
 	//@ResponseBody 
-	public String selectList(Model model, @PathVariable String id) {
-		String abc =  service.careerList(id);
+	public String selectList(Model model,Principal principal) {
+		String abc =  service.careerList(principal.getName());
 		System.out.println(abc);
 		if(abc.equals("xxx")) {
 			model.addAttribute("yesno",abc);
 			return "pages/mentorMgr/career/addCareer";
 		} else {			
-			ArrayList<CareerProfVO> ox = service.careerSelectList(id);
+			ArrayList<CareerProfVO> ox = service.careerSelectList(principal.getName());
 			model.addAttribute("listid", abc);			
 			model.addAttribute("list", ox);			
 			return "pages/mentorMgr/career/careerList";
 		}
 	
 	}
-	//교수 개인
-	//@RequestMapping("/careerSelectList/{id}")
-	//public String selectList(Model model, @PathVariable String id) {
-	//	ArrayList<CareerProfVO> ox = service.careerSelectList(id);
-	//	//String yn =  service.careerList(id);
-	//	if(ox != null) {
-			//model.addAttribute("yesno",yn);
-	//		model.addAttribute("list", ox);			
-	//	} else {			
-	//		return "pages/mentorMgr/career/addCareer";
-	//	}
-	//	return "pages/mentorMgr/career/careerList";
-	//}
+
 	
 	//불러오기
-	//@ResponseBody 
-	@RequestMapping("/careerList")
-	public String list(Model model, String id) {
+	public String list() {
 	
 		return "pages/mentorMgr/career/careerList";
 	}
 	
 	
-	//교수 전체
-	//@ResponseBody 
-	//@RequestMapping("/careerAllList")
-	//public String listAll(Model model) {
-	//	model.addAttribute("list", service.careerList());
-	//	
-	//	return "ture";
-	//}
+
 	
 	
 	// 입력
@@ -98,9 +78,9 @@ public class CareerProfController {
 		// 교직원 리스트에 입력
 		@RequestMapping("/careerListInsert")
 		@ResponseBody
-		public String carListInsert(Model model, String id) {
-			service.careerListInsert(id);
-			return "true";
+		public String carListInsert(Model model, String profId) {
+			service.careerListInsert(profId);
+			return profId;
 		}
 	
 	// 수정

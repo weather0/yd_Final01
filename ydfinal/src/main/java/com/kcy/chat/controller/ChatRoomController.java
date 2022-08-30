@@ -15,7 +15,7 @@ import com.kcy.chat.model.ChatRoom;
 import com.kcy.chat.service.ChatRoomRepository;
 
 import lombok.RequiredArgsConstructor;
-
+/*작성자 : 정철우*/
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/chat")

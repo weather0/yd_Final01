@@ -21,7 +21,7 @@ import com.kcy.mentoring.schedule.service.impl.CalenServiceImpl;
 import com.kcy.mentoring.schedule.vo.scheduleVO;
 
 import lombok.RequiredArgsConstructor;
-
+/*작성자 : 정철우*/
 @Controller
 @RequiredArgsConstructor
 public class CalendarController {
@@ -44,7 +44,7 @@ public class CalendarController {
 	@GetMapping("/schedules")
 	@ResponseBody
 	public List<Map<String, Object>> calenderList(Model model,Principal principal, String id) {
-		List<scheduleVO> listAll = service.calendarSelectList(id);
+		List<scheduleVO> listAll = service.calendarSelectList(principal.getName());
 
 		JSONObject jsonObj = new JSONObject();
 		JSONArray jsonArr = new JSONArray();
@@ -65,6 +65,27 @@ public class CalendarController {
 		return jsonArr;
 	}
 
+	/*
+	 * @GetMapping("/schedules")
+	 * 
+	 * @ResponseBody public List<Map<String, Object>> calenderList(Model
+	 * model,Principal principal, String id) { List<scheduleVO> listAll =
+	 * service.calendarSelectList(id);
+	 * 
+	 * JSONObject jsonObj = new JSONObject(); JSONArray jsonArr = new JSONArray();
+	 * 
+	 * HashMap<String, Object> hash = new HashMap<>();
+	 * 
+	 * for (int i = 0; i < listAll.size(); i++) { hash.put("userId",
+	 * listAll.get(i).getUserId()); hash.put("MtrSchId",
+	 * listAll.get(i).getMtrSchId()); hash.put("date",
+	 * listAll.get(i).getMtrSchDate()); hash.put("timecode",
+	 * listAll.get(i).getMtrSchTimecode()); hash.put("timeStart",
+	 * listAll.get(i).getMtrSchStart()); hash.put("timeEnd",
+	 * listAll.get(i).getMtrSchEnd());
+	 * 
+	 * jsonObj = new JSONObject(hash); jsonArr.add(jsonObj); } return jsonArr; }
+	 */
 	//하나 넣기
 	@PostMapping("/scheduleInsert1")
 	@ResponseBody

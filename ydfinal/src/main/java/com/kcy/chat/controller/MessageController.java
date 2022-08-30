@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.kcy.chat.model.ChatMessage;
 
 import lombok.RequiredArgsConstructor;
-
+/*작성자 : 정철우*/
 @RestController
 @RequiredArgsConstructor
 public class MessageController {

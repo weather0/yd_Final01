@@ -37,7 +37,6 @@ public class CalenServiceImpl implements CalenService {
 	public void calendarAllInsert(List<scheduleVO> list) {
 		for (scheduleVO vo1 : list) { // 서비스에서 
 			map.calendarInsert(vo1);
-			System.out.println(vo1);
 		}
 	}
 
