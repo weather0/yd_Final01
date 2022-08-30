@@ -18,7 +18,7 @@
 	 	
 	 	<div class="input-group input-group-outline my-3">
 	      <label class="form-label">청구코드</label>
-	      <input type="text" class="form-control" name="billId">
+	      <input type="text" class="form-control On" name="billId" id="billId" readonly="readonly">
     	</div> 
     	
     	<div class="row">
@@ -38,13 +38,13 @@
     	
     	<div class="input-group input-group-outline my-3">
 	      <label class="form-label">청구액</label>
-	      <input type="number" class="form-control" name="billAmount">
+	      <input type="number" class="form-control" name="billAmount" required>
     	</div>	
     	
     	<div class="input-group input-group-outline my-3">
           <label class="form-label"></label>
     		<select class="form-control" name="majorbId" id="majorbId">
-		     <option value="">학과 선택</option>
+		     <option value="">학과선택</option>
 			   <th:block th:each="mjr : ${majorb}">
 			    <option th:text="${mjr.majorName}" th:value="${mjr.majorId}"></option>
 			   </th:block>
@@ -57,10 +57,18 @@
   	</div>
   </div> 
   
-	<script>
+	<script>		
 		let date = new Date();
 		let year = document.getElementById('billYear');
 		year.value = date.getFullYear();
+		
+		let code = document.getElementById('billId')		
+
+		$(".On").on("click", function () {
+		let sem = document.getElementById('billSem').value
+		let major = document.getElementById('majorbId').value
+		code.value = year.value + sem + major;
+	})
 	</script>
 	
   <!-- 본문 end-->

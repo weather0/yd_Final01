@@ -50,7 +50,7 @@
 <insert id="matching" parameterType="com.kcy.matching.service.MatchingVO">		
 		INSERT INTO k_matching 
 		( prof_id, matching_date, matching_type, matching_id, stu_id ) 
-		VALUES (#{userId}, NOW(), '매칭중', nextval(matchigId_seq), #{studentId})
+		VALUES (#{userId}, NOW(), '0', nextval(matchigId_seq), #{studentId})
 </insert>
 
 <update id="matchingStd" parameterType="com.kcy.matching.service.MatchingVO">		
@@ -62,7 +62,7 @@
 <insert id="matchingChangeOrder" parameterType="com.kcy.matching.service.MatchingChangeVO">
 		INSERT INTO k_matching_change
 		( stu_id, matching_change_yn, matching_change_date, prof_id, matching_change_reason, matching_want )
-		VALUES ( #{stuId}, '검토중', NOW(), #{profId}, #{matchingChangeReason}, #{matchingWant} )
+		VALUES ( #{stuId}, '0', NOW(), #{profId}, #{matchingChangeReason}, #{matchingWant} )
 </insert>
 
 <select id="matchingChangeList" resultType="com.kcy.matching.service.MatchingChangeListVO">
@@ -85,7 +85,7 @@
 		ON ku.user_id = s.student_prof  
 		JOIN k_users ku2 
 		ON ku2.user_id = c.matching_want
-		WHERE c.matching_change_yn = '검토중'
+		WHERE c.matching_change_yn = '0'
 </select>
 
 <select id="matchingName" resultType="com.kcy.matching.service.MatchingStdVO">
@@ -103,13 +103,13 @@
 
 <update id="matchingType" parameterType="com.kcy.matching.service.MatchingVO">		
 		UPDATE k_matching 
-		   SET matching_type = '매칭해지'
+		   SET matching_type = '1'
 		WHERE stu_id = #{studentId} AND prof_id = #{beforeProf}
 </update>
 
 <update id="matchingYes" parameterType="com.kcy.matching.service.MatchingVO">		
 		UPDATE k_matching_change 
-		SET matching_change_yn = '승인'
+		SET matching_change_yn = '1'
 		WHERE stu_id = #{studentId} 
 		AND prof_id = #{beforeProf} 
 		AND matching_want = #{userId}
@@ -117,7 +117,7 @@
 
 <update id="matchingNo" parameterType="com.kcy.matching.service.MatchingChangeVO">
 		UPDATE k_matching_change 
-		SET matching_change_yn = '거부', 
+		SET matching_change_yn = '2', 
 			matching_change_reject = #{matchingChangeReject}
 		WHERE stu_id = #{stuId}
 </update>
