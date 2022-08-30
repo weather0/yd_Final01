@@ -25,24 +25,34 @@
             </tr>
         </thead>
         <tbody>
-        	<input  th:value="${#authentication.principal.username}" type="hidden" id="userid">
-        	<tr th:each="data : ${noticeList}">
-        		<td th:text="${data.class_notice_no}"></td>
-        		<td th:text="${data.class_id}"></td>
-        		<td th:text="${data.class_notice_type}"></td>
-        		<td>
-        		<a th:text="${data.class_notice_title}" th:href="@{/noticeview(classNoticeNo=${data.class_notice_no})}"></a>
-        		</td> 
-        		<td th:text="${data.user_name}"></td>
-        		<td th:text="${data.class_notice_date}"></td>
-        	</tr>
+        <input  th:value="${#authentication.principal.username}" type="hidden" id="classMemberId">
+			<h1 th:text="${quizlist.quizHTitle}"></h1>
         </tbody>
   <!-- 본문 end-->
 </table>
  </div>
+ 
+  		<form action="quizAccept" method="post" enctype="multipart/form-data">
+
+     <div class="input-group input-group-outline my-3">
+      <label class="form-label">내용</label> 
+      <textarea type="text" class="form-control" name="quizRContent"></textarea>
+    </div>	
+      
+    <div class="input-group input-group-outline my-3">
+      <label class="form-label">첨부파일</label>
+      <input type="file" class="form-control" multiple="multiple" name="classQuizFileSyl">
+    </div>
+ 		
+    <div class="input-group input-group-outline my-3">
+      <label class="form-label">제출일</label>
+      <input type="date" class="form-control" name="quizRDate">
+    </div>
+ 		
+    <button class="btn bg-gradient-primary">제출하기</button>
+</form>
+    
+  <!-- 본문 end-->
  </div>
- <script>
- 	$('#noticeTable').DataTable({});
- </script>
 </th:block>
 </html>

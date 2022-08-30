@@ -6,5 +6,6 @@ import java.util.Map;
 public interface UsersService {
     public Map<String, String> stuInfo(String id);
     public List<Map<String, String>> stuAcaInfo(String id);
+    public List<Map<String, String>> stuAcaInsert();
 
 }

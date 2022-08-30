@@ -9,7 +9,9 @@ import lombok.Data;
 @Data
 public class scheduleVO {
 	private int mtrSchId;
+	private String userId;
 	private String profId;
+	
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
 	private String mtrSchDate;

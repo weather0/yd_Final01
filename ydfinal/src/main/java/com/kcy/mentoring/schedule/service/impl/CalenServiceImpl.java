@@ -2,6 +2,8 @@ package com.kcy.mentoring.schedule.service.impl;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,8 +18,8 @@ public class CalenServiceImpl implements CalenService {
 	CalenMapper map;
 
 	@Override
-	public List<scheduleVO> calendarSelectList() {
-		return map.calendarSelectList();
+	public List<scheduleVO> calendarSelectList(String id) {
+		return map.calendarSelectList(id);
 	}
 
 	@Override
@@ -28,6 +30,15 @@ public class CalenServiceImpl implements CalenService {
 	@Override
 	public int calendarInsert(scheduleVO vo) {
 		return map.calendarInsert(vo);
+	}
+	
+	@Override
+	@Transactional 
+	public void calendarAllInsert(List<scheduleVO> list) {
+		for (scheduleVO vo1 : list) { // 서비스에서 
+			map.calendarInsert(vo1);
+			System.out.println(vo1);
+		}
 	}
 
 	@Override

@@ -25,24 +25,11 @@
             </tr>
         </thead>
         <tbody>
-        	<input  th:value="${#authentication.principal.username}" type="hidden" id="userid">
-        	<tr th:each="data : ${noticeList}">
-        		<td th:text="${data.class_notice_no}"></td>
-        		<td th:text="${data.class_id}"></td>
-        		<td th:text="${data.class_notice_type}"></td>
-        		<td>
-        		<a th:text="${data.class_notice_title}" th:href="@{/noticeview(classNoticeNo=${data.class_notice_no})}"></a>
-        		</td> 
-        		<td th:text="${data.user_name}"></td>
-        		<td th:text="${data.class_notice_date}"></td>
-        	</tr>
+			<h1 th:text="${noticeList.classNoticeTitle}"></h1>
         </tbody>
   <!-- 본문 end-->
 </table>
  </div>
  </div>
- <script>
- 	$('#noticeTable').DataTable({});
- </script>
 </th:block>
 </html>

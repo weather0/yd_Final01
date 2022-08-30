@@ -88,4 +88,12 @@ public class MatchingController {
 		return "1";
 	}
 	
+	//지도교수 변경 거부
+	@PostMapping("/changeReject")
+	@ResponseBody
+	public String changeReject(MatchingChangeVO vo) {
+		service.matchingNo(vo);
+		return "1";
+	}
+	
 }

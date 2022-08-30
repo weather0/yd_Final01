@@ -1,5 +1,7 @@
 package com.kcy.mentoring.schedule.controller;
 
+import java.security.Principal;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,17 +36,15 @@ public class CalendarController {
 	}
 
 	@GetMapping("/schedule")
-	public String calender(Model model) {
-		List<scheduleVO> list = service.calendarSelectList();
-		model.addAttribute("list", list);
+	public String calender() {
 
 		return "pages/mentorMgr/schedule/schedule";
 	}
 
 	@GetMapping("/schedules")
 	@ResponseBody
-	public List<Map<String, Object>> calenderList(Model model) {
-		List<scheduleVO> listAll = service.calendarSelectList();
+	public List<Map<String, Object>> calenderList(Model model,Principal principal, String id) {
+		List<scheduleVO> listAll = service.calendarSelectList(id);
 
 		JSONObject jsonObj = new JSONObject();
 		JSONArray jsonArr = new JSONArray();
@@ -52,7 +52,7 @@ public class CalendarController {
 		HashMap<String, Object> hash = new HashMap<>();
 
 		for (int i = 0; i < listAll.size(); i++) {
-			hash.put("ProfId", listAll.get(i).getProfId());
+			hash.put("userId", listAll.get(i).getUserId());
 			hash.put("MtrSchId", listAll.get(i).getMtrSchId());
 			hash.put("date", listAll.get(i).getMtrSchDate());
 			hash.put("timecode", listAll.get(i).getMtrSchTimecode());
@@ -77,20 +77,18 @@ public class CalendarController {
 	@PostMapping("/scheduleInsert2")
 	@ResponseBody
 	public String scheduleInsert(@RequestBody List<scheduleVO> list) {
-		for (scheduleVO vo1 : list) {
-			service.calendarInsert(vo1);
-		}
+			service.calendarAllInsert(list);
+		
 		return "true";
 	}
 	// 선택
-	@PostMapping("/scheduleSelect")
+	@GetMapping("/scheduleSelect")
 	@ResponseBody
-	public String scheduleSelect(scheduleVO vo) {
-			service.calendarSelect(vo);
-		return "true";
+	public scheduleVO scheduleSelect(scheduleVO vo , Model model) {
+		return service.calendarSelect(vo);
 	}
 	// 삭제
-	@PostMapping("/scheduleDelete")
+	@GetMapping("/scheduleDelete")
 	@ResponseBody
 	public String scheduleDelete(scheduleVO vo) {
 			service.calendarDelete(vo);
