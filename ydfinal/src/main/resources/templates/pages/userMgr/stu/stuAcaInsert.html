@@ -146,7 +146,7 @@
                   <td class="table-secondary text-center">복학적용학기</td>
                   <td id="returnPeriod">
                     <div class="row align-items-center ps-3 w-90">
-                      <select class="form-select ps-2 ms-4 me-3 my-2 w-50" id="returnStart" name="acaStart" aria-label="returnStart">
+                      <select class="form-select ps-2 ms-4 me-3 my-2 w-50" id="returnStart" name="returnStart" aria-label="returnStart">
                         <option value="" disabled selected>학기 선택</option>
                         <option th:each="item : ${terms}" th:value="${item.schId}">[[${item.schTitle}]]</option>
                       </select>

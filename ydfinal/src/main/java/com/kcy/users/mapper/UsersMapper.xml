@@ -51,10 +51,24 @@
   values (
          default, 
          #{acaType},
-         #{acaStart},
-         #{acaEnd},
-         #{acaReason},
-         #{acaReasonD},
+         <if test="acaType == '휴학'">
+           #{acaStart},
+           #{acaEnd},
+           #{acaReason},
+           #{acaReasonD},
+         </if>
+         <if test="acaType == '복학'">
+           #{returnStart},
+           null,
+           null,
+           null,
+         </if>
+         <if test="acaType == '자퇴'">
+           null,
+           null,
+           #{acaReason},
+           #{acaReasonD},
+         </if>
          "신청중",
          null,
          #{id},

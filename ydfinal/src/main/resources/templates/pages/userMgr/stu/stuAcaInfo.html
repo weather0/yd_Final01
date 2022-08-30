@@ -99,6 +99,8 @@
               </tr>
             </thead>
             <tbody>
+            
+              <!-- DB로부터 전체 레코드를 뽑아와서 단순히 DataTables의 스타일만 적용하는 경우 -->
               <tr th:each="item : ${myAcaInfos}">
                 <td>[[${item.acaType}]]</td>
                 <td>[[${item.acaStart}]] ~ [[${item.acaEnd}]]</td>
@@ -108,6 +110,8 @@
                 <td>[[${item.acaReject}]]</td>
                 <td>[[${item.acaFile}]]</td>
               </tr>
+              
+              <!-- DataTables의 Server-side processing을 이용(진정한 의미의 페이징) -->
             </tbody>
           </table>
         </div>
