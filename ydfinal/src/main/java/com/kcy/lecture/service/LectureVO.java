@@ -26,6 +26,7 @@ public class LectureVO {
 	private String uuid;
 	private String fileName;
 	private String contentType;
+	private String classSylOriginal;
 	
 	public LectureVO() {}
 	

@@ -13,23 +13,18 @@
   <!-- 본문 start -->
 <div class="container-fluid py-4">
     <div class="row"> 
- <table id="noticeTable" class="table table-striped" style="width:100%;" >
-        <thead>
-            <tr>
-            	<th>No.</th>
-            	<th>전공</th>
-            	<th>자료구분</th>
-            	<th>제목</th>
-                <th>작성자</th>
-                <th>등록일</th>
-            </tr>
-        </thead>
-        <tbody>
+
         <input  th:value="${#authentication.principal.username}" type="hidden" id="classMemberId">
 			<h1 th:text="${quizlist.quizHTitle}"></h1>
-        </tbody>
+			<h1 th:text="${quizlist.quizHContent}"></h1>
+			<a th:href="${'/quizdownload?quizHFile='+quizlist.quizHFile}">
+			<h1 th:text="${quizlist.quizHFile}"></h1>
+			</a>
+			<h1 th:text="${quizlist.quizDOpenday}"></h1>
+			~
+			<h1 th:text="${quizlist.quizDCloseday}"></h1>
   <!-- 본문 end-->
-</table>
+
  </div>
  
   		<form action="quizAccept" method="post" enctype="multipart/form-data">

@@ -39,7 +39,7 @@
 		INSERT INTO k_quiz_r
 		(quiz_r_content, quiz_r_date, quiz_r_file, quiz_d_id, class_member_id, quiz_r_id)
 		VALUES 
-		(#{quizRContent}, #{quizRDate}, #{quizRFile}, 'd5', , 'A125')
+		(#{quizRContent}, #{quizRDate}, #{quizRFile}, 'd5', '?', 'A125')
 	</insert>
 
 </mapper>

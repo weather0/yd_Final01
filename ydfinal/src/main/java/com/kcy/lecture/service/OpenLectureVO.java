@@ -20,4 +20,7 @@ public class OpenLectureVO {
 	private double courseCredit;
 	private String courseTitle;
 	
+	// 하경
+	private String classSylOriginal;
+	
 }
