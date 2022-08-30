@@ -13,38 +13,58 @@
       
       $('option:disabled').css('background-color','lightgray');
       
-      // 휴학시작학기 선택에 따라 휴학종료학기 선택지 제한 표시
-      $('#acaStart').change(function(){
-        let sop = this.value.substring(1);
-        
-        let eops = $('#acaEnd option');
-        
-        for (let eop of eops){
-          if(sop > eop.value.substring(1)){
-            eop.style.display='none';
-          } else {
-            eop.removeAttribute('style');
-          }
-        }
-      })
+      // 초기화면 로딩시 휴학 필수항목 세팅
+      $('#leaveReason input').attr('required','required');
+      $('#leavePeriod select').attr('required','required');
+      
       
       // 휴,복학,자퇴 신청폼 양식 전환
-      $('#acaType input').change(function(){
+      $('#acaType input').on('change',function(){
         if(this.value == "휴학"){
           $('#table2 tr:eq(2) td:first-child').text('휴학구분');
           $('#table2 tr:gt(1)').removeClass('d-none');
           $('#table2 tr:eq(1)').addClass('d-none');
+          $('#leaveReason input').attr('required','required');
+          $('#leavePeriod select').attr('required','required');
         }
         if(this.value == "복학"){
           $('#table2 tr:eq(1)').removeClass('d-none');
           $('#table2 tr:gt(1)').addClass('d-none');
+          $('#leaveReason input').removeAttr('required');
+          $('#leavePeriod select').removeAttr('required');
+          $('#returnPeriod select').attr('required','required');
         }
         if(this.value == "자퇴"){
           $('#table2 tr:eq(2) td:first-child').text('자퇴구분');
           $('#table2 tr:gt(1)').removeClass('d-none');
           $('#table2 tr:eq(1), #table2 tr:eq(3)').addClass('d-none');
+          $('#leaveReason input').attr('required','required');
+          $('#leavePeriod select').removeAttr('required');
+          
         }
+        
       })
+      
+      
+      // 휴학시작학기 선택에 따라 휴학종료학기 선택지 제한 표시
+      $('#acaStart').on('change',function(){
+        let sop = this.value.substring(1);
+        let reops = $('#acaEnd option');
+        
+        // 휴학시작학기 선택 시 휴학종료학기 선택을 일단 초기화
+        $('#acaEnd option:eq(0)').prop("selected", true)
+        
+        // 휴학시작학기보다 과거의 휴학종료학기 선택지는 숨기고, 같거나 미래의 선택지는 표시하기 
+        for (let reop of reops){
+          if(sop > reop.value.substring(1)){
+            reop.style.display='none';
+          } else {
+            reop.removeAttribute('style');
+          }
+        }
+        
+      })
+      
       
     })
   </script>
@@ -90,7 +110,11 @@
 
 
 
-    <form action="">
+    <form action="/stuAcaInsertProc" method="post">
+      <div>
+       <input type="hidden" name="id" th:value="${#authentication.name}">
+      </div>
+    
       <div class="row justify-content-center">
         <div class="col-lg-8 mb-4">
           <div class="card mb-2">
@@ -120,9 +144,9 @@
                 
                 <tr class="d-none">
                   <td class="table-secondary text-center">복학적용학기</td>
-                  <td>
+                  <td id="returnPeriod">
                     <div class="row align-items-center ps-3 w-90">
-                      <select class="form-select ps-2 ms-4 me-3 my-2 w-50" id="returnStart" name="returnStart" aria-label="returnStart">
+                      <select class="form-select ps-2 ms-4 me-3 my-2 w-50" id="returnStart" name="acaStart" aria-label="returnStart">
                         <option value="" disabled selected>학기 선택</option>
                         <option th:each="item : ${terms}" th:value="${item.schId}">[[${item.schTitle}]]</option>
                       </select>
@@ -135,41 +159,41 @@
                 
                 <tr>
                   <td class="table-secondary text-center">휴학구분</td>
-                  <td>
+                  <td id="leaveReason">
                     <div class="form-check form-check-inline px-0 mx-4">
-                      <input class="form-check-input" type="radio" name="acaReason" id="goMilitary">
+                      <input class="form-check-input" type="radio" name="acaReason" id="goMilitary" value="군입대">
                       <label class="custom-control-label fs-6 fw-bold mb-2" for="goMilitary">군입대</label>
                     </div>
                     <div class="form-check form-check-inline px-0 mx-4">
-                      <input class="form-check-input" type="radio" name="acaReason" id="healthIssue">
+                      <input class="form-check-input" type="radio" name="acaReason" id="healthIssue" value="건강문제">
                       <label class="custom-control-label fs-6 fw-bold mb-2" for="healthIssue">건강문제</label>
                     </div>
                     <div class="form-check form-check-inline px-0 mx-4">
-                      <input class="form-check-input" type="radio" name="acaReason" id="examThing">
+                      <input class="form-check-input" type="radio" name="acaReason" id="examThing" value="수험">
                       <label class="custom-control-label fs-6 fw-bold mb-2" for="examThing">수험</label>
                     </div>
                     <div class="form-check form-check-inline px-0 mx-4">
-                      <input class="form-check-input" type="radio" name="acaReason" id="stayAbroad">
+                      <input class="form-check-input" type="radio" name="acaReason" id="stayAbroad" value="해외체류">
                       <label class="custom-control-label fs-6 fw-bold mb-2" for="stayAbroad">해외체류</label>
                     </div>
                     <br>
                     <div class="form-check form-check-inline px-0 mx-4">
-                      <input class="form-check-input" type="radio" name="acaReason" id="familyAffair">
+                      <input class="form-check-input" type="radio" name="acaReason" id="familyAffair" value="가정사">
                       <label class="custom-control-label fs-6 fw-bold mb-0" for="familyAffair">가정사</label>
                     </div>
                     <div class="form-check form-check-inline px-0 mx-4">
-                      <input class="form-check-input" type="radio" name="acaReason" id="jobThing">
+                      <input class="form-check-input" type="radio" name="acaReason" id="jobThing" value="업무관련">
                       <label class="custom-control-label fs-6 fw-bold mb-0" for="jobThing">업무관련</label>
                     </div>
                     <div class="form-check form-check-inline px-0 mx-4">
-                      <input class="form-check-input" type="radio" name="acaReason" id="others">
+                      <input class="form-check-input" type="radio" name="acaReason" id="others" value="기타">
                       <label class="custom-control-label fs-6 fw-bold mb-0" for="others">기타</label>
                     </div>
                   </td>
                 </tr>
                 <tr>
                   <td class="table-secondary text-center">휴학신청기간</td>
-                  <td>
+                  <td id="leavePeriod">
                     <div class="row align-items-center ps-3 w-90">
                       <select class="form-select ps-2 ms-4 me-3 my-2 w-50" id="acaStart" name="acaStart" aria-label="acaStart">
                         <option value="" disabled selected>학기 선택</option>
@@ -217,12 +241,35 @@
           </div> <!-- card table -->
           
           <div class="text-end">
-            <button type="button" class="btn btn-secondary">Secondary</button>
+            <button type="button" id="btn-stuAcaInsert" class="btn btn-block bg-gradient-secondary mb-3" data-bs-toggle="modal" data-bs-target="#modal-stuAcaInsert">신청</button>
+          </div>
+          
+          
+          <div class="modal fade" id="modal-stuAcaInsert" tabindex="-1" role="dialog" aria-labelledby="modal-default" aria-hidden="true">
+            <div class="modal-dialog modal- modal-dialog-centered modal-" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h6 class="modal-title font-weight-normal" id="modal-title-stuAcaInsert">학적변동 신청</h6>
+                  <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <p>학적변동 신청을 완료하시겠습니까?</p>
+                </div>
+                <div class="modal-footer">
+                  <button type="submit" class="btn bg-gradient-secondary">신청</button>
+                  <button type="button" class="btn btn-link  ml-auto" data-bs-dismiss="modal">닫기</button>
+                </div>
+              </div>
+            </div>
           </div>
           
         </div> <!-- col -->
       </div> <!-- row -->
     </form>
+    
+    
 
 
   </div>

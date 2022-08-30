@@ -14,10 +14,25 @@ public class NoticeVo {
 	private Date classNoticeDate; // 자동 입력
 	private int classNoticeHit; // 조회수...?;
 	private String classNoticeFile;
+	private String classNoticeOriginal;
 	private String classNoticeType;
 	
 	// join
 	private String userName;
 	private String profId;
 	private String userId;
+	
+	// 하경
+	private String uuid;
+	private String fileName;
+	private String contentType;
+	
+	public NoticeVo() {}
+	
+	public NoticeVo(String uuid, String fileName, String contentType) {
+		this.uuid = uuid;
+		this.fileName = fileName;
+		this.contentType = contentType;
+		System.out.println(contentType);
+	}	
 }

@@ -4,49 +4,76 @@
 		
 	<select id="EnrolmentList" resultType="map">
 	
-	select c.class_id, j.major_name, u.user_name, i.course_title, c.course_id, i.course_type, c.class_to, i.course_credit, c.class_syl
-		from k_class  as c join k_class_member  as m
-		on c.class_id = m.class_id
-		join k_course as i on i.course_id = c.course_id
-		join k_users  as u on u.user_id = c.prof_id  
-		join k_major as j on j.major_id = i.major_id 
-	WHERE m.stu_id  = #{userId};
+	select  c.class_id, 
+			j.major_name, 
+			u.user_name, 
+			i.course_title, 
+			c.course_id, 
+			i.course_type, 
+			c.class_to, 
+			i.course_credit, 
+			c.class_syl
+			
+	from k_class  as c 
+	 join k_class_member  as m  on c.class_id = m.class_id
+	 join k_course        as i  on i.course_id = c.course_id
+	 join k_users         as u  on u.user_id = c.prof_id  
+	 join k_major         as j  on j.major_id = i.major_id
+	  
+	WHERE m.stu_id  = #{userId}
 	
 	</select>
 
 <insert id="EnrolmentInsert">
-			insert into k_class_member(class_id,stu_id,class_member_id)
-			select class_id,#{userId},CONCAT('CMI',NEXTVAL(class_member_seq))
-			from k_class
-			where class_id = #{classId};
+
+			insert into k_class_member(
+				class_id, 
+				stu_id, 
+				class_member_id
+				)
+			select  class_id, 
+					#{userId}, 
+					CONCAT('CMI',NEXTVAL(class_member_seq))
+			 from k_class
+			 
+			where class_id = #{classId}
 	
 	
 </insert>
 
 
 		<delete id="EnrolmentDelete" parameterType="com.kcy.lecture.service.EnrolmentVO">
-			DELETE FROM k_class_member WHERE class_id = #{classId};
+			DELETE
+			 FROM k_class_member 
+			 
+			WHERE class_id = #{classId}
 		</delete>
 		
 		
 		<update id="TotalPlusUpdate" parameterType="com.kcy.lecture.service.EnrolmentVO">
 	 		
-	 			UPDATE k_class set class_ck = class_ck + 1 WHERE class_id = #{classId};
+	 			UPDATE k_class
+	 			 set class_ck = class_ck + 1
+	 			 
+	 		    WHERE class_id = #{classId}
 	 			
 	    </update>
 	    
 	    
 	    <update id="TotalMinusUpdate" parameterType="com.kcy.lecture.service.EnrolmentVO">
 	    
-	    	UPDATE k_class set class_ck = class_ck - 1 WHERE class_id = #{classId};
+	    	UPDATE k_class 
+	    	 set class_ck = class_ck - 1 
+	    	WHERE class_id = #{classId}
 	    </update>
 	    
 	    
 	    <select id="creitCheck" resultType="map">
 	    	select nvl(sum(i.course_credit),0) as courseCredit
-			from k_class as c join k_course as i on i.course_id  = c.course_id
-			JOIN k_class_member as m on c.class_id  = m.class_id 
-			WHERE m.stu_id = #{userId};
+			 from k_class as c 
+			  join k_course       as i on i.course_id  = c.course_id
+			  join k_class_member as m on c.class_id  = m.class_id 
+			WHERE m.stu_id = #{userId}
 	    
 	    </select>
 
