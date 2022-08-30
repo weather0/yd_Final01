@@ -23,17 +23,18 @@
 <select id="stuAcaInfo" resultType="CustomMap">
   select u.user_name, u.user_id,
          u.user_dept, u.user_phone,
-         sa.aca_type, sa.aca_start, sa.aca_end, sa.aca_reason, 
+         sa.aca_type, fn_terms(sa.aca_start) aca_start, fn_terms(sa.aca_end) aca_end, sa.aca_reason, 
          sa.aca_yn, sa.aca_reject, sa.aca_date, sa.aca_file
          
     from k_users u 
     join k_student_aca sa on (u.user_id = sa.stu_id)
     
    where u.user_id = #{param}
+   order by sa.aca_date desc
 </select>
 
 
-<select id="stuAcaInsert" resultType="CustomMap">
+<select id="stuAcaInsertForm" resultType="CustomMap">
   select sch_id, sch_start, sch_end, sch_title
   
     from k_schedule 
@@ -43,6 +44,25 @@
      
    order by 1;
 </select>
+
+
+<insert id="stuAcaInsertProc" parameterType="map">
+  insert into k_student_aca 
+  values (
+         default, 
+         #{acaType},
+         #{acaStart},
+         #{acaEnd},
+         #{acaReason},
+         #{acaReasonD},
+         "신청중",
+         null,
+         #{id},
+         now(),
+         null
+         )
+
+</insert>
 
 
 
