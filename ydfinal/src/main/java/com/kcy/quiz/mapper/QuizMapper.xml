@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kcy.quiz.mapper.QuizMapper">
+
+	<select id="QuizList" resultType="map">
+		SELECT
+    h.class_id, h.quiz_h_title, h.quiz_h_content, h.quiz_h_file, h.quiz_h_id, h.quiz_h_seq,
+    d.quiz_d_date, d.quiz_d_openday, d.quiz_d_closeday, d.quiz_d_id, d.quiz_h_id
+		FROM 
+			k_quiz_h as h
+		JOIN 
+			k_quiz_d as d
+		ON 	
+			h.quiz_h_id = d.quiz_h_id
+	</select>
+	
+	<insert id="QuizHInsert">
+		INSERT INTO k_quiz_h 
+		VALUES ('A100', #{quizHTitle}, #{quizHContent}, #{quizHFile}, 'a8', nextval(quiz_seq))
+	</insert>
+	<insert id="QuizDInsert">
+		INSERT INTO k_quiz_d
+		VALUES (date_format(now(), '%Y%m%d'), #{quizDOpenday}, #{quizDCloseday}, 'd5', 'a8')
+	</insert>
+	<select id="QuizSelect" resultType="com.kcy.quiz.service.QuizVo">
+		SELECT
+	h.class_id, h.quiz_h_title, h.quiz_h_content, h.quiz_h_file, h.quiz_h_id, h.quiz_h_seq,
+    d.quiz_d_date, d.quiz_d_openday, d.quiz_d_closeday, d.quiz_d_id, d.quiz_h_id
+		FROM
+			k_quiz_h as h
+		JOIN
+			k_quiz_d as d
+		ON
+			h.quiz_h_id = d.quiz_h_id
+		WHERE
+			h.quiz_h_seq = #{quizHSeq}
+	</select>
+	<insert id="QuizAccept">
+		INSERT INTO k_quiz_r
+		(quiz_r_content, quiz_r_date, quiz_r_file, quiz_d_id, class_member_id, quiz_r_id)
+		VALUES 
+		(#{quizRContent}, #{quizRDate}, #{quizRFile}, 'd5', '?', 'A125')
+	</insert>
+
+</mapper>

@@ -3,7 +3,6 @@
 <mapper namespace="com.kcy.users.mapper.UsersMapper">
 
 <select id="stuInfo" resultType="CustomMap">
-
   select u.user_id, u.user_name, 
          s.student_grade, s.student_sem, substr(u.user_ssn,1,6) user_birth,
          u.user_dept, if(u.user_sex = 'f','여','남') user_sex, 
@@ -18,12 +17,10 @@
     join k_credit c using (stu_id) 
     
    where u.user_id = #{param} <!-- get방식으로 파라미터 id 하나만 들어가므로 임의로 적어도 됨(예:param) -->
-
 </select>
 
 
 <select id="stuAcaInfo" resultType="CustomMap">
-
   select u.user_name, u.user_id,
          u.user_dept, u.user_phone,
          sa.aca_type, sa.aca_start, sa.aca_end, sa.aca_reason, 
@@ -33,10 +30,19 @@
     join k_student_aca sa on (u.user_id = sa.stu_id)
     
    where u.user_id = #{param}
-
 </select>
 
 
+<select id="stuAcaInsert" resultType="CustomMap">
+  select sch_id, sch_start, sch_end, sch_title
+  
+    from k_schedule 
+    
+   where sch_type = 'SEMESTER' 
+     and sch_start > now() 
+     
+   order by 1;
+</select>
 
 
 

@@ -3,43 +3,49 @@ package com.kcy.mentoring.career.service.impl;
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.kcy.mentoring.career.mapper.CareerProfMapper;
 import com.kcy.mentoring.career.service.CareerProfService;
 import com.kcy.mentoring.career.vo.CareerProfVO;
-
+@Service
 public class CareerProfServiceImpl implements CareerProfService {
 
 	@Autowired 
 	CareerProfMapper profMppar;
 	
 	@Override
-	public ArrayList<CareerProfVO> careerList() {
-		// TODO Auto-generated method stub
-		return profMppar.careerList();
+	public String careerList(String id) {
+	
+		return profMppar.careerList(id);
 	}
 	@Override
 	public ArrayList<CareerProfVO> careerSelectList(String id) {
-		// TODO Auto-generated method stub
 		return profMppar.careerSelectList(id);
 	}
 
 	@Override
-	public String careerInsert(CareerProfVO vo) {
-		// TODO Auto-generated method stub
-		return profMppar.careerInsert(vo);
+	public void careerInsert(CareerProfVO vo) {
+		 profMppar.careerInsert(vo);
+	}
+	@Override
+	public void careerListInsert(String id) {
+		profMppar.careerListInsert(id);
 	}
 
 	@Override
-	public String careerDelete(CareerProfVO vo) {
-		// TODO Auto-generated method stub
-		return profMppar.careerDelete(vo);
+	public void careerDelete(String id) {
+		 profMppar.careerDelete(id);
 	}
 
 	@Override
-	public String careerUpdate(CareerProfVO vo) {
-		// TODO Auto-generated method stub
-		return profMppar.careerUpdate(vo);
+	public void careerUpdateY(String id) {
+		 profMppar.careerUpdateY(id);
+	}
+	
+	@Override
+	public void careerUpdateN(String id) {
+		profMppar.careerUpdateN(id);
 	}
 
 }

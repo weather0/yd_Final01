@@ -1,14 +1,51 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/layout}">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:th="http://www.thymeleaf.org" 
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+      layout:decorate="~{layouts/layout}">
 
 <th:block layout:fragment="content">
 
-  <style>
-  </style>
   <script>
     $(function() {
-      $('#userMgr').addClass('show')
+      // 사이드바 콜랩스 펼침
+      $('#userMgr').addClass('show');
+      
+      $('option:disabled').css('background-color','lightgray');
+      
+      // 휴학시작학기 선택에 따라 휴학종료학기 선택지 제한 표시
+      $('#acaStart').change(function(){
+        let sop = this.value.substring(1);
+        
+        let eops = $('#acaEnd option');
+        
+        for (let eop of eops){
+          if(sop > eop.value.substring(1)){
+            eop.style.display='none';
+          } else {
+            eop.removeAttribute('style');
+          }
+        }
+      })
+      
+      // 휴,복학,자퇴 신청폼 양식 전환
+      $('#acaType input').change(function(){
+        if(this.value == "휴학"){
+          $('#table2 tr:eq(2) td:first-child').text('휴학구분');
+          $('#table2 tr:gt(1)').removeClass('d-none');
+          $('#table2 tr:eq(1)').addClass('d-none');
+        }
+        if(this.value == "복학"){
+          $('#table2 tr:eq(1)').removeClass('d-none');
+          $('#table2 tr:gt(1)').addClass('d-none');
+        }
+        if(this.value == "자퇴"){
+          $('#table2 tr:eq(2) td:first-child').text('자퇴구분');
+          $('#table2 tr:gt(1)').removeClass('d-none');
+          $('#table2 tr:eq(1), #table2 tr:eq(3)').addClass('d-none');
+        }
+      })
+      
     })
   </script>
 
@@ -51,6 +88,141 @@
       </div>
     </div>
 
+
+
+    <form action="">
+      <div class="row justify-content-center">
+        <div class="col-lg-8 mb-4">
+          <div class="card mb-2">
+  
+            <div class="table-responsive border-radius-lg">
+              <table class="table align-items-center mb-0 fw-bold" id="table2">
+                <tr>
+                  <td class="table-secondary text-center" width="150px">신청구분</td>
+                  <td id="acaType">
+                    <div class="form-check form-check-inline px-0 mx-4">
+                      <input class="form-check-input" type="radio" name="acaType" id="leaveSchool" value="휴학" checked>
+                      <label class="custom-control-label fs-6 fw-bold mb-0" for="leaveSchool">휴학</label>
+                    </div>
+                    <div class="form-check form-check-inline px-0 mx-4">
+                      <input class="form-check-input" type="radio" name="acaType" id="returnSchool" value="복학">
+                      <label class="custom-control-label fs-6 fw-bold mb-0" for="returnSchool">복학</label>
+                    </div>
+                    <div class="form-check form-check-inline px-0 mx-4">
+                      <input class="form-check-input" type="radio" name="acaType" id="outSchool" value="자퇴">
+                      <label class="custom-control-label fs-6 fw-bold mb-0" for="outSchool">자퇴</label>
+                    </div>
+                  </td>
+                </tr>
+                
+                
+                
+                
+                <tr class="d-none">
+                  <td class="table-secondary text-center">복학적용학기</td>
+                  <td>
+                    <div class="row align-items-center ps-3 w-90">
+                      <select class="form-select ps-2 ms-4 me-3 my-2 w-50" id="returnStart" name="returnStart" aria-label="returnStart">
+                        <option value="" disabled selected>학기 선택</option>
+                        <option th:each="item : ${terms}" th:value="${item.schId}">[[${item.schTitle}]]</option>
+                      </select>
+                      부터
+                    </div>
+                  </td>
+                </tr>
+                
+                
+                
+                <tr>
+                  <td class="table-secondary text-center">휴학구분</td>
+                  <td>
+                    <div class="form-check form-check-inline px-0 mx-4">
+                      <input class="form-check-input" type="radio" name="acaReason" id="goMilitary">
+                      <label class="custom-control-label fs-6 fw-bold mb-2" for="goMilitary">군입대</label>
+                    </div>
+                    <div class="form-check form-check-inline px-0 mx-4">
+                      <input class="form-check-input" type="radio" name="acaReason" id="healthIssue">
+                      <label class="custom-control-label fs-6 fw-bold mb-2" for="healthIssue">건강문제</label>
+                    </div>
+                    <div class="form-check form-check-inline px-0 mx-4">
+                      <input class="form-check-input" type="radio" name="acaReason" id="examThing">
+                      <label class="custom-control-label fs-6 fw-bold mb-2" for="examThing">수험</label>
+                    </div>
+                    <div class="form-check form-check-inline px-0 mx-4">
+                      <input class="form-check-input" type="radio" name="acaReason" id="stayAbroad">
+                      <label class="custom-control-label fs-6 fw-bold mb-2" for="stayAbroad">해외체류</label>
+                    </div>
+                    <br>
+                    <div class="form-check form-check-inline px-0 mx-4">
+                      <input class="form-check-input" type="radio" name="acaReason" id="familyAffair">
+                      <label class="custom-control-label fs-6 fw-bold mb-0" for="familyAffair">가정사</label>
+                    </div>
+                    <div class="form-check form-check-inline px-0 mx-4">
+                      <input class="form-check-input" type="radio" name="acaReason" id="jobThing">
+                      <label class="custom-control-label fs-6 fw-bold mb-0" for="jobThing">업무관련</label>
+                    </div>
+                    <div class="form-check form-check-inline px-0 mx-4">
+                      <input class="form-check-input" type="radio" name="acaReason" id="others">
+                      <label class="custom-control-label fs-6 fw-bold mb-0" for="others">기타</label>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="table-secondary text-center">휴학신청기간</td>
+                  <td>
+                    <div class="row align-items-center ps-3 w-90">
+                      <select class="form-select ps-2 ms-4 me-3 my-2 w-50" id="acaStart" name="acaStart" aria-label="acaStart">
+                        <option value="" disabled selected>학기 선택</option>
+                        <option th:each="item : ${terms}" th:value="${item.schId}">[[${item.schTitle}]]</option>
+                      </select>
+                      부터
+                    </div>
+                    <div class="row align-items-center ps-3 w-90">
+                      <select class="form-select ps-2 ms-4 me-3 my-2 w-50" id="acaEnd" name="acaEnd" aria-label="acaEnd">
+                        <option value="" disabled selected>학기 선택</option>
+                        <option th:each="item : ${terms}" th:value="${item.schId}">[[${item.schTitle}]]</option>
+                      </select>
+                      까지
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="table-secondary text-center">상세사유</td>
+                  <td>
+                    <div class="form-floating input-group input-group-dynamic mx-4 my-3 w-90 align-items-center">
+                      <textarea class="form-control" placeholder="Leave a comment here" name="acaReasonD" id="acaReasonD" style="height: 15vh"></textarea>
+                      <label for="acaReasonD">사유 입력</label>
+                    </div>
+  
+                  </td>
+                </tr>
+                <tr>
+                  <td class="table-secondary text-center">서류첨부</td>
+                  <td>ㅇㅇㅇ</td>
+                </tr>
+                
+                
+                
+                
+                
+                
+                
+                
+  
+                
+                
+              </table>
+            </div> <!-- div table-responsive -->
+  
+          </div> <!-- card table -->
+          
+          <div class="text-end">
+            <button type="button" class="btn btn-secondary">Secondary</button>
+          </div>
+          
+        </div> <!-- col -->
+      </div> <!-- row -->
+    </form>
 
 
   </div>

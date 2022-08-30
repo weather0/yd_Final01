@@ -23,4 +23,9 @@ public class UsersServiceImpl implements UsersService {
         return mapper.stuAcaInfo(id);
     }
 
+    @Override
+    public List<Map<String, String>> stuAcaInsert() {
+        return mapper.stuAcaInsert();
+    }
+
 }

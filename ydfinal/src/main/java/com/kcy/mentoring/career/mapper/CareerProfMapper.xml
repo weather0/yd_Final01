@@ -1,15 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kcy.mentoring.career.mapper.CareerProfMapper">
-	<select id="careerList" resultType="com.kcy.mentoring.career.vo.CareerProfVO">
-		SELECT li.career_list_id ,li.major_id, li.prof_id, li.career_list_date, q.career_q_id, q.career_q_content
-		FROM k_career_list li join k_career_q q
-		on li.career_list_id = q.career_list_id
+	<select id="careerList" resultType="String">
+		SELECT IFNULL(A.career_list_id, 'xxx') as career_list_id
+		FROM k_career_list A 
+		RIGHT OUTER JOIN (SELECT '') AS m_dual
+		ON prof_id=#{id}
 	</select>
+	
 	<select id="careerSelectList" resultType="com.kcy.mentoring.career.vo.CareerProfVO">
-		SELECT li.career_list_id ,li.major_id, li.prof_id, li.career_list_date, q.career_q_id, q.career_q_content
+		SELECT li.career_list_id , li.prof_id, li.career_list_date, q.career_q_id, q.career_q_content,q.career_q_yn 
 		FROM k_career_list li join k_career_q q
 		on li.career_list_id = q.career_list_id
 		WHERE li.prof_id=#{id}
 	</select>
+	
+	<insert id="careerListInsert" parameterType="String">
+		INSERT INTO k_career_list
+		(career_list_id, prof_id, career_list_date)
+		VALUES(nextval(sq_career_list), #{profId}, default)
+	</insert>
+	
+	<insert id="careerInsert" parameterType="com.kcy.mentoring.career.vo.CareerProfVO">
+		INSERT INTO k_career_q
+		(career_q_content, career_list_id, career_q_id, career_q_yn)
+		VALUES(#{careerQContent}, #{careerListId}, nextval(sq_career_q_id), default);
+	</insert>
+	
+	<update id="careerUpdateY" parameterType="String">
+		UPDATE k_career_q
+	
+		SET career_q_yn='Y'
+		
+		WHERE career_q_id = #{careerQId};
+	</update>
+	<update id="careerUpdateN" parameterType="String">
+		UPDATE k_career_q
+	
+		SET career_q_yn='N'
+		
+		WHERE career_q_id = #{careerQId};
+	</update>
+	
+	<delete id="careerDelete" parameterType="String">
+		DELETE FROM k_career_q
+		WHERE career_q_id=#{careerQId}
+	</delete>
 </mapper>
