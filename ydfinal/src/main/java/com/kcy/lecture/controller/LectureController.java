@@ -78,8 +78,10 @@ public class LectureController {
 						classFileSyl.getOriginalFilename(),
 						classFileSyl.getContentType());
 				String fileName = dto.getUuid() + "_" + dto.getFileName();
+				String oriFileName = classFileSyl.getOriginalFilename();
 				File newFileName = new File(fileName);
 				classFileSyl.transferTo(newFileName);
+				vo.setClassSylOriginal(oriFileName);
 				vo.setClassSyl(fileName);
 			}				
 			

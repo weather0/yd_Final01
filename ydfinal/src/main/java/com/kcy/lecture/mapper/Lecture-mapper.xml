@@ -14,7 +14,8 @@
 				   #{classSem},
 				   #{classSyl},
 				   default,
-				   #{classTitle}
+				   #{classTitle},
+				   #{classSylOriginal}
 				   )
 		
 		</insert>

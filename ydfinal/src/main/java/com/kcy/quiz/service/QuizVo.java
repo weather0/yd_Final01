@@ -31,4 +31,18 @@ public class QuizVo {
 	private int quizRPoint;
 	private String classMemberId;
 	private String quizRId;
+	
+	// 하경
+	private String uuid;
+	private String fileName;
+	private String contentType;
+	
+	public QuizVo() {}
+	
+	public QuizVo(String uuid, String fileName, String contentType) {
+		this.uuid = uuid;
+		this.fileName = fileName;
+		this.contentType = contentType;
+		System.out.println(contentType);
+	}	
 }

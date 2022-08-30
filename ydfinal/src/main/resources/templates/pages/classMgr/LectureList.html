@@ -39,7 +39,7 @@
         		<td th:text="${data.classTo}"></td>
         		<td th:text="${data.classYear}"></td>
         		<td th:text="${data.classSem}"></td>
-        		<td><a th:href="${'/download?classSyl='+data.classSyl}" th:text="${data.classSyl}"></a></td>
+        		<td><a th:href="${'/download?classSyl='+data.classSyl}" th:text="${data.classSylOriginal}"></a></td>
         		<td><button class="btn bg-gradient-warning btn-sm btn1" th:data-class_id="${data.classId}" th:text="승인"></button></td>
         	</tr>
         </tbody>
