@@ -104,7 +104,23 @@
    	   	
    	$(".reject").on("click", function () {
    		var rejectS = ($(this).closest("tr").find("td:first").text())
-   		console.log(rejectS)   		
+   		$(".NO").on("click", function () {
+   			var rejectR = document.getElementById('reject-text').value;
+	   		console.log(rejectS)
+	   		console.log(rejectR)
+	   		$.ajax({
+	   			type : "POST",
+	   			url : "/changeReject",
+	   			data : { stuId : rejectS,
+	   					 matchingChangeReject : rejectR},
+	   			success : function (result) {
+	   				if(result == "1") {
+	   					alert ("변경 신청 거부")
+	   				}
+	   			}   			
+	   			
+	   		})
+   		})
    	});   	
    	
    	
