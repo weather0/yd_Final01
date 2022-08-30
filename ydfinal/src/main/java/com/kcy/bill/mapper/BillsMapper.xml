@@ -3,7 +3,9 @@
 <mapper namespace="com.kcy.bill.mapper.BillsMapper">
 
 <select id="majorbList" resultType="com.kcy.bill.service.MajorbVO">
-	SELECT major_id, major_name FROM k_major
+	SELECT major_id, major_name 
+	FROM k_major
+	WHERE major_closeday IS NULL; 
 </select>
 
 <insert id="billsInsert">
@@ -11,5 +13,62 @@ INSERT INTO k_bills
 ( bill_id, bill_year, bill_sem, bill_amount, major_id)
 VALUES ( #{billId}, #{billYear}, #{billSem}, #{billAmount}, #{majorbId})
 </insert>
+
+<select id="payStdInfo" resultType="com.kcy.bill.service.PayVO">
+	SELECT u.user_dept, 
+		   kph.pay_h_grade,  
+		   kph.pay_h_sem,
+		   s.student_aca_yn, 
+		   kph.pay_h_total, 
+		   kph.pay_h_yn
+	FROM k_students s
+	JOIN k_users u
+	ON s.stu_id = u.user_id
+	JOIN k_pay_h kph
+	ON s.stu_id = kph.stu_id
+	JOIN k_bills b 
+	ON kph.bill_id = b.bill_id
+	WHERE b.bill_year = #{billYear}
+	AND b.bill_sem = #{billSem} 
+	AND kph.stu_id = #{stuId}
+</select>
+
+<select id="payInfo" resultType="com.kcy.bill.service.PayVO">
+	SELECT kph.pay_h_total, 
+		   kph.pay_h_remain, 
+		   kpd.pay_d_amount, 
+		   kpd.pay_d_bank, 
+		   kpd.pay_d_day 
+	FROM k_pay_h kph
+	LEFT JOIN k_pay_d kpd
+	ON kph.pay_id = kpd.pay_id
+	JOIN k_bills b
+	ON kph.bill_id = b.bill_id 
+	WHERE b.bill_year = #{billYear} 
+	AND b.bill_sem = #{billSem} 
+	AND kph.stu_id = #{stuId}
+</select>
+
+<select id="payCheck" resultType="com.kcy.bill.service.PayVO">
+	SELECT kph.stu_id, 
+		   u.user_name, 
+		   u.user_dept, 
+		   s.student_grade, 
+		   u.user_phone,
+		   kph.pay_h_yn,
+		   kpd.pay_d_day 
+	FROM k_pay_h kph
+	JOIN k_students s 
+	ON kph.stu_id = s.stu_id 
+	JOIN k_users u 
+	ON kph.stu_id = u.user_id
+	JOIN k_pay_d kpd 
+	ON kph.pay_id = kpd.pay_id 
+	JOIN k_bills kb 
+	ON kb.bill_id = kph.bill_id
+	WHERE kb.bill_year = #{billYear}
+	AND kb.bill_sem = #{billSem}
+</select>
+
 </mapper>
 

@@ -11,14 +11,16 @@
 			      class_year,
 			      class_sem,
 			      class_syl,
-			      class_title
+			      class_yn,
+			      class_title,
+			      class_syl_original
 			      )
 			values(
-				   #{classId},
+				   CONCAT("CL",NEXTVAL(class_no_seq)),
 				   #{courseId},
 				   #{profId},
 				   #{classTo},
-				   #{classYear},
+				   2022,
 				   #{classSem},
 				   #{classSyl},
 				   default,
