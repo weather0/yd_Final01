@@ -8,15 +8,15 @@ import com.kcy.lecture.service.OpenLectureVO;
 public interface LectureMapper {
 
 	
-	public void LectureInsert(LectureVO vo);
+	public void lectureInsert(LectureVO vo);
 	
-	public List<LectureVO> LectureList(LectureVO vo);
+	public List<LectureVO> lectureList(LectureVO vo);
 	
-	public void LectureUpdate(LectureVO vo);
+	public void lectureUpdate(LectureVO vo);
 	
-	public void LectureInsertClass(LectureVO vo);
+	public void lectureInsertClass(LectureVO vo);
 	
-	public List<OpenLectureVO> OpenLectureList(OpenLectureVO vo);
+	public List<OpenLectureVO> openLectureList(OpenLectureVO vo);
 	
 	
 	

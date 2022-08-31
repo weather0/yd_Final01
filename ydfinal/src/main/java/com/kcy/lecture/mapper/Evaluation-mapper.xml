@@ -2,11 +2,11 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kcy.lecture.mapper.EvaluationMapper">
 	
-	<select id="evaluationQuiz" resultType="com.kcy.lecture.service.EvaluationVO">
+	<select id="evaluationQuestion" resultType="com.kcy.lecture.service.EvaluationVO">
 		SELECT prof_q_content FROM k_prof_q
 	</select>
 
-<insert id="evaluationSubmission">
+<insert id="evaluationResultInsert">
 
 	insert into k_prof_r(
 		class_id, 
@@ -23,7 +23,7 @@
 
 </insert>
 
-	<select id="evaluationSelectList" resultType="map">
+	<select id="profEvaluationList" resultType="map">
 		SELECT  m.class_id,
 				c.course_title,
 				u.user_name

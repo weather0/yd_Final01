@@ -16,12 +16,12 @@ public class EvaluationServiceImpl implements EvaluationService {
 	@Autowired EvaluationMapper mapper;
 	
 	@Override
-	public List<EvaluationVO> evaluationQuiz(String classId) {
-		return mapper.evaluationQuiz(classId);
+	public List<EvaluationVO> evaluationQuestion(String classId) {
+		return mapper.evaluationQuestion(classId);
 	}
 
 	@Override
-	public void evaluationSubmission(Map<String,String> map) {
+	public void evaluationResultInsert(Map<String,String> map) {
 		EvaluationVO vo = new EvaluationVO();
 		vo.setClassId(map.get("classId"));
 		vo.setClassMemberId(map.get("classMemberId"));
@@ -29,14 +29,14 @@ public class EvaluationServiceImpl implements EvaluationService {
 			vo.setProfQId("EV100"+ i);
 			String ck =	map.get("evaluation"+ i);
 			vo.setProfRResult(ck);
-			mapper.evaluationSubmission(vo);
+			mapper.evaluationResultInsert(vo);
 		}
 	}
 
 	@Override
-	public List<Map<String, String>> evaluationSelectList(EvaluationVO vo) {
+	public List<Map<String, String>> profEvaluationList(EvaluationVO vo) {
 		
-		return mapper.evaluationSelectList(vo);
+		return mapper.profEvaluationList(vo);
 	}
 
 }

@@ -23,38 +23,38 @@ public class EnrolmentServiceImpl implements EnrolmentService {
 	
 
 	@Override
-	public List<Map<String, String>> EnrolmentList(EnrolmentVO vo) {
-		return mapper.EnrolmentList(vo);
+	public List<Map<String, String>> enrolmentList(EnrolmentVO vo) {
+		return mapper.enrolmentList(vo);
 	}
 
 	@Override
 	@Transactional
-	public void EnrolmentInsert(EnrolmentVO vo) {
-		mapper.TotalPlusUpdate(vo);
-		mapper.EnrolmentInsert(vo);
+	public void enrolmentInsert(EnrolmentVO vo) {
+		mapper.totalPlusUpdate(vo);
+		mapper.enrolmentInsert(vo);
 	}
 
 	@Override
 	@Transactional
-	public void EnrolmentDelete(EnrolmentVO vo) {
-		mapper.TotalMinusUpdate(vo);
-		mapper.EnrolmentDelete(vo);
+	public void enrolmentDelete(EnrolmentVO vo) {
+		mapper.totalMinusUpdate(vo);
+		mapper.enrolmentDelete(vo);
 	}
 
 	@Override
-	public void TotalPlusUpdate(EnrolmentVO vo) {
+	public void totalPlusUpdate(EnrolmentVO vo) {
 		
 	}
 
 	@Override
-	public void TotalMinusUpdate(EnrolmentVO vo) {
+	public void totalMinusUpdate(EnrolmentVO vo) {
 		
 	}
 
 	@Override
-	public List<Map<String, String>> creitCheck(EnrolmentVO vo) {
+	public List<Map<String, String>> gradesCheck(EnrolmentVO vo) {
 		
-		return mapper.creitCheck(vo);
+		return mapper.gradesCheck(vo);
 	}
 
 

@@ -18,36 +18,35 @@ public class LectureServiceImpl implements LectureService {
 	@Autowired  LectureMapper mapper;
 	
 	@Override
-	public void LectureInsert(LectureVO vo) {
+	public void lectureInsert(LectureVO vo) {
 		
-		mapper.LectureInsert(vo);
+		mapper.lectureInsert(vo);
 	}
 
 	@Override
-	public List<LectureVO> LectureList(LectureVO vo) {
+	public List<LectureVO> lectureList(LectureVO vo) {
 		
 		
-		return mapper.LectureList(vo) ;
+		return mapper.lectureList(vo) ;
 	}
 
 	@Override
 	@Transactional
-	public void LectureUpdate(LectureVO vo) {
+	public void lectureUpdate(LectureVO vo) {
 		
-		mapper.LectureUpdate(vo);
-		mapper.LectureInsertClass(vo);
+		mapper.lectureUpdate(vo);
+		mapper.lectureInsertClass(vo);
 	}
 
 	@Override
-	public void LectureInsertClass(LectureVO vo) {
+	public void lectureInsertClass(LectureVO vo) {
 		
-		mapper.LectureInsertClass(vo);
 	}
 
 	@Override
-	public List<OpenLectureVO> OpenLectureList(OpenLectureVO vo) {
+	public List<OpenLectureVO> openLectureList(OpenLectureVO vo) {
 		
-		return mapper.OpenLectureList(vo);
+		return mapper.openLectureList(vo);
 	}
 
 

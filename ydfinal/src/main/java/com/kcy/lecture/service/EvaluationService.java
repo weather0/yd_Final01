@@ -5,8 +5,8 @@ import java.util.Map;
 
 public interface EvaluationService {
 
-	public List<EvaluationVO> evaluationQuiz(String classId);
-	public void evaluationSubmission(Map<String,String> map );
-	public List<Map<String,String>> evaluationSelectList(EvaluationVO vo);
+	public List<EvaluationVO> evaluationQuestion(String classId);
+	public void evaluationResultInsert(Map<String,String> map );
+	public List<Map<String,String>> profEvaluationList(EvaluationVO vo);
 
 }
