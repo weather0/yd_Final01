@@ -1,12 +1,14 @@
 package com.kcy.lecture.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public interface EvaluationService {
 
-	public List<EvaluationVO> evaluationQuiz(String classId);
-	public void evaluationSubmission(Map<String,String> map );
-	public List<Map<String,String>> evaluationSelectList(EvaluationVO vo);
-
+	public List<EvaluationVO> evaluationQuestion(String classId);
+	public void evaluationResultInsert(Map<String,String> map );
+	public List<Map<String,String>> profEvaluationList(EvaluationVO vo);
+	public Object classMemberIdSelect(EvaluationVO vo);
+	public HashMap<String, Object> evaluationConfirmation(EvaluationVO vo);
 }

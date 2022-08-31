@@ -29,7 +29,11 @@
         		<td>
         			<a th:text="${data.quiz_h_title}" th:href="@{/quizview(quizHSeq=${data.quiz_h_seq})}"></a>
         		</td>
-        		<td th:text="${data.class_to}"></td>
+        		<td>
+        		<p th:text="${data.quizComplete}"></p>
+        		/
+        		<p th:text="${data.class_to}"
+        		</td>
         		<td th:text="${data.quiz_d_date}"></td>
         	</tr>
         </tbody>

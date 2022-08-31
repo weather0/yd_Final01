@@ -12,7 +12,7 @@
 	<!-- 본문 start -->
 	<div class="container-fluid py-4">
 		<div class="row">
-			<h1>등록금 고지서 등록</h1>
+			<h1>분할 납부 신청</h1>
 
 			<form action="billsInsert" method="post">
 				<div class="input-group input-group-outline my-3">
@@ -54,27 +54,7 @@
 			</form>
 		</div>
 	</div>
-
-	<script>
-		var msg = '[[${message}]]'
-
-		if (msg != '') {
-			alert(msg);
-		}
-
-		let date = new Date();
-		let year = document.getElementById('billYear');
-		year.value = date.getFullYear();
-
-		let code = document.getElementById('billId')
-
-		$(".On").on("click", function() {
-			let sem = document.getElementById('billSem').value
-			let major = document.getElementById('majorbId').value
-			code.value = year.value + sem + major;
-		})
-	</script>
-
+	
 	<!-- 본문 end-->
 </th:block>
 </html>

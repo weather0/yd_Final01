@@ -9,28 +9,46 @@ import org.springframework.stereotype.Service;
 import com.kcy.notice.mapper.NoticeMapper;
 import com.kcy.notice.service.NoticeService;
 import com.kcy.notice.service.NoticeVo;
-
+import com.kcy.quiz.service.QuizVo;
+// 황하경 220831
 @Service
 public class NoticeServiceImpl implements NoticeService {
 
 	@Autowired NoticeMapper map;
 	
 	@Override
-	public void NoticeInsert(NoticeVo vo) {
-		map.NoticeInsert(vo);
+	public void noticeInsert(NoticeVo vo) {
+		map.noticeInsert(vo);
 		
 	}
 
 	@Override
-	public List<Map<String, String>> NoticeList(NoticeVo vo) {
+	public List<NoticeVo> noticeList(NoticeVo vo) {
 		// TODO Auto-generated method stub
-		return map.NoticeList(vo);
+		return map.noticeList(vo);
 	}
 
 	@Override
-	public NoticeVo NoticeView(int classNoticeNo) {
+	public NoticeVo noticeView(int classNoticeNo) {
 		// TODO Auto-generated method stub
-		return map.NoticeView(classNoticeNo);
+		return map.noticeView(classNoticeNo);
+	}
+
+	@Override
+	public List<NoticeVo> getSearchList(NoticeVo vo) {
+		return map.getSearchList(vo);
+	}
+
+	@Override
+	public List<NoticeVo> getClassId(NoticeVo vo) {
+		// TODO Auto-generated method stub
+		return map.getClassId(vo);
+	}
+
+	@Override
+	public List<QuizVo> getClassIdProf(QuizVo vo) {
+		// TODO Auto-generated method stub
+		return map.getClassIdProf(vo);
 	}
 	
 }

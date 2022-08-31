@@ -12,7 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import com.kcy.login.mapper.UserServiceImpl;
 
 import lombok.RequiredArgsConstructor;
-
+// 황하경 220831
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SequrityConfig extends WebSecurityConfigurerAdapter  {
@@ -39,7 +39,7 @@ public class SequrityConfig extends WebSecurityConfigurerAdapter  {
 			.usernameParameter("username")
 			.passwordParameter("password")
 			.and()
-		.csrf().disable()
+		.csrf().disable() // 설정하게 되면 토큰이 나온다
 		.logout()
 			.logoutUrl("/doLogout")
 			.invalidateHttpSession(true)

@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.kcy.file.test.FileDto;
@@ -47,8 +48,8 @@ public class LectureController {
 
 	@Autowired
 	CourseMapper mapper;
-	private final LectureService LectureService;
-	private final EnrolmentService EnrolmentService;
+	private final LectureService lectureService;
+	private final EnrolmentService enrolmentService;
 	@Value("${spring.servlet.multipart.location}")
 	String filePath;
 
@@ -57,17 +58,20 @@ public class LectureController {
 
 	Logger logger = LoggerFactory.getLogger(LectureController.class);
 	
+	//강좌신청 form 보여주는 페이지
 	@GetMapping("/lectureinsert")
-	public String LetureInsertPage(LectureVO vo) {
+	public String letureInsertPage(LectureVO vo) {
 		
 		return "pages/classMgr/LectureInsert";
 	}
 	
+	//실제 강좌신청이 처리되는 부분
 	@PostMapping("/lectureinsert")
-	public String LetureInsert(LectureVO vo, @RequestParam("classFileSyl") MultipartFile classFileSyl, Model model) throws IllegalStateException, IOException {
+	public String letureInsert(LectureVO vo, @RequestParam("classFileSyl") MultipartFile classFileSyl, Model model) throws IllegalStateException, IOException {
 		
 		logger.info(vo.toString());
 		
+		//파일 업로드 하는 부분
 		
 			if(!classFileSyl.isEmpty()) {
 				FileDto dto = new FileDto(UUID.randomUUID().toString(),
@@ -81,75 +85,83 @@ public class LectureController {
 				vo.setClassSyl(fileName);
 			}				
 			
-			LectureService.LectureInsert(vo);
+			lectureService.lectureInsert(vo);
 		
 		return "redirect:lecturelist";
 	}
 	
+	//첨부파일 다운로드 처리하는 부분
+		@GetMapping("/download")
+		public ResponseEntity<Resource> download(@ModelAttribute LectureVO dto) throws IOException {
+			
+			System.out.println("ㅎㅇ");
+			
+			Path path = Paths.get(filePath + "/" + dto.getClassSyl());
+			String contentType = Files.probeContentType(path);
+			HttpHeaders headers = new HttpHeaders();
+			
+			headers.setContentDisposition(ContentDisposition.builder("attachment").
+					filename(dto.getClassSyl(), StandardCharsets.UTF_8)
+					.build());
+		
+			headers.add(HttpHeaders.CONTENT_TYPE, contentType);
+			Resource resource = new InputStreamResource(Files.newInputStream(path));
+			return new ResponseEntity<>(resource, headers, HttpStatus.OK);
+		}
+	
 
-
+	//교과목 테이블에서 필요한 데이터 model로 보내는 부분
 	@ModelAttribute("course")
 	public List<CourseVO> getDepartments(Principal principal,CourseVO vo){
 		vo.setUserId(principal.getName());
 		return mapper.getCourse(vo);
 	}
 	
+	//강좌신청 승인하는 페이지
 	@GetMapping("/lecturelist")
 	public String letureList(Model model) {
-		model.addAttribute("ltrList",LectureService.LectureList(null));
+		model.addAttribute("ltrList",lectureService.lectureList(null));
 		return "pages/classMgr/LectureList";
 	}
 	
 	
 	@PostMapping("/lectureupdate")
 	public String letureUpdate(LectureVO vo) {
-		LectureService.LectureUpdate(vo);
-		LectureService.LectureInsertClass(vo);
-		return "redirect:lecturelist";
+		//강좌신청 승인 하면 업데이트 후 수강신청목록 테이블로 추가하는 부분
+		lectureService.lectureUpdate(vo);
+		return "redirect:lecturelist" ;
 	}
 	
-	@GetMapping("/download")
-	public ResponseEntity<Resource> download(@ModelAttribute LectureVO dto) throws IOException {
-		
-		System.out.println("ㅎㅇ");
-		
-		Path path = Paths.get(filePath + "/" + dto.getClassSyl());
-		String contentType = Files.probeContentType(path);
-		HttpHeaders headers = new HttpHeaders();
-		
-		headers.setContentDisposition(ContentDisposition.builder("attachment").
-				filename(dto.getClassSyl(), StandardCharsets.UTF_8)
-				.build());
 	
-		headers.add(HttpHeaders.CONTENT_TYPE, contentType);
-		Resource resource = new InputStreamResource(Files.newInputStream(path));
-		return new ResponseEntity<>(resource, headers, HttpStatus.OK);
-	}
-
-	
+	//수강신청 페이지 보여주는 부분
 	@GetMapping("/openlecturelist")
-	public String OpenletureList(Model model, Principal principal,EnrolmentVO vo,OpenLectureVO vo1 ) {
+	public String openletureList(Model model, Principal principal,EnrolmentVO vo,OpenLectureVO vo1 ) {
+		//섹션이 갖고 있는 userId를 vo에 실어서 보냄
 		vo.setUserId(principal.getName());
 		vo1.setUserId(principal.getName());
 		
-		model.addAttribute("openList",LectureService.OpenLectureList(vo1));
-		model.addAttribute("enrolmentlist", EnrolmentService.EnrolmentList(vo));
-		model.addAttribute("credit",EnrolmentService.creitCheck(vo));
+		//한 페이지에서 수강신청과 수강신청완료 페이지를 보여주기 위해서 두 데이터를 같이 넘긴다
+		//gradesCheck는 총 학점을 체크하기 위한 데이터를 보내는 부분
+		model.addAttribute("openList",lectureService.openLectureList(vo1));
+		model.addAttribute("enrolmentlist", enrolmentService.enrolmentList(vo));
+		model.addAttribute("gradesCk",enrolmentService.gradesCheck(vo));
 		return "pages/classMgr/OpenLectureList";
 	}
 	
+	//수강신청페이지에서 수강신청완료 테이블로 데이터 추가하는 부분
 	@PostMapping("/openlectureinsert")
-	public String OpenlectureInsert(EnrolmentVO vo) {
-		EnrolmentService.TotalPlusUpdate(vo);
-		EnrolmentService.EnrolmentInsert(vo);
-		return "redirect:openlecturelist";
+	@ResponseBody
+	public boolean openlectureInsert(EnrolmentVO vo) {
+		
+		enrolmentService.enrolmentInsert(vo);
+		return true;
 	}
-	
+	//수강신청완료 테이블에서 수강 취소시에  데이터를 삭제하는 부분이다
 	@RequestMapping("/enrolmentdelete")
-	public String openlectureDelete(EnrolmentVO vo) {
-		EnrolmentService.TotalMinusUpdate(vo);
-		EnrolmentService.EnrolmentDelete(vo);
-		return "redirect:openlecturelist";
+	@ResponseBody
+	public boolean openlectureDelete(EnrolmentVO vo) {
+		enrolmentService.enrolmentDelete(vo);
+		return true;
 	}
 	
 

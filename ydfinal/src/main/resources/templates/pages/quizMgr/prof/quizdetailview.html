@@ -16,10 +16,16 @@
  <input  th:value="${#authentication.principal.username}" type="hidden" id="userId" />
 	<h1 th:text="${quiz.userName}"></h1>
 			<h1 th:text="${quiz.quizRContent}"></h1>
-			<h1 th:text="${quiz.quizROrginal}"></h1>
-			<a th:href="${'/quizdownload?quizHFile='+c.quizHFile}">
-			<h1 th:text="${c.quizROrginal}" ></h1></a>
+			<h1 th:text="${quiz.quizRDate}"></h1>
+			<a th:href="${'/quizdownload?quizHFile='+quiz.quizHFile}">
+			<h1 th:text="${quiz.quizROrginal}" ></h1></a>
+			<form action="quizdetailview" method="post">
+        		<td><input type="text" th:value="${quiz.quizRId}" th:name="quizRId"></td>
+        		<td><input type="number" th:name="quizRPoint"/>
+        		</td>
+        		<button>제출</button>
+        	</form>
  </div>
  </div>
 </th:block>
-</html>
+</html> 

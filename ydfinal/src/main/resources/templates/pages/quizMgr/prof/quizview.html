@@ -20,7 +20,6 @@
             	<th>제출내용</th>
             	<th>제출파일</th>
             	<th>제출일</th>
-            	<th>점수</th>
             </tr>
         </thead>
         <tbody>
@@ -28,7 +27,7 @@
 			<tr th:each="c : ${quiz}">
         		<td th:text="${c.userName}"></td>
         		<td>
-        		<a  th:text="${c.quizRContent}" th:href="@{/quizdetailview(quizRId=${c.quizRId})}"></a>
+        		<a  th:text="${c.quizRContent}" th:href="@{/quizdetailview(quizRId=${c.quizRId}, stuId=${c.stuId})}"></a>
         		<!-- 파라미터 하나 더 보내야 함 stu_id -->
         		</td>
         		<td>

@@ -1,21 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kcy.notice.mapper.NoticeMapper">
-	<insert id="NoticeInsert">
+<!-- 황하경 220831 -->
+
+	<!-- 공지 등록 -->
+	<insert id="noticeInsert">
 		INSERT INTO k_class_notice
-		(class_notice_id, class_id, class_notice_no, class_notice_title, class_notice_con, class_notice_date, class_notice_hit, class_notice_file, class_notice_original, class_notice_type)
+		(
+			class_notice_id, 
+			class_id, 
+			class_notice_no, 
+			class_notice_title, 
+			class_notice_con, 
+			class_notice_date, 
+			class_notice_file, 
+			class_notice_original, 
+			class_notice_type
+		)
 		VALUES
-		( nextval(notice_id_seq), 'A100', nextval(notice_no_seq), #{classNoticeTitle}, #{classNoticeCon}, date_format(now(), '%Y
-'), 1, #{classNoticeFile}, #{classNoticeOriginal}, #{classNoticeType} )
+		( 
+			NEXTVAL(notice_id_seq), 
+			#{classId}, 
+			NEXTVAL(notice_no_seq), 
+			#{classNoticeTitle}, 
+			#{classNoticeCon}, 
+			date_format(now(), '%Y%m%d'), 
+			#{classNoticeFile}, 
+			#{classNoticeOriginal}, 
+			#{classNoticeType} 
+		)
 	<!-- , clasS_id 전공값으로 불러 오기 -->
 	</insert>
 	
-	<select id="NoticeList" resultType="map">
+	<!-- 공지 목록 -->
+	<select id="noticeList" resultType="map">
 		SELECT
-			cn.class_id, cn.class_notice_no, cn.class_notice_type, cn.class_notice_title, cn.class_notice_date,
-			c.class_id, c.prof_id,
-			u.user_id, u.user_name,
-            m.major_id, m.major_name
+			cn.class_notice_no, 
+			cn.class_notice_type, 
+			cn.class_notice_title, 
+			cn.class_notice_date,
+			
+			c.class_id, 
+			c.prof_id,
+			
+			u.user_id, 
+			u.user_name,
+			
+            m.major_id, 
+            m.major_name
 		FROM
 			k_class_notice as cn
 		JOIN
@@ -31,10 +63,35 @@
         ON
             m.major_name = u.user_dept
         WHERE
-            cn.class_id in (select class_id from k_class_member where stu_id = #{userId});
+            c.class_id in (
+            				SELECT class_id 
+                              FROM k_class_member 
+                             WHERE stu_id = #{userId}
+                            )
+        OR
+        	c.class_id in (
+        					SELECT class_id
+        					  FROM k_class
+        					 WHERE prof_id = #{userId}
+        					)
+          <choose>
+        	<when test="classId != null and classId.equals('A100')">
+        		AND 
+        			c.class_id = #{classId}
+        	</when>
+        	<when test="classId != null and classId.equals('s10014')">
+        		AND 
+        			c.class_id = #{classId}
+        	</when>
+        	<when test="classId != null and classId.equals('fff1000')">
+        		AND 
+        			c.class_id = #{classId}
+        	</when>
+        	</choose>
 	</select>
-	<!-- class_id 전공값으로 불러 오기 -->
-	<select id="NoticeView" resultType="com.kcy.notice.service.NoticeVo">
+	
+	<!-- 공지 상세보기 -->
+	<select id="noticeView" resultType="com.kcy.notice.service.NoticeVo">
 		SELECT
 			*
 		FROM
@@ -42,4 +99,24 @@
 		WHERE
 			class_notice_no = #{classNoticeNo}
 	</select>
+	
+		<!-- 강좌 코드 -->
+	<select id="getClassId" resultType="com.kcy.notice.service.NoticeVo">
+		SELECT
+			class_id
+		FROM
+			k_class_member
+		WHERE
+			stu_id = #{userId}
+	</select>
+	
+	<select id="getClassIdProf" resultType="com.kcy.quiz.service.QuizVo">
+		SELECT
+			class_id
+		FROM
+			k_class
+		WHERE
+			prof_id = #{userId}
+	</select>
+	
 </mapper>

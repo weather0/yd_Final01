@@ -40,4 +40,23 @@ public class BillsServiceImpl implements BillsService {
 		return mapper.payStdInfo(vo);
 	}
 
+
+	@Override
+	public List<PayVO> payCheck(PayVO vo) {
+		return mapper.payCheck(vo);
+	}
+
+
+	@Override
+	public void payInsert(PayVO vo) {
+		mapper.payInsert(vo);
+		
+	}
+
+
+	@Override
+	public List<PayVO> billCheck(PayVO vo) {
+		return mapper.billCheck(vo);
+	}
+
 }

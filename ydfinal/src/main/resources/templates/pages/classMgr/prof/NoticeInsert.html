@@ -14,6 +14,13 @@
  		<form action="noticeInsert" method="post" enctype="multipart/form-data">
  		
  	<div class="input-group input-group-static mb-4">
+ 	
+ 	<select name="classId">
+			<option>강좌 선택123</option>
+		<th:block th:each="c : ${profClassId}">
+			<option th:text="${c.classId}" th:value="${c.classId}"></option>
+		</th:block> 		
+	</select>
   
     <select class="form-control" name="classNoticeType" id="classNoticeType">
     	<option value="">구분</option>
@@ -28,20 +35,16 @@
     </div>	
     
      <div class="input-group input-group-outline my-3">
-      <label class="form-label">제목</label>
+      <label class="form-label">내용</label>
       <textarea type="text" class="form-control" name="classNoticeCon"></textarea>
     </div>	
       
     <div class="input-group input-group-outline my-3">
-      <label class="form-label">강의계획서</label>
+      <label class="form-label">첨부파일</label>
       <input type="file" class="form-control" multiple="multiple" name="classNoticeFileSyl">
       <input type="hidden" class="form-control" multiple="multiple" name="classNoticeOriginal">
     </div>
- 		
-    <div class="input-group input-group-outline my-3">
-      <label class="form-label">내용</label>
-      <textarea class="form-control" name="classId"></textarea>
-    </div>
+
     
     <button class="btn bg-gradient-primary">신청하기</button>
 </form>

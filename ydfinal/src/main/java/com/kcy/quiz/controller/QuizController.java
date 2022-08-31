@@ -32,9 +32,10 @@ import com.kcy.quiz.service.QuizService;
 import com.kcy.quiz.service.QuizVo;
 
 import lombok.RequiredArgsConstructor;
-
+// 황하경 220831
 @Controller
 @RequiredArgsConstructor
+
 public class QuizController {
 	@Autowired
 	QuizMapper map;
@@ -43,13 +44,22 @@ public class QuizController {
 	@Value("${spring.servlet.multipart.location}")
 	String filePath;
 	
+	// 강좌 코드
+	@ModelAttribute("classId") 
+	public List<QuizVo> getClassId(Principal principal, QuizVo vo) {
+		vo.setUserId(principal.getName());
+		return map.getClassId(vo);
+	}
+	
+	// 과제 등록(교수)
 	@GetMapping("/quizinsert")
 	public String quizInsertPage() {
 		return "/pages/quizMgr/prof/quizinsert";
 	}
-
+	
+	// 과제 등록(교수) 프로그램
 	@PostMapping("/quizInsert")
-	public String QuizInsert(QuizVo vo, @RequestParam("classQuizFileSyl") MultipartFile classQuizFileSyl, Model model, Principal principal) throws IllegalStateException, IOException {
+	public String quizInsert(QuizVo vo, @RequestParam("classQuizFileSyl") MultipartFile classQuizFileSyl, Model model, Principal principal) throws IllegalStateException, IOException {
 		
 		if(!classQuizFileSyl.isEmpty()) {
 			FileDto dto = new FileDto(UUID.randomUUID().toString(),
@@ -63,57 +73,62 @@ public class QuizController {
 			vo.setQuizHFile(fileName);
 			vo.setUserId(principal.getName());
 		}	
-		quizService.QuizHInsert(vo);
+		quizService.quizHInsert(vo);
 		
-		return "redirect:quizlist";
+		return "redirect:quizviewlist";
 	}
 	
-	@ModelAttribute("classId") 
-	public List<QuizVo> getClassId(Principal principal, QuizVo vo) {
-		vo.setUserId(principal.getName());
-		return map.getClassId(vo);
-	}
-	
+	// 과제 목록(학생)
 	@GetMapping("/quizlist")
 	public String quizlist(Model model, QuizVo vo, Principal principal) {
 		vo.setUserId(principal.getName());
-		model.addAttribute("quizlist", quizService.QuizList(vo));
-		return "pages/quizMgr/quizlist";
+		model.addAttribute("quizlist", quizService.quizList(vo));
+		return "pages/quizMgr/prof/quizviewlist";
 	}
 	
 	// 과제 목록(교수)
 	@GetMapping("/quizviewlist")
 	public String quizviewlist(Model model, QuizVo vo, Principal principal) {
 		vo.setUserId(principal.getName());
-		model.addAttribute("quizviewlist", quizService.QuizViewList(vo));
+		model.addAttribute("quizviewlist", quizService.quizViewList(vo));
 		return "pages/quizMgr/prof/quizviewlist";
 	}
 	
+	// 과제 제출 학생 목록(교수)
 	@GetMapping("/quizview")
 	public String quizview(@RequestParam(value = "quizHSeq") int quizHSeq, Model model, QuizVo vo, Principal principal) {
 		model.addAttribute("quizview", quizHSeq);
-		model.addAttribute("quiz", map.QuizView(vo));
-		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + vo.getUserName());
-		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + quizHSeq);
+		model.addAttribute("quiz", map.quizView(vo));
 		return "pages/quizMgr/prof/quizview";
 	}
 	
+	// 과제 점수 등록 페이지(교수)
 	@GetMapping("/quizdetailview")
-	public String quizDetailView(@RequestParam final String quizRId, Model model, QuizVo vo, Principal principal) {
+	public String quizPointInsertPage(Model model, QuizVo vo, Principal principal) {
 		vo.setUserId(principal.getName());
-		model.addAttribute("quiz", quizService.QuizDetailView(vo));
-		quizService.QuizDetailView(vo);
-		return "pages/quizMgr/prof/quizdetailview";
+		model.addAttribute("quiz", quizService.quizDetailView(vo));
+		quizService.quizDetailView(vo);
+		return "/pages/quizMgr/prof/quizdetailview";
+	}
+	
+	// 과제 점수 등록 페이지 프로그램(교수)
+	@PostMapping("/quizdetailview")
+	public String quizDetailView(Model model, QuizVo vo, Principal principal) {
+		vo.setUserId(principal.getName());
+		System.out.println("!!!!!!!!!!!!!!" + vo.getQuizRId());
+		quizService.quizPointInsert(vo);
+		return "redirect:quizviewlist";
 	}
 
-	
+	// 과제 제출(학생)
 	@GetMapping("/quizaccept")
 	public String quizacceptPage(@RequestParam final int quizHSeq, Model model, QuizVo vo, Principal principal) {
 		vo.setUserId(principal.getName());
-		model.addAttribute("quizlist", quizService.QuizSelect(quizHSeq));
+		model.addAttribute("quizlist", quizService.quizSelect(quizHSeq));
 		return "pages/quizMgr/quizaccept";
 	}
 	
+	// 과제 제출 프로그램(학생)
 	@PostMapping("/quizAccept")
 	public String quizAccept(QuizVo vo, @RequestParam("classQuizFileSyl") MultipartFile classQuizFileSyl, @RequestParam("classId") String classId, Principal principal, Model model) throws IllegalStateException, IOException {
 		if(!classQuizFileSyl.isEmpty()) {
@@ -130,15 +145,14 @@ public class QuizController {
 			vo.setQuizROrginal(oriFileNmae);
 		}	
 		
-		quizService.QuizAccept(vo);
+		quizService.quizAccept(vo);
 		
 		return "redirect:quizlist";
 	}
 	
+	// 파일 다운로드
 	@GetMapping("/quizdownload")
 	public ResponseEntity<Resource> download(@ModelAttribute QuizVo dto) throws IOException {
-		
-		System.out.println("ㅎㅇ");
 		
 		Path path = Paths.get(filePath + "/" + dto.getQuizHFile());
 		String contentType = Files.probeContentType(path);

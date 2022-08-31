@@ -7,17 +7,16 @@ import java.util.Map;
 public interface EnrolmentService {
 	
 	
-	public List<Map<String,String>> EnrolmentList(EnrolmentVO vo);
+	public List<Map<String,String>> enrolmentList(EnrolmentVO vo);
 
-	void EnrolmentInsert(EnrolmentVO vo);
+	void enrolmentInsert(EnrolmentVO vo);
 	
-	public void EnrolmentDelete(EnrolmentVO vo);
+	public void enrolmentDelete(EnrolmentVO vo);
 	
-
-	public void TotalPlusUpdate(EnrolmentVO vo);
+	public void totalPlusUpdate(EnrolmentVO vo);
 	
-	public void TotalMinusUpdate(EnrolmentVO vo);
+	public void totalMinusUpdate(EnrolmentVO vo);
 	
-	public List<Map<String,String>> creitCheck(EnrolmentVO vo);
+	public List<Map<String,String>> gradesCheck(EnrolmentVO vo);
 
 }

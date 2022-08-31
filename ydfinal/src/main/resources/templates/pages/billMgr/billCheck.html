@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/layout}">
+
+<th:block layout:fragment="content">
+
+	<link rel="stylesheet"
+		href="https://cdn.datatables.net/v/bs5/dt-1.12.1/datatables.min.css" />
+	<script
+		src="https://cdn.datatables.net/v/bs5/dt-1.12.1/datatables.min.js"></script>
+	<!-- 상단 내비바 -->
+	<th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
+
+	<!-- 본문 start -->
+	<form action="billCheck">
+		<div class="row">
+			<div class="col-md-3">
+				<div class="input-group input-group-outline my-3">
+					<label class="form-label"></label> <input type="number"
+						class="form-control" name="billYear" id="billYear">
+				</div>
+			</div>
+			<div class="col-md-3">
+				<div class="input-group input-group-outline my-3">
+					<label class="form-label"></label> <select class="form-control"
+						name="billSem" id="billSem">
+						<option value="1">1학기</option>
+						<option value="2">2학기</option>
+					</select>
+				</div>
+			</div>
+			<div class="col-md-3">
+				<div class="input-group input-group-outline my-3">
+					<button class="btn bg-gradient-primary" onclick="onDisplay()">조회</button>
+				</div>
+			</div>
+	</form>
+
+	<th:block th:each="bill:${billCheck}">
+		<div class="row justify-content-center">
+			<div class="card">
+				<div class="table-responsive">
+					<table class="table text-center mb-0" id="payList">
+						<tr>
+							<td class="table-secondary">학번</td>
+							<td th:text="${bill.stuId}"></td>
+							<td class="table-secondary">이름</td>
+							<td th:text="${bill.userName}"></td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+	</th:block>
+
+	<script>
+		let date = new Date();
+		let year = document.getElementById('billYear');
+		year.value = date.getFullYear();
+	</script>
+	<!-- 본문 end-->
+</th:block>
+</html>

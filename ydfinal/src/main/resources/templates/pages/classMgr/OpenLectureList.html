@@ -53,9 +53,9 @@
        					<td th:text=|${data.classCk}/${data.classTo}|></td>
        					<td><a th:href="${'/download?classSyl='+data.classSyl}" th:text="${data.classSyl}"></a></td>
        					
-       					<th:block th:each="credit:${credit}">
+       					<th:block th:each="geades:${gradesCk}">
        					
-	       					<th:block th:if="${credit.courseCredit} + ${data.courseCredit} <= 18">
+	       					<th:block th:if="${geades.courseCredit} + ${data.courseCredit} <= 18">
 	       					
 		       					<th:block th:if="${data.classCk} < ${data.classTo}" >
 		       						<td><button class="btn bg-gradient-warning btn-sm btn1" th:text="신청"  th:data-class_id="${data.classId}"></button></td>
@@ -66,7 +66,7 @@
 		       					</th:block>
 	       					</th:block>
 		       					
-		       					<th:block th:if="${credit.courseCredit} + ${data.courseCredit} > 18">
+		       					<th:block th:if="${geades.courseCredit} + ${data.courseCredit} > 18">
 		       						<td><button class="btn bg-gradient-warning btn-sm btn2" th:text="신청"></button></td>
 		       					</th:block>
 	       					

@@ -3,7 +3,7 @@ package com.kcy.quiz.service;
 import java.sql.Date;
 
 import lombok.Data;
-
+// 황하경 220831
 @Data
 public class QuizVo {
 	private String classId;
@@ -38,6 +38,8 @@ public class QuizVo {
 	private int quizRPoint;
 	private String classMemberId;
 	private String quizRId;
+	private String quizComplete;
+	
 	
 	// 하경
 	private String uuid;
