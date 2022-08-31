@@ -7,6 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.Principal;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,15 +24,18 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.kcy.file.test.FileDto;
 import com.kcy.notice.mapper.NoticeMapper;
 import com.kcy.notice.service.NoticeService;
 import com.kcy.notice.service.NoticeVo;
+import com.kcy.quiz.service.QuizVo;
 
 import lombok.RequiredArgsConstructor;
 
+// 황하경 220831
 @Controller
 @RequiredArgsConstructor
 public class NoticeController {
@@ -43,11 +47,27 @@ public class NoticeController {
 	@Value("${spring.servlet.multipart.location}")
 	String filePath;
 	
+	// 강좌 코드
+	@ModelAttribute("classId") 
+	public List<NoticeVo> getClassId(Principal principal, NoticeVo vo) {
+		vo.setUserId(principal.getName());
+		return map.getClassId(vo);
+	}
+	
+	// 강좌 코드
+	@ModelAttribute("profClassId") 
+	public List<QuizVo> getClassIdProf(Principal principal, QuizVo vo) {
+		vo.setUserId(principal.getName());
+		return map.getClassIdProf(vo);
+	}
+	
+	// 공지 등록
 	@GetMapping("/noticeinsert")
 	public String NoticeInsertPage() {
 		return "/pages/classMgr/prof/NoticeInsert";
 	}
 	
+	// 공지 등록 프로그램
 	@PostMapping("/noticeInsert")
 	public String NoticeInsert(NoticeVo vo, @RequestParam("classNoticeFileSyl") MultipartFile classNoticeFileSyl, Model model) throws IllegalStateException, IOException {
 		
@@ -64,37 +84,39 @@ public class NoticeController {
 			vo.setClassNoticeOriginal(oriFileName);
 		}				
 		
-		noticeService.NoticeInsert(vo);
+		noticeService.noticeInsert(vo);
 		
 		return "redirect:noticelist";
 	}
 	
+	// 공지 목록
 	@GetMapping("/noticelist")
-	public String noticelist(Model model, String id, Principal principal, NoticeVo vo) {
-		System.out.println(principal.getName());
+	public String noticelist(Model model, Principal principal, NoticeVo vo) {
 		vo.setUserId(principal.getName());
-		model.addAttribute("noticeList", noticeService.NoticeList(vo));
-		return "pages/classMgr/NoticeList";
+		System.out.println("!!!!!!!!!!!!!!!!!" + vo.getClassId());
+		model.addAttribute("noticeList", noticeService.noticeList(vo));
+		return "/pages/classMgr/NoticeList";
 	}
 	
+	// 공지 상세 보기
 	@GetMapping("/noticeview")
 	public String noticeview(@RequestParam final int classNoticeNo, Model model) {
-		NoticeVo vo = noticeService.NoticeView(classNoticeNo);
+		NoticeVo vo = noticeService.noticeView(classNoticeNo);
 		model.addAttribute("noticeList", vo);
 		return "/pages/classMgr/NoticeView";
 	}
 	
+	// 파일 다운로드
 	@GetMapping("/noticedownload")
 	public ResponseEntity<Resource> download(@ModelAttribute NoticeVo dto) throws IOException {
-		
-		System.out.println("ㅎㅇ");
-		
+
 		Path path = Paths.get(filePath + "/" + dto.getClassNoticeFile());
 		String contentType = Files.probeContentType(path);
 		HttpHeaders headers = new HttpHeaders();
 		
 		headers.setContentDisposition(ContentDisposition.builder("attachment").
 				filename(dto.getClassNoticeFile(), StandardCharsets.UTF_8)
+				// 수정
 				.build());
 	
 		headers.add(HttpHeaders.CONTENT_TYPE, contentType);

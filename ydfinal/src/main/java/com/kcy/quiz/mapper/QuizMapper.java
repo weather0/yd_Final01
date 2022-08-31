@@ -5,17 +5,20 @@ import java.util.Map;
 
 import com.kcy.lecture.service.LectureVO;
 import com.kcy.quiz.service.QuizVo;
-
+// 황하경 220831
 public interface QuizMapper {
-	public void QuizHInsert(QuizVo vo);
-	public void QuizDInsert(QuizVo vo);
-	public List<Map<String, String>> QuizList(QuizVo vo);
-	public QuizVo QuizSelect(int quizHSeq);
-	public void QuizAccept(QuizVo vo);
+	public void quizHInsert(QuizVo vo);
+	public void quizDInsert(QuizVo vo);
+	public List<Map<String, String>> quizList(QuizVo vo);
+	public QuizVo quizSelect(int quizHSeq);
+	public void quizAccept(QuizVo vo);
 	
-	public List<Map<String, String>> QuizViewList(QuizVo vo);
-	public List<QuizVo> QuizView(QuizVo vo);
-	public QuizVo QuizDetailView(QuizVo vo);
+	public List<Map<String, String>> quizViewList(QuizVo vo);
+	public List<QuizVo> quizView(QuizVo vo);
+	public QuizVo quizDetailView(QuizVo vo);
+	public void quizPointInsert(QuizVo vo);
 	
 	public List<QuizVo> getClassId(QuizVo vo);
+	
+	public QuizVo quizComplete(QuizVo vo);
 }

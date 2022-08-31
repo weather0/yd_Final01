@@ -13,7 +13,25 @@
   <!-- 본문 start -->
 <div class="container-fluid py-4">
     <div class="row"> 
- <table id="noticeTable" class="table table-striped" style="width:100%;" >
+    
+   <form name="searchform" autocomplete="off">
+   <input th:value="${#authentication.principal.username}" type="hidden" id="userid">
+     <select sec:authorize="hasRole('ROLE_STU')" name="classId">
+			<option>강좌 선택</option>
+		<th:block th:each="c : ${classId}">
+			<option th:text="${c.classId}" th:value="${c.classId}"></option>
+		</th:block> 		
+	</select>
+ 	<select sec:authorize="hasRole('ROLE_PROF')" name="classId">
+			<option>강좌 선택123</option>
+		<th:block th:each="c : ${profClassId}">
+			<option th:text="${c.classId}" th:value="${c.classId}"></option>
+		</th:block> 		
+	</select>
+		<button type="submit" th:value="검색">검색</button>
+	</form>
+	
+	<table id="noticeTable" class="table table-striped" style="width:100%;" >
         <thead>
             <tr>
             	<th>No.</th>
@@ -25,7 +43,6 @@
             </tr>
         </thead>
         <tbody>
-        	<input  th:value="${#authentication.principal.username}" type="hidden" id="userid">
         	<tr th:each="data : ${noticeList}">
         		<td th:text="${data.class_notice_no}"></td>
         		<td th:text="${data.class_id}"></td>
@@ -38,11 +55,12 @@
         	</tr>
         </tbody>
   <!-- 본문 end-->
-</table>
+	</table>
+	
  </div>
  </div>
  <script>
- 	$('#noticeTable').DataTable({});
+ 		$('#noticeTable').DataTable({});
  </script>
 </th:block>
 </html>

@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.kcy.login.service.UserVo;
 
 import lombok.RequiredArgsConstructor;
-
+// 황하경 220831
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)

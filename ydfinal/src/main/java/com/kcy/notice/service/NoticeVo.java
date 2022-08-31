@@ -3,7 +3,7 @@ package com.kcy.notice.service;
 import java.util.Date;
 
 import lombok.Data;
-
+// 황하경 220831
 @Data
 public class NoticeVo {
 	private String classNoticeId; // 게시판 코드
@@ -21,6 +21,8 @@ public class NoticeVo {
 	private String userName;
 	private String profId;
 	private String userId;
+	private String stuId;
+	private String profClassId;
 	
 	// 하경
 	private String uuid;
