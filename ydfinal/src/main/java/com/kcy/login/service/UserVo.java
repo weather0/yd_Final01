@@ -8,7 +8,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import lombok.Data;
-
+// 황하경 220831
 @Data
 public class UserVo implements UserDetails {
 	

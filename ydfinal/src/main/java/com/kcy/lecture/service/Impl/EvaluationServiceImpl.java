@@ -1,5 +1,6 @@
 package com.kcy.lecture.service.Impl;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -16,12 +17,12 @@ public class EvaluationServiceImpl implements EvaluationService {
 	@Autowired EvaluationMapper mapper;
 	
 	@Override
-	public List<EvaluationVO> evaluationQuiz(String classId) {
-		return mapper.evaluationQuiz(classId);
+	public List<EvaluationVO> evaluationQuestion(String classId) {
+		return mapper.evaluationQuestion(classId);
 	}
 
 	@Override
-	public void evaluationSubmission(Map<String,String> map) {
+	public void evaluationResultInsert(Map<String,String> map) {
 		EvaluationVO vo = new EvaluationVO();
 		vo.setClassId(map.get("classId"));
 		vo.setClassMemberId(map.get("classMemberId"));
@@ -29,14 +30,32 @@ public class EvaluationServiceImpl implements EvaluationService {
 			vo.setProfQId("EV100"+ i);
 			String ck =	map.get("evaluation"+ i);
 			vo.setProfRResult(ck);
-			mapper.evaluationSubmission(vo);
+			mapper.evaluationResultInsert(vo);
 		}
 	}
 
 	@Override
-	public List<Map<String, String>> evaluationSelectList(EvaluationVO vo) {
+	public List<Map<String, String>> profEvaluationList(EvaluationVO vo) {
 		
-		return mapper.evaluationSelectList(vo);
+		return mapper.profEvaluationList(vo);
+	}
+
+
+	@Override
+	public Object classMemberIdSelect(EvaluationVO vo) {
+		
+		return mapper.classMemberIdSelect(vo);
+	}
+
+	@Override
+	public HashMap<String, Object> evaluationConfirmation(EvaluationVO vo) {
+		HashMap<String, Object> check = new HashMap<String, Object>();
+		for(int i=0; i< 7; i++) {
+			vo.setProfQId("EV100"+i);
+			check.put("EV100"+ i, mapper.evaluationConfirmation(vo));
+		}
+		return check;
+		
 	}
 
 }

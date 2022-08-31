@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.kcy.quiz.mapper.QuizMapper;
 import com.kcy.quiz.service.QuizService;
 import com.kcy.quiz.service.QuizVo;
-
+// 황하경 220831
 @Service
 public class QuizServiceImpl implements QuizService {
 
@@ -18,46 +18,56 @@ public class QuizServiceImpl implements QuizService {
 
 
 	@Override
-	public List<Map<String, String>> QuizList(QuizVo vo) {
-		return map.QuizList(vo);
+	public List<Map<String, String>> quizList(QuizVo vo) {
+		return map.quizList(vo);
 	}
 
 	@Override
 	@Transactional
-	public void QuizHInsert(QuizVo vo) {
-		map.QuizHInsert(vo);
-		map.QuizDInsert(vo);
+	public void quizHInsert(QuizVo vo) {
+		map.quizHInsert(vo);
+		map.quizDInsert(vo);
 	}
 
 	@Override
-	public void QuizDInsert(QuizVo vo) {
-		map.QuizDInsert(vo);	
+	public void quizDInsert(QuizVo vo) {
+		map.quizDInsert(vo);	
 	}
 
 	@Override
-	public void QuizAccept(QuizVo vo) {
-		map.QuizAccept(vo);
+	public void quizAccept(QuizVo vo) {
+		map.quizAccept(vo);
 		
 	}
 
 	@Override
-	public QuizVo QuizSelect(int quizHSeq) {
-		return map.QuizSelect(quizHSeq);
+	public QuizVo quizSelect(int quizHSeq) {
+		return map.quizSelect(quizHSeq);
 	}
 
 	@Override
-	public List<Map<String, String>> QuizViewList(QuizVo vo) {
-		return map.QuizViewList(vo);
+	public List<Map<String, String>> quizViewList(QuizVo vo) {
+		return map.quizViewList(vo);
 	}
 
 	@Override
-	public List<QuizVo> QuizView(QuizVo vo) {
-		return map.QuizView(vo);
+	public List<QuizVo> quizView(QuizVo vo) {
+		return map.quizView(vo);
 	}
 
 	@Override
-	public QuizVo QuizDetailView(QuizVo vo) {
-		return map.QuizDetailView(vo);
+	public QuizVo quizDetailView(QuizVo vo) {
+		return map.quizDetailView(vo);
+	}
+
+	@Override
+	public void quizPointInsert(QuizVo vo) {
+		map.quizPointInsert(vo);
+	}
+
+	@Override
+	public QuizVo quizComplete(QuizVo vo) {
+		return map.quizComplete(vo);
 	}
 
 }

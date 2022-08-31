@@ -8,8 +8,9 @@ import com.kcy.lecture.service.EvaluationVO;
 public interface EvaluationMapper {
 
 	
-	public List<EvaluationVO> evaluationQuiz(String classId);
-	public void evaluationSubmission(EvaluationVO vo);
-	
-	public List<Map<String,String>> evaluationSelectList(EvaluationVO vo);
+	public List<EvaluationVO> evaluationQuestion(String classId);
+	public void evaluationResultInsert(EvaluationVO vo);
+	public List<Map<String,String>> profEvaluationList(EvaluationVO vo);
+	public Object classMemberIdSelect(EvaluationVO vo);
+	public List<EvaluationVO> evaluationConfirmation(EvaluationVO vo);
 }

@@ -14,6 +14,7 @@ public class EvaluationVO {
 	private String classMemberId;
 	private String profQContent;
 	private String userId;
+	private int cnt;
 	
 	
 	

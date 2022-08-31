@@ -2,36 +2,58 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kcy.lecture.mapper.EvaluationMapper">
 	
-	<select id="evaluationQuiz" resultType="com.kcy.lecture.service.EvaluationVO">
+	<select id="evaluationQuestion" resultType="com.kcy.lecture.service.EvaluationVO">
 		SELECT prof_q_content FROM k_prof_q
 	</select>
 
-<insert id="evaluationSubmission">
+<insert id="evaluationResultInsert">
 
 	insert into k_prof_r(
 		class_id, 
 		prof_r_result, 
 		prof_r_date, 
-		prof_q_id 
+		prof_q_id,
+		class_member_id 
 		)
 		values(
 		#{classId},
 		#{profRResult},
 		now(),
-		#{profQId}
+		#{profQId},
+		#{classMemberId}
 		)
 
 </insert>
 
-	<select id="evaluationSelectList" resultType="map">
-		SELECT  m.class_id,
+	<select id="profEvaluationList" resultType="map">
+	SELECT          m.class_id,
 				c.course_title,
 				u.user_name
 		from k_class_member as m
 		   join k_class     as cl on m.class_id = cl.class_id 
 		   join k_users     as u  on u.user_id  = cl.prof_id   
-		   join k_course    as c  on c.course_id  = cl.course_id 
-		where m.stu_id = #{userId} and m.class_id not in (select class_id from k_prof_r);
+		   join k_course    as c  on c.course_id  = cl.course_id
+		where m.class_member_id not in (SELECT class_member_id from k_prof_r) AND m.stu_id  = #{userId}
+	</select>
+	
+	<select id="classMemberIdSelect" resultType="map" >
+		
+				SELECT class_member_id
+				from k_class_member 
+				where stu_id = #{userId} and class_id = #{classId};
+	</select>
+
+	<select id="evaluationConfirmation" resultType="com.kcy.lecture.service.EvaluationVO">
+	
+			select b.prof_r_result,nvl(cnt,0) as cnt
+  			from (
+			SELECT COUNT(*) as cnt ,prof_r_result
+			  from k_prof_r
+			 WHERE prof_q_id =#{profQId}
+			 group by (prof_r_result)) a
+			right outer join  (select '매우좋음' prof_r_result UNION SELECT '좋음'UNION SELECT '보통이다'UNION SELECT '별로다'UNION SELECT '매우별로다') b
+			on  a.prof_r_result = b.prof_r_result;
+	
 	</select>
 
 </mapper>

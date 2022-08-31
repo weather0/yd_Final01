@@ -6,42 +6,121 @@
 
 <th:block layout:fragment="content">
 
-	<link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css"/>  
-  	<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-  	<script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
-  	<script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
-  	
+	<link rel="stylesheet"
+		href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css" />
+	<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+	<script
+		src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+	<script
+		src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
+
 	<!-- 상단 내비바 -->
 	<th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
 
 	<!-- 본문 start -->
 	<h1>납부자 대상자 리스트</h1>
-		<table class="table" id="matchingTable" style="width:100%">
-			<thead>
-				<tr>
-					<th>학번</th>
-					<th>이름</th>
-					<th>학과</th>
-					<th>학년</th>
-					<th>연락처</th>
-					<th>납부여부</th>
-					<th>납부일</th>					
-				</tr>		
-			</thead>
-			<tbody>
-				<tr th:each="">
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-			</tbody>
-	
+	<form action="payCheckInfo">
+		<div class="row">
+			<div class="col-md-2">
+				<div class="input-group input-group-outline my-3">
+					<label class="form-label"></label> 
+					<input type="number" class="form-control" name="billYear" id="billYear" required="required">
+				</div>
+			</div>
+			<div class="col-md-2">
+				<div class="input-group input-group-outline my-3">
+					<label class="form-label"></label> 
+					<select class="form-control" name="billSem" id="billSem">
+						<option value='0'>학기선택</option>						
+						<option value=1>1학기</option>
+						<option value=2>2학기</option>
+					</select>
+				</div>
+			</div>
+			<div class="col-md-2">
+				<div class="input-group input-group-outline my-3">
+					<label class="form-label"></label> 
+					<select class="form-control" name="userDept" id="userDept">
+						<option value="">학과선택</option>
+						  <th:block th:each="mjr : ${majorb}">
+						    <option th:text="${mjr.majorName}" th:value="${mjr.majorName}"></option>
+						  </th:block>			
+					</select>
+				</div>
+			</div>
+			<div class="col-md-2">
+				<div class="input-group input-group-outline my-3">
+					<label class="form-label"></label> 
+					<select class="form-control" name="payHDiv" id="payHDiv">
+						<option value="">납부방식</option>
+						<option value="b">일괄납부</option>
+						<option value="s">분할납부</option>
+					</select>
+				</div>
+			</div>
+			<div class="col-md-2">
+				<div class="input-group input-group-outline my-3">
+					<label class="form-label"></label> 
+					<select class="form-control" name="payHYn" id="payHYn">
+						<option value="">납부여부</option>
+						<option value="y">완납</option>
+						<option value="n">미납</option>
+						<option value="s">부분미납</option>
+					</select>
+				</div>
+			</div>
+			<div class="col-md-2">
+				<div class="input-group input-group-outline my-3">
+					<button class="btn bg-gradient-primary">조회</button>
+				</div>
+			</div>
+	</form>
+
+	<table class="table" id="payCheckInfo" style="width: 100%">
+		<thead>
+			<tr>
+				<th>학번</th>
+				<th>이름</th>
+				<th>학과</th>
+				<th>학년</th>
+				<th>연락처</th>
+				<th>납부방식</th>
+				<th>납부여부</th>
+				<th>납부일</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="pay:${payCheckInfo}">
+				<td th:text=${pay.stuId}></td>
+				<td th:text=${pay.userName}></td>
+				<td th:text=${pay.userDept}></td>
+				<td th:text=${pay.payHGrade}></td>
+				<td th:text=${pay.userPhone}></td>
+				<td>
+					<span th:if="${pay.payHDiv.toString().equals('b')}">일괄납부</span>
+					<span th:if="${pay.payHDiv.toString().equals('s')}">분할납부</span>
+				</td>
+				<td>
+					<span th:if="${pay.payHYn.toString().equals('y')}">완납</span> 
+					<span th:if="${pay.payHYn.toString().equals('n')}">미납</span>
+					<span th:if="${pay.payHYn.toString().equals('s')}">부분미납</span>
+				</td>
+				<td th:text="${#calendars.format(pay.payDDay, 'yyyy-MM-dd')}"></td>				
+			</tr>
+		</tbody>
+	</table>
+
 	<script>
-   	$("#").DataTable({ });
-   </script>
 	
+	let date = new Date();
+	let year = document.getElementById('billYear');
+	year.value = date.getFullYear();
+	
+	$("#payCheckInfo").DataTable({});
+			
+	
+	</script>
+
 	<!-- 본문 end-->
 </th:block>
 </html>

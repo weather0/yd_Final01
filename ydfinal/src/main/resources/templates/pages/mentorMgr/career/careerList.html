@@ -1,212 +1,190 @@
 <!doctype html>
-<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml"
-  xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-  layout:decorate="~{layouts/layout}">
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/layout}">
 <th:block layout:fragment="content">
-  <!-- 상단 내비바 -->
-  <th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
+	<!-- 상단 내비바 -->
+	<th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
 
-  <head>
-    <meta charset='utf-8' />
-    <link rel="stylesheet" href="https://cdn.datatables.net/v/bs5/dt-1.12.1/datatables.min.css" />
-    <script src="https://cdn.datatables.net/v/bs5/dt-1.12.1/datatables.min.js"></script>
-	<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-     <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
-    <style>
-      #myAcaInfos_filter input {
-        border: 1px solid #d2d6da;
-      }
+	<head>
+<meta charset='utf-8' />
+<link rel="stylesheet" href="https://cdn.datatables.net/v/bs5/dt-1.12.1/datatables.min.css" />
+<script src="https://cdn.datatables.net/v/bs5/dt-1.12.1/datatables.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 
-      .pagination .active .page-link {
-        background-color: #7b809a;
-        border-color: #7b809a;
-      }
-    </style>
+<style>
+#myAcaInfos_filter input {
+	border: 1px solid #d2d6da;
+}
+
+.pagination .active .page-link {
+	background-color: #7b809a;
+	border-color: #7b809a;
+}
+</style>
 
 
-    <script>
-  
-    
+<script>
+jQuery(function($){
+    $("#careerList").DataTable({});
+});
 
-        $('#careerList').DataTable({
-          "language": {
-            "lengthMenu": "페이지 당: _MENU_",
-            "search": "검색:",
-            "searchPlaceholder": "키워드를 입력하세요",
-            "zeroRecords": "검색결과가 없습니다",
-            "info": "_START_ - _END_ (전체: _MAX_건)",
-            "infoFiltered": "(검색결과: _TOTAL_건)",
-            "infoEmpty": "",
-            "paginate": {
-              "previous": "<",
-              "next": ">",
-            }
-          }
-        });
-        
-        function carUpdateY(e){
-        	if (!confirm("해당 질문을 활성화 하시겠습니까?? 확인(예) 또는 취소(아니오)를 선택해주세요.")) {
- 		        return;
- 		    }
-        	e= window.event|| e
-        	var id = $(e.target).data('qid');
-        	
-         	$.ajax({
-         		url:"/careerUpdateY",
-        		type:"get",
-         		data:{
-         			id : id 
-         		},
-         		success:function(){
-         			location.reload();
-         		},
-         		error : function(){
-         			console.log("실패요")
-         		}
-         	})
-        }
-        function carUpdateN(id){
-        	 if (!confirm("해당 질문을 비활성화 하시겠습니까?? 확인(예) 또는 취소(아니오)를 선택해주세요.")) {
- 		        return;
- 		    }
-        	e= window.event|| e
-        	var id = $(e.target).data('qid');
-         	$.ajax({
-         		url:"/careerUpdateN",
-        		type:"post",
-         		data:{
-         			id : id 
-         		},
-         		success:function(){
-         			location.reload();
-         		},
-         		error : function(){
-         			console.log("실패요")
-         		}
-         	})
-        }
-        function carDelete(id){
-        	 if (!confirm("정말 삭제 하시겠습니까? 확인(예) 또는 취소(아니오)를 선택해주세요.")) {
- 		        return;
- 		    }
-        	e= window.event|| e
-        	var id = $(e.target).data('qid');
-         	$.ajax({
-         		url:"/careerDelete",
-        		type:"post",
-         		data:{
-         			id : id 
-         		},
-         		success:function(){
-         			location.reload();
-         		},
-         		error : function(){
-         			console.log("실패요")
-         		}
-         	})
-      	  }
-        
-        function carInsert(){
-         	$.ajax({
-         		url:"/careerInsert",
-        		type:"post",
-         		data:{
-         			id : id 
-         		},
-         		success:function(){
-         			location.reload();
-         		},
-         		error : function(){
-         			console.log("실패요")
-         		}
-         	})
-      	  }
-      
-        function sendCareer(){
-        	var careerQContent = document.getElementById('careerQContent').value;
-        	var careerListId = document.getElementById('careerListId').value;
-        	var profId = document.getElementById('profId').value;
-        	
-         	$.ajax({
-         		url:"/careerInsert",
-        		type:"post",
-         		data:{
-         			careerListId : careerListId,
-         			careerQContent : careerQContent
-         		},
-         		success:function(){
-         			location.reload();
-         		},
-         		error : function(){
-         			console.log("실패요")
-         		}
-         	})
-      	  }
-      
-      
-      
-    </script>
+		
+	
+	
+	function carUpdateY(e) {
+		if (!confirm("해당 질문을 활성화 하시겠습니까?? 확인(예) 또는 취소(아니오)를 선택해주세요.")) {
+			return;
+		}
+		e = window.event || e
+		var id = $(e.target).data('qid');
 
-  </head>
+		$.ajax({
+			url : "/careerUpdateY",
+			type : "get",
+			data : {
+				id : id
+			},
+			success : function() {
+				location.reload();
+			},
+			error : function() {
+				console.log("실패요")
+			}
+		})
+	}
+	function carUpdateN(id) {
+		if (!confirm("해당 질문을 비활성화 하시겠습니까?? 확인(예) 또는 취소(아니오)를 선택해주세요.")) {
+			return;
+		}
+		e = window.event || e
+		var id = $(e.target).data('qid');
+		$.ajax({
+			url : "/careerUpdateN",
+			type : "post",
+			data : {
+				id : id
+			},
+			success : function() {
+				location.reload();
+			},
+			error : function() {
+				console.log("실패요")
+			}
+		})
+	}
+	function carDelete(id) {
+		if (!confirm("정말 삭제 하시겠습니까? 확인(예) 또는 취소(아니오)를 선택해주세요.")) {
+			return;
+		}
+		e = window.event || e
+		var id = $(e.target).data('qid');
+		$.ajax({
+			url : "/careerDelete",
+			type : "post",
+			data : {
+				id : id
+			},
+			success : function() {
+				location.reload();
+			},
+			error : function() {
+				console.log("실패요")
+			}
+		})
+	}
 
-  <body>
+	function carInsert() {
+		$.ajax({
+			url : "/careerInsert",
+			type : "post",
+			data : {
+				id : id
+			},
+			success : function() {
+				location.reload();
+			},
+			error : function() {
+				console.log("실패요")
+			}
+		})
+	}
 
-    <div class="row">
+	function sendCareer() {
+		var careerQContent = document.getElementById('careerQContent').value;
+		var careerListId = document.getElementById('careerListId').value;
+		var profId = document.getElementById('profId').value;
 
-	<form th:action="@{/careerInsert}">
-      <table>
-        <th>추가할 질문을 입력해주세요</th>
-        <td><input type="text" id="careerListId" name="careerListId" th:value="${listid}"></td>
-        <td><input type="text" id="profId" name="profId" th:value="${#authentication.name}"></td>
-        <td><input type="text" id="careerQContent" name="careerQContent"  ></td>
-        <td><input type="button"  onclick="sendCareer();" value="등록"></td>
-      </table>
-	</form>
+		$.ajax({
+			url : "/careerInsert",
+			type : "post",
+			data : {
+				careerListId : careerListId,
+				careerQContent : careerQContent
+			},
+			success : function() {
+				location.reload();
+			},
+			error : function() {
+				console.log("실패요")
+			}
+		})
+	}
+</script>
 
-      <div class="row justify-content-center">
-        <div class="card py-3">
+	</head>
 
-          <div class="table-responsive">
-            <table id="careerList" class="table align-items-center table-hover" style="width:100%">
-              <thead style="font-weight: bold">
-                <tr>
-                  <td>번호</td>
-                  <td>진로탐색 질문</td>
-                  <td>등록 일자</td>
-                  <td>사용 여부</td>
-                  <td>사용 전환</td>
-                  <td>삭제</td>
-                </tr>
-              </thead>
-              <tbody>
-                <tr th:each="item : ${list}">
-                  <td>[[${itemStat.count}]]</td>
-                  <td>[[${item.careerQContent}]]</td>
-                  <td>[[${item.careerListDate}]]</td>
-                  <td>[[${item.careerQYn}]]</td>
-                  <th:block th:switch="${item.careerQYn}"> 
-					  <td th:case="Y">
-					  	<button  type="button" class="btn bg-gradient-primary btn1"  
-							  th:data-qid="${item.careerQId}"
-		           			  th:onclick="carUpdateN()" th:text="해제">
-		           		</button></td> 
-					 <td th:case="N">
-					  	<button type="button" class="btn bg-gradient-primary btn1"  
-							  th:data-qid="${item.careerQId}"
-		           			  th:onclick="carUpdateY(this.getAttribute('QId'))" th:text="사용">
-		           		</button></td> 
-				  </th:block>
-				  <td><button  type="button" class="btn bg-gradient-primary btn2" th:data-qid="${item.careerQId}"
-		           			  th:onclick="carDelete(this.getAttribute('QId'))" th:text="삭제"></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </div>
-    </div>
-  </body>
+	<body style="overflow-x: hidden">
+
+		<div class="row justify-content-center  w-95">
+
+			<form th:action="@{/careerInsert}">
+				<table>
+					<th>추가할 질문을 입력해주세요</th>
+					<td><input type="hidden" id="careerListId" name="careerListId" th:value="${listid}"></td>
+					<td><input type="hidden" id="profId" name="profId" th:value="${#authentication.name}"></td>
+					<td><input type="text" id="careerQContent" name="careerQContent"></td>
+					<td><button type="button" class="btn-dark" onclick="sendCareer();" >등록</button></td>
+				</table>
+			</form>
+
+			<div class="row justify-content-center w-93">
+				<div class="card py-3">
+
+					<div class="table-responsive">
+						<table id="careerList" class="table align-items-center table-hover" style="width: 100%">
+							<thead style="font-weight: bold">
+								<tr>
+									<td class="text-center">번호</td>
+									<td class="text-center">진로탐색 질문</td>
+									<td class="text-center">등록 일자</td>
+									<td class="text-center">사용 여부</td>
+									<td class="text-center">사용 전환</td>
+									<td class="text-center">삭제</td>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="item : ${list}">
+									<td class="text-center">[[${itemStat.count}]]</td>
+									<td>[[${item.careerQContent}]]</td>
+									<td class="text-center">[[${item.careerListDate}]]</td>
+									<td class="text-center">[[${item.careerQYn}]]</td>
+									<th:block th:switch="${item.careerQYn}">
+										<td th:case="Y"  class="text-center">
+											<button type="button" class="btn bg-gradient-primary btn1" th:data-qid="${item.careerQId}" th:onclick="carUpdateN()" th:text="해제"></button>
+										</td>
+										<td th:case="N"  class="text-center">
+											<button type="button" class="btn bg-gradient-primary btn1" th:data-qid="${item.careerQId}" th:onclick="carUpdateY(this.getAttribute('QId'))" th:text="사용"></button>
+										</td>
+									</th:block>
+									<td  class="text-center"><button type="button" class="btn bg-gradient-primary btn2" th:data-qid="${item.careerQId}" th:onclick="carDelete(this.getAttribute('QId'))" th:text="삭제"></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+		</div>
+	</body>
 </th:block>
 
 </html>

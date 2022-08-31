@@ -1,0 +1,78 @@
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/layout}">
+<th:block layout:fragment="content">
+	<link rel="stylesheet" href="https://cdn.datatables.net/v/bs5/dt-1.12.1/datatables.min.css" />
+	<script src="https://cdn.datatables.net/v/bs5/dt-1.12.1/datatables.min.js"></script>
+	<!-- 상단 내비바 -->
+	<th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
+	<link rel="stylesheet" href="https://cdn.datatables.net/v/bs5/dt-1.12.1/datatables.min.css" />
+	<script src="https://cdn.datatables.net/v/bs5/dt-1.12.1/datatables.min.js"></script>
+
+	<script>
+		jQuery(function($) {
+			$("#foo-table")
+					.DataTable(
+							{
+								ajax : {
+									url : "/applyList",
+									type : "POST",
+									dataSrc : ''
+								},
+								columns : [
+										{
+											targets : 0,
+											data : "userName"
+										},
+										{
+											targets : 4,
+											data : "mtrCount"
+										},
+										{
+											targets : 1,
+											data : "mtrSchDate"
+										},
+										{
+											targets : 2,
+											data : "mtrSchStart"
+										},
+										{
+											targets : 3,
+											data : "mtrStatus"
+										},
+										{
+											targets : 5,
+											title : '버튼',
+											data : "userName",
+											render : function(data) {
+												return '<button type="button" class="btn-dark" data-target="#" data-toggle="modal">버튼1</button>'
+											}
+										},
+										{
+											targets : 6,
+											title : '버튼',
+											data : "userName",
+											render : function(data) {
+												return '<button type="button" class="btn-dark" data-target="#" data-toggle="modal">버튼1</button>'
+											}
+										}, ],
+								info : false,
+							});
+		});
+	</script>
+
+
+	<table id="foo-table" class="table table-bordered">
+		<thead>
+			<tr>
+				<th>이름</th>
+				<th>회차</th>
+				<th>상담일자</th>
+				<th>상담시작시간</th>
+				<th>진행현황</th>
+				<th>버튼1</th>
+				<th>버튼2</th>
+			</tr>
+		</thead>
+	</table>
+
+</th:block>
+</html>

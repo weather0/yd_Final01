@@ -1,6 +1,7 @@
 package com.kcy.lecture.controller;
 
 import java.security.Principal;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -26,27 +27,39 @@ public class EvaluationController {
 	
 	Logger logger = LoggerFactory.getLogger(EvaluationController.class);
 	
-	@GetMapping("/evaluationlist/{classId}")
-	public String EvaluationList(Model model, @PathVariable String classId) {
+	
+	//교직원 평가하는 페이지 
+	@GetMapping("/evaluationquestion/{classId}")
+	public String evaluationQuestion(Model model, @PathVariable String classId,Principal principal,EvaluationVO vo) {
+		vo.setUserId(principal.getName());
 		model.addAttribute("classId",classId);
-		model.addAttribute("evaluation",evaluationService.evaluationQuiz(classId));
+		model.addAttribute("ck",evaluationService.classMemberIdSelect(vo));
+		model.addAttribute("evaluation",evaluationService.evaluationQuestion(classId));
 		return "pages/classMgr/EvaluationList";
 	}
 	
+	//교직원 평가한 결과 제출
 	@PostMapping("/evaluationinsert")
-	public String EvaluationSubmission(@RequestParam Map<String,String> map) {
+	public String evaluationResultInsert(@RequestParam Map<String,String> map) {
 		
-		evaluationService.evaluationSubmission(map);
+		evaluationService.evaluationResultInsert(map);
 		
-		return "redirect:evaluationtotallist";
+		return "redirect:profevaluationlist";
 	}
 	
-	@GetMapping("/evaluationtotallist")
-	public String EvaluationTotalList(Model model,EvaluationVO vo,Principal principal) {
+	//내가 수강하고있는 강좌에 맞는 평가지를 보여주는 페이지
+	@GetMapping("/profevaluationlist")
+	public String profEvaluationList(Model model,EvaluationVO vo,Principal principal) {
 		vo.setUserId(principal.getName());
-		model.addAttribute("eval",evaluationService.evaluationSelectList(vo));
+		model.addAttribute("eval",evaluationService.profEvaluationList(vo));
 		return "pages/classMgr/EvaluationSelectList";
 	}
 	
+	//교수가 평가한 항목을 보는 페이지
+	@GetMapping("/evaluationconfirmation")
+	public String profEvaluationConfirmation(Model model,EvaluationVO vo) {
+		model.addAttribute("test",evaluationService.evaluationConfirmation(vo));
+		return "pages/classMgr/EvaluationConfirmation";
+	}
 	
 }

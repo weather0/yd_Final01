@@ -23,7 +23,7 @@
             </div>
           </div>
           
- <table id="letureTable" class="table align-items-center mb-0" >
+ <table id="evaluationTable" class="table align-items-center mb-0" >
         <thead>
             <tr>
             	<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">강좌코드</th>
@@ -37,7 +37,7 @@
         		<td th:text="${data.class_id}"></td>
         		<td th:text="${data.user_name}"></td>
         		<td th:text="|${data.course_title} 수업 ${data.user_name}님 교직원 평가|"></td>
-        		<td> <a class="btn bg-gradient-warning btn-sm" th:text="평가하기" th:href="@{/evaluationlist/{classId}(classId=${data.class_id})}"></a> </td>
+        		<td> <a class="btn bg-gradient-warning btn-sm" th:text="평가하기" th:href="@{/evaluationquestion/{classId}(classId=${data.class_id})}"></a> </td>
         	</tr>
         	
         </tbody>
@@ -48,7 +48,7 @@
  </div>
 <script>
 
-$('#letureTable').DataTable({});
+$('#evaluationTable').DataTable({});
 
 	
 
