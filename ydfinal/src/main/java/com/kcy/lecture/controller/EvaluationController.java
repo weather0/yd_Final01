@@ -41,7 +41,7 @@ public class EvaluationController {
 		
 		evaluationService.evaluationResultInsert(map);
 		
-		return "pages/classMgr/EvaluationSelectList";
+		return "redirect:profevaluationlist";
 	}
 	
 	//내가 수강하고있는 강좌에 맞는 평가지를 보여주는 페이지
