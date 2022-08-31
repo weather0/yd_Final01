@@ -48,6 +48,7 @@
         </tbody>
         </table>
         <input type="hidden" th:value="${classId}" class="cid">
+        	<input type="hidden" th:value="${ck.class_member_id}" id="cmid">
         <input  th:value="${#authentication.principal.username}" type="hidden" id="userid">
         <button class="btn bg-gradient-warning btn-sm" id="btn"  th:text="제출하기"</button>
             </div>
@@ -70,16 +71,19 @@
 			let evaluation6 = $("input[name='evaluation6']:checked").val()
 			let id = $("#userid").val()
 			let cid = $(".cid").val()
+			let cmid = $("#cmid").val()
 			
 			$.ajax({
 				url:"http://localhost/evaluationinsert",
 				type:"post",
 				data:{
 					evaluation0,evaluation1 ,evaluation2,evaluation3,evaluation4,evaluation5,evaluation6,
-				    classId: cid
+				    classId: cid,
+				    classMemberId:cmid
 				},
 				success:function(data){
 					alert("제출완료")
+					
 				}
 			})
 		}

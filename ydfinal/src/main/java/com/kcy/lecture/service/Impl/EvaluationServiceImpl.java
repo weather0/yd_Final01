@@ -1,5 +1,6 @@
 package com.kcy.lecture.service.Impl;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -37,6 +38,24 @@ public class EvaluationServiceImpl implements EvaluationService {
 	public List<Map<String, String>> profEvaluationList(EvaluationVO vo) {
 		
 		return mapper.profEvaluationList(vo);
+	}
+
+
+	@Override
+	public Object classMemberIdSelect(EvaluationVO vo) {
+		
+		return mapper.classMemberIdSelect(vo);
+	}
+
+	@Override
+	public HashMap<String, Object> evaluationConfirmation(EvaluationVO vo) {
+		HashMap<String, Object> check = new HashMap<String, Object>();
+		for(int i=0; i< 7; i++) {
+			vo.setProfQId("EV100"+i);
+			check.put("EV100"+ i, mapper.evaluationConfirmation(vo));
+		}
+		return check;
+		
 	}
 
 }

@@ -1,6 +1,7 @@
 package com.kcy.lecture.controller;
 
 import java.security.Principal;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -29,8 +30,10 @@ public class EvaluationController {
 	
 	//교직원 평가하는 페이지 
 	@GetMapping("/evaluationquestion/{classId}")
-	public String evaluationQuestion(Model model, @PathVariable String classId) {
+	public String evaluationQuestion(Model model, @PathVariable String classId,Principal principal,EvaluationVO vo) {
+		vo.setUserId(principal.getName());
 		model.addAttribute("classId",classId);
+		model.addAttribute("ck",evaluationService.classMemberIdSelect(vo));
 		model.addAttribute("evaluation",evaluationService.evaluationQuestion(classId));
 		return "pages/classMgr/EvaluationList";
 	}
@@ -52,5 +55,11 @@ public class EvaluationController {
 		return "pages/classMgr/EvaluationSelectList";
 	}
 	
+	//교수가 평가한 항목을 보는 페이지
+	@GetMapping("/evaluationconfirmation")
+	public String profEvaluationConfirmation(Model model,EvaluationVO vo) {
+		model.addAttribute("test",evaluationService.evaluationConfirmation(vo));
+		return "pages/classMgr/EvaluationConfirmation";
+	}
 	
 }

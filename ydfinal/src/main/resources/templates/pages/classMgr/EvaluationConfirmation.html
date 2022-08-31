@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+<th:block layout:fragment="content">
+
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css"/>  
+  <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+  <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <!-- 상단 내비바 -->
+  <th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
+  <!-- 본문 start -->
+  
+<div class="container-fluid py-4">
+    <div class="row"> 
+      <div class="card my-7">
+          <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+            <div class="bg-gradient-primary shadow-primary border-radius-lg pt-3 pb-2" style="background: #fc9209">
+              <h6 class="text-white text-capitalize ps-3">교직원평가 확인</h6>
+              <input  th:value="${#authentication.principal.username}" type="hidden" id="userid">
+            </div>
+          </div>
+ 
+ 		<div id="columnchart_material">
+ 		</div>
+ 		
+         		<th:block th:each="d:${test}">
+          			<th:block th:each="entry,index : ${d.value}">
+          				<input th:value="|${entry.cnt} ${entry.profRResult} |" type="text"/>
+          				
+          			</th:block><br>
+          		</th:block> 
+          
+		</div>
+	</div>
+</div>
+          
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['bar']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+          var data = google.visualization.arrayToDataTable([
+              ['Genre', '매우좋음', '좋음', '보통이다', '별로다',
+               '매우별로다',{ role: 'annotation' } ],
+              ['1문항', 100, 50, 20, 32, 18, 5],
+              ['2문항', 16, 22, 23, 30, 16, 9],
+              ['3문항', 28, 19, 29, 30, 12, 13],
+              ['4문항', 28, 19, 29, 30, 12, 13],
+              ['5문항', 28, 19, 29, 30, 12, 13],
+              ['6문항', 28, 19, 29, 30, 12, 13],
+              ['7문항', 28, 19, 29, 30, 12, 13],
+            ]);
+
+          var options = {
+        	        width: 600,
+        	        height: 400,
+        	        legend: { position: 'top', maxLines: 3 },
+        	        bar: { groupWidth: '75%' },
+        	        isStacked: true,
+        	      };
+        var chart = new google.charts.Bar(document.getElementById('columnchart_material'));
+
+        chart.draw(data, google.charts.Bar.convertOptions(options));
+      }
+      
+      
+      
+
+    </script>
+</th:block>
+</html>
