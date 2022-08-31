@@ -8,5 +8,6 @@ public interface UsersMapper {
     public List<Map<String, String>> stuAcaInfo(String id);
     public List<Map<String, String>> stuAcaInsertForm();
     public void stuAcaInsertProc(Map<String, String> map);
+    public void stuAcaDelete(String acaId);
     
 }

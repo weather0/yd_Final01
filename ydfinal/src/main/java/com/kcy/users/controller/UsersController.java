@@ -39,10 +39,16 @@ public class UsersController {
         return "pages/userMgr/stu/stuAcaInfo";
     }
     
+    // 학적변동 이력 상세보기(단순 페이지 이동)
+    @RequestMapping("/stuAcaView")
+    public String stuAcaView() {
+        return "pages/userMgr/stu/stuAcaView";
+    }
+    
     // 학적변동 신청 폼
     @RequestMapping("/stuAcaInsert")
     public String stuAcaInsert(Model model, Principal principal) {
-        model.addAttribute("myInfo", service.stuInfo(principal.getName()));
+        model.addAttribute("myAcaInfos", service.stuAcaInfo(principal.getName()));
         model.addAttribute("terms", service.stuAcaInsertForm());
         return "pages/userMgr/stu/stuAcaInsert";
     }
@@ -51,6 +57,13 @@ public class UsersController {
     @RequestMapping("/stuAcaInsertProc")
     public String stuAcaInsertProc(@RequestParam Map<String, String> map) {
         service.stuAcaInsertProc(map);
+        return "redirect:stuAcaInfo";
+    }
+    
+    // 학적변동 신청 취소 실행
+    @RequestMapping("/stuAcaDelete")
+    public String stuAcaDelete(String acaId) {
+        service.stuAcaDelete(acaId);
         return "redirect:stuAcaInfo";
     }
     

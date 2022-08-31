@@ -19,11 +19,12 @@
       border-color: #7b809a;
     }
   </style>
-  <script>
+  <script th:inline="javascript">
     $(function() {
       $('#userMgr').addClass('show');
       
       $('#myAcaInfos').DataTable({
+        "order": [3, "desc"],
         "language": {
           "lengthMenu": "페이지 당: _MENU_",
           "search": "검색:",
@@ -38,6 +39,43 @@
           }
         },
       });
+      
+      // 항목 클릭 시 세부보기로 이동(DB쿼리 실행 없이 세션스토리지 이용)
+      $('#myAcaInfos tbody').on('click', 'tr', function(){
+        let stuAcainfo = {
+          userName : this.getAttribute('data-userName'),
+          userId : this.getAttribute('data-userId'),
+          userDept : this.getAttribute('data-userDept'),
+          userPhone : this.getAttribute('data-userPhone'),
+          acaId : this.getAttribute('data-acaId'),
+          acaType : this.getAttribute('data-acaType'),
+          acaStartT : this.getAttribute('data-acaStartT'),
+          acaStartS : this.getAttribute('data-acaStartS'),
+          acaStartE : this.getAttribute('data-acaStartE'),
+          acaEndT : this.getAttribute('data-acaEndT'),
+          acaEndS : this.getAttribute('data-acaEndS'),
+          acaEndE : this.getAttribute('data-acaEndE'),
+          acaReason : this.getAttribute('data-acaReason'),
+          acaReasonD : this.getAttribute('data-acaReasonD'),
+          acaYn : this.getAttribute('data-acaYn'),
+          acaReject : this.getAttribute('data-acaReject'),
+          acaDate : this.getAttribute('data-acaDate'),
+          acaFile : this.getAttribute('data-acaFile')
+        }
+
+        // 세션스토리지에 데이터를 담아서
+        sessionStorage.setItem("stuAcainfo", JSON.stringify(stuAcainfo));
+        
+        // 보내줌
+        if (stuAcainfo.acaType == '휴학' || stuAcainfo.acaType == '복학' || stuAcainfo.acaType == '자퇴'){
+	        location.href="stuAcaView"
+        }
+        
+      })
+      
+      
+      
+      
     })
   </script>
 
@@ -63,15 +101,15 @@
             <table class="table text-center mb-0">
               <tr>
                 <td class="table-secondary">성명</td>
-                <td>[[${myAcaInfos[1].userName}]]</td>
+                <td>[[${myAcaInfos[0].userName}]]</td>
                 <td class="table-secondary">학번</td>
-                <td>[[${myAcaInfos[1].userId}]]</td>
+                <td>[[${myAcaInfos[0].userId}]]</td>
               </tr>
               <tr>
                 <td class="table-secondary">전공</td>
-                <td>[[${myAcaInfos[1].userDept}]]</td>
+                <td>[[${myAcaInfos[0].userDept}]]</td>
                 <td class="table-secondary">연락처</td>
-                <td>[[${myAcaInfos[1].userPhone}]]</td>
+                <td>[[${myAcaInfos[0].userPhone}]]</td>
               </tr>
             </table>
           </div>
@@ -101,14 +139,38 @@
             <tbody>
             
               <!-- DB로부터 전체 레코드를 뽑아와서 단순히 DataTables의 스타일만 적용하는 경우 -->
-              <tr th:each="item : ${myAcaInfos}">
-                <td>[[${item.acaType}]]</td>
-                <td>[[${item.acaStart}]] ~ [[${item.acaEnd}]]</td>
-                <td>[[${item.acaReason}]]</td>
-                <td>[[${item.acaDate}]]</td>
-                <td>[[${item.acaYn}]]</td>
-                <td>[[${item.acaReject}]]</td>
-                <td>[[${item.acaFile}]]</td>
+              <tr th:each="item : ${myAcaInfos}" 
+                  th:data-userName="${item.userName}"
+                  th:data-userId="${item.userId}"
+                  th:data-userDept="${item.userDept}"
+                  th:data-userPhone="${item.userPhone}"
+                  th:data-acaId="${item.acaId}"
+                  th:data-acaType="${item.acaType}"
+                  th:data-acaStartT="${item.acaStartT}"
+                  th:data-acaStartS="${item.acaStartS}"
+                  th:data-acaStartE="${item.acaStartE}"
+                  th:data-acaEndT="${item.acaEndT}"
+                  th:data-acaEndS="${item.acaEndS}"
+                  th:data-acaEndE="${item.acaEndE}"
+                  th:data-acaReason="${item.acaReason}"
+                  th:data-acaReasonD="${item.acaReasonD}"
+                  th:data-acaYn="${item.acaYn}"
+                  th:data-acaReject="${item.acaReject}"
+                  th:data-acaDate="${item.acaDate}"
+                  th:data-acaFile="${item.acaFile}"
+                  >
+                  <td>[[${item.acaType}]]</td>
+                  <td>
+                    <th:block th:if="${item.acaType != '휴학'} and ${item.acaType != '복학'} and ${item.acaType != '자퇴'}">
+                      [[${item.acaStart}]] ~ [[${item.acaEnd}]]</th:block>
+                    <th:block th:if="${item.acaType == '휴학'} or ${item.acaType == '복학'} or ${item.acaType == '자퇴'}">
+                      [[${item.acaStartT}]] ~ [[${item.acaEndT}]]</th:block>
+                  </td>
+                  <td>[[${item.acaReason}]]</td>
+                  <td>[[${item.acaDate}]]</td>
+                  <td>[[${item.acaYn}]]</td>
+                  <td>[[${item.acaReject}]]</td>
+                  <td>[[${item.acaFile}]]</td>
               </tr>
               
               <!-- DataTables의 Server-side processing을 이용(진정한 의미의 페이징) -->

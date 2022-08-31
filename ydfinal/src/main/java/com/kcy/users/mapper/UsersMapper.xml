@@ -23,11 +23,17 @@
 <select id="stuAcaInfo" resultType="CustomMap">
   select u.user_name, u.user_id,
          u.user_dept, u.user_phone,
-         sa.aca_type, fn_terms(sa.aca_start) aca_start, fn_terms(sa.aca_end) aca_end, sa.aca_reason, 
-         sa.aca_yn, sa.aca_reject, sa.aca_date, sa.aca_file
+         sa.aca_id, sa.aca_type, 
+         sa.aca_start, ks.sch_title AS aca_start_t, ks.sch_start AS aca_start_s, ks.sch_end AS aca_start_e,
+         sa.aca_end, ke.sch_title AS aca_end_t, ke.sch_start AS aca_end_s, ke.sch_end AS aca_end_e,
+         sa.aca_reason, sa.aca_reason_d, 
+         sa.aca_yn, sa.aca_reject, 
+         sa.aca_date, sa.aca_file
          
     from k_users u 
-    join k_student_aca sa on (u.user_id = sa.stu_id)
+    left join k_student_aca sa on (u.user_id = sa.stu_id)
+    left join k_schedule ks on (ks.sch_id = sa.aca_start)
+    left join k_schedule ke on (ke.sch_id = sa.aca_end)
     
    where u.user_id = #{param}
    order by sa.aca_date desc
@@ -35,14 +41,19 @@
 
 
 <select id="stuAcaInsertForm" resultType="CustomMap">
-  select sch_id, sch_start, sch_end, sch_title
+  select sch_id, 
+         sch_start, 
+         sch_end, 
+         sch_title
   
     from k_schedule 
     
    where sch_type = 'SEMESTER' 
      and sch_start > now() 
      
-   order by 1;
+   order by 1
+   limit 10 <!-- 5년치(10학기)만 추출 -->
+   
 </select>
 
 
@@ -52,13 +63,13 @@
          default, 
          #{acaType},
          <if test="acaType == '휴학'">
-           #{acaStart},
-           #{acaEnd},
+           #{acaStartT},
+           #{acaEndT},
            #{acaReason},
            #{acaReasonD},
          </if>
          <if test="acaType == '복학'">
-           #{returnStart},
+           #{returnStartT},
            null,
            null,
            null,
@@ -75,8 +86,13 @@
          now(),
          null
          )
-
 </insert>
+
+<delete id="stuAcaDelete">
+  delete from k_student_aca
+   where aca_id = #{acaId}
+
+</delete>
 
 
 

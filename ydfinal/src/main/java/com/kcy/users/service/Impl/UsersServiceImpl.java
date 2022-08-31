@@ -33,4 +33,9 @@ public class UsersServiceImpl implements UsersService {
         mapper.stuAcaInsertProc(map);
     }
 
+    @Override
+    public void stuAcaDelete(String acaId) {
+        mapper.stuAcaDelete(acaId);
+    }
+
 }
