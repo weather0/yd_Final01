@@ -4,11 +4,11 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.kcy.mentoring.counseling.mapper.ApplyMapper;
 import com.kcy.mentoring.counseling.service.ApplyService;
 import com.kcy.mentoring.counseling.vo.ApplyVO;
-import com.kcy.mentoring.schedule.vo.scheduleVO;
 
 @Service
 public class ApplyServiceImpl implements ApplyService {
@@ -27,10 +27,22 @@ public class ApplyServiceImpl implements ApplyService {
 	}
 
 	@Override
-	public void applyInsert(List<ApplyVO> list) {
-		for (ApplyVO vo : list) { // 서비스에서 
-			map.applyInsert(vo);
+	@Transactional
+	public void applyInsert(ApplyVO vo) {
+		map.applyHistoryInsert(vo);
+		map.applyListInsert(vo.getUserId());
+		for (ApplyVO vo1 : vo.getListVO()) { // 서비스에서 
+			map.applyInsert(vo1);
 		}
+	}
+	
+	@Override
+	public void applyListInsert(String id) {
+		map.applyListInsert(id);
+	}
+	@Override
+	public void applyHistoryInsert(ApplyVO vo) {
+		map.applyHistoryInsert(vo);
 	}
 
 	@Override
@@ -48,9 +60,12 @@ public class ApplyServiceImpl implements ApplyService {
 		return map.applyCheck(id);
 	}
 
-	public void applyListInsert(String id) {
-		map.applyListInsert(id);
+	@Override
+	public List<ApplyVO> applyList(String id) {
+		
+		return map.applyList(id);
 	}
+
 
 	
 

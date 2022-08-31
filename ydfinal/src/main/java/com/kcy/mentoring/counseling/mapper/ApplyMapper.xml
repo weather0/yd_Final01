@@ -37,10 +37,47 @@
 	
 	<insert id="applyListInsert" parameterType="String">
 		INSERT INTO k_career_h(career_h_id, stu_id, career_h_date)
-		VALUES(nextval(sq_career_h_id),#{id}, default)
+		VALUES(nextval(sq_career_h_id),#{userId}, default)
+
+	</insert>
+	
+	<insert id="applyHistoryInsert" parameterType="String">
+		INSERT INTO k_mentoring(matching_id, mtr_count, mtr_status, mtr_id, mtr_sch_id, mtr_cancel, mtr_fileName,prof_id)
+		VALUES((SELECT matching_id
+				FROM k_matching
+				WHERE stu_id=#{userId} 
+				AND matching_type ='0'),(select IFNULL(MAX(mtr_count)+1,0)
+										 from k_mentoring ALIAS_FOR_SUBQUERY
+										 where matching_id = (SELECT matching_id
+															  FROM k_matching
+															  WHERE stu_id=#{userId} 
+															  AND matching_type ='0')), default, nextval(sq_mtr_id), #{mtrSchId}, default, default,#{profId});
 	</insert>
 	
 	<delete id="applyDelete" parameterType="com.kcy.mentoring.counseling.vo.ApplyVO">
-		
+		<!-- 없음 -->
 	</delete>
+	
+	<select id="applyList" resultType="com.kcy.mentoring.counseling.vo.ApplyVO" parameterType="String">
+		SELECT
+  me.matching_id,
+  me.mtr_count,
+  me.mtr_status,
+  me.mtr_sch_id,
+  me.mtr_cancel,
+  me.prof_id,
+  ku.user_name,
+  sc.mtr_sch_date,
+  ti.mtr_sch_start,
+  ti.mtr_sch_end
+FROM
+  k_users ku
+  join k_matching ma on ku.user_id = ma.stu_id
+  join k_mentoring me on ma.matching_id = me.matching_id
+  join k_mentoring_schedule sc on me.mtr_sch_id = sc.mtr_sch_id
+  join k_sch_times ti on sc.mtr_sch_timecode = ti.mtr_sch_timecode
+where
+  ma.prof_id = #{id}
+  AND me.mtr_status = 'ing'
+	</select>
 </mapper>
