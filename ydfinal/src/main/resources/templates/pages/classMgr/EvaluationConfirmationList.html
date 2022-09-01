@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+<th:block layout:fragment="content">
+
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css"/>  
+  <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+  <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
+  <!-- 상단 내비바 -->
+  <th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
+  <!-- 본문 start -->
+  
+<div class="container-fluid py-4">
+    <div class="row"> 
+      <div class="card my-4">
+          <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+            <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3" style="background: #fc9209">
+              <h6 class="text-white text-capitalize ps-3">교직원 평가 결과 확인</h6>
+            </div>
+          </div>
+          
+ <table id="evaluationTable" class="table align-items-center mb-0" >
+ 
+        <thead>
+            <tr>
+            	<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">강좌</th>
+            	<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">학기</th>
+            	<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">평가명</th>
+            	<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">평가결과 보러가기</th>
+            </tr>
+        </thead>
+        
+        <tbody>
+        	<tr th:each="data:${evalList}">
+        		<td th:text="${data.class_id}">
+        		<td th:text="|${data.class_sem}학기|">
+        		<td th:text="|${data.course_title}수업에 ${data.user_name}교수 평가지|">
+        		<td><a class="btn bg-gradient-warning btn-sm" th:text="결과보기" th:href="@{/evaluationconfirmation/(classId=${data.class_id})}"></a></td>
+        	</tr>
+        </tbody>
+  <!-- 본문 end-->
+</table>
+</div>
+ </div>
+ </div>
+<script>
+
+$('#evaluationTable').DataTable({});
+
+	
+
+		
+	}
+
+</script>
+</th:block>
+</html>
