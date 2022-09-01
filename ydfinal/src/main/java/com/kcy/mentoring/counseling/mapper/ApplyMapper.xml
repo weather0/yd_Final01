@@ -46,38 +46,83 @@
 		VALUES((SELECT matching_id
 				FROM k_matching
 				WHERE stu_id=#{userId} 
-				AND matching_type ='0'),(select IFNULL(MAX(mtr_count)+1,0)
+				AND matching_type ='0'),(select IFNULL(MAX(mtr_count)+1,1)
 										 from k_mentoring ALIAS_FOR_SUBQUERY
-										 where matching_id = (SELECT matching_id
-															  FROM k_matching
-															  WHERE stu_id=#{userId} 
-															  AND matching_type ='0')), default, nextval(sq_mtr_id), #{mtrSchId}, default, default,#{profId});
+										 where mtr_status='com' AND matching_id = (SELECT matching_id
+																				   FROM k_matching
+																				   WHERE stu_id=#{userId} 
+																				   AND matching_type ='0')), default, nextval(sq_mtr_id), #{mtrSchId}, default, default, #{profId});
 	</insert>
 	
 	<delete id="applyDelete" parameterType="com.kcy.mentoring.counseling.vo.ApplyVO">
 		<!-- 없음 -->
 	</delete>
-	
+	<!-- 교수의 담당학생 확인 -->
 	<select id="applyList" resultType="com.kcy.mentoring.counseling.vo.ApplyVO" parameterType="String">
 		SELECT
-  me.matching_id,
-  me.mtr_count,
-  me.mtr_status,
-  me.mtr_sch_id,
-  me.mtr_cancel,
-  me.prof_id,
-  ku.user_name,
-  sc.mtr_sch_date,
-  ti.mtr_sch_start,
-  ti.mtr_sch_end
-FROM
-  k_users ku
-  join k_matching ma on ku.user_id = ma.stu_id
-  join k_mentoring me on ma.matching_id = me.matching_id
-  join k_mentoring_schedule sc on me.mtr_sch_id = sc.mtr_sch_id
-  join k_sch_times ti on sc.mtr_sch_timecode = ti.mtr_sch_timecode
-where
-  ma.prof_id = #{id}
-  AND me.mtr_status = 'ing'
+		  me.matching_id,
+		  me.mtr_count,
+		  me.mtr_status,
+		  me.mtr_sch_id,
+		  me.mtr_cancel,
+		  me.prof_id,
+		  ma.stu_id, 
+		  ku.user_name,
+		  sc.mtr_sch_date,
+		  ti.mtr_sch_start,
+		  ti.mtr_sch_end,
+		  me.mtr_id 
+		FROM
+		  k_users ku
+		  join k_matching ma on ku.user_id = ma.stu_id
+		  join k_mentoring me on ma.matching_id = me.matching_id
+		  join k_mentoring_schedule sc on me.mtr_sch_id = sc.mtr_sch_id
+		  join k_sch_times ti on sc.mtr_sch_timecode = ti.mtr_sch_timecode
+		where
+		  ma.prof_id = #{id}
+		  
 	</select>
+	<!-- 학생 진로탐색 결과 확인 -->
+	<select id="applyResultList" resultType="com.kcy.mentoring.counseling.vo.ApplyVO" parameterType="String">
+		SELECT d.career_q_result, q.career_q_content
+		FROM k_career_d d join k_career_q q
+		on d.career_q_id = q.career_q_id 
+		AND d.career_h_id = (SELECT MAX(career_h_id) as career_h_id
+							 FROM k_career_h
+							 WHERE stu_id=#{stuId})
+	</select>
+	<!-- 학생 정보 확인 -->
+	<select id="applyInfo" resultType="com.kcy.mentoring.counseling.vo.ApplyInfoVO" parameterType="String">
+		SELECT u.user_id, u.user_type, u.user_name, u.user_ssn, u.user_sex, u.user_dept, u.user_addr, u.user_phone, u.user_email, u.user_pw, u.user_nation, u.user_pic ,s.student_regdate, s.student_grade, s.student_sem, s.student_prof
+		FROM k_users u join k_students s
+		ON u.user_id = s.stu_id 
+		AND user_id=#{stuId}
+	</select>
+	<!-- 상담 신청 온거 취소 하는 거 -->
+	<update id="applyCancel">
+		UPDATE k_mentoring
+		SET mtr_status='can', mtr_cancel=#{mtrCancel}
+		WHERE matching_id =#{matchingId} AND mtr_status ='ing'
+	</update>
+	
+	<!-- 상담일지 불러오기 -->
+	<select id="journalList" resultType="com.kcy.mentoring.counseling.vo.JournalVO" parameterType="String">
+		SELECT lo.mtr_id, lo.mtr_log_subject, lo.mtr_log_content, lo.mtr_log_comment, lo.mtr_home, mtr_date, me.mtr_count, me.mtr_status
+		FROM k_mentoring_log lo join  k_mentoring me
+		on me.mtr_id = lo.mtr_id
+		AND matching_id=(SELECT matching_id
+						 FROM k_matching
+						 WHERE stu_id=#{stuId} AND matching_type ='0') AND me.mtr_count = #{mtrCount}
+	</select>
+	
+	<insert id="journalInsert" parameterType="com.kcy.mentoring.counseling.vo.JournalVO">
+		INSERT INTO k_mentoring_log
+		(mtr_id, mtr_log_subject, mtr_log_content, mtr_log_comment, mtr_home, mtr_date)
+		VALUES(#{mtrId}, #{mtrLogSubject},  #{mtrLogContent}, #{mtrLogComment}, #{mtrHome}, default)
+	</insert>
+	<update id="mentoringUpdate" parameterType="com.kcy.mentoring.counseling.vo.JournalVO">
+		UPDATE k_mentoring
+		SET  mtr_status='com'
+		WHERE mtr_id=#{mtrId}
+	</update>
 </mapper>

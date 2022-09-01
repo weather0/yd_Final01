@@ -8,7 +8,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.kcy.mentoring.counseling.mapper.ApplyMapper;
 import com.kcy.mentoring.counseling.service.ApplyService;
+import com.kcy.mentoring.counseling.vo.ApplyInfoVO;
 import com.kcy.mentoring.counseling.vo.ApplyVO;
+import com.kcy.mentoring.counseling.vo.JournalVO;
 
 @Service
 public class ApplyServiceImpl implements ApplyService {
@@ -64,6 +66,37 @@ public class ApplyServiceImpl implements ApplyService {
 	public List<ApplyVO> applyList(String id) {
 		
 		return map.applyList(id);
+	}
+	
+	// 학생의 검사 결과를 확인하는 창
+	@Override
+	public List<ApplyVO> applyResultList(String stuId) {
+		
+		return map.applyResultList(stuId);
+	}
+	
+	// 학생 정보 불러오기
+	@Override
+	public ApplyInfoVO applyInfo(String stuId) {
+		return map.applyInfo(stuId);
+	}
+
+	// 상담신청 취소하기
+	@Override
+	public void applyCancel(ApplyVO vo) {
+		map.applyCancel(vo);
+	}
+	
+	// 상담일지 전체를 통으로 리스트로 반환
+	@Override
+	public JournalVO journalList(ApplyVO vo) {
+		return map.journalList(vo);
+	}
+	// 상담일지 작성
+		@Override
+	public void journalInsert(JournalVO vo) {
+		map.journalInsert(vo);
+		map.mentoringUpdate(vo);
 	}
 
 

@@ -1,8 +1,4 @@
-<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml"
-	xmlns:v-bind="http://www.w3.org/1999/xhtml"
-	xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{layouts/layout}">
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/layout}">
 <th:block layout:fragment="content">
 	<!-- 상단 내비바 -->
 	<th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
@@ -47,262 +43,228 @@
 </style>
 <script>
 	document.addEventListener('DOMContentLoaded', function() {
-		 
-		$.ajax({
-   			url: "/schedules",
-   			type: "get",
-   			data: {
-   				id : $('#userId').val()
-   			},
-   			dataType: "json",
-   			success: function(data) {
-   				fullCalendar(data);
-   			}
-   		});
-	})
-   		function fullCalendar(data){
-			var calendarEl = document.getElementById('calendar');
-	
-			var calendar = new FullCalendar.Calendar(calendarEl, {
-				initialDate : '2022-02-07',
-				initialView : 'dayGridMonth',
-				headerToolbar : {
-					left : 'prev,next today',
-					center : 'title',
-					right : 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
-				},
-				editable : true,
-				droppable : true, // this allows things to be dropped onto the calendar
-				drop : function(arg) {
-					if (document.getElementById('drop-remove').checked) {
-						arg.draggedEl.parentNode.removeChild(arg.draggedEl);
-					}
-				},
-				selectable : true,
-				selectMirror : true,
-				select : function(arg) { // 등록 이벤트
-					$("#calendar_insert_modal").modal("show");
-	
-					var start = arg.startStr;
-					$("#calendar_start_date").val(start);
-	
-				},
-				eventClick : function(info) { // 수정 이벤트
-					console.log(info.event._def.extendedProps.MtrSchId);
-					calendarSelect(info.event._def.extendedProps.MtrSchId);
-					//calendarDelete(info.event._def.extendedProps.MtrSchId);
-	
-					$("#calendar_update_modal").modal("show");
-				},
-				dateClick : function(info) {
-					info.dayEl.style.backgroundColor = '#DAEAF1'; // 클릭 시 배경색 바꾸는 속성
-				},
-				dayMaxEvents : true,
-			    events: function (info, successCallback) {
-			    	
-					for(var i = 0; i < data.length; i++) {
 
-						data[i].id = data[i].MtrSchId;
-						data[i].title = "";
-						
-						data[i].start = data[i].date+"T"+data[i].timeStart;
-						data[i].end = data[i].date+"T"+data[i].timeEnd;	
-					}
-		    	    successCallback(data);
-		        }
-	
-			});
-	
-			calendar.render();
-		}
-   		
-	
+		$.ajax({
+			url : "/schedules",
+			type : "get",
+			data : {
+				id : $('#userId').val()
+			},
+			dataType : "json",
+			success : function(data) {
+				fullCalendar(data);
+			}
+		});
+	})
+	function fullCalendar(data) {
+		var calendarEl = document.getElementById('calendar');
+
+		var calendar = new FullCalendar.Calendar(calendarEl, {
+			initialDate : '2022-02-07',
+			initialView : 'dayGridMonth',
+			headerToolbar : {
+				left : 'prev,next today',
+				center : 'title',
+				right : 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+			},
+			editable : true,
+			droppable : true, // this allows things to be dropped onto the calendar
+			drop : function(arg) {
+				if (document.getElementById('drop-remove').checked) {
+					arg.draggedEl.parentNode.removeChild(arg.draggedEl);
+				}
+			},
+			selectable : true,
+			selectMirror : true,
+			select : function(arg) { // 등록 이벤트
+				$("#calendar_insert_modal").modal("show");
+
+				var start = arg.startStr;
+				$("#calendar_start_date").val(start);
+
+			},
+			eventClick : function(info) { // 수정 이벤트
+				console.log(info.event._def.extendedProps.MtrSchId);
+				calendarSelect(info.event._def.extendedProps.MtrSchId);
+				//calendarDelete(info.event._def.extendedProps.MtrSchId);
+
+				$("#calendar_update_modal").modal("show");
+			},
+			dateClick : function(info) {
+				info.dayEl.style.backgroundColor = '#DAEAF1'; // 클릭 시 배경색 바꾸는 속성
+			},
+			dayMaxEvents : true,
+			events : function(info, successCallback) {
+
+				for (var i = 0; i < data.length; i++) {
+
+					data[i].id = data[i].MtrSchId;
+					data[i].title = "";
+
+					data[i].start = data[i].date + "T" + data[i].timeStart;
+					data[i].end = data[i].date + "T" + data[i].timeEnd;
+				}
+				successCallback(data);
+			}
+
+		});
+
+		calendar.render();
+	}
+
 	function calendarInsert() {
-		var cob_check = document.querySelectorAll('input[name="mtrSchTimecode"]:checked');
+		var cob_check = document
+				.querySelectorAll('input[name="mtrSchTimecode"]:checked');
 		var mtrSchDate = document.getElementById('calendar_start_date').value;
 		var userId = document.getElementById('userId').value;
-		
+
 		var chk_arr = [];
-		
-		$("input[name=mtrSchTimecode]:checked").each(function(){
+
+		$("input[name=mtrSchTimecode]:checked").each(function() {
 			var chk = $(this).val();
-			 console.log(chk);
-		    chk_arr.push(chk);
+			console.log(chk);
+			chk_arr.push(chk);
 		})
-		
-		  if(cob_check.length == 0) {
-		      alert('체크박스를 하나 이상 선택해주세요~')
-		      return false;
-		      
-		  } else if(cob_check.length > 1){
-			  var testList = new Array() ;
-			  
-			  for(var i = 0; i<chk_arr.length; i++){
-				  
+
+		if (cob_check.length == 0) {
+			alert('체크박스를 하나 이상 선택해주세요~')
+			return false;
+
+		} else if (cob_check.length > 1) {
+			var testList = new Array();
+
+			for (var i = 0; i < chk_arr.length; i++) {
+
 				// 객체 생성
-					var data = new Object() ;
-					
-					data.userId = userId ;
-					data.mtrSchDate =  mtrSchDate ;
-					data.mtrSchTimecode = chk_arr[i] ;
-					
-					
-					// 리스트에 생성된 객체 삽입
-					testList.push(data) ;
-				}
-				
-				// String 형태로 변환
-				var jsonData = JSON.stringify(testList) ;
-				
-				console.log(jsonData) ;
-				
-				$.ajax({
-		  			url: "/scheduleInsert2",
-		  			type: "post",
-		  			data: jsonData,
-		  			contentType:'application/json; charset=UTF-8',
-		  			traditional: true,
-		  			dataType: "json",
-		  			success: function() {
-		  				console.log('성공')
-		  				 location.reload();
-		  			}, 
-		  			error: function() {
-		  			
-							console.log('실패')
-		  			}
-		  		});
-				  return;
-			  }
-		  
-  		$.ajax({
-  			url: "/scheduleInsert1",
-  			type: "post",
-  			data: $('#frm').serialize(),
-  			dataType: "json",
-  			success: function() {
-  				console.log('성공')
-  				 location.reload();
-  			}, 
-  			error: function() {
-  			
+				var data = new Object();
+
+				data.userId = userId;
+				data.mtrSchDate = mtrSchDate;
+				data.mtrSchTimecode = chk_arr[i];
+
+				// 리스트에 생성된 객체 삽입
+				testList.push(data);
+			}
+
+			// String 형태로 변환
+			var jsonData = JSON.stringify(testList);
+
+			console.log(jsonData);
+
+			$.ajax({
+				url : "/scheduleInsert2",
+				type : "post",
+				data : jsonData,
+				contentType : 'application/json; charset=UTF-8',
+				traditional : true,
+				dataType : "json",
+				success : function() {
+					console.log('성공')
+					location.reload();
+				},
+				error : function() {
+
 					console.log('실패')
-  			}
-  		});
+				}
+			});
+			return;
+		}
+
+		$.ajax({
+			url : "/scheduleInsert1",
+			type : "post",
+			data : $('#frm').serialize(),
+			dataType : "json",
+			success : function() {
+				console.log('성공')
+				location.reload();
+			},
+			error : function() {
+
+				console.log('실패')
+			}
+		});
 	}
-	
-	
-	
+
 	function calendarDelete(calendar_id) {
-		 if (!confirm("정말 삭제 하시겠습니까? 확인(예) 또는 취소(아니오)를 선택해주세요.")) {
-		        return;
-		    } 
- 		$.ajax({
- 			url: "/scheduleDelete",
- 			type: "get",
- 			data: {
- 				"mtrSchId": $("#mtrSchId").val()
- 			},
- 			success: function(result) {
- 				location.reload();
- 				
- 			}
- 		});
- 	}
+		if (!confirm("정말 삭제 하시겠습니까? 확인(예) 또는 취소(아니오)를 선택해주세요.")) {
+			return;
+		}
+		$.ajax({
+			url : "/scheduleDelete",
+			type : "get",
+			data : {
+				"mtrSchId" : $("#mtrSchId").val()
+			},
+			success : function(result) {
+				location.reload();
+
+			}
+		});
+	}
 	function calendarSelect(calendar_id) {
-		
+
 		console.log(calendar_id);
- 		$.ajax({
- 			url: "/scheduleSelect",
- 			type: "get",
- 			data: {
- 				"mtrSchId" : calendar_id
- 			},
- 			dataType: "json",
- 			success: function(result) {
- 				console.log(result);
- 				$("#mtrSchId").val(result.mtrSchId);
- 	
- 			}
- 		});
- 	}
-	function close1(){
+		$.ajax({
+			url : "/scheduleSelect",
+			type : "get",
+			data : {
+				"mtrSchId" : calendar_id
+			},
+			dataType : "json",
+			success : function(result) {
+				console.log(result);
+				$("#mtrSchId").val(result.mtrSchId);
+
+			}
+		});
+	}
+	function close1() {
 		$('#calendar_insert_modal').modal('hide')
 	}
-	
 </script>
 <title>MyCalendar</title>
 	</head>
 	<body>
-		<div class="modal fade" id="calendar_insert_modal" tabindex="-1"
-			role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal fade" id="calendar_insert_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
 						<h5 class="modal-title" id="exampleModalLabel">상담 가능 일정 등록</h5>
 					</div>
 					<div class="modal-body">
-						<form id="frm" th:action="@{/scheduleInsert}" method="post"
-							class="text-start">
-							<input type="date" id="calendar_start_date" name="mtrSchDate" required="required"> 
-							<input type="text" id="userId" name="userId" th:value="${#authentication.name}">
-							<br/>
-							<input type="checkbox" id="time0" name="mtrSchTimecode" value="0"> 09:00 ~ 09:50 </input>
-							<br/>
-							<input type="checkbox" id="time1" name="mtrSchTimecode" value="1"> 10:00 ~ 10:50 </input>
-							<br/>
-							<input type="checkbox" id="time2" name="mtrSchTimecode" value="2"> 11:00 ~ 11:50 </input>
-							<br/>
-							<input type="checkbox" id="time3" name="mtrSchTimecode" value="3"> 12:00 ~ 12:50 </input>
-							<br/>
-							<input type="checkbox" id="time4" name="mtrSchTimecode" value="4"> 13:00 ~ 13:50 </input>
-							<br/>
-							<input type="checkbox" id="time5" name="mtrSchTimecode" value="5"> 14:00 ~ 14:50 </input>
-							<br/>
-							<input type="checkbox" id="time6" name="mtrSchTimecode" value="6"> 15:00 ~ 15:50 </input>
-							<br/>
-							<input type="checkbox" id="time7" name="mtrSchTimecode" value="7"> 16:00 ~ 16:50 </input>
-							<br/>
-							<input type="checkbox" id="time8" name="mtrSchTimecode" value="8"> 17:00 ~ 17:50 </input>
-							<br/>
-							<input type="checkbox" id="time9" name="mtrSchTimecode" value="9"> 18:00 ~ 18:50 </input>
-							<br/>
+						<form id="frm" th:action="@{/scheduleInsert}" method="post" class="text-start">
+							<input type="date" id="calendar_start_date" name="mtrSchDate" required="required"> <input type="text" id="userId" name="userId" th:value="${#authentication.name}"> <br /> <input type="checkbox" id="time0" name="mtrSchTimecode" value="0"> 09:00 ~ 09:50 </input> <br /> <input type="checkbox" id="time1" name="mtrSchTimecode" value="1"> 10:00 ~ 10:50 </input> <br /> <input type="checkbox" id="time2" name="mtrSchTimecode" value="2"> 11:00 ~ 11:50 </input> <br /> <input type="checkbox" id="time3" name="mtrSchTimecode" value="3"> 12:00 ~ 12:50 </input> <br /> <input type="checkbox" id="time4" name="mtrSchTimecode" value="4"> 13:00 ~ 13:50 </input> <br /> <input type="checkbox" id="time5" name="mtrSchTimecode" value="5"> 14:00 ~ 14:50 </input> <br /> <input type="checkbox" id="time6" name="mtrSchTimecode" value="6"> 15:00 ~ 15:50 </input> <br /> <input type="checkbox" id="time7" name="mtrSchTimecode" value="7"> 16:00 ~ 16:50 </input> <br /> <input type="checkbox"
+								id="time8" name="mtrSchTimecode" value="8"> 17:00 ~ 17:50 </input> <br /> <input type="checkbox" id="time9" name="mtrSchTimecode" value="9"> 18:00 ~ 18:50 </input> <br />
 							<div class="modal-footer">
-								<input type="button" id="add" class="btn-dark" onclick="calendarInsert();" value="등록"> 
-								<input type="button" class="btn-dark btn-secondary" data-dismiss="modal"  onclick="close1();" value="닫기">
+								<input type="button" id="add" class="btn-dark" onclick="calendarInsert();" value="등록"> <input type="button" class="btn-dark btn-secondary" data-dismiss="modal" onclick="close1();" value="닫기">
 							</div>
 						</form>
 					</div>
 				</div>
 			</div>
 		</div>
-		<div class="modal fade" id="calendar_update_modal" tabindex="-1"
-		role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabel">일정 삭제</h5>
-					<button class="close" type="button" data-dismiss="modal"
-						aria-label="Close">
-						<span aria-hidden="true">×</span>
-					</button>
-				</div>
-				<div class="modal-body">
-					<form id="frm" action="#" method="post"
-						enctype="application/x-www-form-urlencoded">
-						     
-							<input type="text" id="mtrSchId" name="mtrSchId" >
-							<input type="text" id="userId" name="userId" th:value="${#authentication.name}">
-						<div class="modal-footer">
-						 <input
-								type="button" class="modal_close btn-dark"
-								onclick="calendarDelete();" value="삭제">
-						</div>
-					</form>
+		<div class="modal fade" id="calendar_update_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">일정 삭제</h5>
+						<button class="close" type="button" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">×</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<form id="frm" action="#" method="post" enctype="application/x-www-form-urlencoded">
+
+							<input type="text" id="mtrSchId" name="mtrSchId"> <input type="text" id="userId" name="userId" th:value="${#authentication.name}">
+							<div class="modal-footer">
+								<input type="button" class="modal_close btn-dark" onclick="calendarDelete();" value="삭제">
+							</div>
+						</form>
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
 		<div id='calendar'></div>
 	</body>
 </th:block>

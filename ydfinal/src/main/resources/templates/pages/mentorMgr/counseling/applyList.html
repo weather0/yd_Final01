@@ -6,73 +6,516 @@
 	<th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
 	<link rel="stylesheet" href="https://cdn.datatables.net/v/bs5/dt-1.12.1/datatables.min.css" />
 	<script src="https://cdn.datatables.net/v/bs5/dt-1.12.1/datatables.min.js"></script>
+	<style>
+tr[class="odd"]:hover, tr[class="even"]:hover {
+	background-color: #ffffffcc;
+	color: #121212;
+}
 
+
+th {
+	text-align: center;
+}
+
+
+textarea {
+	height: 300px
+}
+
+</style>
 	<script>
 		jQuery(function($) {
+			$('#journal-table').hide();
 			$("#foo-table")
 					.DataTable(
 							{
+								  order: [ [ 5, "asc" ] ],
+								  scrollY: 550,
 								ajax : {
 									url : "/applyList",
 									type : "POST",
 									dataSrc : ''
 								},
 								columns : [
+
 										{
 											targets : 0,
 											data : "userName"
 										},
 										{
-											targets : 4,
-											data : "mtrCount"
-										},
-										{
 											targets : 1,
-											data : "mtrSchDate"
+											data : "mtrCount",
+											render : function(data) {
+												return data+`회`
+											}
 										},
 										{
 											targets : 2,
-											data : "mtrSchStart"
+											data : "mtrSchDate"
 										},
 										{
 											targets : 3,
-											data : "mtrStatus"
+											data : "mtrSchStart",
+											render : function(data) {
+												var h = data.substring(0,2)
+												var m = data.substring(3,5)
+												return h+'시 ' + m+'분'
+											}
+										},
+										{
+											targets : 4,
+											data : "mtrStatus",
+											render : function(data) {
+												if(data == 'ing'){
+													var data = '상담필요'
+												}else if(data == 'can'){
+													var data = '취소'
+												}else if(data == 'end'){
+													var data = '상담종료'
+												}else if(data == 'fill'){
+													var data = '일지작성필요'
+												}else if(data == 'com'){
+													var data = '상담완료'
+												}
+												return data
+											}
 										},
 										{
 											targets : 5,
-											title : '버튼',
-											data : "userName",
+											data : "mtrStatus",
 											render : function(data) {
-												return '<button type="button" class="btn-dark" data-target="#" data-toggle="modal">버튼1</button>'
+												if(data == 'ing'){
+													var data = '1'
+												}else if(data == 'can'){
+													var data = '3'
+												}else if(data == 'end'){
+													var data = '5'
+												}else if(data == 'fill'){
+													var data = '2'
+												}else if(data == 'com'){
+													var data = '4'
+												}
+												return data
 											}
 										},
 										{
 											targets : 6,
-											title : '버튼',
-											data : "userName",
+											title : '상담일지',
+											data : "stuId",
 											render : function(data) {
-												return '<button type="button" class="btn-dark" data-target="#" data-toggle="modal">버튼1</button>'
+												
+												
+												return `<button type="button" id='`+data+`' class="btn bg-gradient-primary"  onclick="journalList(this);">보기</button>`
 											}
-										}, ],
+										},
+										{
+											targets : 7,
+											title : '검사결과',
+											data : "stuId",
+											render : function(data) {
+												return `<button type="button" class="btn bg-gradient-primary"  onclick="result('`+data+`');">결과</button>`
+											}
+										},
+										{
+											targets : 8,
+											title : '정보',
+											data : "stuId",
+											render : function(data) {
+												return `<button type="button" class="btn bg-gradient-primary"  onclick="info('`+data+`');">정보</button>`
+											}
+										},
+										{
+											targets : 9,
+											title : '취소',
+											data : "matchingId",
+											render : function(data) {
+												return `<button type="button" class="btn bg-gradient-primary" onclick="cancel('`+data+`');" >취소</button>`
+											}
+										}, 
+								],
+								createdRow: function (row, data, dataIndex, full) {
+							        $(row).children('td:nth-child(8)').attr('name', data.mtrStatus);
+							        $(row).children('td:nth-child(2)').attr('id', data.mtrCount);
+							        $(row).children('td:nth-child(6)').attr('id', data.stuId);
+							        
+							        if(!(data.mtrStatus=='ing')){
+							        	$(row).children('td:nth-child(9)').children().attr('disabled', true).css("background-color","#5975a4");
+							        }
+							        
+							        if(!(data.mtrStatus=='com' || data.mtrStatus=='end' || data.mtrStatus=='fill')){
+							        	$(row).children('td:nth-child(6)').children().attr('disabled', true).css("background-color","#5975a4");
+							        }
+							        
+							        if(data.mtrStatus=='fill'){
+							        	$(row).children('td:nth-child(6)').children().text('작성').attr("onclick",`insert('${data.mtrId}');`);
+							        }
+							        
+							        
+							 	},
 								info : false,
+								"language" : {
+									"lengthMenu" : "페이지 당: _MENU_",
+									"search" : "검색:",
+									"searchPlaceholder" : "키워드를 입력하세요",
+									"zeroRecords" : "검색결과가 없습니다",
+									"info" : "_START_ - _END_ (전체: _MAX_건)",
+									"infoFiltered" : "(검색결과: _TOTAL_건)",
+									"infoEmpty" : "",
+									"paginate" : {
+										"previous" : "<",
+							            "next": ">",
+									}
+								},
+								 columnDefs: [{
+
+						            	targets: [5],
+
+						            	searchable: false,
+
+						      			visible: false
+
+						            },
+						            { className: "dt-head-center", targets: [ 0,1,2,3,4,5,6,7,8,9 ] },
+						            ],
+						            
+						
 							});
+			
+			
 		});
+
+		function result(data){
+			
+			  $.ajax({
+				url: "/applyResultList",
+				type: "post",
+				data : {
+					stuId : data
+				},
+				dataType: "json",
+				success: function (result) {
+					console.log(result)
+					$('#resultModal').modal('show');
+					
+					$('#resultClone').empty();
+
+					for (var i = 0; i < result.length; i++) {
+						let clo = `<tr>
+										 <td>${i + 1}</td>
+										 <td>${result[i].careerQContent}</td>
+										 <td>${result[i].careerQResult}</td>
+									 </tr>`
+						$('#resultClone').append(clo)
+					}
+				},
+				error: function (result) {
+					console.log(result);
+				}
+			});  
+			
+		}
+		
+		 function info(data){
+			 //$('#infoModal').modal('show');
+			 
+			 $.ajax({
+					url: "/applyInfo",
+					type: "post",
+					data : {
+						stuId : data
+					},
+					dataType: "json",
+					success: function (result) {
+						console.log(result.userSsn)
+						$('#infoModal').modal('show');
+						var ssn = (result.userSsn).substring(0,2)+"년 "+(result.userSsn).substring(3,4)+"월 "+(result.userSsn).substring(5,6)+"일"; 
+						if(result.userSex == "M"){ var sex = "남자" }
+						else if(result.userSex == "F"){var sex = "여자"}
+						
+						$('#infoClone').empty();
+							let clo = `
+								<tr>
+									<th>이름</td>
+									<td>${result.userName}</td>
+									<th>생년월일</td>
+									<td>${ssn}</td>
+								</tr>
+								<tr>
+									<th>성별</td>
+									<td>${sex}</td>
+									<th>학과</td>
+									<td>${result.userDept}</td>
+								</tr>
+								<tr>
+									<th>학년</td>
+									<td>${result.studentGrade}</td>
+									<th>학기</td>
+									<td>${result.studentSem}</td>
+								</tr>
+								<tr>
+									<th>연락처</td>
+									<td>${result.userPhone}</td>
+								</tr>
+								<tr>
+									<th>이메일</td>
+									<td colspan="3">${result.userEmail}</td>
+								</tr>
+							`;
+										 
+						$('#infoClone').append(clo)
+						
+						
+						
+					},
+					error: function (result) {
+						console.log(result);
+					}
+				});  
+		 }
+		 // 상담일지 목록 불러오기 
+		 function journalList(data){
+			 $('#foo-table_wrapper').hide();
+			 $('#journal-table').show();
+			 
+			 console.log( $(data).attr('id'));
+			 console.log( $(data).parent().parent().children('td:nth-child(2)').attr('id'));
+			 
+			 var stuId = $(data).attr('id');
+			 var count = $(data).parent().parent().children('td:nth-child(2)').attr('id');
+			 
+			 var jsonData = JSON.stringify({
+				 	stuId : stuId,
+				 	mtrCount : count
+				 
+				});
+			 
+			 
+			 $.ajax({
+					url: "/journalSelect",
+					type: "post",
+					data : jsonData,
+					contentType: "application/json; charset=UTF-8",
+					success: function (result) {
+						console.log(result)
+						$('#journalClone').empty();
+						let clo = `
+							<tr>
+								<th>상담일자</td>
+								<td>${result.mtrDate}</td>
+								<th>상담회차</td>
+								<td>${result.mtrCount}회차</td>
+							</tr>
+							<tr>
+								<th>거주상황</td>
+								<td colspan="3">${result.mtrHome}</td>
+							</tr>
+							<tr>
+								<th>상담주제</td>
+								<td colspan="3">${result.mtrLogSubject}</td>
+							</tr>
+							<tr>
+								<th>상담내용</td>
+								<td colspan="3">${result.mtrLogContent}</td>
+							</tr>
+							<tr>
+								<th>교수의견</td>
+								<td colspan="3">${result.mtrLogComment}</td>
+							</tr>
+						`;
+									 
+					$('#journalClone').append(clo)
+					
+					},
+					error: function (result) {
+						console.log(result);
+					}
+				});  
+		 }
+		 
+		 function cancel(data){
+			 $('input[name="matchingId"]').val(data);
+			 $('input[name="mtrCancel"]').val('');
+			 $('#cancelModal').modal('show');
+			
+		 }
+		 
+		 function insert(data){
+			 console.log(data)
+			 $('input[name="mtrId"]').val(data);
+			 $('input[name="mtrCancel"]').val('');
+			 $('#insertModal').modal('show');
+			
+		 }
+		 
+		 function journalInsert(){
+			 if (!confirm("상담일지 작성을 저장하시겠습니까? 확인(예) 또는 취소(아니오)를 선택해주세요.")) {
+					return;
+				}
+			 $.ajax({
+					url: "/journalInsert",
+					type: "post",
+					data : $('#jInsert').serialize(),
+					success: function (result) {
+						console.log('성공')
+					},
+					error: function (result) {
+						console.log(result);
+					}
+				});  
+			
+		 }
+		 
+		 
+		 
+		 function modalClose(){
+			 $('#resultModal').modal('hide');
+			 $('#infoModal').modal('hide');
+			 $('#cancelModal').modal('hide');
+			 $('#insertModal').modal('hide');
+		 }
+		 //목록 버튼 누르면 테이블 보이고 상담일지 안보이게
+		 function changeList(){
+			 $('#foo-table_wrapper').show();
+			 $('#journal-table').hide();
+		 }
+		
+
 	</script>
 
-
-	<table id="foo-table" class="table table-bordered">
+	<!-- 본문 -->
+	<table id="foo-table" class="table table-bordered text-center align-items-center">
 		<thead>
-			<tr>
+			<tr class="text-center">
 				<th>이름</th>
 				<th>회차</th>
 				<th>상담일자</th>
 				<th>상담시작시간</th>
 				<th>진행현황</th>
-				<th>버튼1</th>
-				<th>버튼2</th>
+				<th>진행현황(숫자)</th>
+				<th>상담일지</th>
+				<th>검사결과</th>
+				<th>정보</th>
+				<th>신청취소</th>
 			</tr>
+
 		</thead>
 	</table>
+	<!-- 상담일지 상세보기 -->
+	<div id="journal-table">
+		<table class="table table-bordered text-center">
+			<tbody id="journalClone">
 
+			</tbody>
+			<div>
+				<button type="button" class="btn bg-gradient-primary" onclick="changeList()">목록</button>
+			</div>
+		</table>
+	</div>
+
+	<!-- 모달1 결과창 -->
+	<div class="modal fade" id="resultModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title" id="myModalLabel">진로 탐색 검사 결과</h4>
+				</div>
+				<div class="modal-body">
+					<table class="table">
+						<thead>
+							<th>번호</th>
+							<th>질문</th>
+							<th>응답</th>
+						</thead>
+						<tbody id="resultClone">
+
+						</tbody>
+					</table>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" onclick="modalClose();">닫기</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- 모달2 학생 정보를 보여주는 모달창 -->
+	<div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title" id="myModalLabel">학생 정보</h4>
+				</div>
+				<div class="modal-body">
+					<table class="table">
+						<tbody id="infoClone">
+
+						</tbody>
+					</table>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" onclick="modalClose();">닫기</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- 모달3 취소 모달창 취소하는 이유와 함께 전송 -->
+	<div class="modal fade" id="cancelModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title" id="myModalLabel">진로 탐색 검사 결과</h4>
+				</div>
+				<form th:action="@{/applyCancel}" method="post">
+					<div class="modal-body">
+						<div class="p-4">
+							<input type="hidden" name="matchingId">
+							<div class="input-group input-group-dynamic mb-4">
+								<label class="form-label">취소사유</label> <input type="text" class="form-control" name="mtrCancel">
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button class="btn btn-default">전송</button>
+						<button type="button" class="btn btn-default" onclick="modalClose();">닫기</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<!-- 모달4 상담일지 작성 -->
+	<div class="modal fade" id="insertModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title" id="myModalLabel">상담일지 작성</h4>
+				</div>
+				<form id="jInsert" th:action="@{/journalInsert}" method="post" >
+				<!-- <form id="jInsert" action="#" > -->
+					<div class="modal-body">
+						<div class="p-4">
+							<input type="hidden" name="mtrId">
+							<div class="input-group input-group-dynamic mb-4">
+								<label class="form-label">거주상황</label> <input type="text" class="form-control" name="mtrHome">
+							</div>
+							<div class="input-group input-group-dynamic mb-4">
+								<label class="form-label">상담주제</label> <input type="text" class="form-control" name="mtrLogSubject">
+							</div>
+							<div class="input-group input-group-dynamic mb-4">
+								<label class="form-label">상담내용</label>
+								<textarea rows="12" class="form-control" name="mtrLogContent"></textarea>
+							</div>
+							<div class="input-group input-group-dynamic mb-4">
+								<label class="form-label">교수의견</label> <input type="text" class="form-control" name="mtrLogComment">
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<!-- <button type="button" class="btn btn-default" onclick="journalInsert();">전송</button> -->
+						<button class="btn btn-default">전송</button>
+						<button type="button" class="btn btn-default" onclick="modalClose();">닫기</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
 </th:block>
 </html>

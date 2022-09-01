@@ -4,7 +4,9 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
+import com.kcy.mentoring.counseling.vo.ApplyInfoVO;
 import com.kcy.mentoring.counseling.vo.ApplyVO;
+import com.kcy.mentoring.counseling.vo.JournalVO;
 
 @Repository
 public interface ApplyService {
@@ -18,4 +20,9 @@ public interface ApplyService {
 	public void applyHistoryInsert(ApplyVO vo);
 	
 	List<ApplyVO> applyList(String id); // 상담신청한 학생들 리스트 (담당교수만 확인)
+	List<ApplyVO> applyResultList(String stuId);
+	ApplyInfoVO applyInfo(String stuId); // 학생 정보 불러오기
+	void applyCancel(ApplyVO vo); // 상담신청 취소하기
+	JournalVO journalList(ApplyVO vo);
+	void journalInsert(JournalVO vo); // 상담일지 작성
 }

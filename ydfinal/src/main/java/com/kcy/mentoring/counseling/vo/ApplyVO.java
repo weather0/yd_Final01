@@ -15,7 +15,7 @@ public class ApplyVO {
 	private String matchingId; // 매칭코드 FK 
 	private String mtrCount; 	//상담회차
 	private String mtrStatus;	//상담진행현황
-	private String mtrCancel;	//변동사유
+	private String mtrCancel;	//변동코드
 	
 	// 멘토링 ===================
 	

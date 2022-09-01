@@ -24,7 +24,21 @@
 
 <script>
 jQuery(function($){
-    $("#careerList").DataTable({});
+    $("#careerList").DataTable({
+    	 "language": {
+             "lengthMenu": "페이지 당: _MENU_",
+             "search": "검색:",
+             "searchPlaceholder": "키워드를 입력하세요",
+             "zeroRecords": "검색결과가 없습니다",
+             "info": "_START_ - _END_ (전체: _MAX_건)",
+             "infoFiltered": "(검색결과: _TOTAL_건)",
+             "infoEmpty": "",
+             "paginate": {
+               "previous": "<",
+               "next": ">",
+             }
+           },
+    });
 });
 
 		
