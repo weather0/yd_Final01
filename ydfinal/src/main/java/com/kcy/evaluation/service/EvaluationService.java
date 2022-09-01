@@ -1,4 +1,4 @@
-package com.kcy.lecture.service;
+package com.kcy.evaluation.service;
 
 import java.util.HashMap;
 import java.util.List;
@@ -11,4 +11,5 @@ public interface EvaluationService {
 	public List<Map<String,String>> profEvaluationList(EvaluationVO vo);
 	public Object classMemberIdSelect(EvaluationVO vo);
 	public HashMap<String, Object> evaluationConfirmation(EvaluationVO vo);
+	public List<Map<String,String>> evaluationConfirmationList(EvaluationVO vo);
 }

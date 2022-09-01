@@ -6,15 +6,13 @@
 
 <th:block layout:fragment="content">
 
-	<link rel="stylesheet"
-		href="https://cdn.datatables.net/v/bs5/dt-1.12.1/datatables.min.css" />
-	<script
-		src="https://cdn.datatables.net/v/bs5/dt-1.12.1/datatables.min.js"></script>
+	<link rel="stylesheet"	href="https://cdn.datatables.net/v/bs5/dt-1.12.1/datatables.min.css" />
+	<script	src="https://cdn.datatables.net/v/bs5/dt-1.12.1/datatables.min.js"></script>
 	<!-- 상단 내비바 -->
 	<th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
 
 	<!-- 본문 start -->
-	<form action="billCheck">
+	<form action="billCheckInfo">
 		<div class="row">
 			<div class="col-md-3">
 				<div class="input-group input-group-outline my-3">
@@ -37,17 +35,47 @@
 				</div>
 			</div>
 	</form>
-
-	<th:block th:each="bill:${billCheck}">
+	
+	<h5>상세</h5>
+	<th:block th:each="bill:${billCheckInfo}">
 		<div class="row justify-content-center">
 			<div class="card">
 				<div class="table-responsive">
 					<table class="table text-center mb-0" id="payList">
 						<tr>
+							<td class="table-secondary">년도</td>
+							<td th:text="${bill.billYear}"></td>
+							<td class="table-secondary">학기</td>
+							<td th:text="${bill.billSem}"></td>
+						</tr>
+						<tr>
 							<td class="table-secondary">학번</td>
 							<td th:text="${bill.stuId}"></td>
 							<td class="table-secondary">이름</td>
 							<td th:text="${bill.userName}"></td>
+						</tr>
+						<tr>
+							<td class="table-secondary">학과</td>
+							<td th:text="${bill.userDept}"></td>
+							<td class="table-secondary">학년</td>
+							<td th:text="${bill.payHGrade}"></td>
+						</tr>
+						<tr>
+							<td class="table-secondary">등록금</td>
+							<td th:text="${bill.billAmount}"></td>
+							<td class="table-secondary">납부방식</td>	
+							<td>
+								<span th:if="${bill.payHType.toString().equals('b')}">일괄납부</span>
+								<span th:if="${bill.payHType.toString().equals('s')}">분할납부</span>
+							</td>
+						</tr>
+						<tr>
+							<td class="table-secondary">납부기간</td>
+							<td></td>
+						</tr>
+							<tr>
+							<td class="table-secondary">가상계좌</td>
+							<td></td>
 						</tr>
 					</table>
 				</div>

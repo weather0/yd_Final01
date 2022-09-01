@@ -39,11 +39,11 @@
         <tbody>
         	<tr th:each="data,index : ${evaluation}">
         		<td th:text="${data.profQContent}" style="text-align: left;"></td>
-        		<td><input type="radio" th:name="|evaluation${index.index}|" th:value="매우좋음"></td>
-        		<td><input type="radio" th:name="|evaluation${index.index}|" th:value="좋음"></td>
-        		<td><input type="radio" th:name="|evaluation${index.index}|" th:value="보통이다"></td>
-        		<td><input type="radio" th:name="|evaluation${index.index}|" th:value="별로다"></td>
-        		<td><input type="radio" th:name="|evaluation${index.index}|" th:value="매우별로다"></td>
+        		<td><input type="radio" th:name="|evaluation${index.index}|" th:value="1"></td>
+        		<td><input type="radio" th:name="|evaluation${index.index}|" th:value="2"></td>
+        		<td><input type="radio" th:name="|evaluation${index.index}|" th:value="3"></td>
+        		<td><input type="radio" th:name="|evaluation${index.index}|" th:value="4"></td>
+        		<td><input type="radio" th:name="|evaluation${index.index}|" th:value="5"></td>
         	</tr>
         </tbody>
         </table>

@@ -20,5 +20,8 @@ public interface QuizMapper {
 	
 	public List<QuizVo> getClassId(QuizVo vo);
 	
-	public QuizVo quizComplete(QuizVo vo);
+	public void quizDUpdate(QuizVo vo);
+	
+	public QuizVo quizAcceptDetail(QuizVo vo);
+	public void quizModify(QuizVo vo);
 }

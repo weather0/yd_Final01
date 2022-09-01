@@ -139,20 +139,54 @@
        		class_id = #{classId}
 	</insert>
 	
+	<select id="quizAcceptDetail" resultType="com.kcy.quiz.service.QuizVo">
+		SELECT
+                r.quiz_r_content,
+                r.quiz_r_date,
+                r.quiz_r_file,
+                r.quiz_r_orginal,
+                r.quiz_r_id,
+                r.quiz_d_id,
+                r.class_member_id,
+                
+                cm.class_member_id,
+                cm.stu_id,
+    
+                
+                h.quiz_h_id,
+                h.class_id
+        FROM
+                k_quiz_r as r
+        JOIN
+                k_class_member as cm
+        ON
+                r.class_member_id = cm.class_member_id
+        JOIN
+                k_quiz_d as d
+        ON
+                r.quiz_d_id = d.quiz_d_id
+        JOIN
+        		k_quiz_h as h
+        ON
+        		d.quiz_h_id = h.quiz_h_id
+        WHERE 
+                r.quiz_d_id = #{quizDId}
+        AND
+        		cm.stu_id = #{userId}
+	</select>
+	
 	<!-- (교수) 과제 제출 목록 -->
 	<select id="quizViewList" resultType="map">
-      SELECT
+		SELECT
 			h.quiz_h_title, 
 			h.quiz_h_seq,
 			h.class_id,
-			
+
             c.class_to,
-            
+
             d.quiz_d_date,
             d.quiz_d_id,
-            
-            r.quiz_r_id,
-            count(quiz_r_id) as 'quizComplete'
+            NVL(d.quiz_d_cnt, 0) as 'quiz_d_cnt'
 		FROM
 			k_quiz_h as h
         JOIN
@@ -163,12 +197,8 @@
             k_quiz_d as d
         ON
             d.quiz_h_id = h.quiz_h_id
-        JOIN
-            k_quiz_r as r
-        ON
-            r.quiz_d_id = d.quiz_d_id
         WHERE
-            c.prof_id = #{userId}
+            c.prof_id = #{userId};
 	</select>
 	
 	<!-- (교수) 과제 낸 학생 조회 -->
@@ -209,6 +239,15 @@
            WHERE
                h.quiz_h_seq = #{quizHSeq}
 	</select>
+	
+	<update id="quizModify">
+		UPDATE
+            k_quiz_r
+        SET
+            quiz_r_content = #{quizRContent}, quiz_r_file = #{quizRFile}, quiz_r_orginal = #{quizROrginal}
+        WHERE
+            quiz_r_id = #{quizRId};
+	</update> 
 	
 	<!-- (교수) 학생의 과제 상세 보기 -->
 	<select id="quizDetailView" resultType="com.kcy.quiz.service.QuizVo">
@@ -259,6 +298,16 @@
 			quiz_r_point = #{quizRPoint}
 		WHERE
 			quiz_r_id = #{quizRId}
+	</update>
+	
+	<!-- update cnt(학생 과제 제출) -->
+	<update id="quizDUpdate">
+		UPDATE
+			k_quiz_d
+		SET
+			quiz_d_cnt = quiz_d_cnt + 1
+		WHERE 
+			quiz_d_id = #{quizDId}
 	</update>
 	
 	<!-- 강좌 코드 -->

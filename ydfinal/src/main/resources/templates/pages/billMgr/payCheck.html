@@ -6,13 +6,10 @@
 
 <th:block layout:fragment="content">
 
-	<link rel="stylesheet"
-		href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css" />
+	<link rel="stylesheet"	href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css" />
 	<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-	<script
-		src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
-	<script
-		src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
+	<script	src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+	<script	src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
 
 	<!-- 상단 내비바 -->
 	<th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
@@ -51,7 +48,7 @@
 			<div class="col-md-2">
 				<div class="input-group input-group-outline my-3">
 					<label class="form-label"></label> 
-					<select class="form-control" name="payHDiv" id="payHDiv">
+					<select class="form-control" name="payHType" id="payHType">
 						<option value="">납부방식</option>
 						<option value="b">일괄납부</option>
 						<option value="s">분할납부</option>
@@ -97,8 +94,8 @@
 				<td th:text=${pay.payHGrade}></td>
 				<td th:text=${pay.userPhone}></td>
 				<td>
-					<span th:if="${pay.payHDiv.toString().equals('b')}">일괄납부</span>
-					<span th:if="${pay.payHDiv.toString().equals('s')}">분할납부</span>
+					<span th:if="${pay.payHType.toString().equals('b')}">일괄납부</span>
+					<span th:if="${pay.payHType.toString().equals('s')}">분할납부</span>
 				</td>
 				<td>
 					<span th:if="${pay.payHYn.toString().equals('y')}">완납</span> 

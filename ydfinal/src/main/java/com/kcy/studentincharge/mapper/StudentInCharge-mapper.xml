@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kcy.studentincharge.mapper.StudentInChargeMapper">
+
+		<select id="studentSelectList" resultType="map">
+			SELECT ku.user_name,kcm.stu_id, ku.user_dept,ku.user_sex,ku.user_addr,ku.user_phone,ku.user_email 
+				from k_class_member kcm 
+				JOIN k_class kc ON kcm.class_id  = kc.class_id 
+				JOIN k_users ku on ku.user_id = kcm.stu_id 
+			WHERE kc.prof_id = #{userId}
+		
+		</select>
+		<select id="studentSelect" resultType="map">
+			SELECT ku.user_name,kcm.stu_id, ku.user_dept,ku.user_sex,ku.user_addr,ku.user_phone,ku.user_email 
+				from k_class_member kcm 
+				JOIN k_class kc ON kcm.class_id  = kc.class_id 
+				JOIN k_users ku on ku.user_id = kcm.stu_id 
+			WHERE kc.prof_id = #{userId} and kc.class_id = #{classId};
+		</select>
+
+</mapper>

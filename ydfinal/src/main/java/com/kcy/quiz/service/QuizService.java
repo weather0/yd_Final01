@@ -16,5 +16,8 @@ public interface QuizService {
 	
 	public QuizVo quizDetailView(QuizVo vo);
 	
-	public QuizVo quizComplete(QuizVo vo);
+	public void quizDUpdate(QuizVo vo);
+	public void quizModify(QuizVo vo);
+	
+	public QuizVo quizAcceptDetail(QuizVo vo);
 }

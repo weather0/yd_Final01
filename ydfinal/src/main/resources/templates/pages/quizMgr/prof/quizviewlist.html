@@ -30,9 +30,7 @@
         			<a th:text="${data.quiz_h_title}" th:href="@{/quizview(quizHSeq=${data.quiz_h_seq})}"></a>
         		</td>
         		<td>
-        		<p th:text="${data.quizComplete}"></p>
-        		/
-        		<p th:text="${data.class_to}"
+        		<p th:text="|${data.quiz_d_cnt}/${data.class_to}|"></p>
         		</td>
         		<td th:text="${data.quiz_d_date}"></td>
         	</tr>
@@ -43,6 +41,8 @@
  </div>
  <script>
  	$('#quizTable').DataTable({});
+ 	
+ 	
  </script>
 </th:block>
 </html>

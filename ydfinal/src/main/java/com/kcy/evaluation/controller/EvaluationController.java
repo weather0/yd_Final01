@@ -1,4 +1,4 @@
-package com.kcy.lecture.controller;
+package com.kcy.evaluation.controller;
 
 import java.security.Principal;
 import java.util.HashMap;
@@ -12,9 +12,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.kcy.lecture.service.EvaluationService;
-import com.kcy.lecture.service.EvaluationVO;
+import com.kcy.evaluation.service.EvaluationService;
+import com.kcy.evaluation.service.EvaluationVO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -55,11 +56,32 @@ public class EvaluationController {
 		return "pages/classMgr/EvaluationSelectList";
 	}
 	
-	//교수가 평가한 항목을 보는 페이지
+	//교수가 평가한 항목 값 json으로 보내는 부분
+	@GetMapping("/evaluationconfirmationjson")
+	@ResponseBody
+	public HashMap<String, Object> evaluationConfirmationJson(Model model,EvaluationVO vo) {
+		
+		HashMap<String, Object> checkm = new HashMap<String, Object>();
+		checkm.put("prof_r_result",evaluationService.evaluationConfirmation(vo));
+		return checkm;
+	}
+	// 교수가 평가 결과 보는 페이지
+	
 	@GetMapping("/evaluationconfirmation")
-	public String profEvaluationConfirmation(Model model,EvaluationVO vo) {
-		model.addAttribute("test",evaluationService.evaluationConfirmation(vo));
+	public String profEvaluationConfirmation(@RequestParam(value = "classId")String classId,Model model,EvaluationVO vo) {
+		model.addAttribute("classId",classId);
 		return "pages/classMgr/EvaluationConfirmation";
 	}
+	
+	//교수가 평가 결과 항목을 보는 페이지
+	
+	@GetMapping("/evaluationconfirmationlist")
+	public String profEvaluationConfirmationList(Model model,EvaluationVO vo, Principal principal) {
+		vo.setUserId(principal.getName());
+		model.addAttribute("evalList",evaluationService.evaluationConfirmationList(vo));
+		return "pages/classMgr/EvaluationConfirmationList";
+	}
+	
+	
 	
 }

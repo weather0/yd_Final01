@@ -17,7 +17,7 @@
 	<h1 th:text="${quiz.userName}"></h1>
 			<h1 th:text="${quiz.quizRContent}"></h1>
 			<h1 th:text="${quiz.quizRDate}"></h1>
-			<a th:href="${'/quizdownload?quizHFile='+quiz.quizHFile}">
+			<a th:href="${'/quizAcceptdownload?quizRFile='+quiz.quizRFile}">
 			<h1 th:text="${quiz.quizROrginal}" ></h1></a>
 			<form action="quizdetailview" method="post">
         		<td><input type="text" th:value="${quiz.quizRId}" th:name="quizRId"></td>

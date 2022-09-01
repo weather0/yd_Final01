@@ -83,7 +83,7 @@ public class QuizController {
 	public String quizlist(Model model, QuizVo vo, Principal principal) {
 		vo.setUserId(principal.getName());
 		model.addAttribute("quizlist", quizService.quizList(vo));
-		return "pages/quizMgr/prof/quizviewlist";
+		return "pages/quizMgr/quizlist";
 	}
 	
 	// 과제 목록(교수)
@@ -123,8 +123,12 @@ public class QuizController {
 	// 과제 제출(학생)
 	@GetMapping("/quizaccept")
 	public String quizacceptPage(@RequestParam final int quizHSeq, Model model, QuizVo vo, Principal principal) {
+		QuizVo qvo = quizService.quizSelect(quizHSeq);
 		vo.setUserId(principal.getName());
-		model.addAttribute("quizlist", quizService.quizSelect(quizHSeq));
+		qvo.setUserId(principal.getName());
+		model.addAttribute("quizlist", qvo);		
+		vo.setQuizDId(qvo.getQuizDId());
+		model.addAttribute("quizaccept", quizService.quizAcceptDetail(vo));
 		return "pages/quizMgr/quizaccept";
 	}
 	
@@ -141,12 +145,36 @@ public class QuizController {
 			classQuizFileSyl.transferTo(newFileName);
 			vo.setUserId(principal.getName());
 			vo.setClassId(classId);
+			vo.setQuizDCnt(vo.getQuizDId());
 			vo.setQuizRFile(fileName);
 			vo.setQuizROrginal(oriFileNmae);
 		}	
 		
 		quizService.quizAccept(vo);
+		quizService.quizDUpdate(vo);
+		quizService.quizModify(vo);
+		return "redirect:quizlist";
+	}
+	
+	// 과제 수정 프로그램(학생)
+	@PostMapping("/quizModify")
+	public String quizModify(QuizVo vo, @RequestParam("classQuizFileSyl") MultipartFile classQuizFileSyl, @RequestParam("classId") String classId, Principal principal, Model model) throws IllegalStateException, IOException {
+		if(!classQuizFileSyl.isEmpty()) {
+			FileDto dto = new FileDto(UUID.randomUUID().toString(),
+					classQuizFileSyl.getOriginalFilename(),
+					classQuizFileSyl.getContentType());
+			String fileName = dto.getUuid() + "_" + dto.getFileName();
+			String oriFileNmae = classQuizFileSyl.getOriginalFilename();
+			File newFileName = new File(fileName);
+			classQuizFileSyl.transferTo(newFileName);
+			vo.setUserId(principal.getName());
+			vo.setClassId(classId);
+			vo.setQuizDCnt(vo.getQuizDId());
+			vo.setQuizRFile(fileName);
+			vo.setQuizROrginal(oriFileNmae);
+		}	
 		
+		quizService.quizModify(vo);
 		return "redirect:quizlist";
 	}
 	
@@ -160,6 +188,23 @@ public class QuizController {
 		
 		headers.setContentDisposition(ContentDisposition.builder("attachment").
 				filename(dto.getQuizHFile(), StandardCharsets.UTF_8)
+				.build());
+	
+		headers.add(HttpHeaders.CONTENT_TYPE, contentType);
+		Resource resource = new InputStreamResource(Files.newInputStream(path));
+		return new ResponseEntity<>(resource, headers, HttpStatus.OK);
+	}
+	
+	// 파일 다운로드
+	@GetMapping("/quizAcceptdownload")
+	public ResponseEntity<Resource> download2(@ModelAttribute QuizVo dto) throws IOException {
+		
+		Path path = Paths.get(filePath + "/" + dto.getQuizRFile());
+		String contentType = Files.probeContentType(path);
+		HttpHeaders headers = new HttpHeaders();
+		
+		headers.setContentDisposition(ContentDisposition.builder("attachment").
+				filename(dto.getQuizRFile(), StandardCharsets.UTF_8)
 				.build());
 	
 		headers.add(HttpHeaders.CONTENT_TYPE, contentType);

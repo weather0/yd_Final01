@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.kcy.lecture.mapper.EvaluationMapper">
+<mapper namespace="com.kcy.evaluation.mapper.EvaluationMapper">
 	
-	<select id="evaluationQuestion" resultType="com.kcy.lecture.service.EvaluationVO">
-		SELECT prof_q_content FROM k_prof_q
+	<select id="evaluationQuestion" resultType="com.kcy.evaluation.service.EvaluationVO">
+		SELECT prof_q_id , prof_q_content FROM k_prof_q
+		order by 1
 	</select>
 
 <insert id="evaluationResultInsert">
@@ -40,19 +41,30 @@
 		
 				SELECT class_member_id
 				from k_class_member 
-				where stu_id = #{userId} and class_id = #{classId};
+				where stu_id = #{userId} and class_id = #{classId}
 	</select>
 
-	<select id="evaluationConfirmation" resultType="com.kcy.lecture.service.EvaluationVO">
+	<select id="evaluationConfirmation" resultType="com.kcy.evaluation.service.EvaluationVO">
 	
 			select b.prof_r_result,nvl(cnt,0) as cnt
   			from (
 			SELECT COUNT(*) as cnt ,prof_r_result
 			  from k_prof_r
-			 WHERE prof_q_id =#{profQId}
+			 WHERE prof_q_id =#{profQId} and class_id = #{classId}
 			 group by (prof_r_result)) a
-			right outer join  (select '매우좋음' prof_r_result UNION SELECT '좋음'UNION SELECT '보통이다'UNION SELECT '별로다'UNION SELECT '매우별로다') b
-			on  a.prof_r_result = b.prof_r_result;
+			right outer join  (select '1' prof_r_result UNION SELECT '2'UNION SELECT '3'UNION SELECT '4'UNION SELECT '5') b
+			on  a.prof_r_result = b.prof_r_result
+			order by 1
+	
+	</select>
+
+
+	<select id="evaluationConfirmationList" resultType="map">
+		select c.class_id,u.user_name, c.class_sem, co.course_title
+		 from k_class as c 
+		  join k_course as co on c.course_id  = co.course_id
+		  join k_users as u   on u.user_id    = c.prof_id 
+		WHERE c.prof_id = #{userId}
 	
 	</select>
 

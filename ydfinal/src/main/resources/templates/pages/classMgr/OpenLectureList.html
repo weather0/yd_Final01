@@ -149,6 +149,9 @@
      		success:function(data){
      			alert('신청완료')
      			location.reload();
+     		},
+     		error:function(error){
+     			alert("신청실패")
      		}
     	});
     	
@@ -165,6 +168,9 @@
     			success:function(data){
     				alert('삭제완료')
          			location.reload();
+         		},
+         		error:function(error){
+         			alert('삭제실패(만족도 평가 했는지 생각해보세요!!)')
          		}
     		})
     	}

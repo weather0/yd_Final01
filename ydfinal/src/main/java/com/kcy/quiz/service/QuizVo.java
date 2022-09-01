@@ -38,7 +38,8 @@ public class QuizVo {
 	private int quizRPoint;
 	private String classMemberId;
 	private String quizRId;
-	private String quizComplete;
+	private String quizDCnt;
+	private String rquizDId;
 	
 	
 	// 하경
