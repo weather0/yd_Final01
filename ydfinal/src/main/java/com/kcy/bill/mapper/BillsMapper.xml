@@ -34,7 +34,7 @@ VALUES ( #{billId}, #{billYear}, #{billSem}, #{billAmount}, #{majorbId})
 </select>
 
 <select id="payInfo" resultType="com.kcy.bill.service.PayVO">
-	SELECT kph.pay_h_div, 
+	SELECT kph.pay_h_type, 
 		   kph.pay_h_remain, 
 		   kpd.pay_d_amount, 
 		   kpd.pay_d_bank, 
@@ -55,7 +55,7 @@ VALUES ( #{billId}, #{billYear}, #{billSem}, #{billAmount}, #{majorbId})
 		   u.user_dept, 
 		   kph.pay_h_grade, 
 		   u.user_phone,
-		   kph.pay_h_div,
+		   kph.pay_h_type,
 		   kph.pay_h_yn,
 		   kpd.pay_d_day 
 	FROM k_pay_h kph
@@ -77,8 +77,8 @@ VALUES ( #{billId}, #{billYear}, #{billSem}, #{billAmount}, #{majorbId})
 		<if test="userDept != null and userDept != ''">
 			and u.user_dept = #{userDept} 
 		</if>
-		<if test="payHDiv != null and payHDiv != ''">
-			and kph.pay_h_div = #{payHDiv}
+		<if test="payHType != null and payHType != ''">
+			and kph.pay_h_type = #{payHType}
 		</if>
 		<if test="payHYn != null and payHYn != ''">
 			and kph.pay_h_yn = #{payHYn}
@@ -88,30 +88,54 @@ VALUES ( #{billId}, #{billYear}, #{billSem}, #{billAmount}, #{majorbId})
 
 <insert id="payInsert" parameterType="com.kcy.bill.service.PayVO">
 	INSERT INTO k_pay_h (bill_id, pay_h_bal, pay_id, stu_id, pay_h_grade, pay_h_sem)
-	SELECT #{billId},
-		   #{billAmount}, 
-		   CONCAT(s.stu_id, #{billId}),
-		   s.stu_id, 
-		   s.student_grade, 
-		   s.student_sem
+	SELECT  b.bill_id,
+			b.bill_amount,
+			CONCAT(s.stu_id, b.bill_id),
+			s.stu_id, 
+			s.student_grade, 
+			s.student_sem
 	FROM k_students s
 	JOIN k_users u
 	ON s.stu_id = u.user_id 
 	JOIN k_major m 
 	ON m.major_name = u.user_dept
-	WHERE m.major_id = #{majorbId}
-	AND s.student_aca_yn = '재학중';	
+	JOIN k_bills b
+	ON m.major_id = b.major_id 
+	WHERE b.bill_id = #{billId}
+	AND s.student_aca_yn = '재학';	
+</insert>
+
+<insert id="chkPayInsert" parameterType="com.kcy.bill.service.PayVO">
+	INSERT INTO k_pay_h (bill_id, pay_h_bal, pay_id, stu_id, pay_h_grade, pay_h_sem)
+	SELECT  b.bill_id,
+			b.bill_amount,
+			CONCAT(s.stu_id, b.bill_id),
+			s.stu_id, 
+			s.student_grade, 
+			s.student_sem
+	FROM k_students s
+	JOIN k_users u
+	ON s.stu_id = u.user_id 
+	JOIN k_major m 
+	ON m.major_name = u.user_dept
+	JOIN k_bills b	
+	ON m.major_id = b.major_id 
+	WHERE b.bill_id IN 
+	<foreach collection="billArr" item="billId" separator=",">
+		#{billId}
+	</foreach>
+	AND s.student_aca_yn = '재학';
 </insert>
 
 <select id="billCheck" resultType="com.kcy.bill.service.PayVO">
 	SELECT s.stu_id, 
 		   u.user_name, 
 		   u.user_dept, 
-		   s.student_grade, 
+		   kph.pay_h_grade, 
 		   b.bill_year, 
 		   b.bill_sem, 
 		   b.bill_amount, 
-		   kph.pay_h_div 
+		   kph.pay_h_type 
 	FROM k_students s
 	JOIN k_users u 
 	ON s.stu_id = u.user_id
@@ -125,6 +149,44 @@ VALUES ( #{billId}, #{billYear}, #{billSem}, #{billAmount}, #{majorbId})
 	AND b.bill_sem = #{billSem} 
 	AND s.stu_id = #{stuId}	
 </select>
+
+<select id="billList" resultType="com.kcy.bill.service.BillsVO">
+	SELECT DISTINCT b.bill_id, 
+		   			b.bill_year, 
+		   			b.bill_sem, 
+		   			b.bill_amount, 
+		   			m.major_name,
+		   			m.major_id,
+		   			kph.bill_id AS pId
+	FROM k_bills b
+	JOIN k_major m
+	ON b.major_id = m.major_id
+	LEFT JOIN k_pay_h kph 
+	ON b.bill_id = kph.bill_id 
+	<where>
+		<if test="billYear != null and billYear != ''">
+			and b.bill_year = #{billYear}
+		</if>
+		<if test="billSem != null and billSem != ''">
+			and b.bill_sem = #{billSem}
+		</if>
+		<if test="majorbId != null and majorbId != ''">
+			and m.major_id = #{majorbId}
+		</if>
+	</where>	
+</select>
+
+<update id="billUpdate" parameterType="com.kcy.bill.service.BillsVO">
+	UPDATE k_bills 
+ 	SET bill_amount = #{billAmount}
+ 	WHERE bill_id = #{billId}
+</update>
+
+<update id="payUpdate" parameterType="com.kcy.bill.service.PayVO">
+	UPDATE k_pay_h 
+	SET pay_h_bal = #{billAmount}
+	WHERE bill_id = #{billId}
+</update>
 
 </mapper>
 

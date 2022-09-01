@@ -9,5 +9,7 @@ public class BillsVO {
 	private int billSem;
 	private int billAmount;
 	private String majorId;
-	private String majorbId;
+	private String majorbId;	
+	private String majorName;
+	private String pId;
 }

@@ -9,8 +9,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kcy.bill.service.BillsService;
@@ -45,8 +48,7 @@ public class BillsController {
 		service.billsInsert(vo);
 		} catch(DuplicateKeyException e) {
 			redirectAttributes.addFlashAttribute("message", "중복되는 청구코드가 존재합니다");			
-		}
-		service.payInsert(pvo);
+		}		
 		return "redirect:billsInsert";
 	}	
 
@@ -84,11 +86,52 @@ public class BillsController {
 	return "pages/billMgr/payCheck";
 	}
 	
-	//등록금 고지서 확인 페이지
+	//등록금 고지서 확인 페이지(학생)
 	@RequestMapping("/billCheck")
-	public String billCheck(PayVO vo, Model model) {
-		model.addAttribute("billCheck", service.billCheck(vo));
+	public String billCheck(PayVO vo) {		
 	return "pages/billMgr/billCheck";
 	}
 	
+	//등록금 고지서 확인(학생)
+	@RequestMapping("/billCheckInfo")
+	public String billCheckInfo(PayVO vo, Model model, Principal principal) {
+		vo.setStuId(principal.getName());
+		model.addAttribute("billCheckInfo", service.billCheck(vo));
+	return "pages/billMgr/billCheck";
+	}
+	
+	//등록금 고지서 확인 페이지(행정)
+	@RequestMapping("/billList")
+	public String billList(BillsVO vo) {		
+	return "pages/billMgr/billList";
+	}
+	
+	//등록금 고지서 확인(행정)
+	@RequestMapping("/billListInfo")
+	public String billListInfo(BillsVO vo, Model model) {			
+		model.addAttribute("billListInfo", service.billList(vo));
+	return "pages/billMgr/billList";
+	}
+	
+	@PostMapping("/billsUpdate")
+	@ResponseBody
+	public String billUpdate(BillsVO vo, PayVO pvo) {
+		service.billUpdate(vo);
+		service.payUpdate(pvo);
+		return "1";
+	}
+	
+	@PostMapping("/payInsert")
+	@ResponseBody
+	public String payInsert(PayVO vo) {
+		service.payInsert(vo);
+		return "1";
+	}
+	
+	@PostMapping("/chkPayInsert")
+	@ResponseBody
+	public String chkPayInsert(PayVO vo) {
+		service.chkPayInsert(vo);
+		return "1";
+	}
 }

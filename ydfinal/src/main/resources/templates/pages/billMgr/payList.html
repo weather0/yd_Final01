@@ -94,8 +94,8 @@
 						<tbody>
 							<tr th:each="pay:${payList}">
 								<td th:text="${#calendars.format(pay.payDDay, 'yyyy-MM-dd')}"></td>
-								<td><span th:if="${pay.payHDiv.toString().equals('b')}">일괄납부</span>
-									<span th:if="${pay.payHDiv.toString().equals('s')}">분할납부</span>
+								<td><span th:if="${pay.payHType.toString().equals('b')}">일괄납부</span>
+									<span th:if="${pay.payHType.toString().equals('s')}">분할납부</span>
 								</td>
 								<td th:text="${pay.payDBank}"></td>
 								<td th:text="${pay.payDAmount}"></td>

@@ -14,7 +14,7 @@ public class PayVO {
 	private int payHBal;
 	private String payHYn;
 	private String payHAcc;
-	private String payHDiv;
+	private String payHType;
 	private int payDAmount;
 	private int payDCount;
 	private String payDBank;
@@ -32,4 +32,5 @@ public class PayVO {
 	private String majorId;
 	private String majorbId;
 	private int billAmount;
+	private String[] billArr;
 }
