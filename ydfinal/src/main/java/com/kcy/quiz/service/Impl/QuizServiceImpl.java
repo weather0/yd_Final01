@@ -66,8 +66,19 @@ public class QuizServiceImpl implements QuizService {
 	}
 
 	@Override
-	public QuizVo quizComplete(QuizVo vo) {
-		return map.quizComplete(vo);
+	public void quizDUpdate(QuizVo vo) {
+		map.quizDUpdate(vo);
+		
+	}
+
+	@Override
+	public void quizModify(QuizVo vo) {
+		map.quizModify(vo);
+	}
+
+	@Override
+	public QuizVo quizAcceptDetail(QuizVo vo) {
+		return map.quizAcceptDetail(vo);
 	}
 
 }

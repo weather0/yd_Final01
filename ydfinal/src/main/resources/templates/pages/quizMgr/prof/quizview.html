@@ -29,6 +29,8 @@
         		<td>
         		<a  th:text="${c.quizRContent}" th:href="@{/quizdetailview(quizRId=${c.quizRId}, stuId=${c.stuId})}"></a>
         		<!-- 파라미터 하나 더 보내야 함 stu_id -->
+        		
+        		
         		</td>
         		<td>
         		<a th:text="${c.quizROrginal}" th:href="${'/quizdownload?quizHFile='+c.quizHFile}"></a>
