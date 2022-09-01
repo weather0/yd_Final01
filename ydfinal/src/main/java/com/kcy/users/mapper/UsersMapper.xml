@@ -2,6 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kcy.users.mapper.UsersMapper">
 
+<!-- 본인 학적 조회 -->
 <select id="stuInfo" resultType="CustomMap">
   select u.user_id, u.user_name, 
          s.student_grade, s.student_sem, substr(u.user_ssn,1,6) user_birth,
@@ -20,6 +21,7 @@
 </select>
 
 
+<!-- 본인 학적 변동 이력 -->
 <select id="stuAcaInfo" resultType="CustomMap">
   select u.user_name, u.user_id,
          u.user_dept, u.user_phone,
@@ -40,6 +42,7 @@
 </select>
 
 
+<!-- 본인 학적 변동 신청 폼 -->
 <select id="stuAcaInsertForm" resultType="CustomMap">
   select sch_id, 
          sch_start, 
@@ -57,6 +60,7 @@
 </select>
 
 
+<!-- 본인 학적 변동 신청 실행 -->
 <insert id="stuAcaInsertProc" parameterType="map">
   insert into k_student_aca 
   values (
@@ -88,11 +92,62 @@
          )
 </insert>
 
+
+<!-- 본인 학적 변동 신청 삭제 -->
 <delete id="stuAcaDelete">
   delete from k_student_aca
    where aca_id = #{acaId}
 
 </delete>
+
+
+
+<!-- 전체 학생 학적 변동 이력 (행정) -->
+<select id="allAcaInfo" resultType="CustomMap">
+  select u.user_name, u.user_id,
+         u.user_dept, u.user_phone,
+         sa.aca_id, sa.aca_type, 
+         sa.aca_start, ks.sch_title AS aca_start_t, ks.sch_start AS aca_start_s, ks.sch_end AS aca_start_e,
+         sa.aca_end, ke.sch_title AS aca_end_t, ke.sch_start AS aca_end_s, ke.sch_end AS aca_end_e,
+         sa.aca_reason, sa.aca_reason_d, 
+         sa.aca_yn, sa.aca_reject, 
+         sa.aca_date, sa.aca_file
+         
+    from k_users u 
+    join k_student_aca sa on (u.user_id = sa.stu_id)
+    left join k_schedule ks on (ks.sch_id = sa.aca_start)
+    left join k_schedule ke on (ke.sch_id = sa.aca_end)
+    
+   order by sa.aca_date desc
+</select>
+
+
+<!-- 학적 변동 신청 승인 (행정) -->
+<update id="stuAcaAdmit">
+  update k_student_aca 
+     set aca_yn = "승인"
+   where aca_id = #{acaId}
+
+</update>
+
+<!-- 학적 변동 신청 반려 (행정) -->
+<update id="stuAcaReject">
+  update k_student_aca 
+     set aca_yn = "반려",
+         aca_reject = #{acaReject}
+   where aca_id = #{acaId}
+
+</update>
+
+<!-- 학적 변동 확정 취소 (행정) -->
+<update id="stuAcaAdmitCancel">
+  update k_student_aca 
+     set aca_yn = "신청중",
+         aca_reject = NULL
+   where aca_id = #{acaId}
+
+</update>
+
 
 
 

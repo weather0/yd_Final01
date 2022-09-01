@@ -4,10 +4,23 @@ import java.util.List;
 import java.util.Map;
 
 public interface UsersMapper {
+    // 본인 학적 조회
     public Map<String, String> stuInfo(String id);
+    // 본인 학적 변동 이력
     public List<Map<String, String>> stuAcaInfo(String id);
+    // 본인 학적 변동 신청 폼
     public List<Map<String, String>> stuAcaInsertForm();
+    // 본인 학적 변동 신청 실행
     public void stuAcaInsertProc(Map<String, String> map);
+    // 본인 학적 변동 신청 삭제
     public void stuAcaDelete(String acaId);
     
+    // 전체 학생 학적 변동 이력 (행정)
+    public List<Map<String, String>> allAcaInfo();
+    // 학적 변동 신청 승인 (행정)
+    public void stuAcaAdmit(String acaId);
+    // 학적 변동 신청 반려 (행정)
+    public void stuAcaReject(Map<String, String> map);
+    // 학적 변동 확정 취소 (행정)
+    public void stuAcaAdmitCancel(String acaId);
 }

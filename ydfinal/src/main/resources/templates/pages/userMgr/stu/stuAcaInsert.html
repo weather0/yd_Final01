@@ -46,23 +46,47 @@
       })
       
       
+      // 기존 휴,복학 신청 된 학기는 추가 신청 폼에서 제외하기
       
       let arr = /*[[${myAcaInfos}]]*/
       let farr = arr.filter(e => e.acaType == '휴학');
-      let oldHuhakS = farr[0].acaStart.substring(1);
-      let oldHuhakE = farr[0].acaEnd.substring(1);
+      let fbarr = arr.filter(e => e.acaType == '복학');
       
-      let acaStartArr = $('#acaStartT option')
+      // 함수 실행
+      closeOld($('#acaStartT option'));
+      closeOld($('#acaEndT option'));
+      closeOld($('#returnStartT option'));
       
-      for (let i of acaStartArr){
-        let acaStartOp = i.value.substring(1)
-        if(acaStartOp >= oldHuhakS && acaStartOp <= oldHuhakE) {
-          console.log(i)
-          console.log('ggggg')
-          i.setAttribute('disabled','disabled')
+      // 함수 정의
+      function closeOld (acaArr) {
+        // 기신청 휴학 제외 
+        for (let j = 0; j < farr.length; j++){
+          let oldHuhakS = farr[j].acaStart.substring(1);
+          let oldHuhakE = farr[j].acaEnd.substring(1);
+          
+          for (let i of acaArr){
+            let acaOp = i.value.substring(1)
+            if(acaOp >= oldHuhakS && acaOp <= oldHuhakE) {
+              i.setAttribute('disabled','disabled')
+              i.style.backgroundColor = 'lightgray';
+            }
+          }
         }
+        
+        // 기신청 복학 제외
+        for (let j = 0; j < fbarr.length; j++){
+          let oldBokhakS = fbarr[j].acaStart.substring(1);
+          
+          for (let i of acaArr){
+            let acaOp = i.value.substring(1)
+            if(acaOp == oldBokhakS) {
+              i.setAttribute('disabled','disabled')
+              i.style.backgroundColor = 'lightgray';
+            }
+          }
+        }
+        
       }
-      
       
       
       
@@ -132,15 +156,14 @@
 
 
 
-    <form action="/stuAcaInsertProc" method="post">
-      <div>
-       <input type="hidden" name="id" th:value="${#authentication.name}">
-      </div>
     
-      <div class="row justify-content-center">
-        <div class="col-lg-8 mb-4">
-          <div class="card mb-2">
+    <div class="row justify-content-center">
+      <div class="col-lg-8 mb-4">
+        <form action="/stuAcaInsertProc" method="post" id="stuAcaInsertFrom">
   
+          <div class="card mb-2">
+            <input type="hidden" name="id" th:value="${#authentication.name}">
+            
             <div class="table-responsive border-radius-lg">
               <table class="table align-items-center mb-0 fw-bold" id="table2">
                 <tr>
@@ -175,6 +198,7 @@
                       </select>
                       부터
                     </div>
+                    <div class="ms-3">*기신청한 휴/복학 기간은 선택할 수 없습니다</div>
                     
                   </td>
                 </tr>
@@ -233,6 +257,7 @@
                       </select>
                       까지
                     </div>
+                    <div class="ms-3">*기신청한 휴/복학 기간은 선택할 수 없습니다</div>
                   
                   </td>
                 </tr>
@@ -253,48 +278,41 @@
                 </tr>
                 
                 
-                
-                
-                
-                
-                
-                
-  
-                
-                
               </table>
             </div> <!-- div table-responsive -->
-  
           </div> <!-- card table -->
-          
-          <div class="text-end">
-            <button type="button" class="btn btn-block bg-gradient-secondary mb-3" data-bs-toggle="modal" data-bs-target="#modal-stuAcaInsert">신청</button>
-          </div>
-          
-          
-          <div class="modal fade" id="modal-stuAcaInsert" tabindex="-1" role="dialog" aria-labelledby="modal-default" aria-hidden="true">
-            <div class="modal-dialog modal- modal-dialog-centered modal-" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h6 class="modal-title font-weight-normal" id="modal-title-stuAcaInsert">학적변동 신청</h6>
-                  <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                  </button>
-                </div>
-                <div class="modal-body">
-                  <p>학적변동 신청을 완료하시겠습니까?</p>
-                </div>
-                <div class="modal-footer">
-                  <button type="submit" class="btn bg-gradient-secondary" id="btn-stuAcaInsert">신청</button>
-                  <button type="button" class="btn btn-link  ml-auto" data-bs-dismiss="modal">닫기</button>
-                </div>
+        </form>
+            
+        <!-- modal-stuAcaInsert -->
+        <div class="text-end">
+          <button type="button" class="btn btn-block bg-gradient-secondary mb-3" data-bs-toggle="modal" data-bs-target="#modal-stuAcaInsert">
+          신청
+          </button>
+        </div>
+        
+        <div class="modal fade" id="modal-stuAcaInsert" tabindex="-1" role="dialog" aria-labelledby="modal-default" aria-hidden="true">
+          <div class="modal-dialog modal- modal-dialog-centered modal-" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h6 class="modal-title font-weight-normal" id="modal-title-stuAcaInsert">학적 변동 신청</h6>
+                <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">×</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <p>학적 변동 신청을 완료하시겠습니까?</p>
+              </div>
+              <div class="modal-footer">
+                <button type="submit" form="stuAcaInsertFrom" class="btn bg-gradient-secondary" id="btn-stuAcaInsert">신청</button>
+                <button type="button" class="btn btn-link  ml-auto" data-bs-dismiss="modal">닫기</button>
               </div>
             </div>
           </div>
-          
-        </div> <!-- col -->
-      </div> <!-- row -->
-    </form>
+        </div> <!-- modal-stuAcaInsert -->
+        
+        
+      </div> <!-- col -->
+    </div> <!-- row -->
     
     
 

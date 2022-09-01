@@ -25,6 +25,13 @@ public class SequrityConfig extends WebSecurityConfigurerAdapter  {
 		http
 			.authorizeRequests()
 			.antMatchers("/login", "/check/findPw").permitAll()
+			
+			// 9.1.추가: 곽ㅈㅇ
+			.antMatchers("/allAcaInfo").hasRole("ADMIN")
+			.antMatchers("/stuAcaInfo", "/stuAcaInsert").hasRole("STU")
+			.and().exceptionHandling().accessDeniedPage("/")
+			//
+			
 	//		.antMatchers("/userMgr/prof").access("hasRole('ROLE_PROF')")
 	//		.antMatchers("/userMgr/stu").access("hasRole('ROLE_STU')")
 	//		.antMatchers("/admin").hasAuthority("admin")

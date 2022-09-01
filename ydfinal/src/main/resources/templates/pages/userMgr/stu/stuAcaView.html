@@ -33,8 +33,8 @@
           acaFile 
           } = JSON.parse(sessionStorage.getItem("stuAcainfo"));
 
-      // 보안성을 위해 스토리지는 비워준다
-      sessionStorage.removeItem("stuAcainfo");
+      // 보안성을 위해 스토리지는 비워준다(단, 새로고침 시 데이터 로드 못함)
+//       sessionStorage.removeItem("stuAcainfo");
       
       
       // 인적사항 테이블
@@ -44,7 +44,7 @@
       $('#userPhone').text(userPhone);
       
       
-      // 폼 테이블
+      // 폼 테이블(타입별 양식)
       if (acaType == '휴학') {
         // 외관
         $('#table2 tr:eq(2) td:first-child').text('휴학구분');
@@ -73,7 +73,7 @@
       }
       
       
-      // 휴학, 자퇴 공유 폼
+      // 폼 테이블(공통 양식)
       if (acaReason == '군입대') {
         $('#goMilitary').attr('checked','checked');
       }
@@ -95,16 +95,44 @@
       if (acaReason == '기타') {
         $('#others').attr('checked','checked');
       }
-      
       $('#acaReasonD').val(acaReasonD);
       
+      // '승인'또는'반려'일 때만 기능버튼 보이기
+      if (acaYn == '승인' || acaYn == '반려') {
+        $('#stuAcaDelete').remove() // 삭제(신청 취소)(학생)
+        $('#stuAcaAdmit').remove() // 승인(행정)
+        $('#stuAcaReject').remove() // 반려(행정)
+      }
+      // '신청중'일 때만 기능버튼 보이기
+      if (acaYn == '신청중') {
+        $('#stuAcaAdmitCancel').remove() // 확정취소(행정)
+      }
       
-      // 삭제버튼 실행
+      // 삭제(학생) 실행
       $('#btn-stuAcaDelete').on('click', function(){
         location.href='stuAcaDelete?acaId='+acaId;
-        
       })
       
+      // 승인(행정) 실행
+      $('#btn-stuAcaAdmit').on('click', function(){
+        location.href='stuAcaAdmit?acaId='+acaId;
+      })
+      
+      // 반려(행정) 실행
+      $('#btn-stuAcaReject').on('click', function(){
+        $.ajax ({
+          url: 'stuAcaReject',
+          type: 'POST',
+          data: { acaId : acaId, acaReject : $('#acaReject textarea').val() },
+          error: (e) => { console.log(e) }
+        })
+      })
+      
+      // 확정 취소(행정) 실행
+      $('#btn-stuAcaAdmitCancel').on('click', function(){
+        location.href='stuAcaAdmitCancel?acaId='+acaId;
+      })
+        
     })
   </script>
 
@@ -149,15 +177,12 @@
 
 
 
-    <form action="/stuAcaInsertProc" method="post">
-      <div>
-       <input type="hidden" name="id" th:value="${#authentication.name}">
-      </div>
-    
-      <div class="row justify-content-center">
-        <div class="col-lg-8 mb-4">
+    <div class="row justify-content-center">
+      <div class="col-lg-8 mb-4">
+        <form>
+
           <div class="card mb-2">
-  
+            
             <div class="table-responsive border-radius-lg">
               <table class="table align-items-center mb-0 fw-bold" id="table2">
                 <tr>
@@ -245,7 +270,7 @@
                   <td>
                     <div class="form-floating input-group input-group-dynamic mx-4 my-3 w-90 align-items-center">
                       <textarea class="form-control" placeholder="Leave a comment here" name="acaReasonD" id="acaReasonD" style="height: 15vh" readonly></textarea>
-<!--                       <label for="acaReasonD">사유 입력</label> -->
+  <!--                       <label for="acaReasonD">사유 입력</label> -->
                     </div>
                     
                   </td>
@@ -260,40 +285,137 @@
                 
               </table>
             </div> <!-- div table-responsive -->
-  
           </div> <!-- card table -->
           
-          <div class="text-end">
-            <button type="button" class="btn btn-block bg-gradient-secondary mb-3" data-bs-toggle="modal" data-bs-target="#modal-stuAcaDelete">
-            신청취소
+        </form>
+        
+        
+        <div class="d-flex justify-content-end">
+          <!-- Start: stuAcaDelete -->
+          <div id="stuAcaDelete" sec:authorize="hasRole('ROLE_STU')">
+            <button type="button" class="btn btn-block bg-gradient-secondary mx-1" data-bs-toggle="modal" data-bs-target="#modal-stuAcaDelete">
+            신청 취소
             </button>
-          </div>
-          
-          
-          <div class="modal fade" id="modal-stuAcaDelete" tabindex="-1" role="dialog" aria-labelledby="modal-default" aria-hidden="true">
-            <div class="modal-dialog modal- modal-dialog-centered modal-" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h6 class="modal-title font-weight-normal" id="modal-title-stuAcaDelete">학적변동 신청 취소</h6>
-                  <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                  </button>
-                </div>
-                <div class="modal-body">
-                  <p>학적변동 신청을 취소하시겠습니까?</p>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn bg-gradient-secondary" id="btn-stuAcaDelete">신청 취소</button>
-                  <button type="button" class="btn btn-link  ml-auto" data-bs-dismiss="modal">닫기</button>
+            
+            <div class="modal fade" id="modal-stuAcaDelete" tabindex="-1" role="dialog" aria-labelledby="modal-default" aria-hidden="true">
+              <div class="modal-dialog modal- modal-dialog-centered modal-" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h6 class="modal-title font-weight-normal" id="modal-title-stuAcaDelete">학적변동 신청 취소</h6>
+                    <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">×</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <p>학적 변동 신청을 취소하시겠습니까?</p>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn bg-gradient-secondary" id="btn-stuAcaDelete">신청 취소</button>
+                    <button type="button" class="btn btn-link  ml-auto" data-bs-dismiss="modal">닫기</button>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
+          <!-- End: stuAcaDelete -->
           
-        </div> <!-- col -->
-      </div> <!-- row -->
-    </form>
-    
+          
+          <!-- Start: stuAcaAdmit -->
+          <div id="stuAcaAdmit" sec:authorize="hasRole('ROLE_ADMIN')">
+            <button type="button" class="btn btn-block bg-gradient-secondary mx-1" data-bs-toggle="modal" data-bs-target="#modal-stuAcaAdmit">
+            신청 승인
+            </button>
+            
+            <div class="modal fade" id="modal-stuAcaAdmit" tabindex="-1" role="dialog" aria-labelledby="modal-default" aria-hidden="true">
+              <div class="modal-dialog modal- modal-dialog-centered modal-" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h6 class="modal-title font-weight-normal" id="modal-title-stuAcaAdmit">학적 변동 신청 승인</h6>
+                    <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">×</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <p>학적 변동 신청을 승인하시겠습니까?</p>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn bg-gradient-secondary" id="btn-stuAcaAdmit">신청 승인</button>
+                    <button type="button" class="btn btn-link  ml-auto" data-bs-dismiss="modal">닫기</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- End: stuAcaAdmit -->
+          
+          
+          
+          <!-- Start: stuAcaReject -->
+          <div id="stuAcaReject" sec:authorize="hasRole('ROLE_ADMIN')">
+            <button type="button" class="btn btn-block bg-gradient-secondary mx-1" data-bs-toggle="modal" data-bs-target="#modal-stuAcaReject">
+            반려
+            </button>
+            
+            <div class="modal fade" id="modal-stuAcaReject" tabindex="-1" role="dialog" aria-labelledby="modal-default" aria-hidden="true">
+              <div class="modal-dialog modal- modal-dialog-centered modal-" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h6 class="modal-title font-weight-normal" id="modal-title-stuAcaReject">학적 변동 신청 반려</h6>
+                    <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">×</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <form id="acaReject">
+                      <div class="input-group input-group-dynamic">
+                        <textarea class="multisteps-form__textarea form-control" rows="3" placeholder="반려사유 입력"></textarea>
+                      </div>
+                    </form>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn bg-gradient-secondary" id="btn-stuAcaReject">신청 반려</button>
+                    <button type="button" class="btn btn-link  ml-auto" data-bs-dismiss="modal">닫기</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- End: stuAcaReject -->
+          
+          
+          <!-- Start: stuAcaAdmitCancel -->
+          <div id="stuAcaAdmitCancel" sec:authorize="hasRole('ROLE_ADMIN')">
+            <button type="button" class="btn btn-block bg-gradient-secondary mx-1" data-bs-toggle="modal" data-bs-target="#modal-stuAcaAdmitCancel">
+            확정 취소
+            </button>
+            
+            <div class="modal fade" id="modal-stuAcaAdmitCancel" tabindex="-1" role="dialog" aria-labelledby="modal-default" aria-hidden="true">
+              <div class="modal-dialog modal- modal-dialog-centered modal-" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h6 class="modal-title font-weight-normal" id="modal-title-stuAcaAdmitCancel">학적 변동 확정 취소</h6>
+                    <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">×</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <p>학적 변동 확정을 취소하고 신청중으로 되돌리겠습니까?</p>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn bg-gradient-secondary" id="btn-stuAcaAdmitCancel">확정 취소</button>
+                    <button type="button" class="btn btn-link  ml-auto" data-bs-dismiss="modal">닫기</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- End: stuAcaAdmitCancel -->
+        
+        </div> <!-- div 버튼 꾸러미 -->
+      </div> <!-- col -->
+    </div> <!-- row -->
+
+  
     
 
 

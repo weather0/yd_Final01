@@ -38,4 +38,24 @@ public class UsersServiceImpl implements UsersService {
         mapper.stuAcaDelete(acaId);
     }
 
+    @Override
+    public List<Map<String, String>> allAcaInfo() {
+        return mapper.allAcaInfo();
+    }
+
+    @Override
+    public void stuAcaAdmit(String acaId) {
+        mapper.stuAcaAdmit(acaId);
+    }
+
+    @Override
+    public void stuAcaReject(Map<String, String> map) {
+        mapper.stuAcaReject(map);
+    }
+
+    @Override
+    public void stuAcaAdmitCancel(String acaId) {
+        mapper.stuAcaAdmitCancel(acaId);
+    }
+
 }
