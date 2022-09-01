@@ -26,8 +26,10 @@
   </style>
   <script th:inline="javascript">
     $(function() {
+      // 사이드바 콜랩스 펼침
       $('#userMgr').addClass('show');
       
+      // DataTable
       $('#allAcaInfos').DataTable({
         "order": [0, "desc"],
         "language": {

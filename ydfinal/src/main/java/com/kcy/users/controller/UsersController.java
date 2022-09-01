@@ -83,7 +83,7 @@ public class UsersController {
     @RequestMapping("/stuAcaReject")
     public String stuAcaReject(@RequestParam Map<String, String> map) {
         service.stuAcaReject(map);
-        return "redirect:allAcaInfo";
+        return "pages/userMgr/admin/allAcaInfo"; 
     }
     
     // 학적 변동 확정 취소 (행정)

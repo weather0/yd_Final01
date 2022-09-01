@@ -28,15 +28,26 @@
       </li>
 
       <div class="collapse" id="userMgr">
-        <div class="card card-body">
-          <a href="stuInfo" sec:authorize="hasRole('ROLE_STU')">학적조회</a>
-          <a href="stuAcaInsert" sec:authorize="hasRole('ROLE_STU')">학적변동 신청</a>
-          <a href="stuAcaInfo" sec:authorize="hasRole('ROLE_STU')">학적변동 이력</a>
-          <a href="allAcaInfo" sec:authorize="hasRole('ROLE_ADMIN')">학적변동 승인</a>
-          <a href="#">졸업요건 확인</a>
-          <a href="#">증명서 출력</a>
-          
-          
+        <div class="navbar-nav">
+          <div class="nav-item">
+            <a class="nav-link text-white py-1" href="stuInfo" sec:authorize="hasRole('ROLE_STU')">학적조회</a>
+          </div>
+          <div class="nav-item">
+            <a class="nav-link text-white py-1" href="stuAcaInsert" sec:authorize="hasRole('ROLE_STU')">학적변동 신청</a>
+          </div>
+          <div class="nav-item">
+            <a class="nav-link text-white py-1" href="stuAcaInfo" sec:authorize="hasRole('ROLE_STU')">학적변동 이력</a>
+          </div>
+          <div class="nav-item">
+            <a class="nav-link text-white py-1" href="allAcaInfo" sec:authorize="hasRole('ROLE_ADMIN')">학적변동 승인</a>
+          </div>
+          <div class="nav-item">
+            <a class="nav-link text-white py-1" href="#">졸업요건 확인</a>
+          </div>
+          <div class="nav-item">
+            <a class="nav-link text-white py-1" href="#">증명서 출력</a>
+          </div>
+
           <!-- url에 id를 달아서 get요청 받도록 설정한 경우 작성방식
               (사실 생각해보면 이렇게 할 이유가 전혀 없다! 하면 안 됨!
               왜냐면 url에 수동으로 /학번 달아버리면 자기계정 말고 다른 사람 계정 정보도 다 볼 수 있으니까!
@@ -56,8 +67,6 @@
           
             <!-- (PathVariable사용시) 작성방법: 변수기능을 활용한다! 변수 여러개 선언도 가능! {var1}/{var2}.. -->
 <!--           <a th:href="@{ /stuAcaInfo/{var}(var=${#authentication.name}) }">학적변동 이력</a> -->
-          
-
         </div>
       </div>
 
@@ -73,22 +82,48 @@
       </li>
       
       <div class="collapse" id="classMgr">
-        <div class="card card-body">
-          <a href="/openlecturelist">수강신청</a>
-          <a href="/studentinchargelist">담당학생 확인</a>
-          <a href="#">강의 시간표 조회</a>
-          <a href="/noticelist">공지 및 강의자료</a>
-          <a href="/quizlist">과제 게시판</a>
-          <a href="/profevaluationlist">만족도 평가</a>
-          <br> ---- 교수 전용 메뉴 --- <br>
-          <a href="/quizinsert">과제 등록</a>
-          <a href="/noticeinsert">공지 및 자료 등록</a>
-          <a href="/quizviewlist">과제 확인 페이지</a>
-          <a href="/lectureinsert">강의 개설 신청</a>
-          <a href="#">성적 입력</a>
-          <a href="/evaluationconfirmationlist">만족도 평가 열람</a>
-          <br> ---- 행정 전용 메뉴 --- <br>
-          <a href="/lecturelist">강의 개설 승인</a>
+        <div class="navbar-nav">
+          <div class="nav-item">
+            <a class="nav-link text-white py-1" href="/openlecturelist">수강신청</a>
+          </div>
+          <div class="nav-item">
+            <a class="nav-link text-white py-1" href="/studentinchargelist">담당학생 확인</a>
+          </div>
+          <div class="nav-item">
+            <a class="nav-link text-white py-1" href="#">강의 시간표 조회</a>
+          </div>
+          <div class="nav-item">
+            <a class="nav-link text-white py-1" href="/noticelist">공지 및 강의자료</a>
+          </div>
+          <div class="nav-item">
+            <a class="nav-link text-white py-1" href="/quizlist">과제 게시판</a>
+          </div>
+          <div class="nav-item">
+            <a class="nav-link text-white py-1" href="/profevaluationlist">만족도 평가</a>
+          </div>
+          <br> -- 교수 전용(권한달고 줄 삭제) -- <br>
+          <div class="nav-item">
+            <a class="nav-link text-white py-1" href="/quizinsert">과제 등록</a>
+          </div>
+          <div class="nav-item">
+            <a class="nav-link text-white py-1" href="/noticeinsert">공지 및 자료 등록</a>
+          </div>
+          <div class="nav-item">
+            <a class="nav-link text-white py-1" href="/quizviewlist">과제 확인 페이지</a>
+          </div>
+          <div class="nav-item">
+            <a class="nav-link text-white py-1" href="/lectureinsert">강의 개설 신청</a>
+          </div>
+          <div class="nav-item">
+            <a class="nav-link text-white py-1" href="#">성적 입력</a>
+          </div>
+          <div class="nav-item">
+            <a class="nav-link text-white py-1" href="/evaluationconfirmationlist">만족도 평가 열람</a>
+          </div>
+          <br> -- 행정 전용(권한달고 줄 삭제) -- <br>
+          <div class="nav-item">
+            <a class="nav-link text-white py-1" href="/lecturelist">강의 개설 승인</a>
+          </div>
         </div>
       </div>
 
@@ -103,8 +138,10 @@
       </li>
       
       <div class="collapse" id="billMgr">
-        <div class="card card-body">
-          <a href="/billsInsert">등록금 고지서 등록</a>
+        <div class="navbar-nav">
+          <div class="nav-item">
+            <a class="nav-link text-white py-1" href="/billsInsert">등록금 고지서 등록</a>
+          </div>
         </div>
       </div>
 
@@ -120,17 +157,37 @@
       </li>
       
       <div class="collapse" id="mentorMgr">
-        <div class="card card-body">
-          <a href="/matchingStd">지도교수 매칭</a>
-          <a href="/matchingList">매칭이력 관리</a>
-          <a href="#">담당교수 확인</a>
-          <a href="#">담당학생 확인</a>
-          <a href="#">상담스케줄</a>
-          <a href="#">진로탐색 검사</a>
-          <a href="#">진로탐색 검사 관리</a>
-          <a href="#">상담신청</a>
-          <a href="/chat/room">채팅</a>
-          <a href="#">상담일지</a>
+        <div class="navbar-nav">
+          <div class="nav-item">
+            <a class="nav-link text-white py-1" href="/matchingStd">지도교수 매칭</a>
+          </div>
+          <div class="nav-item">
+            <a class="nav-link text-white py-1" href="/matchingList">매칭이력 관리</a>
+          </div>
+          <div class="nav-item">
+            <a class="nav-link text-white py-1" href="#">담당교수 확인</a>
+          </div>
+          <div class="nav-item">
+            <a class="nav-link text-white py-1" href="#">담당학생 확인</a>
+          </div>
+          <div class="nav-item">
+            <a class="nav-link text-white py-1" href="#">상담스케줄</a>
+          </div>
+          <div class="nav-item">
+            <a class="nav-link text-white py-1" href="#">진로탐색 검사</a>
+          </div>
+          <div class="nav-item">
+            <a class="nav-link text-white py-1" href="#">진로탐색 검사 관리</a>
+          </div>
+          <div class="nav-item">
+            <a class="nav-link text-white py-1" href="#">상담신청</a>
+          </div>
+          <div class="nav-item">
+            <a class="nav-link text-white py-1" href="/chat/room">채팅</a>
+          </div>
+          <div class="nav-item">
+            <a class="nav-link text-white py-1" href="#">상담일지</a>
+          </div>
         </div>
       </div>
 
