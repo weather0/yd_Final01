@@ -155,10 +155,10 @@
                     [[${item.acaStartT}]] ~ [[${item.acaEndT}]]</th:block>
                 </td>
                 <td>[[${item.acaReason}]]</td>
-                <td th:text="${#calendars.format(item.acaDate,'yyyy-MM-dd hh:mm')}"></td>
+                <td th:text="${#calendars.format(item.acaDate,'yyyy-MM-dd HH:mm')}"></td>
                 <td>[[${item.acaYn}]]</td>
                 <td th:text="${#strings.abbreviate(item.acaReject,10)}"></td>
-                <td>[[${item.acaFile}]]</td>
+                <td th:text="${#strings.abbreviate(item.acaFile,10)}"></td>
               </tr>
               
               <!-- DataTables의 Server-side processing을 이용(진정한 의미의 페이징) -->
