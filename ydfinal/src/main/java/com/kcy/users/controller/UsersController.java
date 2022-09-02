@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.kcy.users.service.UsersService;
 
@@ -22,7 +23,14 @@ import com.kcy.users.service.UsersService;
 public class UsersController {
     @Autowired
     UsersService service;
-
+    
+    // 기본 인적사항 (모든 사용자)
+    @ResponseBody
+    @RequestMapping("/userInfo")
+    public Map<String, String> userInfo(Principal principal) {
+        return service.userInfo(principal.getName());
+    }
+    
     // 본인 학적 조회
     @RequestMapping("/stuInfo")
     public String stuInfo(Model model, Principal principal) {
@@ -80,10 +88,11 @@ public class UsersController {
     }
     
     // 학적 변동 신청 반려 (행정)
+    @ResponseBody
     @RequestMapping("/stuAcaReject")
-    public String stuAcaReject(@RequestParam Map<String, String> map) {
+    public void stuAcaReject(@RequestParam Map<String, String> map) {
         service.stuAcaReject(map);
-        return "pages/userMgr/admin/allAcaInfo"; 
+        // ajax 요청은 어차피 redirect가 안먹히므로 @ResponseBody를 달고 void로 처리한다(페이지 이동은 뷰에서 href로)
     }
     
     // 학적 변동 확정 취소 (행정)

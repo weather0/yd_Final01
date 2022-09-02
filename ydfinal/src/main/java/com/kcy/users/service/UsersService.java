@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.Map;
 
 public interface UsersService {
+    // 기본 인적사항 (모든 사용자)
+    public Map<String, String> userInfo(String id);
+    
     // 본인 학적 조회
     public Map<String, String> stuInfo(String id);
     // 본인 학적 변동 이력

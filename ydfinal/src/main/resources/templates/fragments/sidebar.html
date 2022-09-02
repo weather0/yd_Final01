@@ -27,7 +27,7 @@
         </a>
       </li>
 
-      <div class="collapse" id="userMgr">
+      <div class="collapse collapse-kcy" id="userMgr">
         <div class="navbar-nav">
           <div class="nav-item">
             <a class="nav-link text-white py-1" href="stuInfo" sec:authorize="hasRole('ROLE_STU')">학적조회</a>
@@ -81,7 +81,7 @@
         </a>
       </li>
       
-      <div class="collapse" id="classMgr">
+      <div class="collapse collapse-kcy" id="classMgr">
         <div class="navbar-nav">
           <div class="nav-item">
             <a class="nav-link text-white py-1" href="/openlecturelist">수강신청</a>
@@ -137,7 +137,7 @@
         </a>
       </li>
       
-      <div class="collapse" id="billMgr">
+      <div class="collapse collapse-kcy" id="billMgr">
         <div class="navbar-nav">
           <div class="nav-item">
             <a class="nav-link text-white py-1" href="/billsInsert">등록금 고지서 등록</a>
@@ -156,7 +156,7 @@
         </a>
       </li>
       
-      <div class="collapse" id="mentorMgr">
+      <div class="collapse collapse-kcy" id="mentorMgr">
         <div class="navbar-nav">
           <div class="nav-item">
             <a class="nav-link text-white py-1" href="/matchingStd">지도교수 매칭</a>
@@ -225,6 +225,29 @@
     </div>
   </div>
   -->
+
+  <script>
+    // 이 스크립트를 전체 레이아웃으로 빼면 전체 페이지가 로딩된 다음에 스크립트를 실행하므로 여전히 깜빡임이 발생함
+    // 그래서 여기 사이드바fragment에 달아놔야 content 페이지 로딩전에 show 여부가 결정나므로 깜빡임이 사라진다!! SPA느낌 남!
+    // (주의!) jQuery CDN을 각페이지 마다 달아 놓으면, 그 페이지 접근시 상위 jQuery 이벤트가 충돌?무시?가 된다!!
+    // 반드시 jQuery CDN은 앱 전체 레이아웃 최상위에 딱 한개만 달아놓고 각 페이지에 달려있는 건 다 빼자 
+    
+    $('.collapse-kcy').on('shown.bs.collapse', function(){
+      Cookies.set('collapseShown', $(this).attr('id'))
+    })
+    
+    $('.collapse-kcy').on('hide.bs.collapse', function(){
+//       Cookies.remove('collapseShown');
+    })
+    
+    let item = Cookies.get('collapseShown');
+    if (item != null) {
+//       $('.collapse-kcy').removeClass('show'); // 굳이 지워줄 필요는 없는 듯
+      $('#' + item).addClass('show');
+    }
+    
+
+  </script>
 
 </th:block>
 
