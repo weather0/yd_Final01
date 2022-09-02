@@ -50,7 +50,7 @@ public class BillsController {
 			redirectAttributes.addFlashAttribute("message", "중복되는 청구코드가 존재합니다");			
 		}		
 		return "redirect:billsInsert";
-	}	
+	}
 
 	//전공코드(임시)	
 	@ModelAttribute("majorb")
@@ -130,7 +130,9 @@ public class BillsController {
 	
 	@PostMapping("/chkPayInsert")
 	@ResponseBody
-	public String chkPayInsert(PayVO vo) {
+	public String chkPayInsert(PayVO vo, @RequestParam(value="Id") List<String> id) {
+				
+		vo.setId(id);		
 		service.chkPayInsert(vo);
 		return "1";
 	}

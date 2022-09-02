@@ -2,6 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kcy.matching.mapper.MatchingMapper">
 
+<select id="majorbList" resultType="com.kcy.bill.service.MajorbVO">
+	SELECT major_id, major_name 
+	FROM k_major
+	WHERE major_closeday IS NULL; 
+</select>
+
 <select id="matchingList" resultType="com.kcy.matching.service.MatchingListVO">
   	SELECT m.matching_id,
   		   u.user_name AS pr_name, 
@@ -14,7 +20,18 @@
 	JOIN k_users AS u 
 	ON u.user_id = m.prof_id  
 	JOIN k_users AS ku 
-	ON ku.user_id = m.stu_id   
+	ON ku.user_id = m.stu_id
+	<where>
+		<if test="userDept != null and userDept != ''">
+			and u.user_dept = #{userDept}
+		</if>
+		<if test="stdDept != null and stdDept != ''">
+			and ku.user_dept = #{stdDept}
+		</if>
+		<if test="matchingType != null and matchingType != ''">
+			and m.matching_type = #{matchingType} 
+		</if>		
+	</where>   
   </select>
 
 <select id="matchingStdList" resultType="com.kcy.matching.service.MatchingStdVO">

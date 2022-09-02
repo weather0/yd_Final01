@@ -15,6 +15,48 @@
 
   <!-- 본문 start -->
   <h1>매칭 이력</h1>
+  <form action="matchingListInfo">
+		<div class="row">				
+			<div class="col-md-2">
+				<div class="input-group input-group-outline my-3">
+					<label class="form-label"></label> 
+					<select class="form-control" name="userDept" id="userDept">
+						<option value="">교수 전공 선택</option>
+						  <th:block th:each="mjr : ${majorb}">
+						    <option th:text="${mjr.majorName}" th:value="${mjr.majorName}"></option>
+						  </th:block>			
+					</select>
+				</div>
+			</div>
+			<div class="col-md-2">
+				<div class="input-group input-group-outline my-3">
+					<label class="form-label"></label> 
+					<select class="form-control" name="stdDept" id="stdDept">
+						<option value="">학생 전공 선택</option>
+						  <th:block th:each="mjr : ${majorb}">
+						    <option th:text="${mjr.majorName}" th:value="${mjr.majorName}"></option>
+						  </th:block>			
+					</select>
+				</div>
+			</div>
+			<div class="col-md-2">
+				<div class="input-group input-group-outline my-3">
+					<label class="form-label"></label> 
+					<select class="form-control" name="matchingType" id="matchingType">
+						<option value="">매칭상태</option>
+						<option value="0">매칭중</option>
+						<option value="1">매칭해지</option>
+					</select>
+				</div>
+			</div>			
+			<div class="col-md-2">
+				<div class="input-group input-group-outline my-3">
+					<button class="btn bg-gradient-primary">조회</button>
+				</div>
+			</div>
+	</form>
+
+	
   <table class="table" id="matchingTable" style="width:100%">
 	<thead>
 		<tr>

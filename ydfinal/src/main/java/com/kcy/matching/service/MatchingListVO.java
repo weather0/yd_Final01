@@ -13,7 +13,8 @@ public class MatchingListVO {
 	private String stDept;
 	private String matchingType;
 	private Date matchingDate;
-	
+	private String userDept;
+	private String stdDept;
 	
 
 }

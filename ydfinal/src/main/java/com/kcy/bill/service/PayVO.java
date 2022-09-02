@@ -1,6 +1,7 @@
 package com.kcy.bill.service;
 
 import java.util.Date;
+import java.util.List;
 
 import lombok.Data;
 
@@ -8,10 +9,15 @@ import lombok.Data;
 public class PayVO {	
 	private String payId;
 	private String stuId;
+	private String userId;
 	private String billId;
 	private int payHTotal;
 	private int payHRemain;
 	private int payHBal;
+	private int a;
+	private int b;
+	private int c;
+	private int d;
 	private String payHYn;
 	private String payHAcc;
 	private String payHType;
@@ -32,5 +38,7 @@ public class PayVO {
 	private String majorId;
 	private String majorbId;
 	private int billAmount;
+	private List<String> id;
 	private String[] billArr;
 }
+
