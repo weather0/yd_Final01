@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.kcy.lecture.service.EnrolmentVO;
-import com.kcy.lecture.service.OpenLectureVO;
 
 public interface EnrolmentMapper  {
 	

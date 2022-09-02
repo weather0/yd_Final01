@@ -32,12 +32,16 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.kcy.file.test.FileDto;
 import com.kcy.lecture.mapper.CourseMapper;
+import com.kcy.lecture.mapper.RoomMapper;
+import com.kcy.lecture.mapper.ScheduleMapper;
+import com.kcy.lecture.service.ClassScheduleVO;
 import com.kcy.lecture.service.CourseVO;
 import com.kcy.lecture.service.EnrolmentService;
 import com.kcy.lecture.service.EnrolmentVO;
 import com.kcy.lecture.service.LectureService;
 import com.kcy.lecture.service.LectureVO;
 import com.kcy.lecture.service.OpenLectureVO;
+import com.kcy.lecture.service.RoomVO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -48,6 +52,8 @@ public class LectureController {
 
 	@Autowired
 	CourseMapper mapper;
+	@Autowired ScheduleMapper scmapper;
+	@Autowired RoomMapper rmapper;
 	private final LectureService lectureService;
 	private final EnrolmentService enrolmentService;
 	@Value("${spring.servlet.multipart.location}")
@@ -112,17 +118,32 @@ public class LectureController {
 
 	//교과목 테이블에서 필요한 데이터 model로 보내는 부분
 	@ModelAttribute("course")
-	public List<CourseVO> getDepartments(Principal principal,CourseVO vo){
+	public List<CourseVO> getCourseId(Principal principal,CourseVO vo){
 		vo.setUserId(principal.getName());
 		return mapper.getCourse(vo);
 	}
+
+
+	  @ModelAttribute("schedule") 
+	  public List<ClassScheduleVO> getScheduleDay(ClassScheduleVO vo){
+		  return scmapper.getScheduleDays(vo);
+	  
+	  }
+	  
+	  @ModelAttribute("room") 
+	  public List<RoomVO> getRoomId(RoomVO vo){
+		 
+		  return rmapper.getRoomId(vo);
+	  }
 	
 	//강좌신청 승인하는 페이지
 	@GetMapping("/lecturelist")
-	public String letureList(Model model) {
+	public String letureList(Model model,ClassScheduleVO vo) {
 		model.addAttribute("ltrList",lectureService.lectureList(null));
 		return "pages/classMgr/LectureList";
 	}
+
+
 	
 	
 	@PostMapping("/lectureupdate")
@@ -131,6 +152,8 @@ public class LectureController {
 		lectureService.lectureUpdate(vo);
 		return "redirect:lecturelist" ;
 	}
+	
+	
 	
 	
 	//수강신청 페이지 보여주는 부분
@@ -156,6 +179,9 @@ public class LectureController {
 		enrolmentService.enrolmentInsert(vo);
 		return true;
 	}
+	
+	
+	
 	//수강신청완료 테이블에서 수강 취소시에  데이터를 삭제하는 부분이다
 	@RequestMapping("/enrolmentdelete")
 	@ResponseBody
@@ -164,5 +190,19 @@ public class LectureController {
 		return true;
 	}
 	
+	@GetMapping("/schedulelist")
+	@ResponseBody
+	public List<ClassScheduleVO> schedulelist(Model model,ClassScheduleVO vo) {
+		model.addAttribute("list",scmapper.selectschedule(vo));
+		return scmapper.selectschedule(vo);
+	}
+	
+	@PostMapping("/scheduleinsert")
+	@ResponseBody
+	public boolean scheduleInsert(Model model,ClassScheduleVO vo) {
+			
+		scmapper.scheduleInsert(vo);
+		return true;
+	}
 
 }

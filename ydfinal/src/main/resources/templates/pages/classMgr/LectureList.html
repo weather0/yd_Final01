@@ -1,80 +1,190 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layouts/layout}">
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/layout}">
 <th:block layout:fragment="content">
 
-  <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css"/>  
-  <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-  <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
-  <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
-  <!-- 상단 내비바 -->
-  <th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
-  <!-- 본문 start -->
-  
-<div class="container-fluid py-4">
-    <div class="row"> 
-      <div class="card my-4">
-          <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-            <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3" style="background: #fc9209">
-              <h6 class="text-white text-capitalize ps-3">강좌신청 승인</h6>
-              <input  th:value="${#authentication.principal.username}" type="hidden" id="userid">
-            </div>
-          </div>
-          
- <table id="letureTable" class="table align-items-center mb-0" >
-        <thead>
-            <tr>
-            	<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">제목</th>
-            	<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">강좌 번호</th>
-                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">교과목코드</th>
-                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">교번</th>
-                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">정원</th>
-                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">개설학기</th>
-                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">계획서</th>
-                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">승인확인</th>
-            </tr>
-        </thead>
-        <tbody>
-        
-        	<tr th:each="data : ${ltrList}" th:if="${data.classYn} == 'n'">
-        		<td th:text="${data.classTitle}"></td>
-        		<td th:text="${data.classId}"></td>
-        		<td th:text="${data.courseId}"></td>
-        		<td th:text="${data.profId}"></td>
-        		<td th:text="${data.classTo}"></td>
-        		<td th:text="${data.classSem}"></td>
-        		<td><a th:href="${'/download?classSyl='+data.classSyl}" th:text="${data.classSylOriginal}"></a></td>
-        		<td><button class="btn bg-gradient-warning btn-sm btn1" th:data-class_id="${data.classId}" th:text="승인"></button></td>
-        	</tr>
-        </tbody>
-  <!-- 본문 end-->
-</table>
-</div>
- </div>
- </div>
-<script>
+	<link rel="stylesheet"
+		href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css" />
+	<script
+		src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+	<script
+		src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
+	<!-- 상단 내비바 -->
+	<th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
+	<!-- 본문 start -->
 
-$(".btn1").on("click",update1);
+	<div class="container-fluid py-4">
+		<div class="row">
+			<div class="card my-4">
+				<div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+					<div
+						class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3"
+						style="background: #fc9209">
+						<h6 class="text-white text-capitalize ps-3">강좌신청 승인</h6>
+					</div>
+				</div>
 
-$('#letureTable').DataTable({});
+				<table id="letureTable" class="table align-items-center mb-0">
+					<thead>
+						<tr>
+							<th
+								class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">제목</th>
+							<th
+								class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">강좌
+								번호</th>
+							<th
+								class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">교과목코드</th>
+							<th
+								class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">교번</th>
+							<th
+								class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">정원</th>
+							<th
+								class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">개설학기</th>
+							<th
+								class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">계획서</th>
+							<th
+								class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">승인확인</th>
+						</tr>
+					</thead>
+					<tbody>
 
-    function update1(){
-    	let update = $(this).data("class_id")
-    	console.log(update)
-     	$.ajax({
-     		url:"http://localhost/lectureupdate",
-    		type:"post",
-     		data:{
-     			classId : update 
-     		},
-     		success:function(data){
-     		 alert('처리완료')
-     		 location.reload()
-     		}
-    	})
-    }
-</script>
+						<tr th:each="data : ${ltrList}" th:if="${data.classYn} == 'n'">
+							<td th:text="${data.classTitle}"></td>
+							<td th:text="${data.classId}"></td>
+							<td th:text="${data.courseId}"></td>
+							<td th:text="${data.profId}"></td>
+							<td th:text="${data.classTo}"></td>
+							<td th:text="${data.classSem}"></td>
+							<td><a th:href="${'/download?classSyl='+data.classSyl}"
+								th:text="${data.classSylOriginal}"></a></td>
+							<td><button type="button" class="btn bg-gradient-warning btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal" th:data-schedule_class_id="${data.classId}">시간표/강의실</button></td>
+							<td><button class="btn bg-gradient-warning btn-sm btn1"
+									th:data-class_id="${data.classId}" th:text="승인"></button></td>
+						</tr>
+					</tbody>
+					<!-- 본문 end-->
+				</table>
+
+			</div>
+			<!-- Button trigger modal -->
+
+
+			<!-- Modal -->
+			<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+				aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal-dialog modal-dialog-centered" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title font-weight-normal" id="exampleModalLabel">강의시간표/강의실</h5>
+							<button type="button" class="btn-close text-dark"
+								data-bs-dismiss="modal" aria-label="Close"  >
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body" >
+						 <th:block th:each="schedule :${schedule}">
+						   <button class="btn bg-gradient-warning btn-sm test" th:text="${schedule.scheduleTitle}" th:data-test_ck="${schedule.classTimetableDays}"  ></button>
+						</th:block> 
+						
+							<select>
+								<option value="">강의실 선택</option>
+						    	<th:block  th:each="room : ${room}">
+						    	<option th:text="|${room.roomBuilding}${room.roomNo}호|" th:value="${room.roomId}" class="roomId"></option>
+						    	</th:block>
+							</select>
+						
+						</div>
+							<div class="modal-body"  id="test">
+						</div>
+					
+						
+						<div class="modal-footer">
+							<button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">취소</button>
+							<button type="button" class="btn bg-gradient-primary" id="scheduleInsert">확인</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<script>
+	
+	
+		
+		$(".test").on("click",schedule);	
+		$(".btn1").on("click", update1);
+		$("#scheduleInsert").on("click",scheduleInsert)
+		
+
+		$('#letureTable').DataTable({});
+
+		function update1() {
+			let update = $(this).data("class_id")
+			console.log(update)
+			$.ajax({
+				url : "http://localhost/lectureupdate",
+				type : "post",
+				data : {
+					classId : update
+				},
+				success : function(data) {
+					alert('처리완료')
+					location.reload()
+				}
+			})
+		}
+		
+		
+		
+		
+			function schedule(){
+				let ctd = $(this).data("test_ck")
+				console.log(ctd)
+				
+				$.ajax({
+					url:"http://localhost/schedulelist",
+					data:{
+						classTimetableDays: ctd
+					},
+					dataType:"json",
+					success:function(data){
+						$('#test').empty();
+						   	for(var i=0; i <8; i++){
+						   	 let sch =`<lable><input type="checkbox" value="${data[i].classTimetableId}" class="test`+i+`">${data[i].classTimetableName}${data[i].classTimetableStart}~${data[i].classTimetableEnd}</lable><br>`
+						   	 $("#test").append(sch)
+						   	}
+					}
+				})
+			}
+			
+			function scheduleInsert(){
+				let test = $(".test0").val();
+				let classId = $(this).data("schedule_class_id")
+				let roomId = $(".roomId").val();
+				console.log(test);
+				console.log(classId);
+				console.log(roomId);
+				
+				$.ajax({
+					url:"http://localhost/scheduleinsert",
+					data:{
+						classId:classId,
+						classTimetableId: test,
+						roomId:roomId
+					},
+					success:function(data){
+						console.log("추가")
+					}
+				})
+			}
+			
+			
+			
+			
+	</script>
 </th:block>
 </html>
