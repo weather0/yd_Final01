@@ -12,16 +12,21 @@ tr[class="odd"]:hover, tr[class="even"]:hover {
 	color: #121212;
 }
 
-
 th {
 	text-align: center;
 }
 
-
-textarea {
-	height: 300px
+#journal-table {
+	width: 80%;
+	margin-left: 10%;
+	margin-right: 10%;
+	margin-top: 3%;
 }
 
+td {
+	word-break: break-all;
+	paddig: 10px;
+}
 </style>
 	<script>
 		jQuery(function($) {
@@ -105,7 +110,7 @@ textarea {
 											render : function(data) {
 												
 												
-												return `<button type="button" id='`+data+`' class="btn bg-gradient-primary"  onclick="journalList(this);">보기</button>`
+												return `<button type="button" id='`+data+`' class="btn bg-gradient-secondary btn-sm"  onclick="journalList(this);">보기</button>`
 											}
 										},
 										{
@@ -113,7 +118,7 @@ textarea {
 											title : '검사결과',
 											data : "stuId",
 											render : function(data) {
-												return `<button type="button" class="btn bg-gradient-primary"  onclick="result('`+data+`');">결과</button>`
+												return `<button type="button" class="btn bg-gradient-secondary btn-sm"  onclick="result('`+data+`');">결과</button>`
 											}
 										},
 										{
@@ -121,7 +126,7 @@ textarea {
 											title : '정보',
 											data : "stuId",
 											render : function(data) {
-												return `<button type="button" class="btn bg-gradient-primary"  onclick="info('`+data+`');">정보</button>`
+												return `<button type="button" class="btn bg-gradient-secondary btn-sm"  onclick="info('`+data+`');">정보</button>`
 											}
 										},
 										{
@@ -129,7 +134,7 @@ textarea {
 											title : '취소',
 											data : "matchingId",
 											render : function(data) {
-												return `<button type="button" class="btn bg-gradient-primary" onclick="cancel('`+data+`');" >취소</button>`
+												return `<button type="button" class="btn bg-gradient-secondary btn-sm" onclick="cancel('`+data+`');" >취소</button>`
 											}
 										}, 
 								],
@@ -142,12 +147,16 @@ textarea {
 							        	$(row).children('td:nth-child(9)').children().attr('disabled', true).css("background-color","#5975a4");
 							        }
 							        
-							        if(!(data.mtrStatus=='com' || data.mtrStatus=='end' || data.mtrStatus=='fill')){
+							        if(data.mtrStatus=='can'){
 							        	$(row).children('td:nth-child(6)').children().attr('disabled', true).css("background-color","#5975a4");
 							        }
 							        
 							        if(data.mtrStatus=='fill'){
 							        	$(row).children('td:nth-child(6)').children().text('작성').attr("onclick",`insert('${data.mtrId}');`);
+							        }
+							        
+							        if(data.mtrStatus=='ing'){
+							        	$(row).children('td:nth-child(6)').children().text('채팅').attr("onclick",`location.href="/chat/room";`);
 							        }
 							        
 							        
@@ -300,30 +309,33 @@ textarea {
 						$('#journalClone').empty();
 						let clo = `
 							<tr>
-								<th>상담일자</td>
+								<th class="table-secondary">상담일자</th>
 								<td>${result.mtrDate}</td>
-								<th>상담회차</td>
+								<th class="table-secondary">상담회차</th>
 								<td>${result.mtrCount}회차</td>
 							</tr>
 							<tr>
-								<th>거주상황</td>
-								<td colspan="3">${result.mtrHome}</td>
+								<th class="table-secondary">거주상황</th>
+								<td colspan="3" >${result.mtrHome}</td>
 							</tr>
 							<tr>
-								<th>상담주제</td>
+								<th class="table-secondary">상담주제</th>
 								<td colspan="3">${result.mtrLogSubject}</td>
 							</tr>
 							<tr>
-								<th>상담내용</td>
-								<td colspan="3">${result.mtrLogContent}</td>
+								
+								<th class="table-secondary">상담내용</th>
+								<td colspan="3" ><textarea class="form-control bg-transparent" cols="90%" rows="10" readonly>${result.mtrLogContent}</textarea></td>
+								
 							</tr>
 							<tr>
-								<th>교수의견</td>
-								<td colspan="3">${result.mtrLogComment}</td>
+								<th class="table-secondary">교수의견</th>
+								<td colspan="3"  >${result.mtrLogComment}</td>
 							</tr>
 						`;
 									 
 					$('#journalClone').append(clo)
+					
 					
 					},
 					error: function (result) {
@@ -373,6 +385,12 @@ textarea {
 			 $('#cancelModal').modal('hide');
 			 $('#insertModal').modal('hide');
 		 }
+		 
+		 //채팅방으로
+		 function chat(){
+			
+		 }
+		 
 		 //목록 버튼 누르면 테이블 보이고 상담일지 안보이게
 		 function changeList(){
 			 $('#foo-table_wrapper').show();
@@ -401,15 +419,22 @@ textarea {
 		</thead>
 	</table>
 	<!-- 상담일지 상세보기 -->
-	<div id="journal-table">
-		<table class="table table-bordered text-center">
-			<tbody id="journalClone">
-
-			</tbody>
-			<div>
-				<button type="button" class="btn bg-gradient-primary" onclick="changeList()">목록</button>
+	<div id="journal-table" class="row align-items-center justify-content-center">
+		<div class="modal-content col-lg-5 mb-4">
+			<div class="modal-header">
+				<h4 class="modal-title" id="myModalLabel">상담일지</h4>
 			</div>
-		</table>
+			<div class="table-responsive border-radius-lg">
+				<table class="table table-bordered text-center table text-center mb-0">
+					<tbody id="journalClone" div class="modal-body">
+
+					</tbody>
+				</table>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn bg-gradient-secondary btn-sm" onclick="changeList()">목록</button>
+			</div>
+		</div>
 	</div>
 
 	<!-- 모달1 결과창 -->
@@ -488,8 +513,8 @@ textarea {
 				<div class="modal-header">
 					<h4 class="modal-title" id="myModalLabel">상담일지 작성</h4>
 				</div>
-				<form id="jInsert" th:action="@{/journalInsert}" method="post" >
-				<!-- <form id="jInsert" action="#" > -->
+				<form id="jInsert" th:action="@{/journalInsert}" method="post">
+					<!-- <form id="jInsert" action="#" > -->
 					<div class="modal-body">
 						<div class="p-4">
 							<input type="hidden" name="mtrId">

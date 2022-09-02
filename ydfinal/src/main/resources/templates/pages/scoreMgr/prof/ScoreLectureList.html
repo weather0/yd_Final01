@@ -13,14 +13,8 @@
 <div class="container-fluid py-4">
     <div class="row"> 
     
-   <form name="searchform" autocomplete="off">
+<!--    <form name="searchform" autocomplete="off">
    <input th:value="${#authentication.principal.username}" type="hidden" id="userid">
-     <select sec:authorize="hasRole('ROLE_STU')" name="classId">
-			<option>강좌 선택</option>
-		<th:block th:each="c : ${classId}">
-			<option th:text="${c.classId}" th:value="${c.classId}"></option>
-		</th:block> 		
-	</select>
  	<select sec:authorize="hasRole('ROLE_PROF')" name="classId">
 			<option>강좌 선택123</option>
 		<th:block th:each="c : ${profClassId}">
@@ -28,29 +22,23 @@
 		</th:block> 		
 	</select>
 		<button type="submit" th:value="검색">검색</button>
-	</form>
+	</form> -->
 	
 	<table id="noticeTable" class="table table-striped" style="width:100%;" >
         <thead>
             <tr>
-            	<th>No.</th>
-            	<th>전공</th>
-            	<th>자료구분</th>
-            	<th>제목</th>
-                <th>작성자</th>
-                <th>등록일</th>
+            	<th>강좌 코드</th>
+            	<th>교과목명</th>
+            	<th>수강 인원</th>
             </tr>
         </thead>
         <tbody>
-        	<tr th:each="data : ${noticeList}">
-        		<td th:text="${data.class_notice_no}"></td>
-        		<td th:text="${data.class_id}"></td>
-        		<td th:text="${data.class_notice_type}"></td>
+        	<tr th:each="data : ${lecturelist}">
+        		<td th:text="${data.classId}"></td>
         		<td>
-        		<a th:text="${data.class_notice_title}" th:href="@{/noticeview(classNoticeNo=${data.class_notice_no})}"></a>
+        		<a th:text="${data.courseTitle}" th:href="@{/scoreinsert(classId=${data.classId})}"></a>
         		</td> 
-        		<td th:text="${data.user_name}"></td>
-        		<td th:text="${data.class_notice_date}"></td>
+        		<td th:text="|${data.classCk}/${data.classTo}|"></td>
         	</tr>
         </tbody>
   <!-- 본문 end-->

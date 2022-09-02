@@ -65,8 +65,10 @@
 								</tr>
 								<tr>
 									<td class="table-secondary">납부방식</td>
-									<td><span th:if="${payStd.payHTotal == 1}">일괄납부</span> <span
-										th:if="${payStd.payHTotal != 1}">분할납부</span></td>
+									<td>
+										<span th:if="${payStd.payHType.toString().equals('b')}">일괄납부</span> 
+										<span th:if="${payStd.payHType.toString().equals('s1')}">분할납부A</span>
+										<span th:if="${payStd.payHType.toString().equals('s2')}">분할납부B</span>
 									<td class="table-secondary">납부여부</td>
 									<td><span th:if="${payStd.payHYn.toString().equals('y')}">완납</span>
 										<span th:if="${payStd.payHYn.toString().equals('n')}">미납</span>
@@ -95,7 +97,8 @@
 							<tr th:each="pay:${payList}">
 								<td th:text="${#calendars.format(pay.payDDay, 'yyyy-MM-dd')}"></td>
 								<td><span th:if="${pay.payHType.toString().equals('b')}">일괄납부</span>
-									<span th:if="${pay.payHType.toString().equals('s')}">분할납부</span>
+									<span th:if="${pay.payHType.toString().equals('s1')}">분할납부A</span>
+									<span th:if="${pay.payHType.toString().equals('s2')}">분할납부B</span>
 								</td>
 								<td th:text="${pay.payDBank}"></td>
 								<td th:text="${pay.payDAmount}"></td>

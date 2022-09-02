@@ -53,7 +53,7 @@
 		<div class="table-responsive">
 			<table class="table align-items-center mb-0">
 				<thead>
-					<tr>		
+					<tr>
 						<th>선택</th>
 						<th>납부코드</th>
 						<th>학과</th>
@@ -72,17 +72,22 @@
 						<td th:text="${bill.majorName}"></td>
 						<td th:text="${bill.billYear}"></td>
 						<td th:text="${bill.billSem}"></td>
-						<td th:text="${bill.majorId}" hidden="" name="majorId" id="majorId"></td>
+						<td th:text="${bill.majorId}" hidden="" name="majorId"
+							id="majorId"></td>
+						<td><input type="number" name="billAmount" id="billAmount"
+							th:value="${bill.billAmount}"></td>
 						<td>
-							<input type="number" name="billAmount" id="billAmount" th:value="${bill.billAmount}"></td>
-						<td>
-							<span th:if="${bill.pId == null}">등록안됨</span> 
-							<span th:if="${bill.pId != null}">등록됨</span></td>
-						<td>
-							<button class="btn bg-gradient-primary update">수정</button> <span
-							th:if="${bill.pId == null}">
-								<button class="btn bg-gradient-primary insert">발부</button>
-						</span>
+							<span class="badge badge-lg bg-gradient-danger" th:if="${bill.pId == null}">등록안됨</span> 
+							<span class="badge badge-lg bg-gradient-success" th:if="${bill.pId != null}">등록됨</span>
+						</td>
+						<td> 
+							<button class="btn bg-gradient-primary update">수정</button> 
+							<span th:if="${bill.pId == null}">
+								<button class="btn bg-gradient-primary insert" aria-pressed="true">발부</button>
+							</span>
+							<span th:if="${bill.pId != null}">
+								<button class="btn bg-gradient-primary insert" disabled>발부</button>
+							</span>
 						</td>
 					</tr>
 				</tbody>
@@ -99,56 +104,61 @@
 	<script>
 		$(".update").on("click", function() {
 			var id = ($(this).closest("tr").find("td:eq(1)").text())
-			var amount = ($(this).closest("tr").find("input").val())			
+			var amount = ($(this).closest("tr").find("input#billAmount").val())			
 			$.ajax({
-				type: "POST",
+				type : "POST",
 				url : "/billsUpdate",
-				data : {billId : id,
-						billAmount : amount},
-				success : function (result) {
+				data : {
+					billId : id,
+					billAmount : amount
+				},
+				success : function(result) {
 					if (result == "1") {
-						alert ("수정하였습니다")
+						alert("수정하였습니다")
 					}
 				}
 			})
 		});
-		
+
 		$(".insert").on("click", function() {
 			var id = ($(this).closest("tr").find("td:eq(1)").text())
 			$.ajax({
-				type: "POST",
+				type : "POST",
 				url : "/payInsert",
-				data : {billId : id},
-				success : function (result) {
+				data : {
+					billId : id
+				},
+				success : function(result) {
 					if (result == "1") {
-						alert ("고지 하였습니다")
+						alert("고지 하였습니다")
 					}
 				}
 			})
 		});
-		
+
 		$(document).ready(function() {
-			$('.check').on('click', function(){
-				var checkbox = $('input[name=billchk]:checked');								
+			$('.check').on('click', function() {
+				var checkbox = $('input[name=billchk]:checked');
 				var billArr = new Array();
 				checkbox.each(function(i) {
 					tr = checkbox.parent().parent().eq(i);
 					td = tr.children();
-					billId = td.eq(1).text();					
+					billId = td.eq(1).text();
 					billArr.push(billId);
-					console.log(billArr)
 					jQuery.ajaxSettings.traditional = true;
-					$.ajax({
-						type: "POST",
-						url : "/chkPayInsert",
-						data : { 'billId' : billArr},
-						success : function (result) {
-							if (result == "1") {
-								alert ("고지 하였습니다")
-							}
-						}
-					})
 				});
+				$.ajax({
+					type : "POST",
+					url : "/chkPayInsert",
+					data : {
+						Id : billArr
+					},
+					success : function(result) {
+						if (result == "1") {
+							alert("일괄 고지 하였습니다")
+						}
+					}
+				})
 			});
 		});
 

@@ -5,8 +5,7 @@
       layout:decorate="~{layouts/layout}">  
 
 <th:block layout:fragment="content">
-  <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css"/>    
-  <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css"/>
   <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
   <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
 <style>
@@ -85,9 +84,6 @@
    		var matchingS = ($(this).closest("tr").find("td:first").text())
    		var matchingO = ($(this).closest("tr").find("td:eq(5)").text())
    		var matchingN = ($(this).closest("tr").find("td:eq(8)").text())
-   		console.log(matchingS)
-   		console.log(matchingO)
-   		console.log(matchingN)
    		$.ajax({
    			type: "POST",
    			url: "/changeMatching",

@@ -14,12 +14,18 @@ INSERT INTO k_bills
 VALUES ( #{billId}, #{billYear}, #{billSem}, #{billAmount}, #{majorbId})
 </insert>
 
+<insert id="splitBillsInsert" parameterType="com.kcy.bill.service.BillsVO">
+INSERT INTO k_bills 
+( bill_id, bill_year, bill_sem, bill_amount, major_id, bill_type)
+VALUES ( #{billId}, #{billYear}, #{billSem}, #{billAmount}, #{majorbId}, #{billType})
+</insert>
+
 <select id="payStdInfo" resultType="com.kcy.bill.service.PayVO">
 	SELECT u.user_dept, 
 		   kph.pay_h_grade,  
 		   kph.pay_h_sem,
 		   s.student_aca_yn, 
-		   kph.pay_h_total, 
+		   kph.pay_h_type, 
 		   kph.pay_h_yn
 	FROM k_students s
 	JOIN k_users u
@@ -121,33 +127,37 @@ VALUES ( #{billId}, #{billYear}, #{billSem}, #{billAmount}, #{majorbId})
 	JOIN k_bills b	
 	ON m.major_id = b.major_id 
 	WHERE b.bill_id IN 
-	<foreach collection="billArr" item="billId" separator=",">
-		#{billId}
+	<foreach collection="id" item="Id" separator="," open="(" close=")" >
+		#{Id}
 	</foreach>
 	AND s.student_aca_yn = '재학';
 </insert>
 
 <select id="billCheck" resultType="com.kcy.bill.service.PayVO">
-	SELECT s.stu_id, 
-		   u.user_name, 
-		   u.user_dept, 
-		   kph.pay_h_grade, 
-		   b.bill_year, 
-		   b.bill_sem, 
-		   b.bill_amount, 
-		   kph.pay_h_type 
+	SELECT b.bill_year,
+	   b.bill_sem,
+	   u.user_id,
+	   u.user_dept,
+	   u.user_name,
+	   kph.pay_h_grade,  
+	   kph.pay_h_sem,
+	   b.bill_amount,
+	   (b.bill_amount/kph.pay_h_total) AS a,
+	   (b.bill_amount/kph.pay_h_total) AS b,
+	   (b.bill_amount/kph.pay_h_total) AS c,
+	   (b.bill_amount/kph.pay_h_total) AS d,
+	   kph.pay_h_type,
+	   kph.pay_id
 	FROM k_students s
-	JOIN k_users u 
+	JOIN k_users u
 	ON s.stu_id = u.user_id
-	JOIN k_major m 
-	ON m.major_name = u.user_dept 
-	JOIN k_bills b 
-	ON b.major_id = m.major_id 
 	JOIN k_pay_h kph
-	ON kph.bill_id = b.bill_id  
+	ON s.stu_id = kph.stu_id
+	JOIN k_bills b 
+	ON kph.bill_id = b.bill_id
 	WHERE b.bill_year = #{billYear}
 	AND b.bill_sem = #{billSem} 
-	AND s.stu_id = #{stuId}	
+	AND kph.stu_id = #{stuId}
 </select>
 
 <select id="billList" resultType="com.kcy.bill.service.BillsVO">
@@ -157,7 +167,7 @@ VALUES ( #{billId}, #{billYear}, #{billSem}, #{billAmount}, #{majorbId})
 		   			b.bill_amount, 
 		   			m.major_name,
 		   			m.major_id,
-		   			kph.bill_id AS pId
+		   			kph.bill_id AS pId		   			
 	FROM k_bills b
 	JOIN k_major m
 	ON b.major_id = m.major_id
@@ -172,8 +182,9 @@ VALUES ( #{billId}, #{billYear}, #{billSem}, #{billAmount}, #{majorbId})
 		</if>
 		<if test="majorbId != null and majorbId != ''">
 			and m.major_id = #{majorbId}
-		</if>
-	</where>	
+		</if>		
+	</where>
+	AND b.bill_type = 'b'	
 </select>
 
 <update id="billUpdate" parameterType="com.kcy.bill.service.BillsVO">
@@ -188,5 +199,7 @@ VALUES ( #{billId}, #{billYear}, #{billSem}, #{billAmount}, #{majorbId})
 	WHERE bill_id = #{billId}
 </update>
 
+<update id="payChange" parameterType="com.kcy.bill.service.PayVO">	
+</update>
 </mapper>
 

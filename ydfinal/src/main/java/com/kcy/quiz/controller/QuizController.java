@@ -196,6 +196,23 @@ public class QuizController {
 	}
 	
 	// 파일 다운로드
+	@GetMapping("/quizrdownload")
+	public ResponseEntity<Resource> rdownload(@ModelAttribute QuizVo dto) throws IOException {
+		
+		Path path = Paths.get(filePath + "/" + dto.getQuizROrginal());
+		String contentType = Files.probeContentType(path);
+		HttpHeaders headers = new HttpHeaders();
+		
+		headers.setContentDisposition(ContentDisposition.builder("attachment").
+				filename(dto.getQuizROrginal(), StandardCharsets.UTF_8)
+				.build());
+	
+		headers.add(HttpHeaders.CONTENT_TYPE, contentType);
+		Resource resource = new InputStreamResource(Files.newInputStream(path));
+		return new ResponseEntity<>(resource, headers, HttpStatus.OK);
+	}
+	
+	// 파일 다운로드
 	@GetMapping("/quizAcceptdownload")
 	public ResponseEntity<Resource> download2(@ModelAttribute QuizVo dto) throws IOException {
 		
