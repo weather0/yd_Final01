@@ -4023,8 +4023,8 @@ textarea.form-control-lg {
 .page-item.active .page-link {
   z-index: 3;
   color: #fff;
-  background-color: #e91e63;
-  border-color: #e91e63; }
+  background-color:  #495361;
+  border-color:  #495361; }
 
 .page-item.disabled .page-link {
   color: #6c757d;
