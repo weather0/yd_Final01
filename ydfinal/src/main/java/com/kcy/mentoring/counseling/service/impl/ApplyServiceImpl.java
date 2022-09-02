@@ -99,7 +99,9 @@ public class ApplyServiceImpl implements ApplyService {
 		map.mentoringUpdate(vo);
 	}
 
+		public void mentoringUpdate2(String mrtId) {
+			map.mentoringUpdate2(mrtId);
+		}
 
-	
 
 }

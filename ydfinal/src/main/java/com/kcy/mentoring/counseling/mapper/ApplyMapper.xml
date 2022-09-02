@@ -125,4 +125,10 @@
 		SET  mtr_status='com'
 		WHERE mtr_id=#{mtrId}
 	</update>
+	
+	<update id="mentoringUpdate2" parameterType="com.kcy.mentoring.counseling.vo.JournalVO">
+		UPDATE k_mentoring
+		SET  mtr_status='fill'
+		WHERE mtr_id=#{mtrId}
+	</update>
 </mapper>

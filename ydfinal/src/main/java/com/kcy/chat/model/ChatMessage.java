@@ -21,4 +21,10 @@ public class ChatMessage {
     private String sender;
     //내용
     private String message;
+    //교수학생 구분
+    private String profstu;
+    //학번
+    private String userId;
+    private String name;
+    private String mtrId;
 }

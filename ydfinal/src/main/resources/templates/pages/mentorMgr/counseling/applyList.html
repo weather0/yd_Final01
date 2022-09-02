@@ -110,7 +110,7 @@ td {
 											render : function(data) {
 												
 												
-												return `<button type="button" id='`+data+`' class="btn bg-gradient-secondary btn-sm"  onclick="journalList(this);">보기</button>`
+												return `<button type="button" id='`+data+`' class="btn bg-gradient-secondary btn-sm"  onclick="journalList(this);">일지보기</button>`
 											}
 										},
 										{
@@ -152,11 +152,11 @@ td {
 							        }
 							        
 							        if(data.mtrStatus=='fill'){
-							        	$(row).children('td:nth-child(6)').children().text('작성').attr("onclick",`insert('${data.mtrId}');`);
+							        	$(row).children('td:nth-child(6)').children().text('일지작성').attr("onclick",`insert('${data.mtrId}');`);
 							        }
 							        
 							        if(data.mtrStatus=='ing'){
-							        	$(row).children('td:nth-child(6)').children().text('채팅').attr("onclick",`location.href="/chat/room";`);
+							        	$(row).children('td:nth-child(6)').children().text('채팅생성').attr("onclick",`chat('${data.userName}','${data.stuId}');`);
 							        }
 							        
 							        
@@ -386,8 +386,24 @@ td {
 			 $('#insertModal').modal('hide');
 		 }
 		 
-		 //채팅방으로
-		 function chat(){
+		 //채팅방 생성
+		 function chat(name,id){
+			 var nameId = name + "(" + id + ")";
+			 console.log(nameId)
+			 
+			 $.ajax({
+					url: "/chat/room",
+					type: "post",
+					data : {name : nameId},
+					success: function (result) {
+						console.log('성공')
+						alert('생성 완료')
+					},
+					error: function (result) {
+						console.log(result);
+					}
+				});  
+			 
 			
 		 }
 		 

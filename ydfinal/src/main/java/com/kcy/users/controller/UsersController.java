@@ -27,7 +27,8 @@ public class UsersController {
     // 기본 인적사항 (모든 사용자)
     @ResponseBody
     @RequestMapping("/userInfo")
-    public Map<String, String> userInfo(Principal principal) {
+    public Map<String, String> userInfo(Model model,Principal principal) {
+    	model.addAttribute("info", service.userInfo(principal.getName()));
         return service.userInfo(principal.getName());
     }
     

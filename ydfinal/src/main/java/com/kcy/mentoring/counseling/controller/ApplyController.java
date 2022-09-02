@@ -144,6 +144,12 @@ public class ApplyController {
 			service.journalInsert(vo);
 			return "redirect:applyList";
 		}
+		
+		// 상담일지 작성하기
+		@PostMapping("/mentoringUpdate2")
+		public void mentoringUpdate2(String mrtId) {
+			service.mentoringUpdate2(mrtId);
+		}
 	
 	
 }
