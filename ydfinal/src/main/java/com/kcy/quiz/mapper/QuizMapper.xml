@@ -210,6 +210,7 @@
                r.quiz_r_orginal, 
                r.quiz_r_date, 
                r.quiz_r_id,
+               r.quiz_r_file,
                
                h.quiz_h_seq, 
                h.quiz_h_file,
@@ -259,6 +260,7 @@
                 r.quiz_r_orginal, 
                 r.quiz_r_date, 
                 r.quiz_r_id,
+                r.quiz_r_file,
                 
                 h.quiz_h_seq, 
                 h.quiz_h_file,

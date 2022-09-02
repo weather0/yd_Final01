@@ -12,36 +12,36 @@
   <!-- 본문 start -->
 <div class="container-fluid py-4">
     <div class="row"> 
- <table id="quizTable" class="table table-striped" style="width:100%;" >
+	<table id="noticeTable" class="table table-striped" style="width:100%;" >
         <thead>
             <tr>
-            	<th>강좌 번호</th>
-            	<th>과제명</th>
-            	<th>제출자 수</th>
-            	<th>등록일</th>
+            	<th>년도</th>
+            	<th>학기</th>
+            	<th>신청학점</th>
+                <th>취득학점</th>
+                <th>교필</th>
+                <th>전필</th>
+                <th>평균평점</th>
             </tr>
         </thead>
         <tbody>
-        	<input  th:value="${#authentication.principal.username}" type="hidden" id="userid">
-        	<tr th:each="data : ${quizviewlist}">
-        		<td th:text="${data.class_id}"></td>
-        		<td>
-        			<a th:text="${data.quiz_h_title}" th:href="@{/quizview(quizHSeq=${data.quiz_h_seq})}"></a>
-        		</td>
-        		<td>
-        		<p th:text="|${data.quiz_d_cnt}/${data.class_to}|"></p>
-        		</td>
-        		<td th:text="${data.quiz_d_date}"></td>
+        	<tr th:each="data : ${stulist}">
+				<td th:text="${data.classYear}"></td>
+				<td th:text="${data.classSem}"></td>
+				<td th:text="${data.creditTotal}"></td>
+				<td th:text="${data.creditAcquire}"></td>
+				<td th:text="${data.creditMajor}"></td>
+				<td th:text="${data.creditLib}"></td>
+				<td th:text="${data.gpaPoint}"></td>
         	</tr>
         </tbody>
   <!-- 본문 end-->
-</table>
+	</table>
+	
  </div>
  </div>
  <script>
- 	$('#quizTable').DataTable({});
- 	
- 	
+ 		$('#noticeTable').DataTable({});
  </script>
 </th:block>
 </html>

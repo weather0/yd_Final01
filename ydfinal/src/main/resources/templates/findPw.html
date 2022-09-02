@@ -17,6 +17,7 @@
   <!-- Nucleo Icons -->
   <link href="./css/nucleo-icons.css" rel="stylesheet" />
   <link href="./css/nucleo-svg.css" rel="stylesheet" />
+  <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
   <!-- Font Awesome Icons -->
   <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
   <!-- Material Icons -->
@@ -31,45 +32,6 @@
 	</style>
 </head>
 <body class="bg-gray-200">
-<div class="container">
-    <!-- Modal -->
-    <div class="modal fade" id="myModal" role="dialog">
-        <div class="modal-dialog">
-
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header" style="padding:35px 50px;">
-                    <h4><span class="glyphicon glyphicon-lock"></span> 비밀번호 찾기</h4>
-                </div>
-                <div class="modal-body" style="padding:40px 50px;">
-                    <div style="color: #ac2925">
-                        <center>입력된 정보로 임시 비밀번호가 전송됩니다.</center>
-                    </div>
-                    <hr>
-                    <form role="form">
-                        <div class="form-group">
-                            <label for="userEmail"><span class="glyphicon glyphicon-user"></span>email</label>
-                            <input type="text" class="form-control" id="userEmail" placeholder="이메일을 입력하세요.">
-                        </div>
-                        <div class="form-group">
-                            <label for="userName"><span class="glyphicon glyphicon-eye-open"></span> name</label>
-                            <input type="text" class="form-control" id="userName" placeholder="이름을 입력하세요.">
-                        </div>
-                        <button type="button" class="btn btn-success btn-block" id="checkEmail">OK</button>
-                    </form>
-                    <hr>
-                    <div class="text-center small mt-2" id="checkMsg" style="color: red"></div>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-danger btn-default pull-left" data-dismiss="modal"><span
-                            class="glyphicon glyphicon-remove"></span> Cancel
-                    </button>
-                </div>
-            </div>
-
-        </div>
-    </div>
-</div>
 	<script>
 	 $("#checkEmail").click(function () {
 	        let userEmail = $("#userEmail").val();
@@ -84,7 +46,7 @@
 	            },
 	            success: function (res) {
 	                if (res['check']) {
-	                    swal("발송 완료!", "입력하신 이메일로 임시비밀번호가 발송되었습니다.", "success").then((OK) = > {
+	                    swal("발송 완료!", "입력하신 이메일로 임시비밀번호가 발송되었습니다.", "success").then((OK) => {
 	                        if(OK) {
 	                            $.ajax({
 	                                type: "POST",

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+<th:block layout:fragment="content">
+
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css"/>  
+  <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+  <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
+  <!-- 상단 내비바 -->
+  <th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
+  <!-- 본문 start -->
+  
+<div class="container-fluid py-4">
+    <div class="row"> 
+      <div class="card my-4">
+          <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+            <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3" style="background: #fc9209">
+              <h6 class="text-white text-capitalize ps-3">강좌신청 승인</h6>
+              <input  th:value="${#authentication.principal.username}" type="hidden" id="userid">
+            </div>
+          </div>
+                  	<form action="scoreInsert" method="post">
+ <table id="letureTable" class="table align-items-center mb-0" >
+        <thead>
+            <tr>
+            	<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">성명/학번</th>
+            	<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">학과/학년</th>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">학기/상태</th>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">중간</th>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">기말</th>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">과제</th>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">출석</th>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">등급</th>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">총점</th>
+            </tr>
+        </thead>
+        <tbody>
+        	 <tr th:each="data : ${memberlist}">
+        		<td th:text="|${data.userName}/${data.stuId}|"></td>
+        		<td th:text="|${data.userDept}/${data.studentGrade}학년|"></td>
+        		<td th:text="|${data.studentSem}학기/${data.studentAcaYn}|"></td>
+        		<td><input class="form-control" th:name="scoreMid" th:value="중간" /></td>
+        		<td><input class="form-control" th:name="scoreFinal" th:value="기말" /></td>
+        		<td><input class="form-control" th:name="scoreQuiz" th:value="과제" /></td>
+        		<td><input class="form-control" th:name="scoreAttn" th:value="출석" /></td>
+        		<td><input class="form-control" th:name="gpaGrade" th:value="등급" /></td>
+        		<td><input class="form-control" th:name="gpaPoint" th:value="총점" /></td>
+        	</tr> 
+        </tbody>
+        
+  <!-- 본문 end-->
+</table>
+<button type="button" style="float: right" class="btn bg-gradient-primary">성적 확정</button>
+</form>
+</div>
+ </div>
+ </div>
+<script>
+$('#letureTable').DataTable({});
+</script>
+</th:block>
+</html>

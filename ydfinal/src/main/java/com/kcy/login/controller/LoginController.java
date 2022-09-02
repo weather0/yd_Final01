@@ -47,7 +47,6 @@ public class LoginController {
     public @ResponseBody Map<String, Boolean> userfindPw(String userEmail, String userName) {
     		Map<String, Boolean> json = new HashMap<>();
     		boolean pwFindCheck = userService.userEmailCheck(userEmail, userName);
-    		
     		System.out.println(pwFindCheck);
     		json.put("check", pwFindCheck);
     		return json;
