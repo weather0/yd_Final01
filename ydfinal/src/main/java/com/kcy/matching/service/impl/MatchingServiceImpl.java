@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.kcy.bill.service.MajorbVO;
 import com.kcy.matching.mapper.MatchingMapper;
 import com.kcy.matching.service.MatchingChangeListVO;
 import com.kcy.matching.service.MatchingChangeVO;
@@ -75,6 +76,11 @@ public class MatchingServiceImpl implements MatchingService {
 	@Override
 	public void matchingNo(MatchingChangeVO vo) {
 		mapper.matchingNo(vo);	
+	}
+
+	@Override
+	public List<MajorbVO> majorbList(MajorbVO vo) {
+		return mapper.majorbList(vo);
 	}
 
 }

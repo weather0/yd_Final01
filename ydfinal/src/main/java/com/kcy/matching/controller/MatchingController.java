@@ -1,15 +1,18 @@
 package com.kcy.matching.controller;
 
 import java.security.Principal;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.kcy.bill.service.MajorbVO;
 import com.kcy.matching.service.MatchingChangeVO;
 import com.kcy.matching.service.MatchingListVO;
 import com.kcy.matching.service.MatchingProfVO;
@@ -31,10 +34,20 @@ public class MatchingController {
 	MatchingService service;
 	
 	//모든 매칭 이력 확인
-	@RequestMapping("/matchingList")	
-	public String matchingList(MatchingListVO vo, Model model) {
+	@RequestMapping("/matchingList")
+	public String matchingList(MatchingListVO vo) {
+	return "pages/mentorMgr/matching/matchingList";
+	}
+	
+	@RequestMapping("/matchingListInfo")	
+	public String matchingListInfo(MatchingListVO vo, Model model) {
 		model.addAttribute("matchingList", service.matchingList(vo));
 	return "pages/mentorMgr/matching/matchingList";
+	}
+	
+	@ModelAttribute("majorb")
+	public List<MajorbVO> majorbList(MajorbVO vo){
+		return service.majorbList(vo);
 	}
 	
 	//지도교수 매칭 페이지 

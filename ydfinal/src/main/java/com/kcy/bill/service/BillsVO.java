@@ -12,4 +12,5 @@ public class BillsVO {
 	private String majorbId;	
 	private String majorName;
 	private String pId;
+	private String billType;
 }

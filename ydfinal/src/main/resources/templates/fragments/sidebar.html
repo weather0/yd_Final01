@@ -73,6 +73,36 @@
 
 
       <li class="nav-item">
+        <a class="nav-link text-white btn btn-secondary" data-bs-toggle="collapse" href="#billMgr">
+          <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+            <i class="material-icons opacity-10">dashboard</i>
+          </div>
+          <span class="nav-link-text ms-1">등록금 관리</span>
+        </a>
+      </li>
+      
+      <div class="collapse collapse-kcy" id="billMgr">
+        <div class="navbar-nav">
+          <div class="nav-item">
+            <a class="nav-link text-white py-1" href="/payList">수납 전체 이력</a>
+          </div>
+          <div class="nav-item">
+            <a class="nav-link text-white py-1" href="/payCheck">납부자 조회</a>
+          </div>
+          <div class="nav-item">
+            <a class="nav-link text-white py-1" href="/billList">등록금 고지서 확인</a>
+          </div>
+          <div class="nav-item">
+            <a class="nav-link text-white py-1" href="/billCheck">등록금 고지서 확인</a>
+          </div>
+        </div>
+      </div>
+
+
+
+
+
+      <li class="nav-item">
         <a class="nav-link text-white btn btn-secondary" data-bs-toggle="collapse" href="#classMgr" role="button" aria-expanded="false" aria-controls="classMgr">
           <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
             <i class="material-icons opacity-10">dashboard</i>
@@ -115,7 +145,7 @@
             <a class="nav-link text-white py-1" href="/lectureinsert">강의 개설 신청</a>
           </div>
           <div class="nav-item">
-            <a class="nav-link text-white py-1" href="#">성적 입력</a>
+            <a class="nav-link text-white py-1" href="/scorelecturelist">성적 입력</a>
           </div>
           <div class="nav-item">
             <a class="nav-link text-white py-1" href="/evaluationconfirmationlist">만족도 평가 열람</a>
@@ -128,22 +158,58 @@
       </div>
 
 
+
+
+
       <li class="nav-item">
-        <a class="nav-link text-white btn btn-secondary" data-bs-toggle="collapse" href="#billMgr">
+        <a class="nav-link text-white btn btn-secondary" data-bs-toggle="collapse" href="#scoreMgr">
           <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
             <i class="material-icons opacity-10">dashboard</i>
           </div>
-          <span class="nav-link-text ms-1">등록금 관리</span>
+          <span class="nav-link-text ms-1">성적 관리</span>
         </a>
       </li>
       
-      <div class="collapse collapse-kcy" id="billMgr">
+      <div class="collapse collapse-kcy" id="scoreMgr">
         <div class="navbar-nav">
           <div class="nav-item">
-            <a class="nav-link text-white py-1" href="/billsInsert">등록금 고지서 등록</a>
+            <a class="nav-link text-white py-1" href="#">전체 성적 조회</a>
+          </div>
+          <div class="nav-item">
+            <a class="nav-link text-white py-1" href="#">학기별 세부 내역</a>
           </div>
         </div>
       </div>
+
+
+
+      <li class="nav-item">
+        <a class="nav-link text-white btn btn-secondary" data-bs-toggle="collapse" href="#jidoMgr">
+          <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+            <i class="material-icons opacity-10">dashboard</i>
+          </div>
+          <span class="nav-link-text ms-1">성적 관리</span>
+        </a>
+      </li>
+      
+      <div class="collapse collapse-kcy" id="jidoMgr">
+        <div class="navbar-nav">
+          <div class="nav-item">
+            <a class="nav-link text-white py-1" href="/matchingStd">지도 교수 매칭</a>
+          </div>
+          <div class="nav-item">
+            <a class="nav-link text-white py-1" href="/matchingList">매칭 이력 관리</a>
+          </div>
+          <div class="nav-item">
+            <a class="nav-link text-white py-1" href="/matchingChange">지도교수 변경 신청</a>
+          </div>
+          <div class="nav-item">
+            <a class="nav-link text-white py-1" href="/matchingChangeList">지도교수 변경 신청자 확인</a>
+          </div>
+        </div>
+      </div>
+      
+
 
 
 
@@ -159,28 +225,13 @@
       <div class="collapse collapse-kcy" id="mentorMgr">
         <div class="navbar-nav">
           <div class="nav-item">
-            <a class="nav-link text-white py-1" href="/matchingStd">지도교수 매칭</a>
+            <a class="nav-link text-white py-1" href="/schedule">상담스케줄</a>
           </div>
           <div class="nav-item">
-            <a class="nav-link text-white py-1" href="/matchingList">매칭이력 관리</a>
+            <a class="nav-link text-white py-1" href="/apply">상담신청</a>
           </div>
           <div class="nav-item">
-            <a class="nav-link text-white py-1" href="#">담당교수 확인</a>
-          </div>
-          <div class="nav-item">
-            <a class="nav-link text-white py-1" href="#">담당학생 확인</a>
-          </div>
-          <div class="nav-item">
-            <a class="nav-link text-white py-1" href="#">상담스케줄</a>
-          </div>
-          <div class="nav-item">
-            <a class="nav-link text-white py-1" href="#">진로탐색 검사</a>
-          </div>
-          <div class="nav-item">
-            <a class="nav-link text-white py-1" href="#">진로탐색 검사 관리</a>
-          </div>
-          <div class="nav-item">
-            <a class="nav-link text-white py-1" href="#">상담신청</a>
+            <a class="nav-link text-white py-1" href="/applyList">상담신청 이력관리</a>
           </div>
           <div class="nav-item">
             <a class="nav-link text-white py-1" href="/chat/room">채팅</a>
@@ -195,7 +246,7 @@
 
 
       <li class="nav-item">
-        <a class="nav-link text-white " th:classappend="${active} == 'click_login' ? 'active bg-gradient-primary'" href="/login">
+        <a class="nav-link text-white " th:classappend="${active} == 'click_login' ? 'active bg-gradient-primary'" href="/login"  sec:authorize="isAnonymous()">
           <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
             <i class="material-icons opacity-10">login</i>
           </div>
@@ -206,7 +257,7 @@
       
       
       <li class="nav-item">
-        <a class="nav-link text-white " href="/doLogout">
+        <a class="nav-link text-white " href="/doLogout" sec:authorize="isAuthenticated()">
           <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
             <i class="material-icons opacity-10">assignment</i>
           </div>

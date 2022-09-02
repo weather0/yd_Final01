@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.kcy.bill.service.MajorbVO;
 import com.kcy.matching.service.MatchingChangeListVO;
 import com.kcy.matching.service.MatchingChangeVO;
 import com.kcy.matching.service.MatchingListVO;
@@ -18,6 +19,7 @@ public interface MatchingMapper {
 	public List<MatchingProfVO> matchingProfList(MatchingProfVO vo);
 	public List<MatchingProfVO> matchingChangeList(MatchingChangeListVO vo);
 	public List<MatchingChangeVO> matchingName(MatchingStdVO vo);
+	public List<MajorbVO> majorbList(MajorbVO vo);
 	public void matching(MatchingVO vo);
 	public void matchingStd(MatchingVO vo);
 	public void matchingChangeOrder(MatchingChangeVO vo);

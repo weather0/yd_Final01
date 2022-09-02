@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kcy.scores.mapper.ScoresMapper">
+	<select id="lectureList" resultType="com.kcy.scores.service.ScoresVo">
+		SELECT 
+		        c.class_id,
+		        c.class_ck,
+        		c.class_to,
+		        
+		        cs.course_title
+		FROM 
+				k_class as c
+		JOIN 
+				k_course as cs
+		ON 
+				c.course_id = cs.course_id
+		WHERE 
+				prof_id = #{userId};
+	</select>
+	
+	<select id="scoresMemberList" resultType="com.kcy.scores.service.ScoresVo">
+			select 
+			        st.stu_id, 
+			        st.student_grade, 
+			        st.student_sem, 
+			        st.student_aca_yn, 
+			        
+			        u.user_name,
+			        u.user_dept
+			FROM
+			        k_students as st
+			JOIN
+			        k_users as u
+			ON
+			        st.stu_id = u.user_id
+			JOIN
+			        k_class_member as cm
+			ON
+			        cm.stu_id = st.stu_id
+			WHERE
+			        cm.class_id = #{classId};
+	</select>
+	
+	<insert id="scoresInsert">
+		INSERT INTO
+			k_scores
+		(
+			score_id,
+			class_member_id,
+			score_attn,
+			score_quiz,
+			score_mid,
+			score_final,
+			score_date
+		)
+		VALUES
+		(
+			CONCAT("Score", NEXTVAL(score_seq)),
+			#{stuId},
+			#{scoreAttn},
+			#{scoreQuiz},
+			#{scoreMid},
+			#{scoreFinal},
+			date_format(now(), '%Y%m%d')
+			
+		)
+	</insert>
+	
+	<select id="stuScoreList" resultType="com.kcy.scores.service.ScoresVo">
+		SELECT
+		    u.user_name,
+		    
+		    st.stu_id,
+		    
+		    kc.credit_total,
+		    (kc.credit_major + kc.credit_lib) as credit_acquire,
+		    kc.credit_major,
+		    kc.credit_lib,
+		    
+		    c.class_year,
+		    c.class_sem,
+		    
+		    cm.class_member_id,
+		    
+		    g.gpa_point
+    	FROM
+   			k_students as st
+		JOIN
+    		k_users as u
+		ON
+    		u.user_id = st.stu_id
+		JOIN
+    		k_credit as kc
+		ON
+    		kc.stu_id = st.stu_id
+		JOIN
+    		k_class_member as cm
+		ON
+    		cm.stu_id = st.stu_id
+		JOIN
+    		k_scores as s
+		ON
+    		cm.class_member_id = s.class_member_id
+		JOIN
+    		k_gpa as g
+		ON
+    		s.score_id = g.score_id
+		JOIN
+    		k_class as c
+		ON
+    		c.class_id = cm.class_id
+		WHERE
+    		st.stu_id = #{userId}
+	</select>
+	
+	
+	
+</mapper>

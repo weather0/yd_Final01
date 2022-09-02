@@ -94,6 +94,14 @@
         $('#others').attr('checked','checked');
       }
       $('#acaReasonD').val(acaReasonD);
+      $('#acaRejectD').val(acaReject);
+
+      // '반려'일 경우 반려사유 보이기
+      if (acaYn == '반려') {
+        $('#table2 tr:eq(6)').removeClass('d-none');
+      } else {
+        $('#table2 tr:eq(6)').addClass('d-none');
+      }
       
       // '승인'또는'반려'일 때만 기능버튼 보이기
       if (acaYn == '승인' || acaYn == '반려') {
@@ -106,9 +114,24 @@
         $('#stuAcaAdmitCancel').remove() // 확정취소(행정)
       }
       
+      
+      // 첨부파일 없으면
+      if (acaFile == null) {
+        $('#stuAcaFilename').val('첨부파일이 없습니다');
+        $('#stuAcaDownload').remove();
+      } else {
+        // 첨부파일명
+        $('#stuAcaFilename').val(acaFile.substring(14,acaFile.length));
+        // 첨부파일 다운 a태그 링크 부여
+        $('#stuAcaDownload').attr('href', 'stuAcaDownload?acaFile=' + acaFile);
+      }
+      
+      
+      
       // 삭제(학생) 실행
       $('#btn-stuAcaDelete').on('click', function(){
-        location.href='stuAcaDelete?acaId='+acaId;
+        // 파일명은 encodeURIComponent()로 감싸줘야 특수문자까지 제대로 넘어감
+        location.href='stuAcaDelete?acaId=' + acaId + '&acaFile=' + encodeURIComponent(acaFile);
       })
       
       // 승인(행정) 실행
@@ -278,8 +301,25 @@
                   </td>
                 </tr>
                 <tr>
-                  <td class="table-secondary text-center">서류첨부</td>
-                  <td>ㅇㅇㅇ</td>
+                  <td class="table-secondary text-center">첨부서류</td>
+                  <td>
+                  
+                    <div class="input-group input-group-outline align-items-center ms-3 w-90">
+                      <input class="form-control" type="text" id="stuAcaFilename" readonly>
+                      <a class="btn btn-light mb-0 active" href="" id="stuAcaDownload" download>다운로드
+                      </a>
+                    </div>
+
+                  </td>
+                </tr>
+                <tr>
+                  <td class="table-secondary text-center">반려사유</td>
+                  <td>
+                    <div class="form-floating input-group input-group-dynamic mx-4 my-3 w-90 align-items-center">
+                      <textarea class="form-control" placeholder="Leave a comment here" name="acaRejectD" id="acaRejectD" style="height: 15vh" readonly></textarea>
+                    </div>
+                    
+                  </td>
                 </tr>
                 
                 

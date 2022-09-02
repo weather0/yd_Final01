@@ -6,6 +6,12 @@
 
 <th:block layout:fragment="content">
 
+  <style>
+    #formFile::file-selector-button {
+      display : none;
+    }
+  </style>
+
   <script th:inline="javascript">
     $(function() {
       
@@ -157,7 +163,7 @@
     
     <div class="row justify-content-center">
       <div class="col-lg-8 mb-4">
-        <form action="/stuAcaInsertProc" method="post" id="stuAcaInsertFrom">
+        <form action="/stuAcaInsertProc" method="post" enctype="multipart/form-data" id="stuAcaInsertFrom">
   
           <div class="card mb-2">
             <input type="hidden" name="id" th:value="${#authentication.name}">
@@ -272,7 +278,14 @@
                 </tr>
                 <tr>
                   <td class="table-secondary text-center">서류첨부</td>
-                  <td>ㅇㅇㅇ</td>
+                  <td>
+                    
+                    <div class="ms-3 w-90">
+                      <label for="formFile" class="btn btn-light mb-0 active">업로드</label>
+                      <input type="file" id="formFile" name="acaFile">
+                    </div>
+                  
+                  </td>
                 </tr>
                 
                 

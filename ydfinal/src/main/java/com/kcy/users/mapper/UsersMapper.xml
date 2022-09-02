@@ -95,7 +95,7 @@
          null,
          #{id},
          now(),
-         null
+         #{fileName}
          )
 </insert>
 
