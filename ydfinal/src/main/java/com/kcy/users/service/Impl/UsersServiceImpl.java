@@ -14,6 +14,11 @@ public class UsersServiceImpl implements UsersService {
     @Autowired UsersMapper mapper;
     
     @Override
+    public Map<String, String> userInfo(String id) {
+        return mapper.userInfo(id);
+    }
+
+    @Override
     public Map<String, String> stuInfo(String id) {
         return mapper.stuInfo(id);
     }
@@ -57,5 +62,6 @@ public class UsersServiceImpl implements UsersService {
     public void stuAcaAdmitCancel(String acaId) {
         mapper.stuAcaAdmitCancel(acaId);
     }
+
 
 }
