@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/layout}">
+
+
+
+<th:block layout:fragment="content">
+
+
+
+  <style>
+    #allStuInfos_filter input{
+      border: 1px solid #d2d6da;
+    }
+    
+    .pagination .active .page-link {
+      background-color: #7b809a;
+      border-color: #7b809a;
+    }
+    
+    .page-link:focus {
+      box-shadow: 0 0 0 0.2rem rgb(123 128 154 / 25%);
+    }
+    
+  </style>
+  <script th:inline="javascript">
+    $(function() {
+      // DataTable
+      $('#allStuInfos').DataTable({
+        "processing": true,
+        "serverSide": true,
+        "ajax": {
+          url: "qwe",
+          type: "POST",
+          dataSrc: function(res) {
+            var data = res.data;
+            return data;
+          },
+          error: function(e) {
+            console.log(e);
+          }
+        },
+        "columns":[
+          {"data": "userId"},
+          {"data": "userName"},
+          {"data": "userSsn"},
+          {"data": "userSex"},
+        ],
+        
+        
+        
+        "order": [0, "desc"],
+        "language": {
+          "lengthMenu": "페이지 당: _MENU_",
+          "search": "검색:",
+          "searchPlaceholder": "키워드를 입력하세요",
+          "zeroRecords": "검색결과가 없습니다",
+          "info": "_START_ - _END_ (전체: _MAX_건)",
+          "infoFiltered": "(검색결과: _TOTAL_건)",
+          "infoEmpty": "",
+          "paginate": {
+            "previous": "<",
+            "next": ">",
+          }
+        },
+      });
+      
+      
+      
+      
+      $('#allStuInfos tbody').on('click', 'tr', function(){
+
+        // 보내줌
+//         if (stuAcainfo.acaType == '휴학' || stuAcainfo.acaType == '복학' || stuAcainfo.acaType == '자퇴'){
+// 	        location.href="stuAcaView"
+//         }
+        
+      })
+      
+      
+      
+      
+    })
+  </script>
+
+  <!-- 상단 내비바 -->
+  <th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
+
+  <!-- 본문 start -->
+  <div class="container-fluid py-4">
+
+    <div class="row justify-content-center">
+      <div class="col-lg-3 col-sm-3 mb-4"></div>
+      <div class="col-lg-7 col-sm-9 mb-4">
+        <!--         <th:block th:replace="pages/userMgr/stu/stuNavbar :: stuNavbarFragment"></th:block> -->
+      </div>
+    </div>
+
+
+
+
+    <div class="row justify-content-center">
+      <div class="card py-3">
+
+        <div class="table-responsive">
+          <table id="allStuInfos" class="table align-items-center table-hover" style="width:100%">
+            <thead style="font-weight: bold">
+              <tr>
+                <td>학번</td>
+                <td>이름</td>
+                <td>생년월일</td>
+                <td>성별</td>
+                <td>전공</td>
+                <td>연락처</td>
+                <td>이메일</td>
+                <td>주소</td>
+                <td>국적</td>
+              </tr>
+            </thead>
+            
+            <!-- tbody는 DataTables Server-side 방식으로 구현 -->
+            
+          </table>
+        </div>
+
+      </div>
+    </div>
+
+
+  </div>
+  <!-- 본문 end-->
+</th:block>
+</html>

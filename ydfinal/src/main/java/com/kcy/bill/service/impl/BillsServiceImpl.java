@@ -86,4 +86,11 @@ public class BillsServiceImpl implements BillsService {
 		
 	}
 
+
+    @Override
+    public void payChange(PayVO vo) {
+        mapper.payChange(vo);
+        
+    }
+
 }

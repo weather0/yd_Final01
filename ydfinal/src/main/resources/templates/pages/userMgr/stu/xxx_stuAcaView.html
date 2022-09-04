@@ -6,20 +6,135 @@
 
 <th:block layout:fragment="content">
 
-  <script th:inline="javascript">
+  <script>
     $(function() {
-      // 첨부파일 다운 a태그 링크 부여
-      // 파일명은 encodeURIComponent()로 감싸줘야 특수문자까지 제대로 다 넘어감
-      $('#stuAcaDownload').attr('href', 'stuAcaDownload?acaFile=' + encodeURIComponent(/*[[${aca.acaFile}]]*/));
+      
+      // 세션스토리지 데이터 불러와서 변수에 담기
+      let {
+          userName, 
+          userId, 
+          userDept, 
+          userPhone, 
+          acaId, 
+          acaType, 
+          acaStartT, 
+          acaStartS, 
+          acaStartE, 
+          acaEndT, 
+          acaEndS, 
+          acaEndE, 
+          acaReason, 
+          acaReasonD, 
+          acaYn, 
+          acaReject, 
+          acaDate, 
+          acaFile 
+          } = JSON.parse(sessionStorage.getItem("stuAcainfo"));
+
+      // 보안성을 위해 스토리지는 비워준다(단, 새로고침 시 데이터 로드 못함)
+      sessionStorage.removeItem("stuAcainfo");
+      
+      
+      // 인적사항 테이블
+      $('#userName').text(userName);
+      $('#userId').text(userId);
+      $('#userDept').text(userDept);
+      $('#userPhone').text(userPhone);
+      
+      
+      // 폼 테이블(타입별 양식)
+      if (acaType == '휴학') {
+        // 외관
+        $('#table2 tr:eq(2) td:first-child').text('휴학구분');
+        $('#table2 tr:gt(1)').removeClass('d-none');
+        $('#table2 tr:eq(1)').addClass('d-none');
+        // 내용
+        $('#leaveSchool').attr('checked','checked');
+        $('#leavePeriod input:eq(0)').val(`${acaStartT} (${acaStartS} ~ ${acaStartE})`);
+        $('#leavePeriod input:eq(1)').val(`${acaEndT} (${acaEndS} ~ ${acaEndE})`);
+      }
+      if (acaType == '복학') {
+        // 외관
+        $('#table2 tr:eq(1)').removeClass('d-none');
+        $('#table2 tr:gt(1)').addClass('d-none');
+        // 내용
+        $('#returnSchool').attr('checked','checked');
+        $('#returnPeriod input').val(`${acaStartT} (${acaStartS} ~ )`);
+      }
+      if (acaType == '자퇴') {
+        // 외관
+        $('#table2 tr:eq(2) td:first-child').text('자퇴구분');
+        $('#table2 tr:gt(1)').removeClass('d-none');
+        $('#table2 tr:eq(1), #table2 tr:eq(3)').addClass('d-none');
+        // 내용
+        $('#outSchool').attr('checked','checked');
+      }
+      
+      
+      // 폼 테이블(공통 양식)
+      if (acaReason == '군입대') {
+        $('#goMilitary').attr('checked','checked');
+      }
+      if (acaReason == '건강문제') {
+        $('#healthIssue').attr('checked','checked');
+      }
+      if (acaReason == '수험') {
+        $('#examThing').attr('checked','checked');
+      }
+      if (acaReason == '해외체류') {
+        $('#stayAbroad').attr('checked','checked');
+      }
+      if (acaReason == '가정사') {
+        $('#familyAffair').attr('checked','checked');
+      }
+      if (acaReason == '업무관련') {
+        $('#jobThing').attr('checked','checked');
+      }
+      if (acaReason == '기타') {
+        $('#others').attr('checked','checked');
+      }
+      $('#acaReasonD').val(acaReasonD);
+      $('#acaRejectD').val(acaReject);
+
+      // '반려'일 경우 반려사유 보이기
+      if (acaYn == '반려') {
+        $('#table2 tr:eq(6)').removeClass('d-none');
+      } else {
+        $('#table2 tr:eq(6)').addClass('d-none');
+      }
+      
+      // '승인'또는'반려'일 때만 기능버튼 보이기
+      if (acaYn == '승인' || acaYn == '반려') {
+        $('#stuAcaDelete').remove() // 삭제(신청 취소)(학생)
+        $('#stuAcaAdmit').remove() // 승인(행정)
+        $('#stuAcaReject').remove() // 반려(행정)
+      }
+      // '신청중'일 때만 기능버튼 보이기
+      if (acaYn == '신청중') {
+        $('#stuAcaAdmitCancel').remove() // 확정취소(행정)
+      }
+      
+      
+      // 첨부파일 없으면
+      if (acaFile == null) {
+        $('#stuAcaFilename').val('첨부파일이 없습니다');
+        $('#stuAcaDownload').remove();
+      } else {
+        // 첨부파일명
+        $('#stuAcaFilename').val(acaFile.substring(14,acaFile.length));
+        // 첨부파일 다운 a태그 링크 부여
+        // 파일명은 encodeURIComponent()로 감싸줘야 특수문자까지 제대로 다 넘어감
+        $('#stuAcaDownload').attr('href', 'stuAcaDownload?acaFile=' + encodeURIComponent(acaFile));
+      }
       
       // 삭제(학생) 실행
       $('#btn-stuAcaDelete').on('click', function(){
-        location.href = 'stuAcaDelete?acaId=' + [[${aca.acaId}]] + '&acaFile=' + encodeURIComponent(/*[[${aca.acaFile}]]*/);
+        location.href='stuAcaDelete?acaId=' + acaId + '&acaFile=' + encodeURIComponent(acaFile);
       })
       
       // 승인(행정) 실행
       $('#btn-stuAcaAdmit').on('click', function(){
-        location.href = 'stuAcaAdmit?acaId='+ /*[[${aca.acaId}]]*/;
+        location.href='stuAcaAdmit?acaId='+acaId;
       })
       
       // 반려(행정) 실행
@@ -27,7 +142,7 @@
         $.ajax ({
           url: 'stuAcaReject',
           type: 'POST',
-          data: { acaId : /*[[${aca.acaId}]]*/, acaReject : $('#acaReject textarea').val() },
+          data: { acaId : acaId, acaReject : $('#acaReject textarea').val() },
           success: () => {
             // ajax요청시 컨트롤러에서 redirect하면 서버만 따로 돌고, 페이지 이동이 안 됨. 여기서 location.href로 이동해야 함
             window.location.href='allAcaInfo' 
@@ -38,7 +153,7 @@
       
       // 확정 취소(행정) 실행
       $('#btn-stuAcaAdmitCancel').on('click', function(){
-        location.href='stuAcaAdmitCancel?acaId=' + /*[[${aca.acaId}]]*/;
+        location.href='stuAcaAdmitCancel?acaId='+acaId;
       })
         
     })
@@ -48,7 +163,7 @@
   <th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
 
   <!-- 본문 start -->
-  <div class="container-fluid py-4" th:object="${aca}">
+  <div class="container-fluid py-4">
 
     <div class="row justify-content-center">
       <div class="col-lg-3 col-sm-3 mb-4"></div>
@@ -66,15 +181,15 @@
             <table class="table text-center mb-0">
               <tr>
                 <td class="table-secondary">성명</td>
-                <td id="userName">[[*{userName}]]</td>
+                <td id="userName"></td>
                 <td class="table-secondary">학번</td>
-                <td id="userId">[[*{userId}]]</td>
+                <td id="userId"></td>
               </tr>
               <tr>
                 <td class="table-secondary">전공</td>
-                <td id="userDept">[[*{userDept}]]</td>
+                <td id="userDept"></td>
                 <td class="table-secondary">연락처</td>
-                <td id="userPhone">[[*{userPhone}]]</td>
+                <td id="userPhone"></td>
               </tr>
             </table>
           </div>
@@ -97,15 +212,15 @@
                   <td class="table-secondary text-center" width="150px">신청구분</td>
                   <td id="acaType">
                     <div class="form-check form-check-inline px-0 mx-4">
-                      <input class="form-check-input" type="radio" name="acaType" id="leaveSchool" value="휴학" th:checked="*{acaType} == '휴학'" disabled>
+                      <input class="form-check-input" type="radio" name="acaType" id="leaveSchool" value="휴학" disabled>
                       <label class="custom-control-label fs-6 fw-bold mb-0" for="leaveSchool">휴학</label>
                     </div>
                     <div class="form-check form-check-inline px-0 mx-4">
-                      <input class="form-check-input" type="radio" name="acaType" id="returnSchool" value="복학" th:checked="*{acaType} == '복학'" disabled>
+                      <input class="form-check-input" type="radio" name="acaType" id="returnSchool" value="복학" disabled>
                       <label class="custom-control-label fs-6 fw-bold mb-0" for="returnSchool">복학</label>
                     </div>
                     <div class="form-check form-check-inline px-0 mx-4">
-                      <input class="form-check-input" type="radio" name="acaType" id="outSchool" value="자퇴" th:checked="*{acaType} == '자퇴'" disabled>
+                      <input class="form-check-input" type="radio" name="acaType" id="outSchool" value="자퇴" disabled>
                       <label class="custom-control-label fs-6 fw-bold mb-0" for="outSchool">자퇴</label>
                     </div>
                   </td>
@@ -114,11 +229,11 @@
                 
                 
                 
-                <tr th:if="*{acaType} == '복학'">
+                <tr>
                   <td class="table-secondary text-center">복학적용학기</td>
                   <td id="returnPeriod">
                     <div class="input-group input-group-outline align-items-center ms-3 w-50">
-                      <input class="form-control me-2" type="text" th:value="|*{acaStartT} (*{acaStartS} ~ )|" readonly>
+                      <input class="form-control me-2" type="text" readonly>
                       부터
                     </div>
                   </td>
@@ -126,79 +241,79 @@
                 
                 
                 
-                <tr th:if="*{acaType} == '휴학' or *{acaType} == '자퇴'">
-                  <td class="table-secondary text-center" th:text="*{acaType} == '휴학' ? '휴학구분' : '자퇴구분' "></td>
+                <tr>
+                  <td class="table-secondary text-center">휴학구분</td>
                   <td id="leaveReason">
                     <div class="form-check form-check-inline px-0 mx-4">
-                      <input class="form-check-input" type="radio" name="acaReason" id="goMilitary" value="군입대" th:checked="*{acaReason} == '군입대'" disabled>
+                      <input class="form-check-input" type="radio" name="acaReason" id="goMilitary" value="군입대" disabled>
                       <label class="custom-control-label fs-6 fw-bold mb-2" for="goMilitary">군입대</label>
                     </div>
                     <div class="form-check form-check-inline px-0 mx-4">
-                      <input class="form-check-input" type="radio" name="acaReason" id="healthIssue" value="건강문제" th:checked="*{acaReason} == '건강문제'" disabled>
+                      <input class="form-check-input" type="radio" name="acaReason" id="healthIssue" value="건강문제" disabled>
                       <label class="custom-control-label fs-6 fw-bold mb-2" for="healthIssue">건강문제</label>
                     </div>
                     <div class="form-check form-check-inline px-0 mx-4">
-                      <input class="form-check-input" type="radio" name="acaReason" id="examThing" value="수험" th:checked="*{acaReason} == '수험'" disabled>
+                      <input class="form-check-input" type="radio" name="acaReason" id="examThing" value="수험" disabled>
                       <label class="custom-control-label fs-6 fw-bold mb-2" for="examThing">수험</label>
                     </div>
                     <div class="form-check form-check-inline px-0 mx-4">
-                      <input class="form-check-input" type="radio" name="acaReason" id="stayAbroad" value="해외체류" th:checked="*{acaReason} == '해외체류'" disabled>
+                      <input class="form-check-input" type="radio" name="acaReason" id="stayAbroad" value="해외체류" disabled>
                       <label class="custom-control-label fs-6 fw-bold mb-2" for="stayAbroad">해외체류</label>
                     </div>
                     <br>
                     <div class="form-check form-check-inline px-0 mx-4">
-                      <input class="form-check-input" type="radio" name="acaReason" id="familyAffair" value="가정사" th:checked="*{acaReason} == '가정사'" disabled>
+                      <input class="form-check-input" type="radio" name="acaReason" id="familyAffair" value="가정사" disabled>
                       <label class="custom-control-label fs-6 fw-bold mb-0" for="familyAffair">가정사</label>
                     </div>
                     <div class="form-check form-check-inline px-0 mx-4">
-                      <input class="form-check-input" type="radio" name="acaReason" id="jobThing" value="업무관련" th:checked="*{acaReason} == '업무관련'" disabled>
+                      <input class="form-check-input" type="radio" name="acaReason" id="jobThing" value="업무관련" disabled>
                       <label class="custom-control-label fs-6 fw-bold mb-0" for="jobThing">업무관련</label>
                     </div>
                     <div class="form-check form-check-inline px-0 mx-4">
-                      <input class="form-check-input" type="radio" name="acaReason" id="others" value="기타" th:checked="*{acaReason} == '기타'" disabled>
+                      <input class="form-check-input" type="radio" name="acaReason" id="others" value="기타" disabled>
                       <label class="custom-control-label fs-6 fw-bold mb-0" for="others">기타</label>
                     </div>
                   </td>
                 </tr>
-                <tr th:if="*{acaType} == '휴학'">
+                <tr>
                   <td class="table-secondary text-center">휴학신청기간</td>
                   <td id="leavePeriod">
                     <div class="input-group input-group-outline align-items-center ms-3 w-50">
-                      <input class="form-control me-2" type="text" th:value="|*{acaStartT} (*{acaStartS} ~ *{acaStartE})|" readonly>
+                      <input class="form-control me-2" type="text" readonly>
                       부터
                     </div>
                     <div class="input-group input-group-outline align-items-center ms-3 w-50">
-                      <input class="form-control me-2" type="text" th:value="|*{acaEndT} (*{acaEndS} ~ *{acaEndE})|" readonly>
+                      <input class="form-control me-2" type="text" readonly>
                       까지
                     </div>
                   </td>
                 </tr>
-                <tr th:if="*{acaType} == '휴학' or *{acaType} == '자퇴'">
+                <tr>
                   <td class="table-secondary text-center">상세사유</td>
                   <td>
                     <div class="form-floating input-group input-group-dynamic mx-4 my-3 w-90 align-items-center">
-                      <textarea class="form-control" placeholder="Leave a comment here" name="acaReasonD" id="acaReasonD" style="height: 15vh" readonly>[[*{acaReasonD}]]</textarea>
+                      <textarea class="form-control" placeholder="Leave a comment here" name="acaReasonD" id="acaReasonD" style="height: 15vh" readonly></textarea>
   <!--                       <label for="acaReasonD">사유 입력</label> -->
                     </div>
                     
                   </td>
                 </tr>
-                <tr th:if="*{acaType} == '휴학' or *{acaType} == '자퇴'">
+                <tr>
                   <td class="table-secondary text-center">첨부서류</td>
                   <td>
                   
                     <div class="input-group input-group-outline align-items-center ms-3 w-90">
-                      <input class="form-control" type="text" id="stuAcaFilename" th:value="*{acaFile} == null ? '첨부파일이 없습니다' : ${#strings.abbreviate(#strings.substring(aca.acaFile,14,aca.acaFile.length()),30)}" readonly>
-                      <a class="btn btn-light mb-0 active" href="" id="stuAcaDownload" th:if="*{acaFile} != null" download>다운로드</a>
+                      <input class="form-control" type="text" id="stuAcaFilename" readonly>
+                      <a class="btn btn-light mb-0 active" href="" id="stuAcaDownload" download>다운로드</a>
                     </div>
 
                   </td>
                 </tr>
-                <tr th:if="*{acaYn} == '반려'">
+                <tr>
                   <td class="table-secondary text-center">반려사유</td>
                   <td>
                     <div class="form-floating input-group input-group-dynamic mx-4 my-3 w-90 align-items-center">
-                      <textarea class="form-control" placeholder="Leave a comment here" name="acaRejectD" id="acaRejectD" style="height: 15vh" readonly>[[*{acaReject}]]</textarea>
+                      <textarea class="form-control" placeholder="Leave a comment here" name="acaRejectD" id="acaRejectD" style="height: 15vh" readonly></textarea>
                     </div>
                     
                   </td>
@@ -216,7 +331,7 @@
         
         <div class="d-flex justify-content-end">
           <!-- Start: stuAcaDelete -->
-          <div id="stuAcaDelete" sec:authorize="hasRole('ROLE_STU')" th:if="*{acaYn} == '신청중'">
+          <div id="stuAcaDelete" sec:authorize="hasRole('ROLE_STU')">
             <button type="button" class="btn btn-block bg-gradient-secondary mx-1" data-bs-toggle="modal" data-bs-target="#modal-stuAcaDelete">
             신청 취소
             </button>
@@ -245,7 +360,7 @@
           
           
           <!-- Start: stuAcaAdmit -->
-          <div id="stuAcaAdmit" sec:authorize="hasRole('ROLE_ADMIN')" th:if="*{acaYn} == '신청중'">
+          <div id="stuAcaAdmit" sec:authorize="hasRole('ROLE_ADMIN')">
             <button type="button" class="btn btn-block bg-gradient-secondary mx-1" data-bs-toggle="modal" data-bs-target="#modal-stuAcaAdmit">
             신청 승인
             </button>
@@ -275,7 +390,7 @@
           
           
           <!-- Start: stuAcaReject -->
-          <div id="stuAcaReject" sec:authorize="hasRole('ROLE_ADMIN')" th:if="*{acaYn} == '신청중'">
+          <div id="stuAcaReject" sec:authorize="hasRole('ROLE_ADMIN')">
             <button type="button" class="btn btn-block bg-gradient-secondary mx-1" data-bs-toggle="modal" data-bs-target="#modal-stuAcaReject">
             반려
             </button>
@@ -308,7 +423,7 @@
           
           
           <!-- Start: stuAcaAdmitCancel -->
-          <div id="stuAcaAdmitCancel" sec:authorize="hasRole('ROLE_ADMIN')" th:if="*{acaYn} == '승인' or *{acaYn} == '반려'">
+          <div id="stuAcaAdmitCancel" sec:authorize="hasRole('ROLE_ADMIN')">
             <button type="button" class="btn btn-block bg-gradient-secondary mx-1" data-bs-toggle="modal" data-bs-target="#modal-stuAcaAdmitCancel">
             확정 취소
             </button>

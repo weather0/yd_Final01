@@ -17,6 +17,8 @@
   <div class="collapse navbar-collapse  w-auto  max-height-vh-100" id="sidenav-collapse-main">
     <ul class="navbar-nav">
     
+        
+    
     
       <li class="nav-item">
         <a class="nav-link text-white btn btn-secondary" data-bs-toggle="collapse" href="#userMgr">
@@ -27,19 +29,37 @@
         </a>
       </li>
 
-      <div class="collapse collapse-kcy" id="userMgr">
+      <div class="collapse" id="userMgr">
+        <script>
+          // 스크립트 위치가 중요!! 최초에 밑에 것들 렌더링 전에 여기서 show/hide 여부를 결정하고 쿠키에 상태 저장함
+          $('#userMgr').on('show.bs.collapse', function(){
+            Cookies.set('userMgr')
+          })
+          $('#userMgr').on('hide.bs.collapse', function(){
+            Cookies.remove('userMgr')
+          })
+          if (Cookies.get('userMgr')) {
+            $('#userMgr').addClass('show')
+          }
+        </script>
         <div class="navbar-nav">
-          <div class="nav-item">
-            <a class="nav-link text-white py-1" href="stuInfo" sec:authorize="hasRole('ROLE_STU')">학적조회</a>
+          <div class="nav-item" sec:authorize="hasRole('ROLE_STU')">
+            <a class="nav-link text-white py-1" href="stuInfo">학적조회</a>
           </div>
-          <div class="nav-item">
-            <a class="nav-link text-white py-1" href="stuAcaInsert" sec:authorize="hasRole('ROLE_STU')">학적변동 신청</a>
+          <div class="nav-item" sec:authorize="hasRole('ROLE_STU')">
+            <a class="nav-link text-white py-1" href="stuAcaInfo" >학적변동 조회</a>
           </div>
-          <div class="nav-item">
-            <a class="nav-link text-white py-1" href="stuAcaInfo" sec:authorize="hasRole('ROLE_STU')">학적변동 이력</a>
+          <div class="nav-item" sec:authorize="hasRole('ROLE_STU')">
+            <a class="nav-link text-white py-1" href="stuAcaInsert">학적변동 신청</a>
           </div>
-          <div class="nav-item">
-            <a class="nav-link text-white py-1" href="allAcaInfo" sec:authorize="hasRole('ROLE_ADMIN')">학적변동 승인</a>
+          <div class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">
+            <a class="nav-link text-white py-1" href="allStuInfo" >학적정보 조회</a>
+          </div>
+          <div class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">
+            <a class="nav-link text-white py-1" href="allAcaInfo" >학적변동 승인</a>
+          </div>
+          <div class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">
+            <a class="nav-link text-white py-1" href="#" >교수정보 조회</a>
           </div>
           <div class="nav-item">
             <a class="nav-link text-white py-1" href="#">졸업요건 확인</a>
@@ -81,7 +101,18 @@
         </a>
       </li>
       
-      <div class="collapse collapse-kcy" id="billMgr">
+      <div class="collapse" id="billMgr">
+        <script>
+          $('#billMgr').on('show.bs.collapse', function(){
+            Cookies.set('billMgr')
+          })
+          $('#billMgr').on('hide.bs.collapse', function(){
+            Cookies.remove('billMgr')
+          })
+          if (Cookies.get('billMgr')) {
+            $('#billMgr').addClass('show')
+          }
+        </script>
         <div class="navbar-nav">
           <div class="nav-item">
             <a class="nav-link text-white py-1" href="/payList">수납 전체 이력</a>
@@ -111,7 +142,18 @@
         </a>
       </li>
       
-      <div class="collapse collapse-kcy" id="classMgr">
+      <div class="collapse" id="classMgr">
+        <script>
+          $('#classMgr').on('show.bs.collapse', function(){
+            Cookies.set('classMgr')
+          })
+          $('#classMgr').on('hide.bs.collapse', function(){
+            Cookies.remove('classMgr')
+          })
+          if (Cookies.get('classMgr')) {
+            $('#classMgr').addClass('show')
+          }
+        </script>
         <div class="navbar-nav">
           <div class="nav-item">
             <a class="nav-link text-white py-1" href="/openlecturelist">수강신청</a>
@@ -170,7 +212,18 @@
         </a>
       </li>
       
-      <div class="collapse collapse-kcy" id="scoreMgr">
+      <div class="collapse" id="scoreMgr">
+        <script>
+          $('#scoreMgr').on('show.bs.collapse', function(){
+            Cookies.set('scoreMgr')
+          })
+          $('#scoreMgr').on('hide.bs.collapse', function(){
+            Cookies.remove('scoreMgr')
+          })
+          if (Cookies.get('scoreMgr')) {
+            $('#scoreMgr').addClass('show')
+          }
+        </script>
         <div class="navbar-nav">
           <div class="nav-item">
             <a class="nav-link text-white py-1" href="#">전체 성적 조회</a>
@@ -188,11 +241,22 @@
           <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
             <i class="material-icons opacity-10">dashboard</i>
           </div>
-          <span class="nav-link-text ms-1">성적 관리</span>
+          <span class="nav-link-text ms-1">지도교수 관리</span>
         </a>
       </li>
       
-      <div class="collapse collapse-kcy" id="jidoMgr">
+      <div class="collapse" id="jidoMgr">
+        <script>
+          $('#jidoMgr').on('show.bs.collapse', function(){
+            Cookies.set('jidoMgr')
+          })
+          $('#jidoMgr').on('hide.bs.collapse', function(){
+            Cookies.remove('jidoMgr')
+          })
+          if (Cookies.get('jidoMgr')) {
+            $('#jidoMgr').addClass('show')
+          }
+        </script>
         <div class="navbar-nav">
           <div class="nav-item">
             <a class="nav-link text-white py-1" href="/matchingStd">지도 교수 매칭</a>
@@ -222,7 +286,18 @@
         </a>
       </li>
       
-      <div class="collapse collapse-kcy" id="mentorMgr">
+      <div class="collapse" id="mentorMgr">
+        <script>
+          $('#mentorMgr').on('show.bs.collapse', function(){
+            Cookies.set('mentorMgr')
+          })
+          $('#mentorMgr').on('hide.bs.collapse', function(){
+            Cookies.remove('mentorMgr')
+          })
+          if (Cookies.get('mentorMgr')) {
+            $('#mentorMgr').addClass('show')
+          }
+        </script>
         <div class="navbar-nav">
           <div class="nav-item">
             <a class="nav-link text-white py-1" href="/schedule">상담스케줄</a>
@@ -245,8 +320,8 @@
 
 
 
-      <li class="nav-item">
-        <a class="nav-link text-white " th:classappend="${active} == 'click_login' ? 'active bg-gradient-primary'" href="/login"  sec:authorize="isAnonymous()">
+      <li class="nav-item" sec:authorize="isAnonymous()">
+        <a class="nav-link text-white " th:classappend="${active} == 'click_login' ? 'active bg-gradient-primary'" href="/login">
           <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
             <i class="material-icons opacity-10">login</i>
           </div>
@@ -256,8 +331,8 @@
       
       
       
-      <li class="nav-item">
-        <a class="nav-link text-white " href="/doLogout" sec:authorize="isAuthenticated()">
+      <li class="nav-item" sec:authorize="isAuthenticated()">
+        <a class="nav-link text-white " href="/doLogout">
           <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
             <i class="material-icons opacity-10">assignment</i>
           </div>
@@ -277,32 +352,31 @@
   </div>
   -->
 
+
+
   <script>
     // 이 스크립트를 전체 레이아웃으로 빼면 전체 페이지가 로딩된 다음에 스크립트를 실행하므로 여전히 깜빡임이 발생함
     // 그래서 여기 사이드바fragment에 달아놔야 content 페이지 로딩전에 show 여부가 결정나므로 깜빡임이 사라진다!! SPA느낌 남!
     // (주의!) jQuery CDN을 각페이지 마다 달아 놓으면, 그 페이지 접근시 상위 jQuery 이벤트가 충돌?무시?가 된다!!
     // 반드시 jQuery CDN은 앱 전체 레이아웃 최상위에 딱 한개만 달아놓고 각 페이지에 달려있는 건 다 빼자 
     
-    $('.collapse-kcy').on('shown.bs.collapse', function(){
-      Cookies.set('collapseShown', $(this).attr('id'))
-    })
+    // →9.3.수정: show 클래스 자체를 아예 페이지 최초 렌더링시점에 부여를 한다면? 당연히 애초에 show를 달고 그려지니깐 진짜 깜빡임이 0이 됨!!
+    // 그래서 각 소메뉴 마다 스크립트를 달아주는 방식으로 변경함
     
-    $('.collapse-kcy').on('hide.bs.collapse', function(){
+//     $('.collapse-kcy').on('show.bs.collapse', function(){
+//       Cookies.set('collapseShown', $(this).attr('id'))
+//     })
+    
+//     $('.collapse-kcy').on('hide.bs.collapse', function(){
 //       Cookies.remove('collapseShown');
-    })
+//     })
     
-    let item = Cookies.get('collapseShown');
-    if (item != null) {
-//       $('.collapse-kcy').removeClass('show'); // 굳이 지워줄 필요는 없는 듯
-      $('#' + item).addClass('show');
-    }
-    
-
+//     let item = Cookies.get('collapseShown');
+//     if (item != null) {
+//       $('.collapse-kcy').removeClass('show');
+//       $('#' + item).addClass('show');
+//     }
   </script>
 
 </th:block>
-
-
-
-
 </html>

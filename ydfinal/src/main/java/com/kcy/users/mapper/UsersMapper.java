@@ -6,17 +6,29 @@ import java.util.Map;
 public interface UsersMapper {
     // 기본 인적사항 (모든 사용자)
     public Map<String, String> userInfo(String id);
+    // 전체 학생 학적 목록 (행정)
+    public List<Map<String, String>> allStuInfo();
     
-    // 본인 학적 조회
+    public int count();
+    
+    public List<Map<String, String>> findData(int start, int length);
+    
+    // 전체 교수 목록 (행정)
+    public List<Map<String, String>> allProfInfo();
+    
+    // 본인 학적 조회 (학생)
     public Map<String, String> stuInfo(String id);
-    // 본인 학적 변동 이력
+    // 본인 학적 변동 이력 (학생)
     public List<Map<String, String>> stuAcaInfo(String id);
-    // 본인 학적 변동 신청 폼
+    // 본인 학적 변동 신청 폼 (학생)
     public List<Map<String, String>> stuAcaInsertForm();
-    // 본인 학적 변동 신청 실행
+    // 본인 학적 변동 신청 실행 (학생)
     public void stuAcaInsertProc(Map<String, String> map);
-    // 본인 학적 변동 신청 삭제
+    // 본인 학적 변동 신청 삭제 (학생)
     public void stuAcaDelete(String acaId);
+    
+    // 학적 변동 신청 단건 조회 (학생, 행정)
+    public Map<String, String> stuAcaView(String acaId);
     
     // 전체 학생 학적 변동 이력 (행정)
     public List<Map<String, String>> allAcaInfo();

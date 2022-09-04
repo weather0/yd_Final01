@@ -9,7 +9,39 @@
    where user_id = #{param}
 </select>
 
-<!-- 본인 학적 조회 -->
+
+<!-- 전체 학생 학적 목록 (행정) -->
+<select id="allStuInfo" resultType="CustomMap">
+  select * 
+    from k_users
+   where user_type = 'ROLE_STU'
+</select>
+
+
+<select id="count" resultType="int">
+  SELECT COUNT(*) FROM k_users
+  WHERE user_type = 'ROLE_STU'
+</select>
+
+<select id="findData" resultType="CustomMap">
+  select if(SUBSTR(user_id,1,2) > 50, concat('19',user_id), concat('20',user_id)) nid, user_id, user_name, user_ssn, user_sex
+  from k_users
+  where user_type = 'ROLE_STU'
+  order by nid desc
+  limit #{param1}, #{param2} <!-- mybatis에서 파라미터 2개일때 작성법 -->
+</select>
+
+
+
+<!-- 전체 교수 목록 (행정) -->
+<select id="allProfInfo" resultType="CustomMap">
+  select * 
+    from k_users
+   where user_type = 'ROLE_PROF'
+</select>
+
+
+<!-- 본인 학적 조회 (학생) -->
 <select id="stuInfo" resultType="CustomMap">
   select u.user_id, u.user_name, 
          s.student_grade, s.student_sem, substr(u.user_ssn,1,6) user_birth,
@@ -28,14 +60,14 @@
 </select>
 
 
-<!-- 본인 학적 변동 이력 -->
+<!-- 본인 학적 변동 이력 (학생) -->
 <select id="stuAcaInfo" resultType="CustomMap">
   select u.user_name, u.user_id,
          u.user_dept, u.user_phone,
          sa.aca_id, sa.aca_type, 
          sa.aca_start, ks.sch_title AS aca_start_t, ks.sch_start AS aca_start_s, ks.sch_end AS aca_start_e,
          sa.aca_end, ke.sch_title AS aca_end_t, ke.sch_start AS aca_end_s, ke.sch_end AS aca_end_e,
-         sa.aca_reason, sa.aca_reason_d, 
+         sa.aca_reason, 
          sa.aca_yn, sa.aca_reject, 
          sa.aca_date, sa.aca_file
          
@@ -49,7 +81,7 @@
 </select>
 
 
-<!-- 본인 학적 변동 신청 폼 -->
+<!-- 본인 학적 변동 신청 폼 (학생) -->
 <select id="stuAcaInsertForm" resultType="CustomMap">
   select sch_id, 
          sch_start, 
@@ -67,7 +99,7 @@
 </select>
 
 
-<!-- 본인 학적 변동 신청 실행 -->
+<!-- 본인 학적 변동 신청 실행 (학생) -->
 <insert id="stuAcaInsertProc" parameterType="map">
   insert into k_student_aca 
   values (
@@ -100,7 +132,7 @@
 </insert>
 
 
-<!-- 본인 학적 변동 신청 삭제 -->
+<!-- 본인 학적 변동 신청 삭제 (학생) -->
 <delete id="stuAcaDelete">
   delete from k_student_aca
    where aca_id = #{acaId}
@@ -108,15 +140,37 @@
 </delete>
 
 
-
-<!-- 전체 학생 학적 변동 이력 (행정) -->
-<select id="allAcaInfo" resultType="CustomMap">
+<!-- 학적 변동 신청 단건 조회 (학생, 행정) -->
+<select id="stuAcaView" resultType="CustomMap">
   select u.user_name, u.user_id,
          u.user_dept, u.user_phone,
          sa.aca_id, sa.aca_type, 
          sa.aca_start, ks.sch_title AS aca_start_t, ks.sch_start AS aca_start_s, ks.sch_end AS aca_start_e,
          sa.aca_end, ke.sch_title AS aca_end_t, ke.sch_start AS aca_end_s, ke.sch_end AS aca_end_e,
          sa.aca_reason, sa.aca_reason_d, 
+         sa.aca_yn, sa.aca_reject, 
+         sa.aca_date, sa.aca_file
+         
+    from k_users u 
+    join k_student_aca sa on (u.user_id = sa.stu_id)
+    left join k_schedule ks on (ks.sch_id = sa.aca_start)
+    left join k_schedule ke on (ke.sch_id = sa.aca_end)
+    
+   where aca_id = #{acaId}
+    
+   order by sa.aca_date desc
+
+</select>
+
+
+
+<!-- 전체 학생 학적 변동 이력 (행정) -->
+<select id="allAcaInfo" resultType="CustomMap">
+  select u.user_name, u.user_id,
+         sa.aca_id, sa.aca_type, 
+         sa.aca_start, ks.sch_title AS aca_start_t, ks.sch_start AS aca_start_s, ks.sch_end AS aca_start_e,
+         sa.aca_end, ke.sch_title AS aca_end_t, ke.sch_start AS aca_end_s, ke.sch_end AS aca_end_e,
+         sa.aca_reason, 
          sa.aca_yn, sa.aca_reject, 
          sa.aca_date, sa.aca_file
          
