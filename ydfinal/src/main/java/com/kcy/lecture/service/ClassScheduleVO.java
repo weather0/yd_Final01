@@ -14,5 +14,5 @@ public class ClassScheduleVO {
 	private String classId;
 	private String roomId;
 	private String scheduleTitle;
-	
+	private String userId;
 }
