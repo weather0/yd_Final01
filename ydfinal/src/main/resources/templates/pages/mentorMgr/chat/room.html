@@ -67,6 +67,7 @@
                 	
                     localStorage.setItem('wschat.sender',sender);
                     localStorage.setItem('wschat.roomId',roomId);
+                    localStorage.setItem('wschat.roomName',id);
                     location.href="/chat/room/enter/"+roomId;
                 }else {
                 	alert('허락되지 않은 사용자입니다.')

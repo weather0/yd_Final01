@@ -126,9 +126,12 @@
 		WHERE mtr_id=#{mtrId}
 	</update>
 	
-	<update id="mentoringUpdate2" parameterType="com.kcy.mentoring.counseling.vo.JournalVO">
+	<update id="mentoringUpdate2" parameterType="String">
 		UPDATE k_mentoring
 		SET  mtr_status='fill'
-		WHERE mtr_id=#{mtrId}
+		WHERE matching_id=(SELECT matching_id
+						   FROM k_matching
+						   WHERE stu_id=#{stuId} AND matching_type = '0')  
+		AND mtr_count = (SELECT MAX(mtr_count) AS mtr_count FROM k_mentoring)
 	</update>
 </mapper>
