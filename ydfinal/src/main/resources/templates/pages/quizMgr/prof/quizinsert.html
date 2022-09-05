@@ -8,14 +8,14 @@
   <!-- 상단 내비바 -->
   <th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
 
+<div class="container-fluid py-4">
   <!-- 본문 start -->
       <h1>과제등록페이지</h1>
  
  		
  		<form action="quizInsert" method="post" enctype="multipart/form-data">
- 	<input th:value="${#authentication.principal.username}" type="text" id="userId">
  		
- 		<select name="classId">
+ 		<select class=" form-control" name="classId">
  			<option>강좌 선택</option>
 			<th:block th:each="c : ${classId}">
  			<option th:text="${c.classId}" th:value="${c.classId}"></option>
@@ -33,18 +33,15 @@
     </div>	
       
     <div class="input-group input-group-outline my-3">
-      <label class="form-label">첨부파일</label>
       <input type="file" class="form-control" multiple="multiple" name="classQuizFileSyl">
-      <input type="hideen" class="form-control" multiple="multiple" name="quizHOriginal">
+      <input type="hidden" class="form-control" multiple="multiple" name="quizHOriginal">
     </div>
  		
     <div class="input-group input-group-outline my-3">
-      <label class="form-label">시작일</label>
       <input type="date" class="form-control" name="quizDOpenday">
     </div>
     
       <div class="input-group input-group-outline my-3">
-      <label class="form-label">종료일</label>
       <input type="date" class="form-control" name="quizDCloseday">
     </div>
  		
@@ -53,6 +50,6 @@
     
   <!-- 본문 end-->
 
-
+</div>
 </th:block>
 </html>

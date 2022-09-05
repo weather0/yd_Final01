@@ -9,4 +9,5 @@ public interface ScoresService {
 	public List<ScoresVo> scoresMemberList(ScoresVo vo);
 	public void scoresInsert(ScoresVo vo);
 	public List<ScoresVo> stuScoreList(ScoresVo vo);
+	public List<ScoresVo> classScoreList(ScoresVo vo);
 }
