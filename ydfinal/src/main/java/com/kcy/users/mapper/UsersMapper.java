@@ -7,11 +7,8 @@ public interface UsersMapper {
     // 기본 인적사항 (모든 사용자)
     public Map<String, String> userInfo(String id);
     // 전체 학생 학적 목록 (행정)
-    public List<Map<String, String>> allStuInfo();
-    
-    public int count();
-    
-    public List<Map<String, String>> findData(int start, int length);
+    public int allStuInfoCnt(Map cri);
+    public List<Map<String, String>> allStuInfoProc(Map cri);
     
     // 전체 교수 목록 (행정)
     public List<Map<String, String>> allProfInfo();

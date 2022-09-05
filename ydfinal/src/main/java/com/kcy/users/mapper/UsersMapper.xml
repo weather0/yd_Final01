@@ -11,24 +11,102 @@
 
 
 <!-- 전체 학생 학적 목록 (행정) -->
-<select id="allStuInfo" resultType="CustomMap">
-  select * 
-    from k_users
-   where user_type = 'ROLE_STU'
-</select>
-
-
-<select id="count" resultType="int">
+<select id="allStuInfoCnt" resultType="int">
   SELECT COUNT(*) FROM k_users
   WHERE user_type = 'ROLE_STU'
+  <if test=" schId != null and schId != '' ">
+    and user_id like concat('%',#{schId},'%') <!-- 달러는 맵의 밸류에 따옴표를 뺀 것 -->
+  </if>
+  <if test=" schName != null and schName != '' ">
+    and user_name like concat('%',#{schName},'%')
+  </if>
+  <if test=" schSsn != null and schSsn != '' ">
+    and SUBSTR(user_ssn,1,6) like concat('%',#{schSsn},'%')
+  </if>
+  <if test=" schSex != null and schSex != '' ">
+    and user_sex like concat('%',#{schSex},'%')
+  </if>
+  <if test=" schDept != null and schDept != '' ">
+    and user_dept like concat('%',#{schDept},'%')
+  </if>
+  <if test=" schPhone != null and schPhone != '' ">
+    and user_phone like concat('%',#{schPhone},'%')
+  </if>
+  <if test=" schEmail != null and schEmail != '' ">
+    and user_email like concat('%',#{schEmail},'%')
+  </if>
+  <if test=" schAddr != null and schAddr != '' ">
+    and user_addr like concat('%',#{schAddr},'%')
+  </if>
+  <if test=" schNation != null and schNation != '' ">
+    and user_nation like concat('%',#{schNation},'%')
+  </if>
 </select>
 
-<select id="findData" resultType="CustomMap">
-  select if(SUBSTR(user_id,1,2) > 50, concat('19',user_id), concat('20',user_id)) nid, user_id, user_name, user_ssn, user_sex
+<select id="allStuInfoProc" resultType="CustomMap">
+  select if(SUBSTR(user_id,1,2) > 50, concat('19',user_id), concat('20',user_id)) nId, 
+         user_id, 
+         user_name, 
+         if(SUBSTR(user_ssn,1,2) > 50, concat('19',user_ssn), concat('20',user_ssn)) nSSN, 
+         SUBSTR(user_ssn,1,6) user_ssn,
+         user_sex,
+         user_dept,
+         user_phone,
+         user_email,
+         user_addr,
+         user_nation
   from k_users
-  where user_type = 'ROLE_STU'
-  order by nid desc
-  limit #{param1}, #{param2} <!-- mybatis에서 파라미터 2개일때 작성법 -->
+  where user_type = 'ROLE_STU' 
+  <if test=" schId != null and schId != '' ">
+    and user_id like concat('%',#{schId},'%') <!-- 달러는 맵의 밸류에 따옴표를 뺀 것 -->
+  </if>
+  <if test=" schName != null and schName != '' ">
+    and user_name like concat('%',#{schName},'%')
+  </if>
+  <if test=" schSsn != null and schSsn != '' ">
+    and SUBSTR(user_ssn,1,6) like concat('%',#{schSsn},'%')
+  </if>
+  <if test=" schSex != null and schSex != '' ">
+    and user_sex like concat('%',#{schSex},'%')
+  </if>
+  <if test=" schDept != null and schDept != '' ">
+    and user_dept like concat('%',#{schDept},'%')
+  </if>
+  <if test=" schPhone != null and schPhone != '' ">
+    and user_phone like concat('%',#{schPhone},'%')
+  </if>
+  <if test=" schEmail != null and schEmail != '' ">
+    and user_email like concat('%',#{schEmail},'%')
+  </if>
+  <if test=" schAddr != null and schAddr != '' ">
+    and user_addr like concat('%',#{schAddr},'%')
+  </if>
+  <if test=" schNation != null and schNation != '' ">
+    and user_nation like concat('%',#{schNation},'%')
+  </if>
+  
+  order by
+  <if test="order == 0 and orderDir == 'asc'">nId</if>
+  <if test="order == 0 and orderDir == 'desc'">nId desc</if>
+  <if test="order == 1 and orderDir == 'asc'">user_name</if>
+  <if test="order == 1 and orderDir == 'desc'">user_name desc</if>
+  <if test="order == 2 and orderDir == 'asc'">nSSN</if>
+  <if test="order == 2 and orderDir == 'desc'">nSSN desc</if>
+  <if test="order == 3 and orderDir == 'asc'">user_sex</if>
+  <if test="order == 3 and orderDir == 'desc'">user_sex desc</if>
+  <if test="order == 4 and orderDir == 'asc'">user_dept</if>
+  <if test="order == 4 and orderDir == 'desc'">user_dept desc</if>
+  <if test="order == 5 and orderDir == 'asc'">user_phone</if>
+  <if test="order == 5 and orderDir == 'desc'">user_phone desc</if>
+  <if test="order == 6 and orderDir == 'asc'">user_email</if>
+  <if test="order == 6 and orderDir == 'desc'">user_email desc</if>
+  <if test="order == 7 and orderDir == 'asc'">user_addr</if>
+  <if test="order == 7 and orderDir == 'desc'">user_addr desc</if>
+  <if test="order == 8 and orderDir == 'asc'">user_nation</if>
+  <if test="order == 8 and orderDir == 'desc'">user_nation desc</if>
+    
+<!--   limit #{param1}, #{param2}          mybatis에서 파라미터 2개일때 작성법(순서대로 param1, param2, ...) -->
+  limit #{start}, #{length} <!-- 서비스 파라미터가 n개로 늘어날거 같아서 map방식으로 변경함 -->
 </select>
 
 

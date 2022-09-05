@@ -23,34 +23,52 @@
     }
     
   </style>
-  <script th:inline="javascript">
+  <script >
     $(function() {
-      // DataTable
-      $('#allStuInfos').DataTable({
-        "processing": true,
-        "serverSide": true,
-        "ajax": {
-          url: "qwe",
+      
+      // Datatables Server-side처리 참고: zamezzz.tistory.com/310
+      let table = $('#allStuInfos').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: {
+          url: "allStuInfoProc",
           type: "POST",
-          dataSrc: function(res) {
-            var data = res.data;
-            return data;
-          },
+          
+          // 이부분은 굳이 안해줘도 되는 듯(컨트롤러에서 vo.setData(data)로 자동처리 됨)
+//           dataSrc: function(res) {
+//             var data = res.data;
+//             return data;
+//           },
           error: function(e) {
             console.log(e);
           }
         },
-        "columns":[
+        columns: [
           {"data": "userId"},
           {"data": "userName"},
           {"data": "userSsn"},
           {"data": "userSex"},
+          {"data": "userDept"},
+          {"data": "userPhone"},
+          {"data": "userEmail"},
+          {"data": "userAddr"},
+          {"data": "userNation"},
         ],
+        search: {
+          return: true, // 엔터키 쳐야 검색되는 옵션 (매 keystroke마다 trigger되는 게 아니라)
+        },
         
-        
-        
-        "order": [0, "desc"],
-        "language": {
+        order: [0, 'desc'], // 페이지 첫 로딩 시 초기 정렬 기준
+//         rowReorder: true,
+//         colReorder: true,
+
+        // 기본레이아웃(datatables.net/reference/option/dom)
+        // 기본요소: l(=페이지당) f(=검색창) tr(=테이블) i(=페이지정보:몇쪽,몇건) p(=페이지네이션)
+        dom: "<'row'<'col-12 col-sm-6'l><'col-12 col-sm-6 customSch'>>" +
+             "<'row'<tr>>" +
+             "<'row'<'col-md-5'i><'col-md-7'p>>",
+             
+        language: {
           "lengthMenu": "페이지 당: _MENU_",
           "search": "검색:",
           "searchPlaceholder": "키워드를 입력하세요",
@@ -65,10 +83,57 @@
         },
       });
       
+      // 검색창
+      $('div.customSch').html(
+        `<div class="input-group input-group-outline mb-2">
+          
+          <select class="form-select px-2 me-2" id="searchType" name="searchType" aria-label="searchType">
+            <option value="" disabled selected>검색 대상</option>
+            <option value="0">학번</option>
+            <option value="1">이름</option>
+            <option value="2">생년월일</option>
+            <option value="3">성별</option>
+            <option value="4">전공</option>
+            <option value="5">연락처</option>
+            <option value="6">이메일</option>
+            <option value="7">주소</option>
+            <option value="8">국적</option>
+          </select>
+          
+          
+          <input type="text" class="form-control" id="searchValue">
+          <button class="btn btn-outline-secondary mb-0" type="button" id="searchBtn">검색</button>
+        </div>`
+      );
+      
+      function search (){
+        var numCols = table.columns().nodes().length;
+        for(var i=0; i<numCols; i++) { table.column(i).search(''); }
+
+        var searchType = $("#searchType").val();
+        var searchValue = $("#searchValue").val();
+        
+        console.log(searchType);
+        console.log(searchValue);
+
+        table.column(searchType).search(searchValue).draw();
+      }
+      
+      $("#searchBtn").on('click',function () {
+        search();
+      })
+      $("#searchValue").on('keyup',function (e) {
+        if (e.keyCode == 13) {
+          search();
+        }
+      })
+
+      
       
       
       
       $('#allStuInfos tbody').on('click', 'tr', function(){
+//         location.href="stuAcaView"
 
         // 보내줌
 //         if (stuAcainfo.acaType == '휴학' || stuAcainfo.acaType == '복학' || stuAcainfo.acaType == '자퇴'){
@@ -76,8 +141,6 @@
 //         }
         
       })
-      
-      
       
       
     })
@@ -104,17 +167,17 @@
 
         <div class="table-responsive">
           <table id="allStuInfos" class="table align-items-center table-hover" style="width:100%">
-            <thead style="font-weight: bold">
+            <thead>
               <tr>
-                <td>학번</td>
-                <td>이름</td>
-                <td>생년월일</td>
-                <td>성별</td>
-                <td>전공</td>
-                <td>연락처</td>
-                <td>이메일</td>
-                <td>주소</td>
-                <td>국적</td>
+                <th>학번</th>
+                <th>이름</th>
+                <th>생년월일</th>
+                <th>성별</th>
+                <th>전공</th>
+                <th>연락처</th>
+                <th>이메일</th>
+                <th>주소</th>
+                <th>국적</th>
               </tr>
             </thead>
             

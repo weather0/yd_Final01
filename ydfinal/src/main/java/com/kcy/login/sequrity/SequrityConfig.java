@@ -27,7 +27,7 @@ public class SequrityConfig extends WebSecurityConfigurerAdapter  {
 			.antMatchers("/login", "/check/findPw").permitAll()
 			
 			// 9.1.추가: 곽ㅈㅇ
-			.antMatchers("/allAcaInfo").hasRole("ADMIN")
+			.antMatchers("/allAcaInfo", "/allStuInfo").hasRole("ADMIN")
 			.antMatchers("/stuAcaInfo", "/stuAcaInsert").hasRole("STU")
 			.and().exceptionHandling().accessDeniedPage("/")
 			//
