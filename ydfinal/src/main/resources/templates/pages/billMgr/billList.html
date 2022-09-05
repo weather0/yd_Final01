@@ -83,10 +83,10 @@
 						<td> 
 							<button class="btn bg-gradient-primary update">수정</button> 
 							<span th:if="${bill.pId == null}">
-								<button class="btn bg-gradient-primary insert" aria-pressed="true">발부</button>
+								<button class="btn bg-gradient-primary insert" aria-pressed="true">고지</button>
 							</span>
 							<span th:if="${bill.pId != null}">
-								<button class="btn bg-gradient-primary insert" disabled>발부</button>
+								<button class="btn bg-gradient-primary insert" disabled>고지</button>
 							</span>
 						</td>
 					</tr>

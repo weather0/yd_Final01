@@ -93,4 +93,11 @@ public class BillsServiceImpl implements BillsService {
         
     }
 
+
+	@Override
+	public void payChangeCancel(PayVO vo) {
+		mapper.payChangeCancel(vo);
+		
+	}
+
 }
