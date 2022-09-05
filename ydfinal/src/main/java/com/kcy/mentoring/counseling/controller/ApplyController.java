@@ -41,6 +41,7 @@ public class ApplyController {
 
 		return "pages/mentorMgr/counseling/apply";
 	}
+
 	// 교수가 선택한 스케줄을 불러오고 자기 담당교수의 스케줄을 골라 화면에 뿌려줌
 	@PostMapping("/applySchList")
 	@ResponseBody
@@ -74,7 +75,6 @@ public class ApplyController {
 		return "true";
 	}
 
-
 	// 선택
 	@PostMapping("/applySelect")
 	@ResponseBody
@@ -96,60 +96,63 @@ public class ApplyController {
 	public String applyListform() {
 		return "pages/mentorMgr/counseling/applyList";
 	}
-	
+
 	// 상담신청한 학생리스트 불러오기
 	@PostMapping("/applyList")
 	@ResponseBody
 	public List<ApplyVO> applyList(Principal principal, Model model) {
-		List<ApplyVO> list =  service.applyList(principal.getName());
+		List<ApplyVO> list = service.applyList(principal.getName());
 		model.addAttribute("list", list);
 		return list;
 	}
-	
+
 	// 학생의 검사 결과를 모달창에 띄워주기
 	@PostMapping("/applyResultList")
 	@ResponseBody
-	public List<ApplyVO> applyResultList(Model model , String stuId) {
-		List<ApplyVO> list =  service.applyResultList(stuId);
+	public List<ApplyVO> applyResultList(Model model, String stuId) {
+		List<ApplyVO> list = service.applyResultList(stuId);
 		model.addAttribute("list", list);
 		return list;
 	}
+
 	// 학생 정보 불러오기
 	@PostMapping("/applyInfo")
 	@ResponseBody
-	public ApplyInfoVO applyInfo(Model model , String stuId) {
-		ApplyInfoVO vo =  service.applyInfo(stuId);
+	public ApplyInfoVO applyInfo(Model model, String stuId) {
+		ApplyInfoVO vo = service.applyInfo(stuId);
 		model.addAttribute("vo", vo);
 		return vo;
 	}
+
 	// 상담신청 취소하기
 	@PostMapping("/applyCancel")
 	public String applyCancel(ApplyVO vo) {
 		service.applyCancel(vo);
 		return "redirect:applyList";
 	}
-	
+
 	// 각 학생의 상담일지를 볼 수 있는 폼
 	@PostMapping("/journalSelect")
 	@ResponseBody
-	public JournalVO journalList(Model model ,@RequestBody ApplyVO vo) {
+	public JournalVO journalList(Model model, @RequestBody ApplyVO vo) {
 		JournalVO vo1 = service.journalList(vo);
 		model.addAttribute("list", vo1);
 		return vo1;
 	}
-	
+
 	// 상담일지 작성하기
-		@PostMapping("/journalInsert")
-		public String journalInsert(JournalVO vo) {
-			service.journalInsert(vo);
-			return "redirect:applyList";
-		}
-		
-		// 상담일지 작성하기
-		@PostMapping("/mentoringUpdate2")
-		public void mentoringUpdate2(String mrtId) {
-			service.mentoringUpdate2(mrtId);
-		}
-	
-	
+	@PostMapping("/journalInsert")
+	public String journalInsert(JournalVO vo) {
+		service.journalInsert(vo);
+		return "redirect:applyList";
+	}
+
+	// 상담종료하기
+	@PostMapping("/mentoringUpdate2")
+	@ResponseBody
+	public String mentoringUpdate2(String stuId) {
+		service.mentoringUpdate2(stuId);
+		return "true";
+	}
+
 }

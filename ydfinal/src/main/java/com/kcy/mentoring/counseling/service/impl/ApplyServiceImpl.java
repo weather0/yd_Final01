@@ -98,9 +98,9 @@ public class ApplyServiceImpl implements ApplyService {
 		map.journalInsert(vo);
 		map.mentoringUpdate(vo);
 	}
-
-		public void mentoringUpdate2(String mrtId) {
-			map.mentoringUpdate2(mrtId);
+		@Override
+		public void mentoringUpdate2(String stuId) {
+			map.mentoringUpdate2(stuId);
 		}
 
 
