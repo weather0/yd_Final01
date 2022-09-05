@@ -13,33 +13,52 @@
 	<!-- 상단 내비바 -->
 	<th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
 
-	<!-- 본문 start -->
-	<form action="billCheckInfo">
+	<!-- 본문 start -->	
+	<form action="billCheck">
 		<div class="row">
 			<div class="col-md-3">
 				<div class="input-group input-group-outline my-3">
-					<label class="form-label"></label> <input type="number"
-						class="form-control" name="billYear" id="billYear">
+					<label class="form-label"></label> 
+					<input type="number" class="form-control" name="billYear" id="billYear">
 				</div>
 			</div>
 			<div class="col-md-3">
 				<div class="input-group input-group-outline my-3">
-					<label class="form-label"></label> <select class="form-control"
-						name="billSem" id="billSem">
-						<option value="1">1학기</option>
-						<option value="2">2학기</option>
+					<label class="form-label"></label> 
+					<select class="form-control" name="billSem" id="billSem">						
+						<option value="1" th:selected="${payVO.billSem}=='1'">1학기</option>
+						<option value="2" th:selected="${payVO.billSem}=='2'">2학기</option>
 					</select>
 				</div>
-			</div>
+			</div>						
 			<div class="col-md-3">
 				<div class="input-group input-group-outline my-3">
 					<button class="btn bg-gradient-primary">조회</button>
 				</div>
 			</div>
 	</form>
-
-	<h5>상세</h5>
-	<th:block th:each="bill:${billCheckInfo}">
+	
+	<th:block th:each="bill:${billCheck}">	
+	<h5>상세</h5>	
+	<div class="col-md-2" th:if="${!bill.payHType.toString().equals('b')}">
+		<div class="input-group input-group-outline my-3">
+			<label class="form-label"></label> 
+				<select class="form-control" name="payCount" id="payCount">
+					<option value="p0" th:selected="${payVO.payCount}=='p0'">전체조회</option>
+					<option value="p1" th:selected="${payVO.payCount}=='p1'">1회차</option>
+					<option value="p2" th:selected="${payVO.payCount}=='p2'">2회차</option>
+					<option value="p3" th:selected="${payVO.payCount}=='p3'" th:if="${bill.payHType.toString().equals('s1')}">3회차</option>
+					<option value="p4" th:selected="${payVO.payCount}=='p4'" th:if="${bill.payHType.toString().equals('s1')}">4회차</option>
+				</select>
+			</div>
+		</div>
+		
+		<div class="col-md-3" th:if="${!bill.payHType.toString().equals('b')}">
+			<div class="input-group input-group-outline my-3">
+				<button class="btn bg-gradient-primary">조회</button>
+			</div>
+		</div>
+		
 		<div class="row justify-content-center">
 			<div class="card">
 				<div class="table-responsive">
@@ -84,6 +103,7 @@
 							<td></td>
 						</tr>
 						</span>
+						
 						<span th:if="${bill.payHType.toString().equals('s1')}">
 							<tr>
 								<td class="table-secondary">등록금 총액</td>
@@ -93,26 +113,26 @@
 									<span th:if="${bill.payHType.toString().equals('s1')}">분할납부A</span>
 									<span th:if="${bill.payHType.toString().equals('s2')}">분할납부B</span>
 								</td>
-							</tr>
-							<tr>
+							</tr>							
+							<tr th:if="${payVO.payCount == 'p1'} or ${payVO.payCount == 'p0'}">
 								<td class="table-secondary">1차 분납금액</td>
-								<td th:text="${bill.a}">></td>
+								<td th:text="${bill.a}"></td>
 								<td class="table-secondary">납부기간</td>
 								<td></td>
 							</tr>
-							<tr>
+							<tr th:if="${payVO.payCount == 'p2'} or ${payVO.payCount == 'p0'}">
 								<td class="table-secondary">2차 분납금액</td>
 								<td th:text="${bill.b}"></td>
 								<td class="table-secondary">납부기간</td>
 								<td></td>
 							</tr>
-							<tr>
+							<tr th:if="${payVO.payCount == 'p3'} or ${payVO.payCount == 'p0'}">
 								<td class="table-secondary">3차 분납금액</td>
 								<td th:text="${bill.c}"></td>
 								<td class="table-secondary">납부기간</td>
 								<td></td>
 							</tr>
-							<tr>
+							<tr th:if="${payVO.payCount == 'p4'} or ${payVO.payCount == 'p0'}">
 								<td class="table-secondary">4차 분납금액</td>
 								<td th:text="${bill.d}"></td>
 								<td class="table-secondary">납부기간</td>
@@ -123,6 +143,7 @@
 								<td></td>
 							</tr>
 						</span>
+						
 						<span th:if="${bill.payHType.toString().equals('s2')}">
 							<tr>
 								<td class="table-secondary">등록금 총액</td>
@@ -133,13 +154,13 @@
 									<span th:if="${bill.payHType.toString().equals('s2')}">분할납부B</span>
 								</td>
 							</tr>
-							<tr>
+							<tr th:if="${payVO.payCount == 'p1'} or ${payVO.payCount == 'p0'}">
 								<td class="table-secondary">1차 분납금액</td>
 								<td th:text="${bill.a}">></td>
 								<td class="table-secondary">납부기간</td>
 								<td></td>
 							</tr>
-							<tr>
+							<tr th:if="${payVO.payCount == 'p2'} or ${payVO.payCount == 'p0'}">
 								<td class="table-secondary">2차 분납금액</td>
 								<td th:text="${bill.b}">></td>
 								<td class="table-secondary">납부기간</td>
@@ -201,14 +222,13 @@
 				</div>
 			</div>
 		</div>
-
 	</th:block>
 
 	<script>
 		let date = new Date();
-		let year = document.getElementById('billYear');
+		let year = document.getElementById("billYear");
 		year.value = date.getFullYear();
-		
+	
 		$(".change").on("click", function () {
 			var id = document.getElementById("payId").innerHTML;
 			$(".on").on("click", function () {
@@ -254,6 +274,7 @@
 					}
 				});			
 			});
+		
 	</script>
 
 	<!-- 본문 end-->

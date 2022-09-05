@@ -3,6 +3,8 @@ package com.kcy.bill.controller;
 import java.security.Principal;
 import java.util.List;
 
+import javax.security.auth.message.callback.PrivateKeyCallback.Request;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Controller;
@@ -87,16 +89,16 @@ public class BillsController {
 	}
 	
 	//등록금 고지서 확인 페이지(학생)
-	@RequestMapping("/billCheck")
-	public String billCheck(PayVO vo) {		
-	return "pages/billMgr/billCheck";
-	}
+//	@RequestMapping("/billCheck")
+//	public String billCheck(PayVO vo) {		
+//	return "pages/billMgr/billCheck";
+//	}
 	
 	//등록금 고지서 확인(학생)
-	@RequestMapping("/billCheckInfo")
+	@RequestMapping("/billCheck")
 	public String billCheckInfo(PayVO vo, Model model, Principal principal) {
 		vo.setStuId(principal.getName());
-		model.addAttribute("billCheckInfo", service.billCheck(vo));
+		model.addAttribute("billCheck", service.billCheck(vo));		
 	return "pages/billMgr/billCheck";
 	}
 	

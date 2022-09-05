@@ -158,7 +158,7 @@ VALUES ( #{billId}, #{billYear}, #{billSem}, #{billAmount}, #{majorbId}, #{billT
 	ON kph.bill_id = b.bill_id
 	WHERE b.bill_year = #{billYear}
 	AND b.bill_sem = #{billSem} 
-	AND kph.stu_id = #{stuId}
+	AND kph.stu_id = #{stuId}	
 </select>
 
 <select id="billList" resultType="com.kcy.bill.service.BillsVO">
