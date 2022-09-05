@@ -4,10 +4,11 @@
 
 	<select id="applySelectList" resultType="com.kcy.mentoring.counseling.vo.ApplyVO" parameterType="String">
 		SELECT *
-		FROM k_mentoring_schedule join k_sch_times on k_mentoring_schedule.mtr_sch_timecode = k_sch_times.mtr_sch_timecode
+		FROM k_mentoring_schedule sc join k_sch_times ti on sc.mtr_sch_timecode = ti.mtr_sch_timecode
 		where user_id = (SELECT prof_id
 						 FROM k_matching
-						 WHERE stu_id=#{id} AND matching_type = '0')
+						 WHERE stu_id=#{id} AND matching_type = '0') AND sc.CHECK_CODE = '0'
+		
 	</select>
 	
 	<select id="applyCheck" resultType="String" parameterType="String">
@@ -134,4 +135,40 @@
 						   WHERE stu_id=#{stuId} AND matching_type = '0')  
 		AND mtr_count = (SELECT MAX(mtr_count) AS mtr_count FROM k_mentoring)
 	</update>
+	
+		<!-- 담당교수 정보 불러오기 -->
+	<select id="profCheck" resultType="com.kcy.mentoring.counseling.vo.ApplyInfoVO" parameterType="String">
+		SELECT pr.prof_edu, pr.prof_career, pr.prof_paper, pr.prof_lab, us.user_id, us.user_name, us.user_sex, us.user_dept,  us.user_phone, us.user_email
+		FROM k_professors pr join k_users us
+		on us.user_id = pr.prof_id 
+		WHERE prof_id=(SELECT prof_id
+						FROM k_matching
+						WHERE stu_id=#{stuId} AND matching_type = '0');
+	</select>
+	 
+	<update id="scheduleCheck" parameterType="String">
+		UPDATE k_mentoring_schedule
+		SET CHECK_CODE='1'
+		WHERE mtr_sch_id=#{mtrSchId}
+	</update>
+	
+	<!-- 메모 불러오기 -->
+	<select id="selectMemo" resultType="String" parameterType="String">
+		SELECT IFNULL(mtr_memo_content,'xxx')
+		FROM k_mentoring_memo
+		WHERE mtr_id=#{mtrId};
+		
+	</select>
+	<!-- 메모 작성 -->
+	<insert id="inserMemo" parameterType="com.kcy.mentoring.counseling.vo.ApplyVO">
+		INSERT INTO k_mentoring_memo
+		(mtr_id, mtr_memo_content)
+		VALUES(#{mtrId}, #{mtrMemoContent});
+		
+	</insert>
+	
+	
+	
+	
+	
 </mapper>

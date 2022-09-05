@@ -15,8 +15,8 @@
 	</select>
 	
 	<insert id="calendarInsert" parameterType="com.kcy.mentoring.schedule.vo.scheduleVO">
-		 insert into k_mentoring_schedule(mtr_sch_id, user_id, mtr_sch_date, mtr_sch_timecode) values 
-		 (nextval(scheduleSeq),#{userId},#{mtrSchDate},#{mtrSchTimecode})
+		 insert into k_mentoring_schedule(mtr_sch_id, user_id, mtr_sch_date, mtr_sch_timecode, CHECK_CODE) values 
+		 (nextval(scheduleSeq),#{userId},#{mtrSchDate},#{mtrSchTimecode},default)
 	</insert>
 	
 	<delete id="calendarDelete" parameterType="com.kcy.mentoring.schedule.vo.scheduleVO">
