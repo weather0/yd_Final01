@@ -102,8 +102,9 @@ public class CareerProfController {
 	//삭제
 	@RequestMapping("/careerDelete")
 	@ResponseBody
-	public void dalete(Model model, String id) {
+	public String dalete(Model model, String id) {
 		service.careerDelete(id);
+		return "true";
 	}
 	
 	

@@ -25,6 +25,14 @@ public interface ApplyMapper {
 	JournalVO journalList(ApplyVO vo); // 상담일지 통으로 가져오기
 	void journalInsert(JournalVO vo);
 	void mentoringUpdate(JournalVO vo); // 상담일지 작성시 상담구분을 상담완료로 바꿈
-	void mentoringUpdate2(String mrtId); // 상담일지 작성시 상담구분을 상담완료로 바꿈
+	void mentoringUpdate2(String stuId); // 상담일지 작성시 상담구분을 상담완료로 바꿈
+	
+	ApplyInfoVO profCheck(String stuId); // 담당교수 정보 불러오기
+	
+	void scheduleCheck(String mtrSchId); // 추가 : 상담신청을 한 날짜는 안보이게 
+	
+	public void insertMemo(ApplyVO vo);
+	public String selectMemo(String mtrId);
+	
 	
 }

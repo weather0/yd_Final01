@@ -20,6 +20,7 @@ public class ChatRoom {
         ChatRoom room = new ChatRoom();
         room.roomId = UUID.randomUUID().toString();
         room.roomName = name;
+        System.out.println(name);
         return room;
     }
 }

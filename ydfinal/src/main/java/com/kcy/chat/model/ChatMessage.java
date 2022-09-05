@@ -26,5 +26,5 @@ public class ChatMessage {
     //학번
     private String userId;
     private String name;
-    private String mtrId;
+    private String stuId;
 }

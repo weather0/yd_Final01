@@ -22,9 +22,9 @@
 			</div>
 		</div>
 		<div class="input-group">
-			<input type="text" id="userId" class="form-control" th:value="${#authentication.name}">
-			<input type="text" id="userType" class="form-control">
-			<input type="text" id="userName" class="form-control" >
+			<input type="hidden" id="userId" class="form-control" th:value="${#authentication.name}">
+			<input type="hidden" id="userType" class="form-control">
+			<input type="hidden" id="userName" class="form-control" >
 		</div>
 		<ul class="list-group">
 			<li class="list-group-item list-group-item-action"
@@ -64,9 +64,9 @@
                 var sender = $('#userName').val();
                 var type = $('#userType').val();
                 if(userId == id || type == "ROLE_PROF") {
-                	
                     localStorage.setItem('wschat.sender',sender);
                     localStorage.setItem('wschat.roomId',roomId);
+                    localStorage.setItem('wschat.roomName',id);
                     location.href="/chat/room/enter/"+roomId;
                 }else {
                 	alert('허락되지 않은 사용자입니다.')

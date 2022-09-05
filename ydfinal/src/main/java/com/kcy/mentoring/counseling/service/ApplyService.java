@@ -25,4 +25,10 @@ public interface ApplyService {
 	void applyCancel(ApplyVO vo); // 상담신청 취소하기
 	JournalVO journalList(ApplyVO vo);
 	void journalInsert(JournalVO vo); // 상담일지 작성
+	void mentoringUpdate2(String stuId);
+	ApplyInfoVO profCheck(String stuId);
+	
+	void scheduleCheck(String mtrSchId); // 추가 : 상담신청을 한 날짜는 안보이게 
+	String selectMemo(String mtrId);
+	void insertMemo(ApplyVO vo);
 }

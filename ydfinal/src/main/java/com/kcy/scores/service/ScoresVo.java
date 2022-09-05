@@ -14,6 +14,7 @@ public class ScoresVo {
 	private int scoreQuiz;
 	private int scoreMid;
 	private int scoreFinal;
+	private int total;
 	
 	// k_gpa
 	private String gpaId;
@@ -34,16 +35,24 @@ public class ScoresVo {
 	
 	// join
 	private String courseTitle;
+	private String courseType;
+	private String courseCredit;
+	
 	private String classId;
 	private int classCk;
 	private int classTo;
+	private int classYear;
+	private int classSem;
+	
 	private String userName;
 	private String stuId;
 	private String userDept;
+	
 	private int studentGrade;
 	private int studentSem;
 	private String studentAcaYn;
-	private int classYear;
-	private int classSem;
+	
+	
+	
 	
 }

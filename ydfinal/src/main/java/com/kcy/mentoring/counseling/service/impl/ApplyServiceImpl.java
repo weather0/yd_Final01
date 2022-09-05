@@ -33,15 +33,17 @@ public class ApplyServiceImpl implements ApplyService {
 	public void applyInsert(ApplyVO vo) {
 		map.applyHistoryInsert(vo);
 		map.applyListInsert(vo.getUserId());
+		map.scheduleCheck(vo.getMtrSchId());
 		for (ApplyVO vo1 : vo.getListVO()) { // 서비스에서 
 			map.applyInsert(vo1);
 		}
 	}
-	
+
 	@Override
 	public void applyListInsert(String id) {
 		map.applyListInsert(id);
 	}
+
 	@Override
 	public void applyHistoryInsert(ApplyVO vo) {
 		map.applyHistoryInsert(vo);
@@ -64,17 +66,17 @@ public class ApplyServiceImpl implements ApplyService {
 
 	@Override
 	public List<ApplyVO> applyList(String id) {
-		
+
 		return map.applyList(id);
 	}
-	
+
 	// 학생의 검사 결과를 확인하는 창
 	@Override
 	public List<ApplyVO> applyResultList(String stuId) {
-		
+
 		return map.applyResultList(stuId);
 	}
-	
+
 	// 학생 정보 불러오기
 	@Override
 	public ApplyInfoVO applyInfo(String stuId) {
@@ -86,22 +88,46 @@ public class ApplyServiceImpl implements ApplyService {
 	public void applyCancel(ApplyVO vo) {
 		map.applyCancel(vo);
 	}
-	
+
 	// 상담일지 전체를 통으로 리스트로 반환
 	@Override
 	public JournalVO journalList(ApplyVO vo) {
 		return map.journalList(vo);
 	}
+
 	// 상담일지 작성
-		@Override
+	@Override
 	public void journalInsert(JournalVO vo) {
 		map.journalInsert(vo);
 		map.mentoringUpdate(vo);
 	}
 
-		public void mentoringUpdate2(String mrtId) {
-			map.mentoringUpdate2(mrtId);
-		}
+	@Override
+	public void mentoringUpdate2(String stuId) {
+		map.mentoringUpdate2(stuId);
+	}
 
+	@Override
+	public ApplyInfoVO profCheck(String stuId) {
+
+		return map.profCheck(stuId);
+	}
+
+	// 추가 : 상담신청을 한 날짜는 안보이게 
+	@Override
+	public void scheduleCheck(String mtrSchId) {
+		map.scheduleCheck(mtrSchId);
+	}
+	@Override
+	public String selectMemo(String mtrId) {
+		// TODO Auto-generated method stub
+		return map.selectMemo(mtrId);
+	}
+	@Override
+	public void insertMemo(ApplyVO vo) {
+		// TODO Auto-generated method stub
+		map.insertMemo(vo);
+		
+	}
 
 }

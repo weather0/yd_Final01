@@ -8,6 +8,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.Principal;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.slf4j.Logger;
@@ -25,6 +26,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -42,6 +44,7 @@ import com.kcy.lecture.service.LectureService;
 import com.kcy.lecture.service.LectureVO;
 import com.kcy.lecture.service.OpenLectureVO;
 import com.kcy.lecture.service.RoomVO;
+import com.kcy.lecture.service.Impl.ScheduleServiceImpl;
 
 import lombok.RequiredArgsConstructor;
 
@@ -53,6 +56,7 @@ public class LectureController {
 	@Autowired
 	CourseMapper mapper;
 	@Autowired ScheduleMapper scmapper;
+	@Autowired ScheduleServiceImpl scheduleservice;
 	@Autowired RoomMapper rmapper;
 	private final LectureService lectureService;
 	private final EnrolmentService enrolmentService;
@@ -197,12 +201,18 @@ public class LectureController {
 		return scmapper.selectschedule(vo);
 	}
 	
-	@PostMapping("/scheduleinsert")
-	@ResponseBody
-	public boolean scheduleInsert(Model model,ClassScheduleVO vo) {
-			
-		scmapper.scheduleInsert(vo);
-		return true;
-	}
+	  @PostMapping("/scheduleinsert")
+	  @ResponseBody 
+	  public String scheduleInsert(@RequestBody List<ClassScheduleVO> list) {
+		  scheduleservice.scheduleAllInsert(list); 
+	  return "true"; 
+	  }
+	 
+	  @GetMapping("/classScheduleSelect")
+	  public String classScheduleSelect(Model model,Principal principal,ClassScheduleVO vo) {
+		  vo.setUserId(principal.getName());
+		 model.addAttribute("scheduleSelect",scmapper.classScheduleSelect(vo));
+		  return "pages/classMgr/ClassScheduleSelect";
+	  }
 
 }

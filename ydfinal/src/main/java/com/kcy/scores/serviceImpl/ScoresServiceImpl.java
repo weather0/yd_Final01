@@ -40,4 +40,9 @@ public class ScoresServiceImpl implements ScoresService {
 		return map.stuScoreList(vo);
 	}
 
+	@Override
+	public List<ScoresVo> classScoreList(ScoresVo vo) {
+		return map.classScoreList(vo);
+	}
+
 }

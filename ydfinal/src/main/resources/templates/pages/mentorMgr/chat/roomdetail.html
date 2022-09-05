@@ -5,132 +5,149 @@
 	<th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
 
 	<head>
-
+<link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+<link href="css/uicons-regular-rounded.css" rel="stylesheet">
 <style>
 [v-cloak] {
 	display: none;
 }
 
 .chat-box {
-display: inline-block;
-color: #fff;
-margin: 0 0 30px 0;
+	display: inline-block;
+	color: #fff;
+	margin: 0 0 30px 0;
 }
 
 .chat-box li {
-display: table;
-padding: 13px;
-margin: 7px 10px;
-font-size: 18px;
-line-height: 25px;
-
--webkit-border-top-left-radius: 6px;
--webkit-border-top-right-radius: 6px;
--webkit-border-bottom-right-radius: 6px;
--webkit-border-bottom-left-radius: 6px;
--moz-border-radius-topleft: 6px;
--moz-border-radius-topright: 6px;
--moz-border-radius-bottomright: 6px;
--moz-border-radius-bottomleft: 6px;
-border-top-left-radius: 6px;
-border-top-right-radius: 6px;
-border-bottom-right-radius: 6px;
-border-bottom-left-radius: 6px;
+	display: table;
+	padding: 13px;
+	margin: 7px 10px;
+	font-size: 18px;
+	line-height: 25px;
+	-webkit-border-top-left-radius: 6px;
+	-webkit-border-top-right-radius: 6px;
+	-webkit-border-bottom-right-radius: 6px;
+	-webkit-border-bottom-left-radius: 6px;
+	-moz-border-radius-topleft: 6px;
+	-moz-border-radius-topright: 6px;
+	-moz-border-radius-bottomright: 6px;
+	-moz-border-radius-bottomleft: 6px;
+	border-top-left-radius: 6px;
+	border-top-right-radius: 6px;
+	border-bottom-right-radius: 6px;
+	border-bottom-left-radius: 6px;
 }
 
 .chat-box .you {
-background-color: #343a40;
-max-width: 60%;
-clear: both;
-float: left;
+	background-color: #343a40;
+	max-width: 60%;
+	clear: both;
+	float: left;
 }
 
 .chat-box .you:after {
-content: ' ';
-position: relative;
-top: auto;
-bottom: auto;
-border: 12px solid;
-border-color: transparent transparent #343a40 transparent;
-margin: 0 0 0 -24px;
-float: left;
+	content: ' ';
+	position: relative;
+	top: auto;
+	bottom: auto;
+	border: 12px solid;
+	border-color: transparent transparent #343a40 transparent;
+	margin: 0 0 0 -24px;
+	float: left;
 }
 
 .chat-box .me {
-background-color: #6c757d;
-max-width: 60%;
-height: auto;
-clear: both;
-float: right;
+	background-color: #6c757d;
+	max-width: 60%;
+	height: auto;
+	clear: both;
+	float: right;
 }
 
 .chat-box .me:after {
-content: ' ';
-position: relative;
-bottom: auto;
-border: 12px solid;
-border-color: transparent transparent #6c757d transparent;
-margin: 0 -24px 0 0;
-float: right;
+	content: ' ';
+	position: relative;
+	bottom: auto;
+	border: 12px solid;
+	border-color: transparent transparent #6c757d transparent;
+	margin: 0 -24px 0 0;
+	float: right;
 }
-
 
 .chat-box li span {
-padding: 0 0 5px;
-color: #fff;
-display: block;
-font-weight:bold;
+	padding: 0 0 5px;
+	color: #fff;
+	display: block;
+	font-weight: bold;
 }
 
+svg {
+	pointer-events: none;
+}
 
+.HeaderBtn {
+	padding: 8px 16px 8px 16px;
+}
+<!--
+-->
 </style>
 	</head>
 
 	<body>
-		<div>
-			<button class="btn bg-gradient-secondary btn-sm" onclick="location.href=`/chat/room`">목록으로</button>
-			<button class="btn bg-gradient-secondary btn-sm" type="button"  @click="endChat">상담종료</button>
-		</div>
-		<div class="container w-90" id="app" v-cloak>
-			<div>
-				<h2>{{room.roomName}}</h2>
+		<div id="app" v-cloak>
+			<div sec:authorize="hasRole('ROLE_STU')">
+				<button class="HeaderBtn" style="border: none; float: right;" onclick="location.href=`/chat/room`">
+					<svg xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 24 24" width="20" height="20">
+						<path d="M22.535,8.46A4.965,4.965,0,0,0,19,7h0L2.8,7,7.1,2.7A1,1,0,0,0,5.682,1.288L.732,6.237a2.5,2.5,0,0,0,0,3.535l4.95,4.951A1,1,0,1,0,7.1,13.309L2.788,9,19,9h0a3,3,0,0,1,3,3v7a3,3,0,0,1-3,3H5a1,1,0,0,0,0,2H19a5.006,5.006,0,0,0,5-5V12A4.969,4.969,0,0,0,22.535,8.46Z" /></svg>
+				</button>
 			</div>
-			<div>
-				<input type="hidden" id="userId" v-model="userId" class="form-control" th:value="${#authentication.name}"> 
-				<input type="hidden" id="userType" v-model="profstu" class="form-control"> 
-				<input type="hidden" id="userName" v-model="name" class="form-control">
+			<div sec:authorize="hasRole('ROLE_PROF')" class="w-65">
+				<button class="HeaderBtn" style="border: none; float: right;" onclick="location.href=`/chat/room`">
+					<svg xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 24 24" width="20" height="20">
+						<path d="M22.535,8.46A4.965,4.965,0,0,0,19,7h0L2.8,7,7.1,2.7A1,1,0,0,0,5.682,1.288L.732,6.237a2.5,2.5,0,0,0,0,3.535l4.95,4.951A1,1,0,1,0,7.1,13.309L2.788,9,19,9h0a3,3,0,0,1,3,3v7a3,3,0,0,1-3,3H5a1,1,0,0,0,0,2H19a5.006,5.006,0,0,0,5-5V12A4.969,4.969,0,0,0,22.535,8.46Z" /></svg>
+				</button>
+				<button class="HeaderBtn" style="border: none; float: right;" type="button" @click="endChat">
+					<svg xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 24 24" width="20" height="20">
+						<path
+							d="M11.953,17.993c-1.557-.074-3.021-.722-4.121-1.823-.23-.23-.446-.482-.641-.748-.325-.446-.227-1.072,.22-1.397,.446-.325,1.071-.227,1.397,.219,.129,.178,.274,.349,.437,.511,.749,.75,1.744,1.19,2.802,1.24,.552,.026,.979,.495,.952,1.046-.025,.536-.468,.953-.998,.953h-.048ZM1.831,13.331C.65,14.511,0,16.081,0,17.75c0,1.669,.65,3.239,1.831,4.419,1.18,1.181,2.749,1.831,4.419,1.831s3.239-.65,4.419-1.831l1.058-1.058c.391-.391,.391-1.023,0-1.414s-1.023-.391-1.414,0l-1.058,1.058c-.803,.803-1.87,1.245-3.005,1.245s-2.202-.442-3.005-1.245-1.245-1.87-1.245-3.005,.442-2.203,1.245-3.005l3.037-3.038c.391-.391,.391-1.024,0-1.414-.391-.391-1.023-.391-1.414,0l-3.037,3.038ZM.293,1.707L22.293,23.707c.195,.195,.451,.293,.707,.293s.512-.098,.707-.293c.391-.391,.391-1.023,0-1.414l-6.581-6.581,5.043-5.043c1.181-1.18,1.831-2.75,1.831-4.419,0-1.669-.65-3.239-1.831-4.419C20.989,.65,19.42,0,17.75,0s-3.239,.65-4.419,1.831l-1.058,1.058c-.391,.391-.391,1.023,0,1.414s1.023,.391,1.414,0l1.058-1.058c.803-.803,1.87-1.245,3.005-1.245s2.202,.442,3.005,1.245,1.245,1.87,1.245,3.005-.442,2.203-1.245,3.005l-5.043,5.043-5.852-5.852c1.612-.808,3.575-.52,4.894,.798,.162,.162,.308,.333,.437,.511,.196,.269,.501,.411,.81,.411,.204,0,.41-.063,.588-.192,.446-.325,.545-.951,.22-1.397-.194-.266-.41-.518-.641-.748-2.095-2.095-5.297-2.408-7.76-.835L1.707,.293c-.391-.391-1.023-.391-1.414,0s-.391,1.023,0,1.414Z" /></svg>
+				</button>
+				<th:block th:replace="pages/mentorMgr/chat/memoBar :: memoBarFragment"></th:block>
 			</div>
+			<div class="container w-90">
+				<div>
+					<h2 v-model="stuId">{{room.roomName}}</h2>
+				</div>
+				<div>
+					<input type="hidden" id="userId" v-model="userId" class="form-control" th:value="${#authentication.name}"> <input type="hidden" id="userType" v-model="profstu" class="form-control"> <input type="hidden" id="userName" v-model="name" class="form-control">
+				</div>
 
-			<div id="chatList" class="row w-95 justify-content-center" style="overflow: scroll; height: 550px;">
-				<ul class="list-group chat-box">
-					<li class="list-group-item" :class="{'me': message.sender == name , 'you': message.sender == null , 'body' : true  }" v-for="(message, idx) in messages.slice().reverse()" :key="idx">
-						<span >{{message.sender}}</span> {{message.message}}
-					</li>
-				</ul>
-			</div>
+				<div id="chatList" class="row w-65 justify-content-center" style="overflow: scroll; height: 550px;">
+					<ul class="list-group chat-box">
+						<li class="list-group-item" :class="{'me': message.sender == name , 'you': message.sender == null , 'body' : true  }" v-for="(message, idx) in messages.slice().reverse()" :key="idx"><span>{{message.sender}}</span> {{message.message}}</li>
+					</ul>
+				</div>
 
 
-			<div class="p-4">
-				<div class="input-group input-group-sm input-group-outline mb-4">
-					<label >내용</label>
-					<input type="text" ref="messages" v-model="message" v-on:keypress.enter="sendMessage">
-
-					<button class="btn bg-gradient-secondary btn-sm" type="button" @click="sendMessage">보내기</button>
+				<div class="p-4">
+					<div class="input-group input-group-sm input-group-outline mb-4">
+						<label>내용</label> <input type="text" ref="messages" v-model="message" v-on:keypress.enter="sendMessage">
+						<button type="button" @click="sendMessage">보내기</button>
+					</div>
 				</div>
 			</div>
 		</div>
+
+
 		<!-- JavaScript -->
 		<script src="https://cdn.jsdelivr.net/npm/vue-chat-scroll/dist/vue-chat-scroll.min.js"></script>
 		<script src="/webjars/vue/2.5.16/dist/vue.min.js"></script>
 		<script src="/webjars/axios/0.17.1/dist/axios.min.js"></script>
 		<script src="/webjars/sockjs-client/1.1.2/sockjs.min.js"></script>
 		<script src="/webjars/stomp-websocket/2.3.3-1/stomp.min.js"></script>
+
+
 		<script>
-		$(function() {
-			 
-		});
-		
-		
+
             //alert(document.title);
             // websocket & stomp initialize
             var sock = new SockJS("/ws/chat");
@@ -148,13 +165,18 @@ font-weight:bold;
                     messages: [],
                     name : '',
                     userId : '',
-                    profstu : ''
+                    profstu : '',
+                    stuId :''
 
                 },
                 created() {
                     this.roomId = localStorage.getItem('wschat.roomId');
+                    this.stuId = localStorage.getItem('wschat.roomName');
                     this.sender = localStorage.getItem('wschat.sender');
                     this.findRoom();
+                    
+    	            console.log(this.stuId + " 아이디")
+                    
                     
                     axios.get('/userInfo').then(response => { 
     	            	console.log(response)
@@ -192,18 +214,22 @@ font-weight:bold;
                         this.messages.unshift({ "type": recv.type, "sender": recv.type == 'ENTER' ? '[알림]' : recv.sender, "message": recv.message })
                     },
                     endChat: function () {
-                    	console.log(this.mtrId)
-                    	 $.ajax({
+                    	
+                   		if (!confirm("상담을 종료하시겠습니까? 확인(예) 또는 취소(아니오)를 선택해주세요.")) {
+        					return;
+        				}
+                    	  $.ajax({
          					url: "/mentoringUpdate2",
          					type: "post",
-         					data : {},
+         					data : { stuId : this.stuId},
          					success: function (result) {
          						console.log('성공')
+         						location.href="/applyList"
          					},
          					error: function (result) {
          						console.log(result);
          					}
-         				});  
+         				});   
                     },
                 },
                 watch: {
@@ -218,6 +244,10 @@ font-weight:bold;
                     },
                 }
             });
+            
+        	function sendMemo(){
+        		console.log("클릭");
+        	}
 
             function connect() {
                 // pub/sub event
@@ -239,6 +269,10 @@ font-weight:bold;
                 });
             }
             connect();
+            
+     
+            
+
         </script>
 </th:block>
 </body>

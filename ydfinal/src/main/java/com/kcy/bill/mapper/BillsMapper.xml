@@ -147,7 +147,8 @@ VALUES ( #{billId}, #{billYear}, #{billSem}, #{billAmount}, #{majorbId}, #{billT
 	   (b.bill_amount/kph.pay_h_total) AS c,
 	   (b.bill_amount/kph.pay_h_total) AS d,
 	   kph.pay_h_type,
-	   kph.pay_id
+	   kph.pay_id,
+	   kph.pay_h_yn
 	FROM k_students s
 	JOIN k_users u
 	ON s.stu_id = u.user_id
@@ -157,7 +158,7 @@ VALUES ( #{billId}, #{billYear}, #{billSem}, #{billAmount}, #{majorbId}, #{billT
 	ON kph.bill_id = b.bill_id
 	WHERE b.bill_year = #{billYear}
 	AND b.bill_sem = #{billSem} 
-	AND kph.stu_id = #{stuId}
+	AND kph.stu_id = #{stuId}	
 </select>
 
 <select id="billList" resultType="com.kcy.bill.service.BillsVO">
@@ -200,6 +201,19 @@ VALUES ( #{billId}, #{billYear}, #{billSem}, #{billAmount}, #{majorbId}, #{billT
 </update>
 
 <update id="payChange" parameterType="com.kcy.bill.service.PayVO">	
+	UPDATE k_pay_h 
+	SET pay_h_type = #{payHType},
+	pay_h_total = #{payHTotal},
+	pay_h_remain = #{payHRemain}
+	WHERE pay_id = #{payId}
 </update>
-</mapper>
 
+<update id="payChangeCancel" parameterType="com.kcy.bill.service.PayVO">	
+	UPDATE k_pay_h 
+	SET pay_h_type = #{payHType},
+	pay_h_total = #{payHTotal},
+	pay_h_remain = #{payHRemain}
+	WHERE pay_id = #{payId}
+</update>
+
+</mapper>
