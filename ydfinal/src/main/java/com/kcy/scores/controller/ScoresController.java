@@ -34,17 +34,20 @@ public class ScoresController {
 	// 성적 입력 페이지
 	@GetMapping("/scoreinsert")
 	public String scoreInsertPage(@RequestParam String classId, Model model, ScoresVo vo, Principal principal) {
-		model.addAttribute("lecturelist", classId);
+		model.addAttribute("memberlist", classId);
 		model.addAttribute("memberlist", map.scoresMemberList(vo));
 		return "pages/scoreMgr/prof/ScoreInsert";
 	}
 	
 	// 성적 입력 페이지 Proc
-	@PostMapping("/socreInsert")
-	public String scoreInsert(ScoresVo vo) {
-		return null;
+	@PostMapping("/scoreinsert")
+	public String scoreInsert(ScoresVo vo, @RequestParam String classId) {
+		scoresService.scoresInsert(vo);
+		System.out.println(vo.getScoreMid());
+		return "redirect:scoreinsert";
 	}
 	
+	// 수강 성적 전체 누계
 	@GetMapping("/scoreview")
 	public String scoreView(ScoresVo vo, Model model, Principal principal) {
 		vo.setUserId(principal.getName());
@@ -52,11 +55,12 @@ public class ScoresController {
 		return "pages/scoreMgr/scoreview";
 	}
 	
+	// 학기별 성적 조회 페이지
 	@GetMapping("/classScore")
 	public String classScore(ScoresVo vo, Model model, Principal principal) {
 		vo.setUserId(principal.getName());
-		model.addAttribute("stulist", map.stuScoreList(vo));
-		return "pages/scoreMgr/scoreview";
+		model.addAttribute("stulist", map.classScoreList(vo));
+		return "pages/scoreMgr/classScoreview";
 	}
 	
 }

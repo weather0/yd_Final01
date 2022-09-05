@@ -12,10 +12,10 @@
       <h1>교수 강의자료 및 공지 등록 페이지</h1>
  		
  		<form action="noticeInsert" method="post" enctype="multipart/form-data">
- 		
+ 		<div class="container-fluid py-4">
  	<div class="input-group input-group-static mb-4">
  	
- 	<select name="classId">
+ 	<select class="form-control" name="classId">
 			<option>강좌 선택123</option>
 		<th:block th:each="c : ${profClassId}">
 			<option th:text="${c.classId}" th:value="${c.classId}"></option>
@@ -40,7 +40,6 @@
     </div>	
       
     <div class="input-group input-group-outline my-3">
-      <label class="form-label">첨부파일</label>
       <input type="file" class="form-control" multiple="multiple" name="classNoticeFileSyl">
       <input type="hidden" class="form-control" multiple="multiple" name="classNoticeOriginal">
     </div>
@@ -51,6 +50,6 @@
     
   <!-- 본문 end-->
 
-
+</div>
 </th:block>
 </html>

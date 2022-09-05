@@ -19,7 +19,7 @@
 			<a th:href="${'/quizAcceptdownload?quizRFile='+quiz.quizRFile}">
 			<h1 th:text="${quiz.quizROrginal}" ></h1></a>
 			<form action="quizdetailview" method="post">
-        		<td><input type="text" th:value="${quiz.quizRId}" th:name="quizRId"></td>
+        		<td><input type="hidden" th:value="${quiz.quizRId}" th:name="quizRId"></td>
         		<td><input type="number" th:name="quizRPoint"/>
         		</td>
         		<button>제출</button>

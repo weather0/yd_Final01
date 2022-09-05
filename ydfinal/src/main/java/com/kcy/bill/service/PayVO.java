@@ -28,6 +28,7 @@ public class PayVO {
 	private String userDept;
 	private String userName;
 	private String userPhone;
+	private String payCount;
 	private int payHGrade;
 	private int payHSem;
 	private String studentAcaYn;

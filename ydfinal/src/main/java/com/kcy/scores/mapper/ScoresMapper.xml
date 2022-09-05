@@ -25,6 +25,9 @@
 			        st.student_sem, 
 			        st.student_aca_yn, 
 			        
+			        cm.class_member_id,
+			        cm.class_id,
+			        
 			        u.user_name,
 			        u.user_dept
 			FROM
@@ -56,13 +59,12 @@
 		VALUES
 		(
 			CONCAT("Score", NEXTVAL(score_seq)),
-			#{stuId},
+			#{classMemberId},
 			#{scoreAttn},
 			#{scoreQuiz},
 			#{scoreMid},
 			#{scoreFinal},
-			date_format(now(), '%Y%m%d')
-			
+			date_format(now(), '%Y%m%d')	
 		)
 	</insert>
 	
@@ -113,6 +115,41 @@
     		st.stu_id = #{userId}
 	</select>
 	
-	
+	<select id="classScoreList" resultType="com.kcy.scores.service.ScoresVo">
+		SELECT
+		    co.course_title,
+		    co.course_type,
+		    co.course_credit,
+		    
+		    ((sc.score_attn + sc.score_quiz + sc.score_mid + sc.score_final) / 4) as total,
+		    
+		    g.gpa_grade,
+		    g.gpa_point,
+		    
+		    c.class_id,
+		    cm.class_member_id,
+		    
+		    cm.stu_id
+		FROM
+    		k_class as c
+		JOIN 
+    		k_course as co
+		ON 
+    		c.course_id = co.course_id
+		JOIN
+    		k_class_member as cm
+		ON
+    		cm.class_id = c.class_id
+		JOIN 
+    		k_scores as sc
+		ON 
+    		sc.class_member_id = cm.class_member_id
+		JOIN 
+    		k_gpa as g
+		ON 
+    		g.score_id = sc.score_id
+		WHERE
+    		cm.stu_id = #{userId}
+	</select>
 	
 </mapper>

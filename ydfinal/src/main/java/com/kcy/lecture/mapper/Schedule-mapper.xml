@@ -19,13 +19,34 @@
 		<insert id="scheduleInsert">
 			INSERT into k_class_time 
 			values(
-			 '#{classId}',
-			 '#{classTimetableId}',
-			 '#{roomId}'
+			 #{classId},
+			 #{classTimetableId},
+			 #{roomId}
 			 )
-		
-		
 		</insert>
+		
+		<select id="classScheduleSelect" resultType="map">
+			SELECT kcm.class_id, 
+			ku.user_name,c.course_title, 
+			kct2.class_timetable_start, 
+			kct2.class_timetable_end, 
+			kct2.class_timetable_days, 
+			kct2.class_timetable_name, 
+			kr.room_building, 
+			kr.room_no
+			 FROM k_class_time kct
+				join k_class_member kcm     on kct.class_id  = kcm.class_id 
+				join k_class kc             on kc.class_id  = kcm.class_id
+				JOIN k_course c             on c.course_id  = kc.course_id 
+				join k_class_timetable kct2 on kct2.class_timetable_id  = kct.class_timetable_id
+				join k_users ku             on ku.user_id = kc.prof_id
+				join k_rooms kr             on kr.room_id = kct.room_id 
+				
+				where kcm.stu_id = #{userId}
+				order by kct2.class_timetable_code;
+			
+		
+		</select>
 
 
 </mapper>
