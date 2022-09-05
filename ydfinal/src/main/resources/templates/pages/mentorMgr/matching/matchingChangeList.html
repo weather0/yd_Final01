@@ -102,9 +102,7 @@
    	$(".reject").on("click", function () {
    		var rejectS = ($(this).closest("tr").find("td:first").text())
    		$(".NO").on("click", function () {
-   			var rejectR = document.getElementById('reject-text').value;
-	   		console.log(rejectS)
-	   		console.log(rejectR)
+   			var rejectR = document.getElementById('reject-text').value;	   		
 	   		$.ajax({
 	   			type : "POST",
 	   			url : "/changeReject",

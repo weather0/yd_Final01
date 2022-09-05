@@ -164,8 +164,14 @@
 				</div>
 			</div>
 		</span>
-
-
+		
+		<span th:if="${!bill.payHType.toString().equals('b')}">		
+			<div class="col-md-3">
+				<div class="input-group input-group-outline my-3">
+					<button class="btn bg-gradient-primary cancel">분할 납부 취소</button>
+				</div>
+			</div>
+		</span>		
 
 		<div class="modal fade" id="change" tabindex="-1"
 			aria-labelledby="changeLabel" aria-hidden="true">
@@ -176,8 +182,8 @@
 						<button type="button" class="btn-close" data-bs-dismiss="modal"
 							aria-label="Close"></button>
 					</div>
-					<div class="modal-body">
-					<p>납부 방식 변경은 1회만 가능합니다. 신중하게 결정해주세요.</p>
+					<div class="modal-body">					
+					<p style="color: red;">(변경기간 마감 이후, 추가 변경 및 취소 불가)</p>
 						<form action="payChange">
 							<div class="mb-3">
 								<select class="form-control" name="payHType" id="payHType">
@@ -190,7 +196,7 @@
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary"
 							data-bs-dismiss="modal">닫기</button>
-						<button type="button" class="btn btn-primary NO">변경</button>
+						<button type="button" class="btn btn-primary on">변경</button>
 					</div>
 				</div>
 			</div>
@@ -204,9 +210,50 @@
 		year.value = date.getFullYear();
 		
 		$(".change").on("click", function () {
-			var id = ($(this).closest("table").find("td#payId").text())
-	   		console.log(id)
+			var id = document.getElementById("payId").innerHTML;
+			$(".on").on("click", function () {
+			var select = document.getElementById("payHType").value;
+			if (select == 's1') {
+				var count = 4	
+			} else {
+				var count = 2
+			}
+			$.ajax({
+				type : "POST",
+				url : "/payChange",
+				data : { payId : id,
+					payHType : select,
+					payHTotal : count,
+					payHRemain : count },
+				success : function (result) {
+					if (result == "1") {
+						alert ("분할 납부 신청")
+						document.location.href = document.location.href;
+						}
+					}
+				});
+			});
 		});
+		
+		$(".cancel").on("click", function () {
+			var id = document.getElementById("payId").innerHTML;
+			var select = 'b';
+			var count = 1
+			$.ajax({
+				type : "POST",
+				url : "/payChangeCancel",
+				data : { payId : id,
+					payHType : select,
+					payHTotal : count,
+					payHRemain : count },
+				success : function (result) {
+					if (result == "1") {
+						alert ("분할 납부 신청 취소")
+						document.location.href = document.location.href;
+						}
+					}
+				});			
+			});
 	</script>
 
 	<!-- 본문 end-->

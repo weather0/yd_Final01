@@ -100,6 +100,22 @@ public class BillsController {
 	return "pages/billMgr/billCheck";
 	}
 	
+	//분할 납부 신청
+	@PostMapping("/payChange")
+	@ResponseBody
+	public String payChange(PayVO vo) {
+		service.payChange(vo);
+		return "1";
+	}
+	
+	//분할 납부 신청취소
+	@PostMapping("/payChangeCancel")
+	@ResponseBody
+	public String payChangeCancel(PayVO vo) {
+		service.payChangeCancel(vo);
+		return "1";
+	}
+	
 	//등록금 고지서 확인 페이지(행정)
 	@RequestMapping("/billList")
 	public String billList(BillsVO vo) {		
@@ -113,14 +129,16 @@ public class BillsController {
 	return "pages/billMgr/billList";
 	}
 	
+	//등록금 고지서 확인(수정)
 	@PostMapping("/billsUpdate")
 	@ResponseBody
 	public String billUpdate(BillsVO vo, PayVO pvo) {
 		service.billUpdate(vo);
 		service.payUpdate(pvo);
 		return "1";
-	}
+	}	
 	
+	//등록금 고지(일괄)
 	@PostMapping("/payInsert")
 	@ResponseBody
 	public String payInsert(PayVO vo) {
@@ -128,6 +146,7 @@ public class BillsController {
 		return "1";
 	}
 	
+	//등록금 고지(선택)
 	@PostMapping("/chkPayInsert")
 	@ResponseBody
 	public String chkPayInsert(PayVO vo, @RequestParam(value="Id") List<String> id) {
