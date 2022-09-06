@@ -152,21 +152,26 @@
 		WHERE mtr_sch_id=#{mtrSchId}
 	</update>
 	
-	<!-- 메모 불러오기 -->
+<!-- 메모 불러오기 -->
 	<select id="selectMemo" resultType="String" parameterType="String">
 		SELECT IFNULL(mtr_memo_content,'xxx')
 		FROM k_mentoring_memo
 		WHERE mtr_id=#{mtrId};
 		
 	</select>
+	
 	<!-- 메모 작성 -->
-	<insert id="inserMemo" parameterType="com.kcy.mentoring.counseling.vo.ApplyVO">
+	<insert id="insertMemo" parameterType="com.kcy.mentoring.counseling.vo.ApplyVO">
 		INSERT INTO k_mentoring_memo
 		(mtr_id, mtr_memo_content)
-		VALUES(#{mtrId}, #{mtrMemoContent});
+		VALUES((SELECT MAX(mtr_id)
+				FROM k_mentoring
+				WHERE matching_id=(SELECT matching_id
+								   FROM k_matching
+								   WHERE prof_id=#{profId} AND stu_id=#{stuId})),
+				#{mtrMemoContent} )
 		
 	</insert>
-	
 	
 	
 	

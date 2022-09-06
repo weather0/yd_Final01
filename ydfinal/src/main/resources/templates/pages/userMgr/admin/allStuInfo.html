@@ -160,7 +160,7 @@
       );
       
       // 검색실행 함수
-      function search (){
+      function xxsearch (){
         var numCols = table.columns().nodes().length;
         for(var i=0; i<numCols; i++) { table.column(i).search(''); }
 
@@ -173,25 +173,83 @@
         table.column(searchType).search(searchValue).draw();
       }
       
+      
+      
       // 검색버튼 클릭 or 엔터키업 시 실행
       $("#searchBtn").on('click',function () {
-        search();
+        xxsearch();
       })
       $("#searchValue").on('keyup',function (e) {
         if (e.keyCode == 13) {
-          search();
+          xxsearch();
         }
       })
-
       
-      for (let n = 0; n<9; n++){
+      
+      let arr = [];
+      
+      for (let n = 0; n < 9; n++) {
         $('th:eq('+n+') i').on('click', function() {
           event.stopPropagation()
+          arr[n] = null;
+          aa();
           $('th:eq('+n+') input').toggle('fast',function(){
             $('th:eq('+n+') span').toggle('fast')
           })
         })
       }
+      
+      $('th input, th select').on('click', function() {
+        event.stopPropagation()
+      })
+      
+      
+      $('th select').on('change', function() {
+        event.preventDefault()
+      })
+      
+      
+      $('th input').on('keydown', function() {
+        if (event.keyCode == 13) {
+          event.preventDefault()
+        }
+      })
+      
+      
+
+      
+      $('th input').on('keyup', function() {
+        if (event.keyCode == 13) {
+          event.preventDefault()
+          
+          let valCol = this.value
+          let idxCol = $('th input').index(this)
+          arr[idxCol] = 'column('+idxCol+').search('+valCol+')'
+          aa()
+        }
+      })
+      
+      function aa(){
+      console.log(arr)
+      }
+      
+      
+      
+      
+      
+      function search () {
+
+        let code = '';
+        for (let n = 0; n < 9; n++) {
+          code = code + 'column('+n+').search('+n+')'
+        }
+        console.log(code)
+        
+      }
+      
+//       $('#select-sex').on('click')
+      
+      
       
       
       
@@ -207,6 +265,7 @@
       
       
     })
+    
   </script>
 
   <!-- 상단 내비바 -->
@@ -263,6 +322,11 @@
                 </th>
                 <th class="text-center">
                   <span>성별</span>
+                  <select id="select-sex">
+                    <option selected disabled>선택</option>
+                    <option>남</option>
+                    <option>여</option>
+                  </select>
                   <input style="width: 80px" type="text" placeholder="성별">
                   <div class="d-inline-block" style="width: 20px"> 
                     <i class="fa-solid fa-magnifying-glass"></i>

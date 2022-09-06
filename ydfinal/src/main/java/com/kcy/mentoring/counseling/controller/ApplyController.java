@@ -157,7 +157,8 @@ public class ApplyController {
 		return vo1;
 	}
 	
-	// 상담일지 작성하기
+	// 상담메모 작성하기
+	@ResponseBody
 	@PostMapping("/insertMemo")
 	public String insertMemo(ApplyVO vo) {
 		service.insertMemo(vo);
