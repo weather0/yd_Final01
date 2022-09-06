@@ -198,7 +198,7 @@
         ON
             d.quiz_h_id = h.quiz_h_id
         WHERE
-            c.prof_id = #{userId};
+            c.prof_id = #{userId}
 	</select>
 	
 	<!-- (교수) 과제 낸 학생 조회 -->

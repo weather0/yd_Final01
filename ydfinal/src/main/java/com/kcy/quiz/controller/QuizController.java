@@ -150,9 +150,9 @@ public class QuizController {
 			vo.setQuizROrginal(oriFileNmae);
 		}	
 		
+		quizService.quizModify(vo);
 		quizService.quizAccept(vo);
 		quizService.quizDUpdate(vo);
-		quizService.quizModify(vo);
 		return "redirect:quizlist";
 	}
 	
