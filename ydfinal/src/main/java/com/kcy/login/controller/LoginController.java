@@ -30,7 +30,7 @@ public class LoginController {
     }
     // 로그인 실패
     @GetMapping("/denied")
-    public String denied() {
+    public String denied(UserVo vo) {
     	return "denied";
     }
     // 로그인 성공

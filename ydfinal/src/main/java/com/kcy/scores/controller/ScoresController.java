@@ -1,14 +1,17 @@
 package com.kcy.scores.controller;
 
 import java.security.Principal;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.kcy.quiz.service.QuizVo;
 import com.kcy.scores.mapper.ScoresMapper;
 import com.kcy.scores.service.ScoresService;
 import com.kcy.scores.service.ScoresVo;
@@ -22,6 +25,7 @@ public class ScoresController {
 	ScoresMapper map;
 	@Autowired
 	ScoresService scoresService;
+	
 	
 	// 교수 강좌 통해서 성적 페이지 이동
 	@GetMapping("/scorelecturelist")
@@ -57,7 +61,7 @@ public class ScoresController {
 	
 	// 학기별 성적 조회 페이지
 	@GetMapping("/classScore")
-	public String classScore(ScoresVo vo, Model model, Principal principal) {
+	public String classScore(ScoresVo vo, Model model, Principal principal, @RequestParam int classYear, @RequestParam int classSem) {
 		vo.setUserId(principal.getName());
 		model.addAttribute("stulist", map.classScoreList(vo));
 		return "pages/scoreMgr/classScoreview";

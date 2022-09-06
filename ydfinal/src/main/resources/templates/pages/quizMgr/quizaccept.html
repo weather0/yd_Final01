@@ -21,57 +21,46 @@
 			<a th:href="${'/quizdownload?quizHFile='+quizlist.quizHFile}">
 			<h1 th:text="${quizlist.quizHOriginal}"></h1>
 			</a>
-			<h1 th:text="${quizlist.quizDOpenday}"></h1>
+			<h1 id="startDay" th:text="${quizlist.quizDOpenday}"></h1>
 			~
 			<h1 id="closeDay" th:text="${quizlist.quizDCloseday}">?</h1>
   <!-- 본문 end-->
  </div>
- 
+
+ <th:block th:if="${quizaccept} != null">
+  <form action="quizModify" method="post" enctype="multipart/form-data">
+  		<input type="hidden" id="classId" name="classId" th:value="${quizaccept.classId}"/>
+		<input type="hidden" id="quizDId" name="quizDId" th:value="${quizaccept.quizDId}"/>
+		<input type="hidden" id="quizRId" name="quizRId" th:value="${quizaccept.quizRId}"/>
+		 	<div class="input-group input-group-outline my-3">
+		      <textarea type="text" id="contents" class="form-control" th:text="${quizaccept.quizRContent}" name="quizRContent"></textarea>
+		    </div>	
+		    <div class="input-group input-group-outline my-3">
+		      <a th:href="${'/quizAcceptdownload?quizRFile='+quizaccept.quizRFile}"><label th:id="quizRFile" th:text="${quizaccept.quizROrginal}" class="form-label"></label></a>
+		      <input type="file" class="form-control" multiple="multiple" th:name="classQuizFileSyl">
+		      <input type="hidden" th:id="quizROrginal" class="form-control" multiple="multiple" th:value="${quizaccept.quizROrginal}"  th:name="quizROrginal">
+		    </div>
+		    <button class="btn bg-gradient-primary hidBtn">수정하기</button>
+</form>
+</th:block>
+ 	
+ <th:block th:if="${quizaccept} == null ">
  <form action="quizAccept" method="post" enctype="multipart/form-data">
 		<input type="hidden" id="classId" name="classId" th:value="${quizlist.classId}"/>
 		<input type="hidden" id="quizDId" name="quizDId" th:value="${quizlist.quizDId}"/>
-    
-    	<th:block th:if="${quizaccept.quizRContent == null}">
+		<input type="hidden" id="quizRId" name="quizRId" th:value="${quizlist.quizRId}"/>
 		   <div class="input-group input-group-outline my-3">
-		     <label class="form-label">내용</label> 
-		     <textarea type="text" class="form-control" th:name="quizRContent"></textarea>
+		     <label class="form-label"></label> 
+		     <textarea type="text" id="contents" class="form-control" th:name="quizRContent"></textarea>
 		   </div>	
-		     
 		   <div class="input-group input-group-outline my-3">
-		     <label class="form-label">첨부파일</label>
+		     <label class="form-label"></label>
 		     <input type="file" class="form-control" multiple="multiple" th:name="classQuizFileSyl">
 		     <input type="hidden" class="form-control" multiple="multiple" th:name="quizROriginal">
 		   </div>
-				
-		   <div class="input-group input-group-outline my-3">
-		     <label class="form-label">제출일</label>
-		     <input type="date" class="form-control" th:name="quizRDate">
-		     
-		   </div>
-    	   <button class="btn bg-gradient-primary hidBtn">제출하기</button>
-   		</th:block>
+    	   <button class="btn bg-gradient-primary hidBtn">제출12456483하기</button>
  </form>
-  <form action="quizModify" method="post" enctype="multipart/form-data">
-  		<input type="hidden" id="classId" name="classId" th:value="${quizlist.classId}"/>
-		<input type="hidden" id="quizDId" name="quizDId" th:value="${quizlist.quizDId}"/>
-		<input type="hidden" id="quizRId" name="quizRId" th:value="${quizaccept.quizRId}"/>
-    <th:block th:if="${quizaccept.quizRContent != null}">
-    		<input type="hidden" id="quizDId" name="quizDId" th:value="${quizaccept.quizDId}"/>
-		 	<div class="input-group input-group-outline my-3">
-		      <textarea type="text" class="form-control" th:text="${quizaccept.quizRContent}" name="quizRContent"></textarea>
-		    </div>	
-		    <div class="input-group input-group-outline my-3">
-		      <a th:href="${'/quizAcceptdownload?quizRFile='+quizaccept.quizRFile}"><label th:text="${quizaccept.quizROrginal}" class="form-label"></label></a>
-		      <input type="file" class="form-control" multiple="multiple"  th:name="classQuizFileSyl">
-		      <input type="hidden" class="form-control" multiple="multiple" th:name="quizROrginal">
-		    </div>
-		 		
-		    <div class="input-group input-group-outline my-3">
-		      <input type="date" class="form-control" th:field="${quizaccept.quizRDate}" th:name="quizRDate">
-		    </div>
-		    <button class="btn bg-gradient-primary hidBtn">제출하기</button>
- 	</th:block>
-</form>
+ </th:block>
     
   <!-- 본문 end-->
  </div>
@@ -81,11 +70,12 @@
 		var endDay = $("#closeDay").text();
 		var now = new Date();
 		var end = new Date($("#closeDay").text());
+		var start = new Date($("#startDay").text());
 
 		if(now > end) {
 			$(".hidBtn").hide();
 		}
-
+		
 	</script>
  
 </th:block>

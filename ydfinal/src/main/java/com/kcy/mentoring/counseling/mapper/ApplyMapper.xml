@@ -36,9 +36,11 @@
 		VALUES((select MAX(career_h_id) from k_career_h where stu_id = #{userId}),#{careerQResult}, #{careerQId})
 	</insert>
 	
-	<insert id="applyListInsert" parameterType="String">
-		INSERT INTO k_career_h(career_h_id, stu_id, career_h_date)
-		VALUES(nextval(sq_career_h_id),#{userId}, default)
+	<insert id="applyListInsert" parameterType="com.kcy.mentoring.counseling.vo.ApplyVO">
+		INSERT INTO k_career_h(career_h_id, stu_id, career_h_date,mtr_id)
+		VALUES(nextval(sq_career_h_id),#{userId}, default,(SELECT mtr_id
+														   FROM k_mentoring
+														   WHERE mtr_sch_id=#{mtrSchId}))
 
 	</insert>
 	
@@ -84,13 +86,13 @@
 		  
 	</select>
 	<!-- 학생 진로탐색 결과 확인 -->
-	<select id="applyResultList" resultType="com.kcy.mentoring.counseling.vo.ApplyVO" parameterType="String">
+	<select id="applyResultList" resultType="com.kcy.mentoring.counseling.vo.ApplyVO" parameterType="com.kcy.mentoring.counseling.vo.ApplyVO">
 		SELECT d.career_q_result, q.career_q_content
 		FROM k_career_d d join k_career_q q
 		on d.career_q_id = q.career_q_id 
-		AND d.career_h_id = (SELECT MAX(career_h_id) as career_h_id
+		AND d.career_h_id = (SELECT career_h_id
 							 FROM k_career_h
-							 WHERE stu_id=#{stuId})
+							 WHERE mtr_id =#{mtrId})
 	</select>
 	<!-- 학생 정보 확인 -->
 	<select id="applyInfo" resultType="com.kcy.mentoring.counseling.vo.ApplyInfoVO" parameterType="String">
@@ -152,21 +154,26 @@
 		WHERE mtr_sch_id=#{mtrSchId}
 	</update>
 	
-	<!-- 메모 불러오기 -->
+<!-- 메모 불러오기 -->
 	<select id="selectMemo" resultType="String" parameterType="String">
 		SELECT IFNULL(mtr_memo_content,'xxx')
 		FROM k_mentoring_memo
 		WHERE mtr_id=#{mtrId};
 		
 	</select>
+	
 	<!-- 메모 작성 -->
-	<insert id="inserMemo" parameterType="com.kcy.mentoring.counseling.vo.ApplyVO">
+	<insert id="insertMemo" parameterType="com.kcy.mentoring.counseling.vo.ApplyVO">
 		INSERT INTO k_mentoring_memo
 		(mtr_id, mtr_memo_content)
-		VALUES(#{mtrId}, #{mtrMemoContent});
+		VALUES((SELECT MAX(mtr_id)
+				FROM k_mentoring
+				WHERE matching_id=(SELECT matching_id
+								   FROM k_matching
+								   WHERE prof_id=#{profId} AND stu_id=#{stuId})),
+				#{mtrMemoContent} )
 		
 	</insert>
-	
 	
 	
 	

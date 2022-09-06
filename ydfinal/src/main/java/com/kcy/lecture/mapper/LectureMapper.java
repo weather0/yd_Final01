@@ -18,7 +18,9 @@ public interface LectureMapper {
 	
 	public List<OpenLectureVO> openLectureList(OpenLectureVO vo);
 	
-	
+    public List<OpenLectureVO> 	majorSelect(OpenLectureVO vo);
+    
+    public OpenLectureVO myMajor(OpenLectureVO vo);
 	
 	
 }

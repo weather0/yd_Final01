@@ -36,7 +36,6 @@ public class SequrityConfig extends WebSecurityConfigurerAdapter {
                         "/billCheck",
                         "/openlecturelist",
                         "/matchingChange",
-                        "/careerSelectList",
                         "/apply"
                         ).hasRole("STU")
 			.antMatchers(
@@ -44,6 +43,7 @@ public class SequrityConfig extends WebSecurityConfigurerAdapter {
                         "/schedule",
                         "/careerInsert",
                         "/careerListInsert",
+                        "/careerSelectList",
                         "/applyList"
                         ).hasRole("PROF")
 			.antMatchers(

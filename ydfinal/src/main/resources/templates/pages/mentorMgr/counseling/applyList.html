@@ -16,6 +16,10 @@ th {
 	text-align: center;
 }
 
+.table td, .table th {
+	white-space: pre-line;
+}
+
 #journal-table {
 	width: 80%;
 	margin-left: 10%;
@@ -24,7 +28,7 @@ th {
 }
 
 td {
-	text-align : center;
+	text-align: center;
 	word-break: break-all;
 	paddig: 10px;
 }
@@ -35,7 +39,6 @@ td {
 			$("#foo-table")
 				.DataTable(
 					{	
-						order : [1,"desc"],
 						orderMulti: true,
 						scrollY: 550,
 						ajax: {
@@ -76,7 +79,7 @@ td {
 									if (data == 'ing') {
 										var data = '상담필요'
 									} else if (data == 'can') {
-										var data = '취소'
+										var data = '상담취소'
 									} else if (data == 'end') {
 										var data = '상담종료'
 									} else if (data == 'fill') {
@@ -128,7 +131,7 @@ td {
 							{
 								targets: 8,
 								title: '검사결과',
-								data: "stuId",
+								data: "mtrId",
 								render: function (data) {
 									return `<button type="button" class="btn bg-gradient-secondary btn-sm"  onclick="result('` + data + `');">결과</button>`
 								}
@@ -202,6 +205,7 @@ td {
 						},
 						{ className: "dt-head-center", targets: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10] },
 						],
+						order : [4,"esc"],
 
 
 					});
@@ -210,12 +214,12 @@ td {
 		});
 
 		function result(data) {
-
+			console.log(data)
 			$.ajax({
 				url: "/applyResultList",
 				type: "post",
 				data: {
-					stuId: data
+					mtrId: data
 				},
 				dataType: "json",
 				success: function (result) {
@@ -227,7 +231,7 @@ td {
 					for (var i = 0; i < result.length; i++) {
 						let clo = `<tr>
 										 <td width="30px" >${i + 1}</td>
-										 <td>${result[i].careerQContent}</td>
+										 <td >${result[i].careerQContent}</td>
 										 <td>${result[i].careerQResult}</td>
 									 </tr>`
 						$('#resultClone').append(clo)
@@ -340,7 +344,7 @@ td {
 							<tr>
 								
 								<th class="table-secondary">상담내용</th>
-								<td colspan="3" ><textarea class="form-control bg-transparent" cols="90%" rows="10" readonly>${result.mtrLogContent}</textarea></td>
+								<td colspan="3" >${result.mtrLogContent}</td>
 								
 							</tr>
 							<tr>
@@ -503,11 +507,11 @@ td {
 					<h4 class="modal-title" id="myModalLabel">진로 탐색 검사 결과</h4>
 				</div>
 				<div class="modal-body">
-					<table class="table">
+					<table class="table" style="word-wrap: break-word; word-break: break-all;">
 						<thead>
-							<th>번호</th>
-							<th>질문</th>
-							<th>응답</th>
+							<th width="15%">번호</th>
+							<th width="35%" style="word-break: break-all">질문</th>
+							<th width="50%">응답</th>
 						</thead>
 						<tbody id="resultClone">
 
@@ -575,7 +579,7 @@ td {
 				<form id="jInsert" th:action="@{/journalInsert}" method="post">
 					<!-- <form id="jInsert" action="#" > -->
 					<div class="modal-body">
-						<div class="p-4 align-items-center" >
+						<div class="p-4 align-items-center">
 							<input type="hidden" name="mtrId">
 							<div class="input-group input-group-dynamic mb-4">
 								<label class="form-label">거주상황</label> <input type="text" class="form-control" name="mtrHome">
@@ -603,22 +607,22 @@ td {
 
 	<!-- 상담메모 상세보기 -->
 	<div class="modal fade" id="memoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-		<div class="modal-dialog modal-xl" role="document">
+		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
 					<h4 class="modal-title" id="myModalLabel">상담 메모</h4>
 				</div>
-				
-					<div class="modal-body align-items-center">
-					
-							
-							<textarea id="memoTextArea" class="form-control bg-transparent" cols="90%" rows="10" readonly></textarea>
-					
-					</div>
+
+				<div class="modal-body align-items-center">
+
+
+					<textarea id="memoTextArea" class="form-control bg-transparent" cols="90%" rows="10" readonly></textarea>
+
+				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" onclick="modalClose();">닫기</button>
 				</div>
-				
+
 			</div>
 		</div>
 	</div>

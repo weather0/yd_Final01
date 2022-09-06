@@ -20,6 +20,9 @@
 	margin-bottom: 20px;
 	background: #fff;
 }
+.table td, .table th {
+	white-space: pre-line;
+}
 
 .frm-div {
 	background: #fff;
@@ -162,6 +165,7 @@
 					// 객체 생성
 					var data = new Object();
 
+					data.mtrSchId = $('#mtrSchId').val();
 					data.userId = $('#userId').val();
 					data.careerQId = chk_num_arr[i];
 					data.careerQResult = chk_req_arr[i];

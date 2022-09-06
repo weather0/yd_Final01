@@ -15,6 +15,9 @@
 	margin-bottom: 20px;
 	background: #fff;
 }
+.table td, .table th {
+	white-space: pre-line;
+}
 
 .frm-div {
 	background: #fff;
@@ -60,7 +63,7 @@
 		var calendarEl = document.getElementById('calendar');
 
 		var calendar = new FullCalendar.Calendar(calendarEl, {
-			initialDate : '2022-02-07',
+			initialDate : '2022-09-07',
 			initialView : 'dayGridMonth',
 			headerToolbar : {
 				left : 'prev,next today',
@@ -84,9 +87,7 @@
 
 			},
 			eventClick : function(info) { // 수정 이벤트
-				console.log(info.event._def.extendedProps.MtrSchId);
 				calendarSelect(info.event._def.extendedProps.MtrSchId);
-				//calendarDelete(info.event._def.extendedProps.MtrSchId);
 
 				$("#calendar_update_modal").modal("show");
 			},
@@ -122,7 +123,6 @@
 
 		$("input[name=mtrSchTimecode]:checked").each(function() {
 			var chk = $(this).val();
-			console.log(chk);
 			chk_arr.push(chk);
 		})
 
@@ -149,7 +149,6 @@
 			// String 형태로 변환
 			var jsonData = JSON.stringify(testList);
 
-			console.log(jsonData);
 
 			$.ajax({
 				url : "/scheduleInsert2",
@@ -159,12 +158,10 @@
 				traditional : true,
 				dataType : "json",
 				success : function() {
-					console.log('성공')
 					location.reload();
 				},
 				error : function() {
 
-					console.log('실패')
 				}
 			});
 			return;
@@ -204,7 +201,6 @@
 	}
 	function calendarSelect(calendar_id) {
 
-		console.log(calendar_id);
 		$.ajax({
 			url : "/scheduleSelect",
 			type : "get",
@@ -221,6 +217,7 @@
 	}
 	function close1() {
 		$('#calendar_insert_modal').modal('hide')
+		$('#calendar_update_modal').modal('hide')
 	}
 </script>
 <title>MyCalendar</title>
@@ -237,7 +234,7 @@
 							<input type="date" id="calendar_start_date" name="mtrSchDate" required="required"> <input type="text" id="userId" name="userId" th:value="${#authentication.name}"> <br /> <input type="checkbox" id="time0" name="mtrSchTimecode" value="0"> 09:00 ~ 09:50 </input> <br /> <input type="checkbox" id="time1" name="mtrSchTimecode" value="1"> 10:00 ~ 10:50 </input> <br /> <input type="checkbox" id="time2" name="mtrSchTimecode" value="2"> 11:00 ~ 11:50 </input> <br /> <input type="checkbox" id="time3" name="mtrSchTimecode" value="3"> 12:00 ~ 12:50 </input> <br /> <input type="checkbox" id="time4" name="mtrSchTimecode" value="4"> 13:00 ~ 13:50 </input> <br /> <input type="checkbox" id="time5" name="mtrSchTimecode" value="5"> 14:00 ~ 14:50 </input> <br /> <input type="checkbox" id="time6" name="mtrSchTimecode" value="6"> 15:00 ~ 15:50 </input> <br /> <input type="checkbox" id="time7" name="mtrSchTimecode" value="7"> 16:00 ~ 16:50 </input> <br /> <input type="checkbox"
 								id="time8" name="mtrSchTimecode" value="8"> 17:00 ~ 17:50 </input> <br /> <input type="checkbox" id="time9" name="mtrSchTimecode" value="9"> 18:00 ~ 18:50 </input> <br />
 							<div class="modal-footer">
-								<input type="button" id="add" class="btn-dark" onclick="calendarInsert();" value="등록"> <input type="button" class="btn-dark btn-secondary" data-dismiss="modal" onclick="close1();" value="닫기">
+								<button type="button" id="add" class="btn-dark" onclick="calendarInsert();" >등록</button> <button type="button" class="btn-dark btn-secondary" data-dismiss="modal" onclick="close1();" >닫기</button>
 							</div>
 						</form>
 					</div>
@@ -249,16 +246,15 @@
 				<div class="modal-content">
 					<div class="modal-header">
 						<h5 class="modal-title" id="exampleModalLabel">일정 삭제</h5>
-						<button class="close" type="button" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">×</span>
-						</button>
+				
 					</div>
 					<div class="modal-body">
 						<form id="frm" action="#" method="post" enctype="application/x-www-form-urlencoded">
-
-							<input type="text" id="mtrSchId" name="mtrSchId"> <input type="text" id="userId" name="userId" th:value="${#authentication.name}">
+							<p>정말 일정을 삭제하시겠습니까?</p>
+							<input type="hidden" id="mtrSchId" name="mtrSchId"> <input type="hidden" id="userId" name="userId" th:value="${#authentication.name}">
 							<div class="modal-footer">
-								<input type="button" class="modal_close btn-dark" onclick="calendarDelete();" value="삭제">
+								<button type="button" class="modal_close btn-dark" onclick="calendarDelete();"  >삭제</button>
+								<button type="button" class="btn-dark btn-secondary" data-dismiss="modal" onclick="close1();"  >닫기</button>
 							</div>
 						</form>
 					</div>

@@ -2,8 +2,7 @@ package com.kcy.bill.controller;
 
 import java.security.Principal;
 import java.util.List;
-
-import javax.security.auth.message.callback.PrivateKeyCallback.Request;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
@@ -157,4 +156,10 @@ public class BillsController {
 		service.chkPayInsert(vo);
 		return "1";
 	}
+	
+	@RequestMapping(value="/bankcallBack", produces = "application/json" )
+	public String bankCallback(@RequestParam Map map ) {
+		System.out.println("callback===" + map);
+		return "pages/billMgr/billCheck";
+	}	
 }

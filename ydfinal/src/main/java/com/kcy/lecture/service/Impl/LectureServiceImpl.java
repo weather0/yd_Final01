@@ -49,6 +49,12 @@ public class LectureServiceImpl implements LectureService {
 		return mapper.openLectureList(vo);
 	}
 
+	@Override
+	public List<OpenLectureVO> majorSelect(OpenLectureVO vo) {
+		
+		return mapper.majorSelect(vo);
+	}
+
 
 
 

@@ -186,6 +186,18 @@
 			</div>
 		</span>
 		
+		<div class="col-md-3">
+			<div class="input-group input-group-outline my-3">
+				<button type="button" class="btn btn-primary change" id="bankAuth" name="bankAuth">사용자 인증</a>
+			</div>
+		</div>
+		
+		<div class="col-md-3">
+			<div class="input-group input-group-outline my-3">
+				<button class="btn bg-gradient-primary">조회</button>
+			</div>
+		</div>
+		
 		<span th:if="${!bill.payHType.toString().equals('b')}">		
 			<div class="col-md-3">
 				<div class="input-group input-group-outline my-3">
@@ -275,6 +287,23 @@
 				});			
 			});
 		
+		$("#bankAuth").click(function(){
+           var tmpWindow = window.open('about:blank')		    
+            	tmpWindow.location = 
+				"https://testapi.openbanking.or.kr/oauth/2.0/authorize?"+
+		            "response_type=code&"+
+		            "client_id=482b4dac-6f12-4754-bbb4-e1b2e41dfe6f&"+ 
+					"client_secret=1dc26f9a-2573-4252-8e64-f81999d9d117&"+ 
+		            "redirect_uri=http://localhost/bankcallBack&"+
+					"auth_type=0&"+
+		            "scope=login%20inquiry%20transfer&"+					
+		            "state=12345678901234567890123456789012"
+		
+		});
+		
+		
+		
+			
 	</script>
 
 	<!-- 본문 end-->

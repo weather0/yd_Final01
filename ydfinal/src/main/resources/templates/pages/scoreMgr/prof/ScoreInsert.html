@@ -51,7 +51,7 @@
         		<td><input class="form-control jt_form_field wt500 scoreAttn" type="text" th:id="scoreAttn" th:name="scoreAttn" /></td>
         		<td><input class="form-control" th:name="gpaGrade" th:value="등급" /></td>
         		<td><input class="form-control jt_form_field wt500" type="text" readonly="readonly" th:id="gpaPoint" th:name="gpaPoint" /></td>
-        		<td><button type="button" class="btn bg-gradient-primary">등록</button></td>
+        		<td><button type="button" class="btn bg-gradient-primary" th:data-hello="${data.classMemberId}">등록</button></td>
         	</tr> 
         	
         </tbody>
@@ -80,7 +80,7 @@ $(".scoreMid, .scoreFinal, .scoreQuiz, .scoreAttn").on("change input paste", fun
 
 function submitData() {
 	
-	console.log("ㅎㅇ")
+	console.log("ㅎㅇ");
 	
 	var tr = $(".scoreMid, .scoreFinal, .scoreQuiz, .scoreAttn").closest("tr");
 	let scoreMid = fnReplace(tr.find("#scoreMid").val());
@@ -89,14 +89,12 @@ function submitData() {
 	let scoreAttn = fnReplace(tr.find("#scoreAttn").val());
 	let gpaPoint = fnReplace(tr.find("#gpaPoint").val());
 	let gpaGrade = fnReplace(tr.find("#gpaGrade").val());
-	let classMemberId = $(".classMemberId").eq(0).val();
-	let classId = $(".classId").eq(0).val();
+	let classMemberId = $(this).data("hello");
 	
 	$.ajax({
 		url: "http://localhost/scoreinsert",
 		type: "post",
 		data: {
-			classId: classId,
 			classMemberId: classMemberId,
 			scoreMid: scoreMid,
 			scoreFinal: scoreFinal,
@@ -107,7 +105,6 @@ function submitData() {
 			gpaGrade: gpaGrade
 		},
 		success:function(data) {
-			alert("ㅇ?");
 		}
 	});
 	
