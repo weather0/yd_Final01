@@ -54,7 +54,7 @@ public class QuizController {
 	// 과제 등록(교수)
 	@GetMapping("/quizinsert")
 	public String quizInsertPage() {
-		return "/pages/quizMgr/prof/quizinsert";
+		return "pages/quizMgr/prof/quizinsert";
 	}
 	
 	// 과제 등록(교수) 프로그램
@@ -108,7 +108,7 @@ public class QuizController {
 		vo.setUserId(principal.getName());
 		model.addAttribute("quiz", quizService.quizDetailView(vo));
 		quizService.quizDetailView(vo);
-		return "/pages/quizMgr/prof/quizdetailview";
+		return "pages/quizMgr/prof/quizdetailview";
 	}
 	
 	// 과제 점수 등록 페이지 프로그램(교수)

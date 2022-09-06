@@ -4,6 +4,7 @@
 	<!-- 황하경 220831 -->
 	<!-- 전체 과제 -->
 	<select id="quizList" resultType="map">
+		<![CDATA[
 		SELECT
 		    h.class_id, 
 		    h.quiz_h_title, 
@@ -32,6 +33,9 @@
             h.class_id = cm.class_id
         WHERE 
         	cm.stu_id = #{userId}
+        AND
+            d.quiz_d_openday <= date(now())
+      ]]>
 	</select>
 	
 	<!-- 과제 헤더 -->

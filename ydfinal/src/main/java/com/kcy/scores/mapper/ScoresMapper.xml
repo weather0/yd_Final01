@@ -127,6 +127,8 @@
 		    g.gpa_point,
 		    
 		    c.class_id,
+		    c.class_sem,
+		    c.class_year,
 		    cm.class_member_id,
 		    
 		    cm.stu_id
@@ -150,6 +152,19 @@
     		g.score_id = sc.score_id
 		WHERE
     		cm.stu_id = #{userId}
+    	<choose>
+			<when test="classSem != null and classSem == 1 || classYear != null">
+				AND
+					c.class_sem = #{classSem}
+				AND
+					c.class_year = #{classYear}
+			</when>
+			<when test="classSem != null and classSem == 2 || classYear != null">
+				AND
+					c.class_sem = #{classSem}
+				AND
+					c.class_year = #{classYear}
+			</when>
+		</choose>
 	</select>
-	
 </mapper>

@@ -23,7 +23,6 @@
         </thead>
         <tbody>
         	<input  th:value="${#authentication.principal.username}" type="hidden" id="userid">
-        	<
         	<tr th:each="data : ${quizlist}">
         		<td>
         		<a th:text="${data.quiz_h_title}" th:href="@{/quizaccept(quizHSeq=${data.quiz_h_seq})}"></a>
