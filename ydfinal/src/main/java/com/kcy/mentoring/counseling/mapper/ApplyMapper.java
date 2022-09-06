@@ -17,9 +17,9 @@ public interface ApplyMapper {
 	void applyInsert(ApplyVO vo); // 상담신청
 	void applyUpdate(ApplyVO vo); // 상담신청 수정
 	void applyDelete(ApplyVO vo); // 상담신청 삭제
-	void applyListInsert(String id);
+	void applyListInsert(ApplyVO vo);
 	void applyHistoryInsert(ApplyVO vo);
-	List<ApplyVO> applyResultList(String stuId);
+	List<ApplyVO> applyResultList(ApplyVO vo);
 	ApplyInfoVO applyInfo(String stuId); // 학생 정보 불러오기
 	void applyCancel(ApplyVO vo); // 상담신청 취소하기
 	JournalVO journalList(ApplyVO vo); // 상담일지 통으로 가져오기
