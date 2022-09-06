@@ -29,9 +29,9 @@ public class SequrityConfig extends WebSecurityConfigurerAdapter {
 			
 			// 9.1.추가: 곽ㅈㅇ
 			.antMatchers(
+                        "/stuInfo",
                         "/stuAcaInfo", 
                         "/stuAcaInsert",
-                        "/stuInfo",
                         "/payList",
                         "/billCheck",
                         "/openlecturelist",
@@ -49,6 +49,7 @@ public class SequrityConfig extends WebSecurityConfigurerAdapter {
 			.antMatchers(
 			            "/allAcaInfo", 
                         "/allStuInfo",
+                        "/oneStuInfo",
                         "/payCheck",
                         "/billsInsert",
                         "/billList",
@@ -68,9 +69,6 @@ public class SequrityConfig extends WebSecurityConfigurerAdapter {
 			.and().exceptionHandling().accessDeniedPage("/")
 			//
 			
-	//		.antMatchers("/userMgr/prof").access("hasRole('ROLE_PROF')")
-	//		.antMatchers("/userMgr/stu").access("hasRole('ROLE_STU')")
-	//		.antMatchers("/admin").hasAuthority("admin")
 			//.anyRequest()
 			//.authenticated()
 			.and()

@@ -117,6 +117,13 @@ public class UsersController {
         model.addAttribute("myInfo", service.stuInfo(principal.getName()));
         return "pages/userMgr/stu/stuInfo";
     }
+    
+    // 단일 학적 조회 (행정)
+    @RequestMapping("/oneStuInfo")
+    public String oneStuInfo(Model model, String id) {
+        model.addAttribute("myInfo", service.stuInfo(id));
+        return "pages/userMgr/stu/stuInfo";
+    }
 
     // 본인 학적 변동 이력 (학생)
     @RequestMapping("/stuAcaInfo")
