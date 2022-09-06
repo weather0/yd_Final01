@@ -27,7 +27,7 @@
     }
     
     
-    /* Start 검색대상select 화살표생성 */
+    /* Start 상단검색창 검색대상select 화살표생성 */
     #searchType {
       /* 기본 form-control의 높이가 미묘하게 2px정도 떠서 새 속성 덮어씌움 */
       line-height: 1.3rem !important; 
@@ -57,11 +57,11 @@
     
     
     #searchValue:focus {
-      border-color: red;
+      border-color: gray;
     }
     
     th i:hover {
-      color: red;
+      color: blue;
       font-size: larger;
     }
     
@@ -75,6 +75,11 @@
       font-size: 12px;
       color: silver
     }
+    
+    th select {
+      display: none;
+    }
+    
     
     
   </style>
@@ -114,6 +119,7 @@
         },
         order: [0, 'desc'], // 페이지 첫 로딩 시 초기 정렬 기준
 
+        
         // 기본레이아웃(datatables.net/reference/option/dom)
         // 기본요소: l(=페이지당) f(=순정검색창) tr(=테이블) i(=페이지정보:몇쪽,몇건) p(=페이지네이션)
         dom: "<'row'<'col-12 col-sm-6'l><'col-12 col-sm-6 customSch'>>" +
@@ -134,8 +140,11 @@
           }
         },
       });
+      // End: DataTables 객체
+    
       
-      // 검색창: 데이터테이블 순정검색창(f) 날리고 변수customSch 자리에 커스텀 검색창 삽입
+    
+      // 상단검색창: 데이터테이블 순정검색창(f) 날리고 변수customSch 자리에 커스텀 검색창 삽입
       $('div.customSch').html(
         `<div class="input-group input-group-outline">
           
@@ -159,21 +168,14 @@
         </div>`
       );
       
-      // 검색실행 함수
+      // 상단검색창 실행 콜백함수
       function xxsearch (){
+        // 기존 검색조건 초기화
         var numCols = table.columns().nodes().length;
         for(var i=0; i<numCols; i++) { table.column(i).search(''); }
-
-        var searchType = $("#searchType").val();
-        var searchValue = $("#searchValue").val();
-        
-        console.log(searchType);
-        console.log(searchValue);
-
-        table.column(searchType).search(searchValue).draw();
+        // 실행: 테이블객체.column(번호).search(키워드).draw();
+        table.column($("#searchType").val()).search($("#searchValue").val()).draw();
       }
-      
-      
       
       // 검색버튼 클릭 or 엔터키업 시 실행
       $("#searchBtn").on('click',function () {
@@ -186,69 +188,99 @@
       })
       
       
-      let arr = [];
       
+      
+      // 멀티칼럼 검색
+      let arr = []; // 조건 담을 배열 선언
+      
+      // 모든 돋보기 아이콘 클릭시
       for (let n = 0; n < 9; n++) {
         $('th:eq('+n+') i').on('click', function() {
-          event.stopPropagation()
-          arr[n] = null;
-          aa();
-          $('th:eq('+n+') input').toggle('fast',function(){
-            $('th:eq('+n+') span').toggle('fast')
-          })
+          event.stopPropagation() // 정렬 이벤트버블링 차단
+          arr[n] = null; // 해당칼럼 검색조건 초기화 → 근데 배열은 초기화돼도 어차피 밑에서 search변수에 담긴 건 그대로라 실제 효과는 없음ㅜ 효과보려면 여기서 코드 짜서 또 함수실행시켜야.. 
+          console.log(arr)
+          // 헤더 타이틀 토글
+          $('th:eq('+n+') input').toggle('fast')
+          $('th:eq('+n+') input').focus() // 토글하고 커서 포커싱
+          $('th:eq('+n+') select').toggle('fast')
+          $('th:eq('+n+') span').toggle('fast')
         })
       }
       
+      // 검색창input, select 클릭시 버블링 차단
       $('th input, th select').on('click', function() {
         event.stopPropagation()
       })
       
-      
-      $('th select').on('change', function() {
-        event.preventDefault()
-      })
-      
-      
+      // 검색창 엔터 누르는 순간 버블링 차단
       $('th input').on('keydown', function() {
         if (event.keyCode == 13) {
-          event.preventDefault()
+          event.preventDefault() // 내장 이벤트라 preventDefault로 해야 먹힘
         }
       })
-      
-      
 
-      
+      // 검색창 엔터치고 떼는 순간 검색실행
       $('th input').on('keyup', function() {
         if (event.keyCode == 13) {
           event.preventDefault()
-          
+          let idxCol = $('th input, th select').index(this) // 모든 input, select들 중에 이놈의 인덱스
           let valCol = this.value
-          let idxCol = $('th input').index(this)
-          arr[idxCol] = 'column('+idxCol+').search('+valCol+')'
-          aa()
+          search(idxCol, valCol);
         }
       })
       
-      function aa(){
-      console.log(arr)
-      }
+      // select option 선택 순간 검색실행
+      $('th select').on('change', function() {
+        event.preventDefault()
+        let idxCol = $('th input, th select').index(this)
+        let valCol = this.children[this.selectedIndex].value // 각 option의 value 추출하기
+        search(idxCol, valCol);
+      })
       
       
-      
-      
-      
-      function search () {
-
-        let code = '';
-        for (let n = 0; n < 9; n++) {
-          code = code + 'column('+n+').search('+n+')'
-        }
-        console.log(code)
+      // 멀티칼럼 검색 실행 콜백함수
+      function search (idxCol, valCol) {
+        // 해당칼럼 검색문을 만들고 배열에 담음
+        arr[idxCol] = 'column('+idxCol+').search("'+valCol+'").'
         
+        // 모든 검색문을 배열에서 꺼내서 조립하기
+        let search = '';
+//         for (let n = 0; n < 9; n++) {
+//           if(arr[n] != null && arr[n] != ''){
+//             search += arr[n]
+//           }
+//         }
+        
+        
+        
+        for (let n = 0; n < 9; n++) {
+          if($('th:eq('+n+') input').attr('display') != 'none')
+            let thisInput = $('th input:eq('+n+')');
+            let thisVal = thisInput.value
+            search += 'column(' + $('th input, th select').index(thisInput)
+                    + ').search("'+thisVal+'").'
+          }
+          if($('th:eq('+n+') select').attr('display') != 'none')
+            let thisSelect = $('th input:eq('+n+')');
+            let thisVal = thisSelect.children[thisSelect.selectedIndex].value
+            search += 'column(' + $('th input, th select').index(thisSelect)
+                    + ').search("'+thisVal+'").'
+          }
+        }
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        // 최종 완성 검색문
+        console.log('table.'+ search + 'draw()');
+        // eval: 단순 문자열을 실제 함수로 변환하여 실행
+        eval('table.'+ search + 'draw()');
       }
-      
-//       $('#select-sex').on('click')
-      
       
       
       
@@ -300,7 +332,7 @@
               <tr style="height: 70px">
                 <th class="text-center" >
                   <span>학번</span>
-                  <input style="width: 80px" type="text" placeholder="학번">
+                  <input style="width: 80px" type="text"  onfocus="this.select()" placeholder="학번">
                   <!-- 아이콘 호버 시 커짐효과로 인해 주변 요소들의 크기,위치 등이 영향 안 받으려면 div로 감싸고 너비지정 해줘야 함-->
                   <div class="d-inline-block" style="width: 20px"> 
                     <i class="fa-solid fa-magnifying-glass"></i>
@@ -308,14 +340,14 @@
                 </th>
                 <th class="text-center">
                   <span>이름</span>
-                  <input style="width: 80px" type="text" placeholder="이름">
+                  <input style="width: 80px" type="text" onfocus="this.select()" placeholder="이름">
                   <div class="d-inline-block" style="width: 20px"> 
                     <i class="fa-solid fa-magnifying-glass"></i>
                   </div>
                 </th>
                 <th class="text-center">
                   <span>생년월일</span>
-                  <input style="width: 80px" type="text" placeholder="생년월일">
+                  <input style="width: 80px" type="text" onfocus="this.select()" placeholder="생년월일">
                   <div class="d-inline-block" style="width: 20px"> 
                     <i class="fa-solid fa-magnifying-glass"></i>
                   </div>
@@ -323,46 +355,45 @@
                 <th class="text-center">
                   <span>성별</span>
                   <select id="select-sex">
-                    <option selected disabled>선택</option>
-                    <option>남</option>
-                    <option>여</option>
+                    <option value="">선택</option>
+                    <option value="M">남</option>
+                    <option value="F">여</option>
                   </select>
-                  <input style="width: 80px" type="text" placeholder="성별">
                   <div class="d-inline-block" style="width: 20px"> 
                     <i class="fa-solid fa-magnifying-glass"></i>
                   </div>
                 </th>
                 <th class="text-center">
                   <span>전공</span>
-                  <input style="width: 80px" type="text" placeholder="전공">
+                  <input style="width: 80px" type="text" onfocus="this.select()" placeholder="전공">
                   <div class="d-inline-block" style="width: 20px"> 
                     <i class="fa-solid fa-magnifying-glass"></i>
                   </div>
                 </th>
                 <th class="text-center">
                   <span>연락처</span>
-                  <input style="width: 80px" type="text" placeholder="연락처">
+                  <input style="width: 80px" type="text" onfocus="this.select()" placeholder="연락처">
                   <div class="d-inline-block" style="width: 20px"> 
                     <i class="fa-solid fa-magnifying-glass"></i>
                   </div>
                 </th>
                 <th>
                   <span>이메일</span>
-                  <input style="width: 80px" type="text" placeholder="이메일">
+                  <input type="text" onfocus="this.select()" placeholder="이메일">
                   <div class="d-inline-block" style="width: 20px"> 
                     <i class="fa-solid fa-magnifying-glass"></i>
                   </div>
                 </th>
                 <th>
                   <span>주소</span>
-                  <input style="width: 80px" type="text" placeholder="주소">
+                  <input style="width: 80px" type="text" onfocus="this.select()" placeholder="주소">
                   <div class="d-inline-block" style="width: 20px"> 
                     <i class="fa-solid fa-magnifying-glass"></i>
                   </div>
                 </th>
                 <th class="text-center">
                   <span>국적</span>
-                  <input style="width: 80px" type="text" placeholder="국적">
+                  <input style="width: 80px" type="text" onfocus="this.select()" placeholder="국적">
                   <div class="d-inline-block" style="width: 20px"> 
                     <i class="fa-solid fa-magnifying-glass"></i>
                   </div>
