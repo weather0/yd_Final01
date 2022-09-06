@@ -20,6 +20,7 @@
 }
 .table td, .table th {
 	white-space: pre-line;
+	vertical-align : middle;
 }
 </style>
 
@@ -166,33 +167,37 @@ jQuery(function($){
 			<div class="row justify-content-center w-93">
 				<div class="card py-3">
 
-					<div class="table-responsive">
-						<table id="careerList" class="table align-items-center table-hover" style="width: 100%">
+					<div class="table-responsive ">
+						<table id="careerList" class="table align-items-center table-hover justify-content-center" style="width: 100%">
 							<thead style="font-weight: bold">
 								<tr>
-									<td class="text-center">번호</td>
-									<td class="text-center">진로탐색 질문</td>
-									<td class="text-center">등록 일자</td>
-									<td class="text-center">사용 여부</td>
-									<td class="text-center">사용 전환</td>
-									<td class="text-center">삭제</td>
+									<td width="10%" class="text-center">번호</td>
+									<td width="40%" class="text-center">진로탐색 질문</td>
+									<td width="20%" class="text-center">등록 일자</td>
+									<td width="10%" class="text-center">여부</td>
+									<td width="10%" class="text-center">전환</td>
+									<td width="10%" class="text-center">삭제</td>
 								</tr>
 							</thead>
-							<tbody>
+							<tbody >
 								<tr th:each="item : ${list}">
 									<td class="text-center">[[${itemStat.count}]]</td>
-									<td>[[${item.careerQContent}]]</td>
+									<td class="text-center">[[${item.careerQContent}]]</td>
 									<td class="text-center">[[${item.careerListDate}]]</td>
 									<td class="text-center">[[${item.careerQYn}]]</td>
 									<th:block th:switch="${item.careerQYn}">
-										<td th:case="Y"  class="text-center">
+										<td  th:case="Y"  class="text-center">
 											<button type="button" class="btn bg-gradient-secondary btn-sm btn1" th:data-qid="${item.careerQId}" th:onclick="carUpdateN()" th:text="해제"></button>
 										</td>
 										<td th:case="N"  class="text-center">
 											<button type="button" class="btn bg-gradient-secondary btn-sm btn1" th:data-qid="${item.careerQId}" th:onclick="carUpdateY(this.getAttribute('QId'))" th:text="사용"></button>
 										</td>
 									</th:block>
-									<td  class="text-center"><button type="button" class="btn bg-gradient-secondary btn-sm btn2" th:data-qid="${item.careerQId}" th:onclick="carDelete(this.getAttribute('QId'))" th:text="삭제"></td>
+									<div>
+										<td  class="text-center">
+											<button type="button" class="btn bg-gradient-secondary btn-sm btn2" th:data-qid="${item.careerQId}" th:onclick="carDelete(this.getAttribute('QId'))" th:text="삭제">
+										</td>
+									</div>
 								</tr>
 							</tbody>
 						</table>

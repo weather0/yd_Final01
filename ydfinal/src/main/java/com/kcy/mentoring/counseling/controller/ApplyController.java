@@ -109,8 +109,8 @@ public class ApplyController {
 	// 학생의 검사 결과를 모달창에 띄워주기
 	@PostMapping("/applyResultList")
 	@ResponseBody
-	public List<ApplyVO> applyResultList(Model model, String stuId) {
-		List<ApplyVO> list = service.applyResultList(stuId);
+	public List<ApplyVO> applyResultList(Model model, ApplyVO vo) {
+		List<ApplyVO> list = service.applyResultList(vo);
 		model.addAttribute("list", list);
 		return list;
 	}
