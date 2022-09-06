@@ -33,6 +33,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.kcy.file.test.FileDto;
 import com.kcy.lecture.mapper.CourseMapper;
+import com.kcy.lecture.mapper.LectureMapper;
 import com.kcy.lecture.mapper.MajorMapper;
 import com.kcy.lecture.mapper.RoomMapper;
 import com.kcy.lecture.mapper.ScheduleMapper;
@@ -54,7 +55,7 @@ import lombok.RequiredArgsConstructor;
 public class LectureController {
 
 	@Autowired
-	CourseMapper mapper;
+	CourseMapper cmapper;
 	@Autowired
 	ScheduleMapper scmapper;
 	@Autowired
@@ -63,6 +64,8 @@ public class LectureController {
 	RoomMapper rmapper;
 	@Autowired
 	MajorMapper majormapper;
+	@Autowired
+	LectureMapper mapper;
 	private final LectureService lectureService;
 	private final EnrolmentService enrolmentService;
 	@Value("${spring.servlet.multipart.location}")
@@ -74,7 +77,7 @@ public class LectureController {
 	@ModelAttribute("course")
 	public List<CourseVO> getCourseId(Principal principal, CourseVO vo) {
 		vo.setUserId(principal.getName());
-		return mapper.getCourse(vo);
+		return cmapper.getCourse(vo);
 	}
 	// 기준이 되는 모든 강의 시간표를 보내는 부분
 	@ModelAttribute("schedule")
@@ -172,6 +175,7 @@ public class LectureController {
 		model.addAttribute("openList", lectureService.openLectureList(vo1));
 		model.addAttribute("enrolmentlist", enrolmentService.enrolmentList(vo));
 		model.addAttribute("gradesCk", enrolmentService.gradesCheck(vo));
+		model.addAttribute("myMajor",mapper.myMajor(vo1));
 		return "pages/classMgr/OpenLectureList";
 	}
 	
@@ -181,6 +185,7 @@ public class LectureController {
 		model.addAttribute("enrolmentlist", enrolmentService.enrolmentList(vo1));
 		model.addAttribute("openList",lectureService.majorSelect(vo));
 		model.addAttribute("gradesCk", enrolmentService.gradesCheck(vo1));
+		model.addAttribute("myMajor",mapper.myMajor(vo));
 		return "pages/classMgr/OpenLectureList"; 
 	}
 

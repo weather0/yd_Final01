@@ -31,7 +31,7 @@
 		<input type="hidden" id="classId" name="classId" th:value="${quizlist.classId}"/>
 		<input type="hidden" id="quizDId" name="quizDId" th:value="${quizlist.quizDId}"/>
     
-    	<th:block th:if="${quizaccept.quizRContent == null}">
+    	<th:block th:each="data:${quizaccept}" th:if="${data.quizRContent == null}">
 		   <div class="input-group input-group-outline my-3">
 		     <label class="form-label">내용</label> 
 		     <textarea type="text" class="form-control" th:name="quizRContent"></textarea>
@@ -51,10 +51,13 @@
     	   <button class="btn bg-gradient-primary hidBtn">제출하기</button>
    		</th:block>
  </form>
+ 
   <form action="quizModify" method="post" enctype="multipart/form-data">
   		<input type="hidden" id="classId" name="classId" th:value="${quizlist.classId}"/>
 		<input type="hidden" id="quizDId" name="quizDId" th:value="${quizlist.quizDId}"/>
 		<input type="hidden" id="quizRId" name="quizRId" th:value="${quizaccept.quizRId}"/>
+		
+		
     <th:block th:if="${quizaccept.quizRContent != null}">
     		<input type="hidden" id="quizDId" name="quizDId" th:value="${quizaccept.quizDId}"/>
 		 	<div class="input-group input-group-outline my-3">

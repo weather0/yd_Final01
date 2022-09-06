@@ -36,11 +36,11 @@
         <tbody>
         	<tr th:each="data,index : ${evaluation}">
         		<td th:text="${data.profQContent}" style="text-align: left;"></td>
-        		<td><input type="radio" th:name="|evaluation${index.index}|" th:value="1"></td>
-        		<td><input type="radio" th:name="|evaluation${index.index}|" th:value="2"></td>
-        		<td><input type="radio" th:name="|evaluation${index.index}|" th:value="3"></td>
-        		<td><input type="radio" th:name="|evaluation${index.index}|" th:value="4"></td>
-        		<td><input type="radio" th:name="|evaluation${index.index}|" th:value="5"></td>
+        		<td><input type="radio" th:name="|evaluation${index.index}|" th:value="1" class="test"></td>
+        		<td><input type="radio" th:name="|evaluation${index.index}|" th:value="2" class="test"></td>
+        		<td><input type="radio" th:name="|evaluation${index.index}|" th:value="3" class="test"></td>
+        		<td><input type="radio" th:name="|evaluation${index.index}|" th:value="4" class="test"></td>
+        		<td><input type="radio" th:name="|evaluation${index.index}|" th:value="5" class="test"></td>
         	</tr>
         </tbody>
         </table>
@@ -59,17 +59,27 @@
 		$("#btn").on("click",submitData)
 		
 		function submitData(){
-			let evaluation0 = $("input[name='evaluation0']:checked").val()
-			let evaluation1 = $("input[name='evaluation1']:checked").val()
-			let evaluation2 = $("input[name='evaluation2']:checked").val()
-			let evaluation3 = $("input[name='evaluation3']:checked").val()
-			let evaluation4 = $("input[name='evaluation4']:checked").val()
-			let evaluation5 = $("input[name='evaluation5']:checked").val()
-			let evaluation6 = $("input[name='evaluation6']:checked").val()
-			let id = $("#userid").val()
-			let cid = $(".cid").val()
-			let cmid = $("#cmid").val()
 			
+			let lenghtCk = $("input[class='test']:checked").length;
+			
+			
+			if(lenghtCk < 7){
+				alert("모든 문항에 답변해주세요")
+			}
+			
+			else if(lenghtCk == 7){
+				
+				let evaluation0 = $("input[name='evaluation0']:checked").val()
+				let evaluation1 = $("input[name='evaluation1']:checked").val()
+				let evaluation2 = $("input[name='evaluation2']:checked").val()
+				let evaluation3 = $("input[name='evaluation3']:checked").val()
+				let evaluation4 = $("input[name='evaluation4']:checked").val()
+				let evaluation5 = $("input[name='evaluation5']:checked").val()
+				let evaluation6 = $("input[name='evaluation6']:checked").val()
+				let id = $("#userid").val()
+				let cid = $(".cid").val()
+				let cmid = $("#cmid").val()
+				
 			$.ajax({
 				url:"http://localhost/evaluationinsert",
 				type:"post",
@@ -80,9 +90,11 @@
 				},
 				success:function(data){
 					alert("제출완료")
-					
+					location.href= '/profevaluationlist'
 				}
 			})
+			
+			}
 		}
 		
 		

@@ -125,5 +125,11 @@
 		
 		
 		</select>
+		
+		<select id="myMajor" resultType="com.kcy.lecture.service.OpenLectureVO">
+		
+			   SELECT user_dept  FROM  k_users 
+    		   WHERE user_id = #{userId};
+		</select>
 	
 </mapper>
