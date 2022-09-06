@@ -63,7 +63,7 @@
 		var calendarEl = document.getElementById('calendar');
 
 		var calendar = new FullCalendar.Calendar(calendarEl, {
-			initialDate : '2022-02-07',
+			initialDate : '2022-09-07',
 			initialView : 'dayGridMonth',
 			headerToolbar : {
 				left : 'prev,next today',
@@ -87,9 +87,7 @@
 
 			},
 			eventClick : function(info) { // 수정 이벤트
-				console.log(info.event._def.extendedProps.MtrSchId);
 				calendarSelect(info.event._def.extendedProps.MtrSchId);
-				//calendarDelete(info.event._def.extendedProps.MtrSchId);
 
 				$("#calendar_update_modal").modal("show");
 			},
@@ -125,7 +123,6 @@
 
 		$("input[name=mtrSchTimecode]:checked").each(function() {
 			var chk = $(this).val();
-			console.log(chk);
 			chk_arr.push(chk);
 		})
 
@@ -152,7 +149,6 @@
 			// String 형태로 변환
 			var jsonData = JSON.stringify(testList);
 
-			console.log(jsonData);
 
 			$.ajax({
 				url : "/scheduleInsert2",
@@ -162,12 +158,10 @@
 				traditional : true,
 				dataType : "json",
 				success : function() {
-					console.log('성공')
 					location.reload();
 				},
 				error : function() {
 
-					console.log('실패')
 				}
 			});
 			return;
@@ -207,7 +201,6 @@
 	}
 	function calendarSelect(calendar_id) {
 
-		console.log(calendar_id);
 		$.ajax({
 			url : "/scheduleSelect",
 			type : "get",
