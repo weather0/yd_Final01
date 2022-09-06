@@ -23,6 +23,11 @@
       var fixedplugin = document.querySelector('.fixed-plugin');
       var ps3 = new PerfectScrollbar(fixedplugin);
     };
+    
+    if (document.getElementsByClassName('memo-plugin')[0]) {
+      var memoplugin = document.querySelector('.memo-plugin');
+      var ps3 = new PerfectScrollbar(memoplugin);
+    };
   };
 })();
 
@@ -119,7 +124,57 @@ if (document.querySelector('.fixed-plugin')) {
   }
 
 }
+//메모
+if (document.querySelector('.memo-plugin')) {
+  var memoPlugin = document.querySelector('.memo-plugin');
+  var memoPlugin = document.querySelector('.memo-plugin');
+  var memoPluginButton = document.querySelector('.memo-plugin-button');
+  var memoPluginButtonNav = document.querySelector('.memo-plugin-button-nav');
+  var memoPluginCard = document.querySelector('.memo-plugin .card');
+  var memoPluginCloseButton = document.querySelectorAll('.memo-plugin-close-button');
+  var navbar = document.getElementById('navbarBlur');
+  var buttonNavbarmemo = document.getElementById('navbarmemo');
 
+  if (memoPluginButton) {
+    memoPluginButton.onclick = function() {
+      if (!memoPlugin.classList.contains('show')) {
+        memoPlugin.classList.add('show');
+      } else {
+        memoPlugin.classList.remove('show');
+      }
+    }
+  }
+
+  if (memoPluginButtonNav) {
+    memoPluginButtonNav.onclick = function() {
+      if (!memoPlugin.classList.contains('show')) {
+        memoPlugin.classList.add('show');
+      } else {
+        memoPlugin.classList.remove('show');
+      }
+    }
+  }
+
+  memoPluginCloseButton.forEach(function(el) {
+    el.onclick = function() {
+      memoPlugin.classList.remove('show');
+    }
+  })
+
+  document.querySelector('body').onclick = function(e) {
+    if (e.target != memoPluginButton && e.target != memoPluginButtonNav && e.target.closest('.memo-plugin .card') != memoPluginCard) {
+      memoPlugin.classList.remove('show');
+    }
+  }
+
+  if (navbar) {
+    if (navbar.getAttribute('data-scroll') == 'true' && buttonNavbarmemo) {
+      buttonNavbarmemo.setAttribute("checked", "true");
+    }
+  }
+
+}
+////////////////////////////////////////////////////////////////////
 //Set Sidebar Color
 function sidebarColor(a) {
   var parent = document.querySelector(".nav-link.active");

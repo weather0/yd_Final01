@@ -22,9 +22,9 @@
 			</div>
 		</div>
 		<div class="input-group">
-			<input type="text" id="userId" class="form-control" th:value="${#authentication.name}">
-			<input type="text" id="userType" class="form-control">
-			<input type="text" id="userName" class="form-control" >
+			<input type="hidden" id="userId" class="form-control" th:value="${#authentication.name}">
+			<input type="hidden" id="userType" class="form-control">
+			<input type="hidden" id="userName" class="form-control" >
 		</div>
 		<ul class="list-group">
 			<li class="list-group-item list-group-item-action"
@@ -64,7 +64,6 @@
                 var sender = $('#userName').val();
                 var type = $('#userType').val();
                 if(userId == id || type == "ROLE_PROF") {
-                	
                     localStorage.setItem('wschat.sender',sender);
                     localStorage.setItem('wschat.roomId',roomId);
                     localStorage.setItem('wschat.roomName',id);

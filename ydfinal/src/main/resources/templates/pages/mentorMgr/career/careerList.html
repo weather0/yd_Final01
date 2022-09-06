@@ -18,6 +18,9 @@
 	background-color: #7b809a;
 	border-color: #7b809a;
 }
+.table td, .table th {
+	white-space: pre-line;
+}
 </style>
 
 
@@ -86,7 +89,7 @@ jQuery(function($){
 		})
 	}
 	function carDelete(id) {
-		if (!confirm("정말 삭제 하시겠습니까? 확인(예) 또는 취소(아니오)를 선택해주세요.")) {
+		if (!confirm("정말 삭제 하시겠습니까? 삭제하시면 응답자의 결과를 확인할 수 없습니다. 확인(예) 또는 취소(아니오)를 선택해주세요.")) {
 			return;
 		}
 		e = window.event || e

@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.OutputStream;
 import java.net.URLEncoder;
 import java.security.Principal;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -38,28 +39,59 @@ public class UsersController {
         return service.userInfo(principal.getName()); // JSON으로 뿌려줌
     }
     
+    
     // 전체 학생 학적 목록 (행정)(단순 페이지 이동)
     @RequestMapping("/allStuInfo")
     public String allStuInfo(Model model) {
         return "pages/userMgr/admin/allStuInfo";
     };
     
-    
-    
-    @PostMapping(value = "/qwe") 
+    @PostMapping(value = "/allStuInfoProc") // (서비스실행) (Datatables Server-side처리 참고: zamezzz.tistory.com/310)
     @ResponseBody 
     public DataTableVO example(DataTableVO vo, @RequestBody MultiValueMap<String, String> formData){ 
         int draw = Integer.parseInt(formData.get("draw").get(0)); 
         int start = Integer.parseInt(formData.get("start").get(0)); 
-        int length = Integer.parseInt(formData.get("length").get(0)); 
+        int length = Integer.parseInt(formData.get("length").get(0));
+        int order = Integer.parseInt(formData.get("order[0][column]").get(0));
+        String orderDir = formData.get("order[0][dir]").get(0);
+        
+        String schId = formData.get("columns[0][search][value]").get(0);
+        String schName = formData.get("columns[1][search][value]").get(0);
+        String schSsn = formData.get("columns[2][search][value]").get(0);
+        String schSex = formData.get("columns[3][search][value]").get(0);
+        String schDept = formData.get("columns[4][search][value]").get(0);
+        String schPhone = formData.get("columns[5][search][value]").get(0);
+        String schEmail = formData.get("columns[6][search][value]").get(0);
+        String schAddr = formData.get("columns[7][search][value]").get(0);
+        String schNation = formData.get("columns[8][search][value]").get(0);
 
+        
         System.out.println(formData);
         System.out.println(draw);
         System.out.println(start);
         System.out.println(length);
+        System.out.println(order);
         
-        int total = (int)service.count(); 
-        List data = service.findData(start, length); 
+        Map cri = new HashMap();
+        cri.put("start", start);
+        cri.put("length", length);
+        cri.put("order", order);
+        cri.put("orderDir", orderDir);
+        
+        
+        cri.put("schId", schId);
+        cri.put("schName", schName);
+        cri.put("schSsn", schSsn);
+        cri.put("schSex", schSex);
+        cri.put("schDept", schDept);
+        cri.put("schPhone", schPhone);
+        cri.put("schEmail", schEmail);
+        cri.put("schAddr", schAddr);
+        cri.put("schNation", schNation);
+        
+        
+        int total = (int)service.allStuInfoCnt(cri); 
+        List data = service.allStuInfoProc(cri); 
 
         vo.setDraw(draw); 
         vo.setRecordsFiltered(total); 
@@ -68,9 +100,6 @@ public class UsersController {
 
         return vo; 
     }
-
-    
-    
     
     
     

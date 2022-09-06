@@ -139,12 +139,30 @@ public class ApplyController {
 		model.addAttribute("list", vo1);
 		return vo1;
 	}
+	
 
 	// 상담일지 작성하기
 	@PostMapping("/journalInsert")
 	public String journalInsert(JournalVO vo) {
 		service.journalInsert(vo);
 		return "redirect:applyList";
+	}
+	
+	// 각 학생의 상담메모를 볼 수 있는 폼
+	@PostMapping("/selectMemo")
+	@ResponseBody
+	public String selectMemo(Model model,String mtrId) {
+		String vo1 = service.selectMemo(mtrId);
+		model.addAttribute("memo", vo1);
+		return vo1;
+	}
+	
+	// 상담메모 작성하기
+	@ResponseBody
+	@PostMapping("/insertMemo")
+	public String insertMemo(ApplyVO vo) {
+		service.insertMemo(vo);
+		return "true";
 	}
 
 	// 상담종료하기
@@ -154,5 +172,15 @@ public class ApplyController {
 		service.mentoringUpdate2(stuId);
 		return "true";
 	}
+	
+	// 담당교수 확인폼
+	@GetMapping("/profCheck")
+	public String profCheckForm(Model model, Principal principal) {
+		ApplyInfoVO vo = service.profCheck(principal.getName());
+		 model.addAttribute("vo", vo);
+		return "pages/mentorMgr/counseling/profCheck";
+	}
+	
+
 
 }
