@@ -245,28 +245,29 @@
         
         // 모든 검색문을 배열에서 꺼내서 조립하기
         let search = '';
-//         for (let n = 0; n < 9; n++) {
-//           if(arr[n] != null && arr[n] != ''){
-//             search += arr[n]
-//           }
-//         }
-        
-        
-        
         for (let n = 0; n < 9; n++) {
-          if($('th:eq('+n+') input').attr('display') != 'none')
-            let thisInput = $('th input:eq('+n+')');
-            let thisVal = thisInput.value
-            search += 'column(' + $('th input, th select').index(thisInput)
-                    + ').search("'+thisVal+'").'
-          }
-          if($('th:eq('+n+') select').attr('display') != 'none')
-            let thisSelect = $('th input:eq('+n+')');
-            let thisVal = thisSelect.children[thisSelect.selectedIndex].value
-            search += 'column(' + $('th input, th select').index(thisSelect)
-                    + ').search("'+thisVal+'").'
+          if(arr[n] != null && arr[n] != ''){
+            search += arr[n]
           }
         }
+        
+        
+        
+//         for (let n = 0; n < 9; n++) {
+//           if($('th:eq('+n+') input').attr('display') != 'none') {
+//             let thisInput = $('th input:eq('+n+')');
+//             let thisVal = thisInput.value
+//             search += 'column(' + $('th input, th select').index(thisInput)
+//                     + ').search("'+thisVal+'").'
+//           }
+//           if($('th:eq('+n+') select').attr('display') != 'none') {
+//             let thisSelect = $('th select:eq('+n+')');
+//             let thisVal = thisSelect.children[thisSelect.selectedIndex]
+//             console.log(thisVal)
+//             search += 'column(' + $('th input, th select').index(thisSelect)
+//                     + ').search("'+thisVal+'").'
+//           }
+//         }
         
         
         
@@ -355,7 +356,7 @@
                 <th class="text-center">
                   <span>성별</span>
                   <select id="select-sex">
-                    <option value="">선택</option>
+                    <option value="">성별</option>
                     <option value="M">남</option>
                     <option value="F">여</option>
                   </select>
