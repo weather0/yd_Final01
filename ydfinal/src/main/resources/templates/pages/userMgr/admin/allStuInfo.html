@@ -9,7 +9,7 @@
 
 
   <style>
-    #allStuInfos_filter input{
+    #allStuInfos_filter input {
       border: 1px solid #d2d6da;
     }
     
@@ -19,11 +19,66 @@
     }
     
     .page-link:focus {
-      box-shadow: 0 0 0 0.2rem rgb(123 128 154 / 25%);
+      box-shadow: 0 0 0 0.2rem rgb(123 128 154/ 25%);
     }
     
+    option:disabled {
+      background-color: lightgray;
+    }
+    
+    
+    /* Start 검색대상select 화살표생성 */
+    #searchType {
+      /* 기본 form-control의 높이가 미묘하게 2px정도 떠서 새 속성 덮어씌움 */
+      line-height: 1.3rem !important; 
+    }
+    
+    .wrap {
+      display: inline-block;
+      position: relative;
+    }
+    
+    .wrap:after {
+      content: '';
+      display: block;
+      position: absolute;
+      z-index: 1;
+      top: 50%;
+      right: 10px;
+      transform: translate(0, -50%);
+      width: 0;
+      height: 0;
+      border: 10px solid lightgray;
+      border-left: 7px solid transparent;
+      border-right: 7px solid transparent;
+      border-bottom: none;
+    }
+    /* End */
+    
+    
+    #searchValue:focus {
+      border-color: red;
+    }
+    
+    th i:hover {
+      color: red;
+      font-size: larger;
+    }
+    
+    th input {
+      display: none;
+      border: solid 1px gray;
+      border-radius: 5px;
+    }
+    
+    th input::placeholder {
+      font-size: 12px;
+      color: silver
+    }
+    
+    
   </style>
-  <script >
+  <script>
     $(function() {
       
       // Datatables Server-side처리 참고: zamezzz.tistory.com/310
@@ -44,26 +99,23 @@
           }
         },
         columns: [
-          {"data": "userId"},
-          {"data": "userName"},
-          {"data": "userSsn"},
-          {"data": "userSex"},
-          {"data": "userDept"},
-          {"data": "userPhone"},
-          {"data": "userEmail"},
-          {"data": "userAddr"},
-          {"data": "userNation"},
+          {data: 'userId', className: 'dt-body-center'},
+          {data: 'userName', className: 'dt-body-center'},
+          {data: 'userSsn', className: 'dt-body-center'},
+          {data: 'userSex', className: 'dt-body-center'},
+          {data: 'userDept', className: 'dt-body-center'},
+          {data: 'userPhone', className: 'dt-body-center'},
+          {data: 'userEmail'},
+          {data: 'userAddr'},
+          {data: 'userNation', className: 'dt-body-center'},
         ],
         search: {
-          return: true, // 엔터키 쳐야 검색되는 옵션 (매 keystroke마다 trigger되는 게 아니라)
+          return: true, // 순정검색창 엔터키 쳐야 검색되는 옵션 (매 keystroke마다 trigger되는 게 아니라)
         },
-        
         order: [0, 'desc'], // 페이지 첫 로딩 시 초기 정렬 기준
-//         rowReorder: true,
-//         colReorder: true,
 
         // 기본레이아웃(datatables.net/reference/option/dom)
-        // 기본요소: l(=페이지당) f(=검색창) tr(=테이블) i(=페이지정보:몇쪽,몇건) p(=페이지네이션)
+        // 기본요소: l(=페이지당) f(=순정검색창) tr(=테이블) i(=페이지정보:몇쪽,몇건) p(=페이지네이션)
         dom: "<'row'<'col-12 col-sm-6'l><'col-12 col-sm-6 customSch'>>" +
              "<'row'<tr>>" +
              "<'row'<'col-md-5'i><'col-md-7'p>>",
@@ -83,29 +135,31 @@
         },
       });
       
-      // 검색창
+      // 검색창: 데이터테이블 순정검색창(f) 날리고 변수customSch 자리에 커스텀 검색창 삽입
       $('div.customSch').html(
-        `<div class="input-group input-group-outline mb-2">
+        `<div class="input-group input-group-outline">
           
-          <select class="form-select px-2 me-2" id="searchType" name="searchType" aria-label="searchType">
-            <option value="" disabled selected>검색 대상</option>
-            <option value="0">학번</option>
-            <option value="1">이름</option>
-            <option value="2">생년월일</option>
-            <option value="3">성별</option>
-            <option value="4">전공</option>
-            <option value="5">연락처</option>
-            <option value="6">이메일</option>
-            <option value="7">주소</option>
-            <option value="8">국적</option>
-          </select>
+          <div class="wrap w-30">
+            <select class="form-control px-2" id="searchType" name="searchType" aria-label="searchType">
+              <option value="" disabled selected>검색 대상</option>
+              <option value="0">학번</option>
+              <option value="1">이름</option>
+              <option value="2">생년월일</option>
+              <option value="3">성별</option>
+              <option value="4">전공</option>
+              <option value="5">연락처</option>
+              <option value="6">이메일</option>
+              <option value="7">주소</option>
+              <option value="8">국적</option>
+            </select>
+          </div>
           
-          
-          <input type="text" class="form-control" id="searchValue">
-          <button class="btn btn-outline-secondary mb-0" type="button" id="searchBtn">검색</button>
+          <input type="text" class="form-control w-40" id="searchValue">
+          <button class="btn btn-outline-secondary mb-0 me-3" type="button" id="searchBtn">검색</button>
         </div>`
       );
       
+      // 검색실행 함수
       function search (){
         var numCols = table.columns().nodes().length;
         for(var i=0; i<numCols; i++) { table.column(i).search(''); }
@@ -119,6 +173,7 @@
         table.column(searchType).search(searchValue).draw();
       }
       
+      // 검색버튼 클릭 or 엔터키업 시 실행
       $("#searchBtn").on('click',function () {
         search();
       })
@@ -129,6 +184,14 @@
       })
 
       
+      for (let n = 0; n<9; n++){
+        $('th:eq('+n+') i').on('click', function() {
+          event.stopPropagation()
+          $('th:eq('+n+') input').toggle('fast',function(){
+            $('th:eq('+n+') span').toggle('fast')
+          })
+        })
+      }
       
       
       
@@ -150,7 +213,7 @@
   <th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
 
   <!-- 본문 start -->
-  <div class="container-fluid py-4">
+  <div class="container-fluid">
 
     <div class="row justify-content-center">
       <div class="col-lg-3 col-sm-3 mb-4"></div>
@@ -163,21 +226,83 @@
 
 
     <div class="row justify-content-center">
-      <div class="card py-3">
-
+      <div class="card p-3 me-3">
+      
+        <div class="card-header p-0 position-relative mt-n4 mb-4 z-index-2">
+          <div class="bg-secondary bg-gradient-secondary shadow-secondary border-radius-lg py-3">
+            <h6 class="text-white ps-3 m-0">학적 정보</h6>
+            <input  th:value="${#authentication.principal.username}" type="hidden" id="userid">
+          </div>
+        </div>
+        
         <div class="table-responsive">
           <table id="allStuInfos" class="table align-items-center table-hover" style="width:100%">
             <thead>
-              <tr>
-                <th>학번</th>
-                <th>이름</th>
-                <th>생년월일</th>
-                <th>성별</th>
-                <th>전공</th>
-                <th>연락처</th>
-                <th>이메일</th>
-                <th>주소</th>
-                <th>국적</th>
+              <tr style="height: 70px">
+                <th class="text-center" >
+                  <span>학번</span>
+                  <input style="width: 80px" type="text" placeholder="학번">
+                  <!-- 아이콘 호버 시 커짐효과로 인해 주변 요소들의 크기,위치 등이 영향 안 받으려면 div로 감싸고 너비지정 해줘야 함-->
+                  <div class="d-inline-block" style="width: 20px"> 
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                  </div>
+                </th>
+                <th class="text-center">
+                  <span>이름</span>
+                  <input style="width: 80px" type="text" placeholder="이름">
+                  <div class="d-inline-block" style="width: 20px"> 
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                  </div>
+                </th>
+                <th class="text-center">
+                  <span>생년월일</span>
+                  <input style="width: 80px" type="text" placeholder="생년월일">
+                  <div class="d-inline-block" style="width: 20px"> 
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                  </div>
+                </th>
+                <th class="text-center">
+                  <span>성별</span>
+                  <input style="width: 80px" type="text" placeholder="성별">
+                  <div class="d-inline-block" style="width: 20px"> 
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                  </div>
+                </th>
+                <th class="text-center">
+                  <span>전공</span>
+                  <input style="width: 80px" type="text" placeholder="전공">
+                  <div class="d-inline-block" style="width: 20px"> 
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                  </div>
+                </th>
+                <th class="text-center">
+                  <span>연락처</span>
+                  <input style="width: 80px" type="text" placeholder="연락처">
+                  <div class="d-inline-block" style="width: 20px"> 
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                  </div>
+                </th>
+                <th>
+                  <span>이메일</span>
+                  <input style="width: 80px" type="text" placeholder="이메일">
+                  <div class="d-inline-block" style="width: 20px"> 
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                  </div>
+                </th>
+                <th>
+                  <span>주소</span>
+                  <input style="width: 80px" type="text" placeholder="주소">
+                  <div class="d-inline-block" style="width: 20px"> 
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                  </div>
+                </th>
+                <th class="text-center">
+                  <span>국적</span>
+                  <input style="width: 80px" type="text" placeholder="국적">
+                  <div class="d-inline-block" style="width: 20px"> 
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                  </div>
+                </th>
               </tr>
             </thead>
             
