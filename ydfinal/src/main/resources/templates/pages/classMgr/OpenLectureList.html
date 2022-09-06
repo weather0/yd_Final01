@@ -18,7 +18,17 @@
           <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
             <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3" style="background: #fc9209">
               <h6 class="text-white text-capitalize ps-3">수강신청</h6>
-              <input  th:value="${#authentication.principal.username}" type="hidden" id="userid">
+              
+              <form action="openlectureSelect">
+              <select class="majorCk" name="majorName">
+              	<option>전공선택</option>
+              	<th:block th:each="major:${major}">
+              		<option th:text="${major.majorName}" th:value="${major.majorName}" ></option>
+              	</th:block>
+              </select>
+              <input  th:value="${#authentication.principal.username}" type="hidden" id="userid" name="userId">
+              <button th:text="검색"></button>
+             </form>             
             </div>
           </div>
           <div class="card-body px-0 pb-2">
@@ -40,7 +50,6 @@
                   </tr>
                 </thead>
                 <tbody>
-                
        				<tr th:each="data:${openList}">
        					<td th:text="${data.classId}"></td>
        					<td th:text="${data.majorName}"></td>
@@ -148,6 +157,7 @@
      		},
      		success:function(data){
      			alert('신청완료')
+     			console.log(data)
      			location.reload();
      		},
      		error:function(error){
