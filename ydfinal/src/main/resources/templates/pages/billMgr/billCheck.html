@@ -306,23 +306,14 @@
 				
 		$("#payIn").click(function(){
 			var tk = document.getElementById("token").innerHTML;
+			var tmpWindow = window.open('about:blank')		    
 				 tmpWindow.location = 
-				 "https://testapi.openbanking.or.kr/v2.0/account/list?"+				
+				 "https://testapi.openbanking.or.kr/v2.0/account/list?"+
+				 "'Authorization' : 'Bearer' tk &"+
 				 "user_seq_no=1101012426&"+ 
 				 "include_cancel_yn=Y&"+ 
 				 "sort_order=D"
-			$.ajax({
-					type : "GET",
-					url : "/https://testapi.openbanking.or.kr/v2.0/account/list",
-					<
-					data : {
-						Id : billArr
-					},
-					success : function(result) {
-						if (result == "1") {
-							alert("일괄 고지 하였습니다")
-						}
-					}
+					
 		});
 		
 	</script>
