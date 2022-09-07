@@ -32,7 +32,7 @@ public class ScoresController {
 	public String scoreLectureList(Model model, ScoresVo vo, Principal principal) {
 		vo.setUserId(principal.getName());
 		model.addAttribute("lecturelist", scoresService.lectureList(vo));
-		return "pages/scoreMgr/prof/ScoreLectureList";
+		return "pages/scoreMgr/prof/scoreLectureList";
 	}
 	
 	// 성적 입력 페이지
@@ -40,13 +40,16 @@ public class ScoresController {
 	public String scoreInsertPage(@RequestParam String classId, Model model, ScoresVo vo, Principal principal) {
 		model.addAttribute("memberlist", classId);
 		model.addAttribute("memberlist", map.scoresMemberList(vo));
-		return "pages/scoreMgr/prof/ScoreInsert";
+		return "pages/scoreMgr/prof/scoreInsert";
 	}
 	
 	// 성적 입력 페이지 Proc
 	@PostMapping("/scoreinsert")
-	public String scoreInsert(ScoresVo vo, @RequestParam String classId) {
+	public String scoreInsert(ScoresVo vo) {
 		scoresService.scoresInsert(vo);
+		scoresService.gpaPointInsert(vo);
+		System.out.println("!!!!!!!!!!!!!!" + vo.getGpaGrade());
+		System.out.println("!!!!!!!!!!!!!!!!!!!!" + vo.getClassId());
 		System.out.println(vo.getScoreMid());
 		return "redirect:scoreinsert";
 	}

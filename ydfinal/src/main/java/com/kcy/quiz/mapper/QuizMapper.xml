@@ -4,7 +4,6 @@
 	<!-- 황하경 220831 -->
 	<!-- 전체 과제 -->
 	<select id="quizList" resultType="map">
-		<![CDATA[
 		SELECT
 		    h.class_id, 
 		    h.quiz_h_title, 
@@ -33,9 +32,13 @@
             h.class_id = cm.class_id
         WHERE 
         	cm.stu_id = #{userId}
-        AND
-            d.quiz_d_openday <= date(now())
-      ]]>
+       <choose>
+        <when test="classId != null">
+       	AND
+        	cm.class_id = #{classId}
+        </when>
+       </choose>
+       
 	</select>
 	
 	<!-- 과제 헤더 -->
@@ -80,7 +83,7 @@
 			)
 		SELECT
 			date_format(now(), '%Y%m%d'), 
-			#{quizDOpenday}, 
+			date_format(now(), '%Y%m%d'), 
 			#{quizDCloseday}, 
 			CONCAT("D", NEXTVAL(quiz_d_id_seq)), 
 			quiz_h_id
@@ -251,7 +254,7 @@
         SET
             quiz_r_content = #{quizRContent}, quiz_r_file = #{quizRFile}, quiz_r_orginal = #{quizROrginal}
         WHERE
-            quiz_r_id = #{quizRId};
+            quiz_r_id = #{quizRId}
 	</update> 
 	
 	<!-- (교수) 학생의 과제 상세 보기 -->
@@ -271,7 +274,8 @@
                 d.quiz_h_id,
                 
                 cm.class_id, 
-                cm.stu_id
+                cm.stu_id,
+                cm.class_member_id
             FROM
                 k_quiz_r as r
             JOIN
@@ -305,7 +309,7 @@
 		WHERE
 			quiz_r_id = #{quizRId}
 	</update>
-	
+		
 	<!-- update cnt(학생 과제 제출) -->
 	<update id="quizDUpdate">
 		UPDATE
@@ -318,6 +322,15 @@
 	
 	<!-- 강좌 코드 -->
 	<select id="getClassId" resultType="com.kcy.quiz.service.QuizVo">
+		SELECT
+			class_id
+		FROM
+			k_class_member
+		WHERE
+			stu_id = #{userId}
+	</select>
+	
+	<select id="getClassIdProf" resultType="com.kcy.quiz.service.QuizVo">
 		SELECT
 			class_id
 		FROM

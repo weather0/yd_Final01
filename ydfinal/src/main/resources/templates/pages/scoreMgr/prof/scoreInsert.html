@@ -47,11 +47,11 @@
         		<td th:text="|${data.studentSem}학기/${data.studentAcaYn}|"></td>
         		<td><input class="form-control jt_form_field wt500 scoreMid" type="text" th:id="scoreMid" th:name="scoreMid" /></td>
         		<td><input class="form-control jt_form_field wt500 scoreFinal" type="text" th:id="scoreFinal" th:name="scoreFinal" /></td>
-        		<td><input class="form-control jt_form_field wt500 scoreQuiz" type="text" th:id="scoreQuiz" th:name="scoreQuiz" /></td>
+        		<td><input class="form-control jt_form_field wt500 scoreQuiz" type="text" th:value="${data.quizRPoint}" th:id="scoreQuiz" th:name="scoreQuiz" /></td>
         		<td><input class="form-control jt_form_field wt500 scoreAttn" type="text" th:id="scoreAttn" th:name="scoreAttn" /></td>
-        		<td><input class="form-control" th:name="gpaGrade" th:value="등급" /></td>
+        		<td><input class="form-control" th:name="gpaGrade" readonly="readonly" th:id="gpaGrade" /></td>
         		<td><input class="form-control jt_form_field wt500" type="text" readonly="readonly" th:id="gpaPoint" th:name="gpaPoint" /></td>
-        		<td><button type="button" class="btn bg-gradient-primary" th:data-hello="${data.classMemberId}">등록</button></td>
+        		<td><button type="button" class="btn bg-gradient-primary" th:data-hello="${data.classMemberId}" th:data-classid="${data.classId}" th:data-scoreid="${data.scoreId}">등록</button></td>
         	</tr> 
         	
         </tbody>
@@ -73,14 +73,62 @@ $(".scoreMid, .scoreFinal, .scoreQuiz, .scoreAttn").on("change input paste", fun
 	var scoreFinal = fnReplace(tr.find("#scoreFinal").val());
 	var scoreQuiz = fnReplace(tr.find("#scoreQuiz").val());
 	var scoreAttn = fnReplace(tr.find("#scoreAttn").val());
-	
+	var grade = "";
 	var gpaPoint = tr.find("#gpaPoint").val((scoreMid + scoreFinal + scoreQuiz + scoreAttn) / 4);
-
+	var gpaGrade = tr.find("#gpaGrade").val(grade);
+	var point = parseInt(gpaPoint.val());
+/*	
+	switch(point) {
+	case 10:
+		grade = "A+";
+	case 9:
+		if(gpaPoint % 10 >= 5) {
+			grade = "A+";			
+		}
+		if(gpaPoint % 10 < 5) {
+			grade = "A";
+		}
+		break;
+	case 8:
+		grade = "B+"
+		break;
+	case 7:
+		grade = "B"
+		break;
+	case 6:
+		grade = "C+"
+		break;
+	default:
+		grade = "F";
+		break;
+	}
+	*/
+	
+	console.log(point);
+	
+	if(point >= 95 && point <= 100) {
+		grade = "A+";
+	} else if(point >= 90 && point < 95) {
+		grade = "A";
+	} else if(point >= 85 && point < 90) {
+		grade = "B+";
+	} else if(point >= 80 && point < 85) {
+		grade = "B";
+	} else if(point >= 75 && point < 80) {
+		grade = "C+";
+	} else if(point >= 70 && point < 75) {
+		grade = "C";
+	} else if(point >= 0 && point < 70){
+		grade = "F";
+	}
+	
+	console.log(grade);
+	
+	var gpaGrade = tr.find("#gpaGrade").val(grade);
+	
 });
 
 function submitData() {
-	
-	console.log("ㅎㅇ");
 	
 	var tr = $(".scoreMid, .scoreFinal, .scoreQuiz, .scoreAttn").closest("tr");
 	let scoreMid = fnReplace(tr.find("#scoreMid").val());
@@ -88,23 +136,33 @@ function submitData() {
 	let scoreQuiz = fnReplace(tr.find("#scoreQuiz").val());
 	let scoreAttn = fnReplace(tr.find("#scoreAttn").val());
 	let gpaPoint = fnReplace(tr.find("#gpaPoint").val());
-	let gpaGrade = fnReplace(tr.find("#gpaGrade").val());
 	let classMemberId = $(this).data("hello");
+	let classId = $(this).data("classid");
+	let scoreId = $(this).data("scoreid");
+	var gpaGrade = tr.find("#gpaGrade").val();
+	
+	console.log(gpaGrade);
+	console.log(gpaPoint);
+	console.log(classId)
 	
 	$.ajax({
 		url: "http://localhost/scoreinsert",
 		type: "post",
 		data: {
+			classId: classId,
 			classMemberId: classMemberId,
 			scoreMid: scoreMid,
 			scoreFinal: scoreFinal,
 			scoreQuiz: scoreQuiz,
 			scoreAttn: scoreAttn,
 			
+			scoreId: scoreId,
+			
 			gpaPoint: gpaPoint,
 			gpaGrade: gpaGrade
 		},
 		success:function(data) {
+			alert("성적 등록 완료");
 		}
 	});
 	

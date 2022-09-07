@@ -59,6 +59,7 @@
                   </div>
                   <p class="mt-4 text-sm text-center">
                     비밀번호를 잊어버리셨나요?
+                      <span style="color: #e83975"><a href="/check/findPw">비밀번호 찾기</a></span>
                   </p>
                 </form>
               </div>
@@ -67,72 +68,8 @@
         </div>
       </div>
     </div>
-    
-    <!-- 모달 -->
- <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title font-weight-normal" id="exampleModalLabel">Modal title</h5>
-        <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        ...
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn bg-gradient-primary">Save changes</button>
-      </div>
-    </div>
-  </div>
-</div>
-    
+   
   </main>
   
-  	<script>
-  	
-  	$(".testBtn").click(function() {
-  		console.log("???");
-  	})
-  	
-	 $("#checkEmail").click(function () {
-	        let userEmail = $("#userEmail").val();
-	        let userName = $("#userName").val();
-
-	        $.ajax({
-	            type: "GET",
-	            url: "/check/findPw",
-	            data: {
-	                "userEmail": userEmail,
-	                "userName": userName
-	            },
-	            success: function (res) {
-	                if (res['check']) {
-	                    swal("발송 완료!", "입력하신 이메일로 임시비밀번호가 발송되었습니다.", "success").then((OK) => {
-	                        if(OK) {
-	                            $.ajax({
-	                                type: "POST",
-	                                url: "/check/findPw/sendEmail",
-	                                data: {
-	                                    "userEmail": userEmail,
-	                                    "userName": userName
-	                                }
-	                            })
-	                            window.location = "/login";
-	                        }
-
-
-	                    }
-	                )
-	                    $('#checkMsg').html('<p style="color:darkblue"></p>');
-	                } else {
-	                    $('#checkMsg').html('<p style="color:red">일치하는 정보가 없습니다.</p>');
-	                }
-	            }
-	        })
-	    })
-	</script>
 </body>
 </html>
