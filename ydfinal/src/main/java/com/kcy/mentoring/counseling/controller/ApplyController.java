@@ -36,6 +36,7 @@ public class ApplyController {
 	public String counseling(Model model, Principal principal) {
 		String chk = service.applyCheck(principal.getName());
 		if (chk.equals("ing")) {
+			model.addAttribute("list",service.applyCheckPrint(principal.getName()));
 			return "pages/mentorMgr/counseling/applyX";
 		}
 

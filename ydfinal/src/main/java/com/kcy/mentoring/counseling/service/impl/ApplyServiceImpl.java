@@ -130,6 +130,12 @@ public class ApplyServiceImpl implements ApplyService {
 		
 	}
 
+	@Override
+	public ApplyVO applyCheckPrint(String id) {
+		// TODO Auto-generated method stub
+		return map.applyCheckPrint(id);
+	}
+
 	
 
 }
