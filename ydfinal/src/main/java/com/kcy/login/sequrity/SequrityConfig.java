@@ -36,6 +36,8 @@ public class SequrityConfig extends WebSecurityConfigurerAdapter {
                         "/billCheck",
                         "/openlecturelist",
                         "/matchingChange",
+                        "/scoreview",
+                        "/classScore",
                         "/apply"
                         ).hasRole("STU")
 			.antMatchers(
@@ -44,6 +46,9 @@ public class SequrityConfig extends WebSecurityConfigurerAdapter {
                         "/careerInsert",
                         "/careerListInsert",
                         "/careerSelectList",
+                        "/noticeinsert",
+                        "/quizinsert",
+                        "/quizviewlist",
                         "/applyList"
                         ).hasRole("PROF")
 			.antMatchers(
@@ -62,7 +67,6 @@ public class SequrityConfig extends WebSecurityConfigurerAdapter {
                         "/changeMatching"
                         ).hasRole("ADMIN")
 			.antMatchers(
-                        "/noticeinsert",
                         "/chat/room",
                         "/room/enter/{roomId}"
                         ).hasAnyRole("STU","PROF")
