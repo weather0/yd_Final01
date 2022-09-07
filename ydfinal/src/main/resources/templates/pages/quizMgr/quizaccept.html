@@ -40,7 +40,8 @@
 		      <input type="file" class="form-control" multiple="multiple" th:name="classQuizFileSyl">
 		      <input type="hidden" th:id="quizROrginal" class="form-control" multiple="multiple" th:value="${quizaccept.quizROrginal}"  th:name="quizROrginal">
 		    </div>
-		    <button class="btn bg-gradient-primary hidBtn">수정하기</button>
+		    <button class="btn bg-gradient-primary hidBtn">수정</button>
+		    <button class="btn bg-gradient-primary">목록</button>
 </form>
 </th:block>
  	
@@ -58,7 +59,8 @@
 		     <input type="file" class="form-control" multiple="multiple" th:name="classQuizFileSyl">
 		     <input type="hidden" class="form-control" multiple="multiple" th:name="quizROriginal">
 		   </div>
-    	   <button class="btn bg-gradient-primary hidBtn">제출12456483하기</button>
+    	   <button class="btn bg-gradient-primary hidBtn">제출</button>
+    	   <button class="btn bg-gradient-primary backBtn">목록</button>
  </form>
  </th:block>
     
@@ -75,6 +77,10 @@
 		if(now > end) {
 			$(".hidBtn").hide();
 		}
+		
+		$(".backBtn").on("click", function() {
+			window.history.back();
+		});
 		
 	</script>
  

@@ -81,4 +81,15 @@ public class QuizServiceImpl implements QuizService {
 		return map.quizAcceptDetail(vo);
 	}
 
+	@Override
+	public List<QuizVo> getClassIdProf(QuizVo vo) {
+		return map.getClassIdProf(vo);
+	}
+
+	@Override
+	public void scoreQuizInsert(QuizVo vo) {
+		map.scoreQuizInsert(vo);
+		
+	}
+
 }

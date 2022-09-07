@@ -89,13 +89,42 @@ public class NoticeController {
 		return "redirect:noticelist";
 	}
 	
+	// 공지 수정
+	@GetMapping("/noticemodify")
+	public String NoticeModifyPage(Model model, NoticeVo vo, @RequestParam final int classNoticeNo) {
+		model.addAttribute("noticeList", noticeService.noticeView(classNoticeNo));
+		return "/pages/classMgr/prof/Noticemodify";
+	}
+	
+	// 공지 수정 프로그램
+	@PostMapping("/noticeModify")
+	public String NoticeModify(NoticeVo vo, @RequestParam("classNoticeFileSyl") MultipartFile classNoticeFileSyl, Model model) throws IllegalStateException, IOException {
+			
+		if(!classNoticeFileSyl.isEmpty()) {
+			FileDto dto = new FileDto(UUID.randomUUID().toString(),
+					classNoticeFileSyl.getOriginalFilename(),
+					classNoticeFileSyl.getContentType());
+			String fileName = dto.getUuid() + "_" + dto.getFileName();
+			String oriFileName = classNoticeFileSyl.getOriginalFilename();
+			System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!" + classNoticeFileSyl.getOriginalFilename());
+			File newFileName = new File(fileName);
+			classNoticeFileSyl.transferTo(newFileName);
+			vo.setClassNoticeFile(fileName);
+			vo.setClassNoticeOriginal(oriFileName);
+		}				
+		
+		noticeService.noticeModify(vo);
+		
+		return "redirect:noticelist";
+	}
+	
 	// 공지 목록
 	@GetMapping("/noticelist")
 	public String noticelist(Model model, Principal principal, NoticeVo vo) {
 		vo.setUserId(principal.getName());
 		System.out.println("!!!!!!!!!!!!!!!!!" + vo.getClassId());
 		model.addAttribute("noticeList", noticeService.noticeList(vo));
-		return "/pages/classMgr/NoticeList";
+		return "/pages/classMgr/noticeList";
 	}
 	
 	// 공지 상세 보기

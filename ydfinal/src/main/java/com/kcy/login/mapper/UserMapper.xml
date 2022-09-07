@@ -10,12 +10,4 @@
 		 FROM k_users
         WHERE USER_ID= #{userId}
 	</select>
-	
-	<!-- 패스워드 찾기 -->
-	<update id="findUserByUserId" parameterType="com.kcy.login.mapper.MailDto">
-		UPDATE k_users SET
-			user_pw = #{userPw}
-		WHERE user_email = #{userEmail}
-	</update>
-	
 </mapper>

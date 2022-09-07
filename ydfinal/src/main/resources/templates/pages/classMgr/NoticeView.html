@@ -17,7 +17,22 @@
 			<h1 th:text="${noticeList.classNoticeDate}"></h1>
 			<a th:href="${'/noticedownload?classNoticeFile='+noticeList.classNoticeFile}"><h1 th:text="${noticeList.classNoticeOriginal}"></h1></a>
   <!-- 본문 end-->
+ 	</div>
+ 	<th:block sec:authorize="hasRole('ROLE_PROF')">
+ 	<button class="btn bg-gradient-primary">
+ 	<a th:href="@{/noticemodify(classNoticeNo=${noticeList.classNoticeNo})}">
+ 	수정
+ 	</a>
+ 	</button>
+ 	</th:block>
+ 	<button class="btn bg-gradient-primary backBtn">목록</button>
  </div>
- </div>
+ <script>
+	
+	$(".backBtn").on("click", function() {
+		window.history.back();
+	});
+	
+ </script>
 </th:block>
 </html>

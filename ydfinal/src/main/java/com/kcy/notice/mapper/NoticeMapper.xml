@@ -63,6 +63,12 @@
         ON
             m.major_name = u.user_dept
         WHERE
+       <choose>
+        <when test="classId != null">
+        	c.class_id = #{classId}
+       	AND
+        </when>
+       </choose>
             c.class_id in (
             				SELECT class_id 
                               FROM k_class_member 
@@ -74,21 +80,16 @@
         					  FROM k_class
         					 WHERE prof_id = #{userId}
         					)
-          <choose>
-        	<when test="classId != null and classId.equals('A100')">
-        		AND 
-        			c.class_id = #{classId}
-        	</when>
-        	<when test="classId != null and classId.equals('s10014')">
-        		AND 
-        			c.class_id = #{classId}
-        	</when>
-        	<when test="classId != null and classId.equals('fff1000')">
-        		AND 
-        			c.class_id = #{classId}
-        	</when>
-        	</choose>
 	</select>
+	
+	<update id="noticeModify">
+		UPDATE
+			k_class_notice
+		SET
+			class_notice_title = #{classNoticeTitle}, class_notice_con = #{classNoticeCon}, class_notice_file = #{classNoticeFile}, class_notice_original = #{classNoticeOriginal}
+		WHERE
+			class_notice_no = #{classNoticeNo}
+	</update>
 	
 	<!-- 공지 상세보기 -->
 	<select id="noticeView" resultType="com.kcy.notice.service.NoticeVo">
