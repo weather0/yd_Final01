@@ -16,8 +16,9 @@ public class LayoutController {
 	    if (authentication != null) {
 	        UserVo userVo = (UserVo) authentication.getPrincipal();
 	        model.addAttribute("userName", userVo.getUserName());
+	        return "home";
 	    }
-		return "home";
+	    return "login";
 	}
 
 
