@@ -21,6 +21,13 @@
 			      			WHERE stu_id=#{id} AND matching_type = '0')
 	</select>
 	
+	<select id="applyCheckPrint" resultType="com.kcy.mentoring.counseling.vo.ApplyVO" parameterType="String">
+		SELECT mtr_count, career_h_date
+		FROM k_mentoring me join k_career_h ca
+		on me.mtr_id = ca.mtr_id
+		WHERE ca.stu_id=#{id} AND mtr_status = 'ing';
+	</select>
+	
 	<select id="applySelect" resultType="com.kcy.mentoring.counseling.vo.ApplyVO" parameterType="String">
 		SELECT career_q_id, career_q_content, career_list_id, career_q_yn
 		FROM k_career_q

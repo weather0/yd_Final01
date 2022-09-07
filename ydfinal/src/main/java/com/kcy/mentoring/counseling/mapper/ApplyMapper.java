@@ -13,6 +13,7 @@ public interface ApplyMapper {
 	List<ApplyVO> applySelectList(String id); // 담당교수 상담가능 일자 조회
 	List<ApplyVO> applyList(String id); // 상담신청한 학생들 리스트 (담당교수만 확인)
 	String applyCheck(String id); // 학생 상담 신청 여부
+	ApplyVO applyCheckPrint(String id); // 학생 상담 신청했으면 나오는 
 	List<ApplyVO> applySelect(String id);
 	void applyInsert(ApplyVO vo); // 상담신청
 	void applyUpdate(ApplyVO vo); // 상담신청 수정

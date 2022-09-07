@@ -13,6 +13,7 @@
 <div class="container-fluid py-4">
     <div class="row"> 
  <input  th:value="${#authentication.principal.username}" type="hidden" id="userId" />
+ <input th:value="${quiz.classMemberId}" type="hidden" />
 	<h1 th:text="${quiz.userName}"></h1>
 			<h1 th:text="${quiz.quizRContent}"></h1>
 			<h1 th:text="${quiz.quizRDate}"></h1>

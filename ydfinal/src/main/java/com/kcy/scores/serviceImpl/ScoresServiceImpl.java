@@ -50,4 +50,10 @@ public class ScoresServiceImpl implements ScoresService {
 		return map.getClassSem(vo);
 	}
 
+	@Override
+	public void gpaPointInsert(ScoresVo vo) {
+		map.gpaPointInsert(vo);
+		
+	}
+
 }

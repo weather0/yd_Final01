@@ -8,6 +8,7 @@ import com.kcy.quiz.service.QuizVo;
 // 황하경 220831
 public interface NoticeMapper {
 	public void noticeInsert(NoticeVo vo);
+	public void noticeModify(NoticeVo vo);
 	public List<NoticeVo> noticeList(NoticeVo vo);
 	public NoticeVo noticeView(int classNoticeNo);
 	public List<NoticeVo> getClassId(NoticeVo vo);

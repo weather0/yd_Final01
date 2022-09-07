@@ -51,6 +51,13 @@ public class QuizController {
 		return map.getClassId(vo);
 	}
 	
+	// 강좌 코드
+	@ModelAttribute("profClassId") 
+	public List<QuizVo> getClassIdProf(Principal principal, QuizVo vo) {
+		vo.setUserId(principal.getName());
+		return map.getClassIdProf(vo);
+	}
+	
 	// 과제 등록(교수)
 	@GetMapping("/quizinsert")
 	public String quizInsertPage() {

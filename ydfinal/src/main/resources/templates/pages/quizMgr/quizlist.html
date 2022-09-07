@@ -13,6 +13,24 @@
   <!-- Button trigger modal -->
 <div class="container-fluid py-4">
     <div class="row"> 
+    
+       <form name="searchform" autocomplete="off">
+   <input th:value="${#authentication.principal.username}" type="hidden" id="userid">
+     <select sec:authorize="hasRole('ROLE_STU')" name="classId">
+			<option>강좌 선택</option>
+		<th:block th:each="c : ${classId}">
+			<option th:text="${c.classId}" th:value="${c.classId}"></option>
+		</th:block> 		
+	</select>
+ 	<select sec:authorize="hasRole('ROLE_PROF')" name="classId">
+			<option>강좌 선택</option>
+		<th:block th:each="c : ${profClassId}">
+			<option th:text="${c.classId}" th:value="${c.classId}"></option>
+		</th:block> 		
+	</select>
+		<button type="submit" th:value="검색">검색</button>
+	</form>
+    
  <table id="quizTable" class="table table-striped" style="width:100%;" >
         <thead>
             <tr>

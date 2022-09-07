@@ -17,6 +17,7 @@ public interface ApplyService {
 	void applyUpdate(ApplyVO vo); // 상담신청 수정
 	void applyDelete(ApplyVO vo); // 상담신청 삭제
 	String applyCheck(String id); // 학생 상담 신청 여부
+	ApplyVO applyCheckPrint(String id); // 학생 상담 신청했으면 나오는
 	public void applyHistoryInsert(ApplyVO vo);
 	
 	List<ApplyVO> applyList(String id); // 상담신청한 학생들 리스트 (담당교수만 확인)

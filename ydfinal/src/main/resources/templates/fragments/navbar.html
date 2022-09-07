@@ -2,6 +2,11 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org">
 
 <th:block th:fragment="navbarFragment">
+<script type="text/javascript">
+$(function(){
+  
+})
+</script>
   <!-- Navbar -->
   <nav class="navbar navbar-main navbar-expand-lg mx-1 my-3 shadow-none border-radius-xl" id="navbarBlur" navbar-scroll="true">
     <div class="container-fluid">
@@ -29,14 +34,20 @@
 <!--             <span>환영합니다,&nbsp;&nbsp;</span> -->
             <span class="me-2" id="myName"></span>
             <script th:inline="javascript">
-              let myName = [[${userName}]]
+              let myName = [[${#authentication.principal.myName}]]
               
-              if(sessionStorage.getItem("myName") != null) {
-                $('#myName').text('환영합니다, ' + sessionStorage.getItem("myName")+ '님');
-              } else if (myName != null) {
-                sessionStorage.setItem("myName", myName);
-                $('#myName').text('환영합니다, ' + sessionStorage.getItem("myName")+ '님');
-              }
+              if (myName) {
+                $('#myName').text('환영합니다, ' + myName + '님')
+              } 
+              
+              // LayoutController에서 값 넘겨받아서 세션스토리지 활용하는 방식(→꾸질해서 방식 바꿈)
+//               let myName = [[${myName}]]
+//               if(sessionStorage.getItem("myName") != null) {
+//                 $('#myName').text('환영합니다, ' + sessionStorage.getItem("myName") + '님');
+//               } else if (myName != null) {
+//                 sessionStorage.setItem("myName", myName);
+//                 $('#myName').text('환영합니다, ' + sessionStorage.getItem("myName") + '님');
+//               }
             </script>
             <h6 class="font-weight-bolder mb-0" sec:authorize="hasRole('ROLE_STU')">[학생]&nbsp;</h6>
             <h6 class="font-weight-bolder mb-0" sec:authorize="hasRole('ROLE_PROF')">[교수]&nbsp;</h6>
