@@ -42,7 +42,7 @@ public class UserVo implements UserDetails {
 	@Override
 	public String getUsername() {
 		// TODO Auto-generated method stub
-		return this.userName; // 9.7.곽ㅈㅇ: userName을 반환하니 이름 제대로 나옴
+		return this.userId; // 9.7.곽ㅈㅇ: userName을 반환하니 이름 제대로 나옴
 	}
 
 	@Override

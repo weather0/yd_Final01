@@ -34,14 +34,14 @@ $(function(){
 <!--             <span>환영합니다,&nbsp;&nbsp;</span> -->
             <span class="me-2" id="myName"></span>
             <script th:inline="javascript">
-//               let myName = [[${userName}]]
+              let myName = [[${userName}]]
               
-//               if(sessionStorage.getItem("myName") != null) {
-//                 $('#myName').text('환영합니다, ' + sessionStorage.getItem("myName")+ '님');
-//               } else if (myName != null) {
-//                 sessionStorage.setItem("myName", myName);
-//                 $('#myName').text('환영합니다, ' + sessionStorage.getItem("myName")+ '님');
-//               }
+              if(sessionStorage.getItem("myName") != null) {
+                $('#myName').text('환영합니다, ' + sessionStorage.getItem("myName")+ '님');
+              } else if (myName != null) {
+                sessionStorage.setItem("myName", myName);
+                $('#myName').text('환영합니다, ' + sessionStorage.getItem("myName")+ '님');
+              }
             </script>
             <h6 class="font-weight-bolder mb-0" sec:authorize="hasRole('ROLE_STU')">[학생]&nbsp;</h6>
             <h6 class="font-weight-bolder mb-0" sec:authorize="hasRole('ROLE_PROF')">[교수]&nbsp;</h6>
