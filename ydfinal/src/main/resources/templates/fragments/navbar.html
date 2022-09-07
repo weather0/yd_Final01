@@ -34,7 +34,7 @@ $(function(){
 <!--             <span>환영합니다,&nbsp;&nbsp;</span> -->
             <span class="me-2" id="myName"></span>
             <script th:inline="javascript">
-              let myName = [[${userName}]]
+              let myName = [[${myName}]]
               
               if(sessionStorage.getItem("myName") != null) {
                 $('#myName').text('환영합니다, ' + sessionStorage.getItem("myName")+ '님');
