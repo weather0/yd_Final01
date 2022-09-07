@@ -60,7 +60,17 @@
 					},
 					dataType: "json",
 					success: function (data) {
-						fullCalendar(data);
+						var dataAry = [];
+						
+						var today = new Date();
+						for (var i = 0; i < data.length; i++) {
+							var date = new Date(data[i].date +"T"+ data[0].timeStart);
+							if (date >= today) {
+								dataAry.push(data[i]);
+							}
+						}
+						fullCalendar(dataAry);
+						
 						if (data.length != 0) {
 							$('#profId').val(data[0].userId)
 						}
