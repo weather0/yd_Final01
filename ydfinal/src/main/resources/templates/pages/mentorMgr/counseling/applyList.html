@@ -26,19 +26,36 @@ th {
 	margin-right: 10%;
 	margin-top: 3%;
 }
+.toolbar div {
+	display : inline;
+	 justify-content: center;
+	 align-items: center;
+	 line-height: 42px;
+}
 
 td {
 	text-align: center;
 	word-break: break-all;
 	paddig: 10px;
 }
+
+.pagination .active .page-link {
+	background-color: #7b809a;
+	border-color: #7b809a;
+}
+
+.page-link:focus {
+	box-shadow: 0 0 0 0.2rem rgb(123 128 154/ 25%);
+}
 </style>
 	<script>
 		jQuery(function ($) {
 			$('#journal-table').hide();
-			$("#foo-table")
+			var table1 = $("#foo-table")
 				.DataTable(
-					{	
+					{	 dom:"<'row' <'col-sm-12 col-md-3'l> <'col-md-6 col-sm-12 toolbar'> <'col-sm-12 col-md-3'f> >" +
+				        "<'row'<'col-sm-12'tr>>" +
+				        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
 						orderMulti: true,
 						scrollY: 550,
 						ajax: {
@@ -210,6 +227,18 @@ td {
 
 					});
 
+			 //$('.busquedaSem').hide();
+			  //se clonan radios html
+			  $("div.toolbar").html('<div>'+$('.busquedaSem').html()+'</div>');
+			  //se elimina el elemento clonado
+			  $('.busquedaSem').remove();
+			  //se agrega clase para filtro
+			  $(".fill").addClass("fs");
+			  
+			    //Event Listener for custom radio buttons to filter datatable
+			$('.fs').change(function () {
+			  table1.columns(4).search(this.value).draw();
+			});
 
 		});
 
@@ -458,6 +487,24 @@ td {
 	</script>
 
 	<!-- 본문 -->
+	<div class="busquedaSem row">
+		<label class="control-label"> 구분:</label>
+		<div class="col-2 custom-control custom-radio custom-control-inline">
+			<input type="radio" id="customRadioInline" name="customRadioInline" class="fill custom-control-input form-control-sm" value="" checked> <label class="custom-control-label" for="customRadioInline">All</label>
+		</div>&nbsp;
+		<div class="col-2 custom-control custom-radio custom-control-inline">
+			<input type="radio" id="customRadioInline1" name="customRadioInline" class="fill custom-control-input form-control-sm" value="상담필요"> <label class="custom-control-label" for="customRadioInline1">상담필요</label>
+		</div>&nbsp;
+		<div class="col-2 custom-control custom-radio custom-control-inline">
+			<input type="radio" id="customRadioInline2" name="customRadioInline" class="fill custom-control-input form-control-sm" value="상담완료"> <label class="custom-control-label" for="customRadioInline2">상담완료</label>
+		</div>&nbsp;
+		<div class="col-2 custom-control custom-radio custom-control-inline">
+			<input type="radio" id="customRadioInline3" name="customRadioInline" class="fill custom-control-input form-control-sm" value="일지작성필요"> <label class="custom-control-label" for="customRadioInline3">일지작성필요</label>
+		</div>&nbsp;
+		<div class="col-2 custom-control custom-radio custom-control-inline">
+			<input type="radio" id="customRadioInline4" name="customRadioInline" class="fill custom-control-input form-control-sm" value="상담취소"> <label class="custom-control-label" for="customRadioInline4">상담취소</label>
+		</div>
+	</div>
 	<table id="foo-table" class="table table-bordered text-center align-items-center">
 		<thead>
 			<tr class="text-center">

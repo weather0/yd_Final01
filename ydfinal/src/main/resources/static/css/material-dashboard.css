@@ -27310,11 +27310,10 @@ pre[class*="language-"] {
 
 /* 메모 사이드 바 */
 .memo-plugin .memo-plugin-button {
-  background: #fff;
+  background: transparent;
   border-radius: 10%;
   bottom: 30px;
   right: 30px;
-  font-size: 1.25rem;
   z-index: 990;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.16);
   cursor: pointer;
