@@ -42,7 +42,7 @@ public class UserVo implements UserDetails {
 	@Override
 	public String getUsername() {
 		// TODO Auto-generated method stub
-		return this.userId;
+		return this.userName; // 9.7.곽ㅈㅇ: userName을 반환하니 이름 제대로 나옴
 	}
 
 	@Override
@@ -68,10 +68,5 @@ public class UserVo implements UserDetails {
 		// TODO Auto-generated method stub
 		return true;
 	}
-
 	
-	// 9.7. 곽ㅈㅇ: userName필드 게터 추가. 위에 getUsername이랑 이름 비슷하게 중복돼서 롬복이 자동생성 못한 거?
-    public String getUserName() {
-        return userName;
-    }
 }

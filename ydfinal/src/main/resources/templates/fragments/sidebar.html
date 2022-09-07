@@ -2,7 +2,18 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 
 <th:block th:fragment="sidebarFragment">
-
+<script type="text/javascript">
+$(function(){
+  let soMenu = $('#sidenav-collapse-main .collapse a')
+  soMenu.on('click', function () {
+    console.log(this.text)
+    Cookies.set()
+  })
+  
+  
+  Cookies.set()
+})
+</script>
 
 
   <div class="sidenav-header">
@@ -54,6 +65,7 @@
           </div>
           <div class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">
             <a class="nav-link text-white py-1" href="allStuInfo" >학적정보 조회</a>
+<!--             <div sec:authentication="principal"></div> -->
           </div>
           <div class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">
             <a class="nav-link text-white py-1" href="allAcaInfo" >학적변동 승인</a>
