@@ -13,4 +13,6 @@ public class MatchingStdVO {
 	private String studentProf;
 	private String userId;
 	private String profname;	
+	private String studentChangeStatus;
+	
 }

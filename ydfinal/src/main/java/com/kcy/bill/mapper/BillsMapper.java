@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.kcy.bill.service.BankVO;
 import com.kcy.bill.service.BillsVO;
 import com.kcy.bill.service.MajorbVO;
 import com.kcy.bill.service.PayVO;
@@ -23,6 +24,7 @@ public interface BillsMapper {
 	public void chkPayInsert(PayVO vo);
 	public void payChange(PayVO vo);
 	public void payChangeCancel(PayVO vo);
+	public void insertToken(PayVO vo);
 	
 
 }

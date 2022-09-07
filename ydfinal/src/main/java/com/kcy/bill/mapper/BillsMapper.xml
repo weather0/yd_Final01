@@ -146,9 +146,11 @@ VALUES ( #{billId}, #{billYear}, #{billSem}, #{billAmount}, #{majorbId}, #{billT
 	   (b.bill_amount/kph.pay_h_total) AS b,
 	   (b.bill_amount/kph.pay_h_total) AS c,
 	   (b.bill_amount/kph.pay_h_total) AS d,
+	   kph.pay_h_acc,
 	   kph.pay_h_type,
 	   kph.pay_id,
-	   kph.pay_h_yn
+	   kph.pay_h_yn,
+	   s.student_token
 	FROM k_students s
 	JOIN k_users u
 	ON s.stu_id = u.user_id
@@ -216,4 +218,9 @@ VALUES ( #{billId}, #{billYear}, #{billSem}, #{billAmount}, #{majorbId}, #{billT
 	WHERE pay_id = #{payId}
 </update>
 
+<update id="insertToken" parameterType="com.kcy.bill.service.PayVO">
+	UPDATE k_students
+	SET student_token = #{accessToken}
+	WHERE stu_id = #{stuId}
+</update>
 </mapper>

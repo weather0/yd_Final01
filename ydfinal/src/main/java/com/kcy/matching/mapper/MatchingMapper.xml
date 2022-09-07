@@ -80,6 +80,12 @@
 		INSERT INTO k_matching_change
 		( stu_id, matching_change_yn, matching_change_date, prof_id, matching_change_reason, matching_want )
 		VALUES ( #{stuId}, '0', NOW(), #{profId}, #{matchingChangeReason}, #{matchingWant} )
+		ON DUPLICATE KEY UPDATE
+			matching_change_yn = '0',
+			matching_change_date = NOW(),
+			prof_id = #{profId}, 
+			matching_change_reason = #{matchingChangeReason}, 
+			matching_want = #{matchingWant}	
 </insert>
 
 <select id="matchingChangeList" resultType="com.kcy.matching.service.MatchingChangeListVO">
@@ -105,16 +111,23 @@
 		WHERE c.matching_change_yn = '0'
 </select>
 
+<select id="changeProgress" resultType="com.kcy.matching.service.MatchingChangeVO">
+		SELECT * 
+		FROM k_matching_change 
+		WHERE stu_id = #{stuId}
+</select>
+
 <select id="matchingName" resultType="com.kcy.matching.service.MatchingStdVO">
 	SELECT s.stu_id, 
-	       u.user_name, 
-	       s.student_prof,
-	       ku.user_name AS profname
+	   u.user_name, 
+	   s.student_prof,
+	   ku.user_name AS profname,
+	   s.student_change_status 
 	FROM k_students s 
 	JOIN k_users u 
 	ON s.stu_id = u.user_id
 	JOIN k_users ku
-	ON s.student_prof = ku.user_id
+	ON s.student_prof = ku.user_id	
 	WHERE s.stu_id = #{userId}
 </select>
 
@@ -138,5 +151,19 @@
 			matching_change_reject = #{matchingChangeReject}
 		WHERE stu_id = #{stuId}
 </update>
+
+<update id="changeStatus" parameterType="com.kcy.matching.service.MatchingStdVO">
+		UPDATE k_students 
+		SET student_change_status = CASE 
+			WHEN student_change_status ='0' THEN '1'
+			WHEN student_change_status ='1' THEN '0'
+		END
+		WHERE stu_id = #{stuId}
+</update>
+
+<delete id="changeCancel" parameterType="com.kcy.matching.service.MatchingChangeVO">
+		DELETE FROM k_matching_change 
+		WHERE stu_id = #{delId}
+</delete>
 
 </mapper>

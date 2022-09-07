@@ -100,4 +100,11 @@ public class BillsServiceImpl implements BillsService {
 		
 	}
 
+
+	@Override
+	public void insertToken(PayVO vo) {
+		mapper.insertToken(vo);
+		
+	}
+
 }

@@ -83,11 +83,12 @@
 						</tr>
 						<tr hidden="">
 							<td th:text="${bill.payId}" name="payId" id="payId"></td>
+							<td th:text="${bill.studentToken}" name="token" id="token"></td>
 						</tr>
 						<span th:if="${bill.payHType.toString().equals('b')}">
 							<tr>
 								<td class="table-secondary">등록금 총액</td>
-								<td th:text="${bill.billAmount}"></td>
+								<td th:text="${bill.billAmount}" name="amt" id="amt"></td>
 								<td class="table-secondary">납부방식</td>
 								<td><span th:if="${bill.payHType.toString().equals('b')}">일괄납부</span>
 									<span th:if="${bill.payHType.toString().equals('s1')}">분할납부A</span>
@@ -100,7 +101,7 @@
 						</tr>
 						<tr>
 							<td class="table-secondary">가상계좌</td>
-							<td></td>
+							<td th:text="${bill.payHAcc}"></td>
 						</tr>
 						</span>
 						
@@ -140,7 +141,7 @@
 							</tr>
 							<tr>
 								<td class="table-secondary">가상계좌</td>
-								<td></td>
+								<td th:text="${bill.payHAcc}"></td>
 							</tr>
 						</span>
 						
@@ -168,7 +169,7 @@
 							</tr>
 						<tr>
 							<td class="table-secondary">가상계좌</td>
-							<td></td>
+							<td th:text="${bill.payHAcc}"></td>
 						</tr>
 						</span>
 					</table>
@@ -190,13 +191,13 @@
 			<div class="input-group input-group-outline my-3">
 				<button type="button" class="btn btn-primary change" id="bankAuth" name="bankAuth">사용자 인증</a>
 			</div>
-		</div>
+		</div>	
 		
 		<div class="col-md-3">
 			<div class="input-group input-group-outline my-3">
-				<button class="btn bg-gradient-primary">조회</button>
+				<button type="button" class="btn btn-primary change" id="payIn" name="payIn">납부</a>
 			</div>
-		</div>
+		</div>		
 		
 		<span th:if="${!bill.payHType.toString().equals('b')}">		
 			<div class="col-md-3">
@@ -286,6 +287,7 @@
 					}
 				});			
 			});
+				
 		
 		$("#bankAuth").click(function(){
            var tmpWindow = window.open('about:blank')		    
@@ -301,9 +303,28 @@
 		
 		});
 		
+				
+		$("#payIn").click(function(){
+			var tk = document.getElementById("token").innerHTML;
+				 tmpWindow.location = 
+				 "https://testapi.openbanking.or.kr/v2.0/account/list?"+				
+				 "user_seq_no=1101012426&"+ 
+				 "include_cancel_yn=Y&"+ 
+				 "sort_order=D"
+			$.ajax({
+					type : "GET",
+					url : "/https://testapi.openbanking.or.kr/v2.0/account/list",
+					<
+					data : {
+						Id : billArr
+					},
+					success : function(result) {
+						if (result == "1") {
+							alert("일괄 고지 하였습니다")
+						}
+					}
+		});
 		
-		
-			
 	</script>
 
 	<!-- 본문 end-->

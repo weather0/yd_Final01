@@ -16,7 +16,7 @@
 
 	<!-- 본문 start -->
 	<h1>납부자 대상자 리스트</h1>
-	<form action="matchingListInfo">
+	<form action="payCheckInfo">
 		<div class="row">
 			<div class="col-md-2">
 				<div class="input-group input-group-outline my-3">
@@ -95,7 +95,8 @@
 				<td th:text=${pay.userPhone}></td>
 				<td>
 					<span th:if="${pay.payHType.toString().equals('b')}">일괄납부</span>
-					<span th:if="${pay.payHType.toString().equals('s')}">분할납부</span>
+					<span th:if="${pay.payHType.toString().equals('s1')}">분할납부A</span>
+					<span th:if="${pay.payHType.toString().equals('s2')}">분할납부B</span>
 				</td>
 				<td>
 					<span th:if="${pay.payHYn.toString().equals('y')}">완납</span> 
