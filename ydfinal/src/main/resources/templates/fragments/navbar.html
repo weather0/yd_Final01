@@ -2,6 +2,11 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org">
 
 <th:block th:fragment="navbarFragment">
+<script type="text/javascript">
+$(function(){
+  
+})
+</script>
   <!-- Navbar -->
   <nav class="navbar navbar-main navbar-expand-lg mx-1 my-3 shadow-none border-radius-xl" id="navbarBlur" navbar-scroll="true">
     <div class="container-fluid">
@@ -29,7 +34,7 @@
 <!--             <span>환영합니다,&nbsp;&nbsp;</span> -->
             <span class="me-2" id="myName"></span>
             <script th:inline="javascript">
-              let myName = [[${userName}]]
+              let myName = [[${myName}]]
               
               if(sessionStorage.getItem("myName") != null) {
                 $('#myName').text('환영합니다, ' + sessionStorage.getItem("myName")+ '님');

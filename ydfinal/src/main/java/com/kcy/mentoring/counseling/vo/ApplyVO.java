@@ -16,6 +16,7 @@ public class ApplyVO {
 	private String mtrCount; //상담회차
 	private String mtrStatus; //상담진행현황
 	private String mtrCancel; //변동코드
+	private String careerHDate; //날짜
 
 	// 멘토링 ===================
 

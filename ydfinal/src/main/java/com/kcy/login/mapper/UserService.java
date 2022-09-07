@@ -29,7 +29,7 @@ public class UserService {
 	
 	public boolean userEmailCheck(String userEmail, String userName) {
 		UserVo uservo = userMapper.findUserByUserId(userEmail);
-		if(uservo != null && uservo.getUsername().equals(userName)) {
+		if(uservo != null && uservo.getUsername().equals(userName)) { 
 			return true;
 		} else {
 			return false;
