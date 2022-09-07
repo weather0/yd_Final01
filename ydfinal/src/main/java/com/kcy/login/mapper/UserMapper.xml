@@ -4,11 +4,22 @@
 	<!-- 황하경 220831 -->
 	
 	<!-- 로그인 -->
+    <!-- 9.7.곽ㅈㅇ: user_name만 별칭으로 변경함 → 시큐리티 username필드명과 동음이의 이슈 해소 -->
 	<select id="getUserAccount" resultType="com.kcy.login.service.UserVo">
-		SELECT 
-		*
-		 FROM k_users
-        WHERE USER_ID= #{userId}
+		SELECT user_id, 
+               user_type, 
+               user_name my_name, 
+               user_ssn, 
+               user_sex, 
+               user_dept, 
+               user_addr, 
+               user_phone, 
+               user_email, 
+               user_pw, 
+               user_nation, 
+               user_pic
+		  FROM k_users
+         WHERE USER_ID= #{userId}
 	</select>
 	
 	<!-- 패스워드 찾기 -->
