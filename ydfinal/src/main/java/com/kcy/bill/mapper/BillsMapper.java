@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.kcy.bill.service.BankVO;
 import com.kcy.bill.service.BillsVO;
 import com.kcy.bill.service.MajorbVO;
 import com.kcy.bill.service.PayVO;
