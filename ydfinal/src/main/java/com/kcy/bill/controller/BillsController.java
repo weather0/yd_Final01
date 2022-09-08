@@ -2,8 +2,7 @@ package com.kcy.bill.controller;
 
 import java.security.Principal;
 import java.util.List;
-
-import javax.security.auth.message.callback.PrivateKeyCallback.Request;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
@@ -18,10 +17,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kcy.bill.service.BillsService;
 import com.kcy.bill.service.BillsVO;
 import com.kcy.bill.service.MajorbVO;
+import com.kcy.bill.service.OpenBank;
 import com.kcy.bill.service.PayVO;
+
 
 /*
  * 작성자 : 곽영우
@@ -35,7 +40,7 @@ import com.kcy.bill.service.PayVO;
 public class BillsController {
 	
 	@Autowired
-	BillsService service;
+	BillsService service;	
 	
 	//등록금 고지 페이지 이동
 	@GetMapping("/billsInsert")
@@ -157,4 +162,19 @@ public class BillsController {
 		service.chkPayInsert(vo);
 		return "1";
 	}
+	
+	//개인 인증
+	@RequestMapping(value="/bankcallBack", produces = "application/json" )
+	public String bankCallback(@RequestParam Map map, String code, Principal principal, PayVO vo) throws JsonMappingException, JsonProcessingException {
+		System.out.println("callback===" + map);
+		String token = OpenBank.getAccessToken(code);
+		ObjectMapper objectMapper = new ObjectMapper();
+		JsonNode node = objectMapper.readValue(token, JsonNode.class);
+		vo.setAccessToken(node.get("access_token").asText());	
+		vo.setStuId(principal.getName());
+		//vo.setToken(token);
+		service.insertToken(vo);		
+		return "redirect:billCheck";
+	}
+	
 }

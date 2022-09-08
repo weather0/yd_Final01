@@ -36,6 +36,7 @@ public class ApplyController {
 	public String counseling(Model model, Principal principal) {
 		String chk = service.applyCheck(principal.getName());
 		if (chk.equals("ing")) {
+			model.addAttribute("list",service.applyCheckPrint(principal.getName()));
 			return "pages/mentorMgr/counseling/applyX";
 		}
 
@@ -109,8 +110,8 @@ public class ApplyController {
 	// 학생의 검사 결과를 모달창에 띄워주기
 	@PostMapping("/applyResultList")
 	@ResponseBody
-	public List<ApplyVO> applyResultList(Model model, String stuId) {
-		List<ApplyVO> list = service.applyResultList(stuId);
+	public List<ApplyVO> applyResultList(Model model, ApplyVO vo) {
+		List<ApplyVO> list = service.applyResultList(vo);
 		model.addAttribute("list", list);
 		return list;
 	}
@@ -157,7 +158,8 @@ public class ApplyController {
 		return vo1;
 	}
 	
-	// 상담일지 작성하기
+	// 상담메모 작성하기
+	@ResponseBody
 	@PostMapping("/insertMemo")
 	public String insertMemo(ApplyVO vo) {
 		service.insertMemo(vo);

@@ -6,11 +6,18 @@
 	<head>
 
 
-<script>
-	
-</script>
+
 	</head>
 	<body>
+		<script th:inline="javascript">
+		    /*<![CDATA[*/
+		    	jQuery(function ($) {
+		        var data = /*[[${list.careerHDate}]]*/;
+				var date = data.substring(0,3)+'년 ' + data.substring(5,7) +'월 ' + data.substring(8,10)+'일에' 
+				$('#applyDate').text(date)
+		    	})
+		    /*]]>*/
+		</script>
 		<div style="float: center; text-align: center; height: 700px; align-items: center; padding: 150px;" width="60%">
 			<h1>
 				<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" fill="currentColor" class="bi bi-check-square" viewBox="0 0 16 16">
@@ -19,8 +26,11 @@
 			</svg>
 			</h1>
 			<br>
+			<h3>[[${list.mtrCount}]]회차 상담신청</h3>
+			<h3 id="applyDate"></h3>
 			<h1>신청을 완료했습니다</h1>
 		</div>
+
 	</body>
 </th:block>
 </html>

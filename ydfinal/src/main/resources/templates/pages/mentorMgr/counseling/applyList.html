@@ -16,26 +16,46 @@ th {
 	text-align: center;
 }
 
+.table td, .table th {
+	white-space: pre-line;
+}
+
 #journal-table {
 	width: 80%;
 	margin-left: 10%;
 	margin-right: 10%;
 	margin-top: 3%;
 }
+.toolbar div {
+	display : inline;
+	 justify-content: center;
+	 align-items: center;
+	 line-height: 42px;
+}
 
 td {
-	text-align : center;
+	text-align: center;
 	word-break: break-all;
 	paddig: 10px;
+}
+
+.pagination .active .page-link {
+	background-color: #7b809a;
+	border-color: #7b809a;
+}
+
+.page-link:focus {
+	box-shadow: 0 0 0 0.2rem rgb(123 128 154/ 25%);
 }
 </style>
 	<script>
 		jQuery(function ($) {
 			$('#journal-table').hide();
-			$("#foo-table")
+			var table1 = $("#foo-table")
 				.DataTable(
-					{	
-						order : [1,"desc"],
+					{	 dom:"<'row' <'col-sm-12 col-md-3'l> <'col-md-6 col-sm-12 toolbar'> <'col-sm-12 col-md-3'f> >" +
+				        "<'row'<'col-sm-12'tr>>" +
+				        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
 						orderMulti: true,
 						scrollY: 550,
 						ajax: {
@@ -76,7 +96,7 @@ td {
 									if (data == 'ing') {
 										var data = '상담필요'
 									} else if (data == 'can') {
-										var data = '취소'
+										var data = '상담취소'
 									} else if (data == 'end') {
 										var data = '상담종료'
 									} else if (data == 'fill') {
@@ -128,7 +148,7 @@ td {
 							{
 								targets: 8,
 								title: '검사결과',
-								data: "stuId",
+								data: "mtrId",
 								render: function (data) {
 									return `<button type="button" class="btn bg-gradient-secondary btn-sm"  onclick="result('` + data + `');">결과</button>`
 								}
@@ -202,20 +222,33 @@ td {
 						},
 						{ className: "dt-head-center", targets: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10] },
 						],
+						order : [4,"esc"],
 
 
 					});
 
+			 //$('.busquedaSem').hide();
+			  //se clonan radios html
+			  $("div.toolbar").html('<div>'+$('.busquedaSem').html()+'</div>');
+			  //se elimina el elemento clonado
+			  $('.busquedaSem').remove();
+			  //se agrega clase para filtro
+			  $(".fill").addClass("fs");
+			  
+			    //Event Listener for custom radio buttons to filter datatable
+			$('.fs').change(function () {
+			  table1.columns(4).search(this.value).draw();
+			});
 
 		});
 
 		function result(data) {
-
+			console.log(data)
 			$.ajax({
 				url: "/applyResultList",
 				type: "post",
 				data: {
-					stuId: data
+					mtrId: data
 				},
 				dataType: "json",
 				success: function (result) {
@@ -227,7 +260,7 @@ td {
 					for (var i = 0; i < result.length; i++) {
 						let clo = `<tr>
 										 <td width="30px" >${i + 1}</td>
-										 <td>${result[i].careerQContent}</td>
+										 <td >${result[i].careerQContent}</td>
 										 <td>${result[i].careerQResult}</td>
 									 </tr>`
 						$('#resultClone').append(clo)
@@ -340,7 +373,7 @@ td {
 							<tr>
 								
 								<th class="table-secondary">상담내용</th>
-								<td colspan="3" ><textarea class="form-control bg-transparent" cols="90%" rows="10" readonly>${result.mtrLogContent}</textarea></td>
+								<td colspan="3" >${result.mtrLogContent}</td>
 								
 							</tr>
 							<tr>
@@ -454,6 +487,24 @@ td {
 	</script>
 
 	<!-- 본문 -->
+	<div class="busquedaSem row">
+		<label class="control-label"> 구분:</label>
+		<div class="col-2 custom-control custom-radio custom-control-inline">
+			<input type="radio" id="customRadioInline" name="customRadioInline" class="fill custom-control-input form-control-sm" value="" checked> <label class="custom-control-label" for="customRadioInline">All</label>
+		</div>&nbsp;
+		<div class="col-2 custom-control custom-radio custom-control-inline">
+			<input type="radio" id="customRadioInline1" name="customRadioInline" class="fill custom-control-input form-control-sm" value="상담필요"> <label class="custom-control-label" for="customRadioInline1">상담필요</label>
+		</div>&nbsp;
+		<div class="col-2 custom-control custom-radio custom-control-inline">
+			<input type="radio" id="customRadioInline2" name="customRadioInline" class="fill custom-control-input form-control-sm" value="상담완료"> <label class="custom-control-label" for="customRadioInline2">상담완료</label>
+		</div>&nbsp;
+		<div class="col-2 custom-control custom-radio custom-control-inline">
+			<input type="radio" id="customRadioInline3" name="customRadioInline" class="fill custom-control-input form-control-sm" value="일지작성필요"> <label class="custom-control-label" for="customRadioInline3">일지작성필요</label>
+		</div>&nbsp;
+		<div class="col-2 custom-control custom-radio custom-control-inline">
+			<input type="radio" id="customRadioInline4" name="customRadioInline" class="fill custom-control-input form-control-sm" value="상담취소"> <label class="custom-control-label" for="customRadioInline4">상담취소</label>
+		</div>
+	</div>
 	<table id="foo-table" class="table table-bordered text-center align-items-center">
 		<thead>
 			<tr class="text-center">
@@ -503,11 +554,11 @@ td {
 					<h4 class="modal-title" id="myModalLabel">진로 탐색 검사 결과</h4>
 				</div>
 				<div class="modal-body">
-					<table class="table">
+					<table class="table" style="word-wrap: break-word; word-break: break-all;">
 						<thead>
-							<th>번호</th>
-							<th>질문</th>
-							<th>응답</th>
+							<th width="15%">번호</th>
+							<th width="35%" style="word-break: break-all">질문</th>
+							<th width="50%">응답</th>
 						</thead>
 						<tbody id="resultClone">
 
@@ -575,7 +626,7 @@ td {
 				<form id="jInsert" th:action="@{/journalInsert}" method="post">
 					<!-- <form id="jInsert" action="#" > -->
 					<div class="modal-body">
-						<div class="p-4 align-items-center" >
+						<div class="p-4 align-items-center">
 							<input type="hidden" name="mtrId">
 							<div class="input-group input-group-dynamic mb-4">
 								<label class="form-label">거주상황</label> <input type="text" class="form-control" name="mtrHome">
@@ -603,22 +654,22 @@ td {
 
 	<!-- 상담메모 상세보기 -->
 	<div class="modal fade" id="memoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-		<div class="modal-dialog modal-xl" role="document">
+		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
 					<h4 class="modal-title" id="myModalLabel">상담 메모</h4>
 				</div>
-				
-					<div class="modal-body align-items-center">
-					
-							
-							<textarea id="memoTextArea" class="form-control bg-transparent" cols="90%" rows="10" readonly></textarea>
-					
-					</div>
+
+				<div class="modal-body align-items-center">
+
+
+					<textarea id="memoTextArea" class="form-control bg-transparent" cols="90%" rows="10" readonly></textarea>
+
+				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" onclick="modalClose();">닫기</button>
 				</div>
-				
+
 			</div>
 		</div>
 	</div>

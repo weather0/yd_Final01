@@ -28,6 +28,8 @@
 			        cm.class_member_id,
 			        cm.class_id,
 			        
+			        r.quiz_r_point,
+			        
 			        u.user_name,
 			        u.user_dept
 			FROM
@@ -40,6 +42,10 @@
 			        k_class_member as cm
 			ON
 			        cm.stu_id = st.stu_id
+			JOIN
+                    k_quiz_r as r
+            ON
+                    r.class_member_id = cm.class_member_id
 			WHERE
 			        cm.class_id = #{classId};
 	</select>
@@ -65,6 +71,24 @@
 			#{scoreMid},
 			#{scoreFinal},
 			date_format(now(), '%Y%m%d')	
+		)
+	</insert>
+	
+	<insert id="gpaPointInsert">
+		INSERT INTO
+			k_gpa
+		(
+			score_id,
+			gpa_id,
+			gpa_point,
+			gpa_grade
+		)
+		VALUES
+		(
+			#{scoreId},
+			CONCAT("G", NEXTVAL(score_seq)),
+			#{gpaPoint},
+			#{gpaGrade}
 		)
 	</insert>
 	
@@ -127,6 +151,8 @@
 		    g.gpa_point,
 		    
 		    c.class_id,
+		    c.class_sem,
+		    c.class_year,
 		    cm.class_member_id,
 		    
 		    cm.stu_id
@@ -150,6 +176,19 @@
     		g.score_id = sc.score_id
 		WHERE
     		cm.stu_id = #{userId}
+    	<choose>
+			<when test="classSem != null and classSem == 1 || classYear != null">
+				AND
+					c.class_sem = #{classSem}
+				AND
+					c.class_year = #{classYear}
+			</when>
+			<when test="classSem != null and classSem == 2 || classYear != null">
+				AND
+					c.class_sem = #{classSem}
+				AND
+					c.class_year = #{classYear}
+			</when>
+		</choose>
 	</select>
-	
 </mapper>

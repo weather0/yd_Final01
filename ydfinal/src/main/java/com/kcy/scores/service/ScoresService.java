@@ -10,4 +10,6 @@ public interface ScoresService {
 	public void scoresInsert(ScoresVo vo);
 	public List<ScoresVo> stuScoreList(ScoresVo vo);
 	public List<ScoresVo> classScoreList(ScoresVo vo);
+	public List<ScoresVo> getClassSem(ScoresVo vo);
+	public void gpaPointInsert(ScoresVo vo);
 }

@@ -12,29 +12,67 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import com.kcy.login.mapper.UserServiceImpl;
 
 import lombok.RequiredArgsConstructor;
+
 // 황하경 220831
 @EnableWebSecurity
 @RequiredArgsConstructor
-public class SequrityConfig extends WebSecurityConfigurerAdapter  {
-	
-	@Autowired
-	UserServiceImpl userServiceImpl;
-	
-	@Override
+public class SequrityConfig extends WebSecurityConfigurerAdapter {
+
+    @Autowired
+    UserServiceImpl userServiceImpl;
+
+    @Override
 	protected void configure(HttpSecurity http) throws Exception{
 		http
 			.authorizeRequests()
 			.antMatchers("/login", "/check/findPw").permitAll()
 			
 			// 9.1.추가: 곽ㅈㅇ
-			.antMatchers("/allAcaInfo", "/allStuInfo").hasRole("ADMIN")
-			.antMatchers("/stuAcaInfo", "/stuAcaInsert").hasRole("STU")
+			.antMatchers(
+                        "/stuInfo",
+                        "/stuAcaInfo", 
+                        "/stuAcaInsert",
+                        "/payList",
+                        "/billCheck",
+                        "/openlecturelist",
+                        "/matchingChange",
+                        "/scoreview",
+                        "/classScore",
+                        "/apply"
+                        ).hasRole("STU")
+			.antMatchers(
+                        "/lectureinsert",
+                        "/schedule",
+                        "/careerInsert",
+                        "/careerListInsert",
+                        "/careerSelectList",
+                        "/noticeinsert",
+                        "/quizinsert",
+                        "/quizviewlist",
+                        "/applyList"
+                        ).hasRole("PROF")
+			.antMatchers(
+			            "/allAcaInfo", 
+                        "/allStuInfo",
+                        "/oneStuInfo",
+                        "/payCheck",
+                        "/billsInsert",
+                        "/billList",
+                        "/billsUpdate",
+                        "/billList",
+                        "/lecturelist",
+                        "/matchingStd",
+                        "/matchingList",
+                        "/matchingChangeList",
+                        "/changeMatching"
+                        ).hasRole("ADMIN")
+			.antMatchers(
+                        "/chat/room",
+                        "/room/enter/{roomId}"
+                        ).hasAnyRole("STU","PROF")
 			.and().exceptionHandling().accessDeniedPage("/")
 			//
 			
-	//		.antMatchers("/userMgr/prof").access("hasRole('ROLE_PROF')")
-	//		.antMatchers("/userMgr/stu").access("hasRole('ROLE_STU')")
-	//		.antMatchers("/admin").hasAuthority("admin")
 			//.anyRequest()
 			//.authenticated()
 			.and()
@@ -56,18 +94,16 @@ public class SequrityConfig extends WebSecurityConfigurerAdapter  {
          .maximumSessions(5) //세션 최대 허용 수 
          .maxSessionsPreventsLogin(true); // false이면 중복 로그인하면 이전 로그인이 풀린다.
 	}
-	
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.
-        	userDetailsService(userServiceImpl).
-        	passwordEncoder(passwordEncoder());
+        auth.userDetailsService(userServiceImpl).passwordEncoder(passwordEncoder());
     }
-    
+
     @Bean
     public PasswordEncoder passwordEncoder() {
-    	PasswordEncoder encoder = new BCryptPasswordEncoder();
-    	return encoder;
+        PasswordEncoder encoder = new BCryptPasswordEncoder();
+        return encoder;
     }
-	
+
 }

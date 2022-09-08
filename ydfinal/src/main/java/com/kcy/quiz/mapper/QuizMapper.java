@@ -24,4 +24,7 @@ public interface QuizMapper {
 	
 	public QuizVo quizAcceptDetail(QuizVo vo);
 	public void quizModify(QuizVo vo);
+	public List<QuizVo> getClassIdProf(QuizVo vo);
+	
+	public void scoreQuizInsert(QuizVo vo);
 }

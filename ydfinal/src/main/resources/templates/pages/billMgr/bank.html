@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/layout}">
+
+<th:block layout:fragment="content">
+
+	<!-- 상단 내비바 -->
+	<th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
+
+	<!-- 본문 start -->
+	<title>Insert title here</title>
+	</head>
+	<body>
+		<a href="bankAuth">사용자 인증</a>
+	</body>
+	<!-- 본문 end-->
+</th:block>
+</html>

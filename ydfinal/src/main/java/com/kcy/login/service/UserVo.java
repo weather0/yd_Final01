@@ -16,7 +16,7 @@ public class UserVo implements UserDetails {
 	private String userType;
 	private String userPw;
 	private String userEmail;
-	private String userName;
+	private String myName; // 9.7. 곽ㅈㅇ: mybatis와 연동 수정
 	private String userSsn;
 	private String userSex;
 	private String userDept;
@@ -69,4 +69,9 @@ public class UserVo implements UserDetails {
 		return true;
 	}
 
+	
+	// 9.6. 곽ㅈㅇ: userName필드 게터 추가. 위에 getUsername이랑 이름 비슷하게 중복돼서 롬복이 자동생성 못한 거?
+//    public String getUserName() {
+//        return userName;
+//    }
 }

@@ -32,7 +32,7 @@ public class ApplyServiceImpl implements ApplyService {
 	@Transactional
 	public void applyInsert(ApplyVO vo) {
 		map.applyHistoryInsert(vo);
-		map.applyListInsert(vo.getUserId());
+		map.applyListInsert(vo);
 		map.scheduleCheck(vo.getMtrSchId());
 		for (ApplyVO vo1 : vo.getListVO()) { // 서비스에서 
 			map.applyInsert(vo1);
@@ -40,8 +40,8 @@ public class ApplyServiceImpl implements ApplyService {
 	}
 
 	@Override
-	public void applyListInsert(String id) {
-		map.applyListInsert(id);
+	public void applyListInsert(ApplyVO vo) {
+		map.applyListInsert(vo);
 	}
 
 	@Override
@@ -72,9 +72,9 @@ public class ApplyServiceImpl implements ApplyService {
 
 	// 학생의 검사 결과를 확인하는 창
 	@Override
-	public List<ApplyVO> applyResultList(String stuId) {
+	public List<ApplyVO> applyResultList(ApplyVO vo) {
 
-		return map.applyResultList(stuId);
+		return map.applyResultList(vo);
 	}
 
 	// 학생 정보 불러오기
@@ -129,5 +129,13 @@ public class ApplyServiceImpl implements ApplyService {
 		map.insertMemo(vo);
 		
 	}
+
+	@Override
+	public ApplyVO applyCheckPrint(String id) {
+		// TODO Auto-generated method stub
+		return map.applyCheckPrint(id);
+	}
+
+	
 
 }

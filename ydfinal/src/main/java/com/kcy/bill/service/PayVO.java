@@ -41,5 +41,8 @@ public class PayVO {
 	private int billAmount;
 	private List<String> id;
 	private String[] billArr;
+	private String token;
+	private String accessToken;	
+	private String studentToken;
 }
 

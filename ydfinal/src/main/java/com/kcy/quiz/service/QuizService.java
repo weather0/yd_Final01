@@ -20,4 +20,7 @@ public interface QuizService {
 	public void quizModify(QuizVo vo);
 	
 	public QuizVo quizAcceptDetail(QuizVo vo);
+	public List<QuizVo> getClassIdProf(QuizVo vo);
+	
+	public void scoreQuizInsert(QuizVo vo);
 }

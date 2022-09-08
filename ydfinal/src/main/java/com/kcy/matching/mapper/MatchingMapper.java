@@ -20,10 +20,14 @@ public interface MatchingMapper {
 	public List<MatchingProfVO> matchingChangeList(MatchingChangeListVO vo);
 	public List<MatchingChangeVO> matchingName(MatchingStdVO vo);
 	public List<MajorbVO> majorbList(MajorbVO vo);
+	public List<MatchingChangeVO> changeProgress(MatchingChangeVO vo);
 	public void matching(MatchingVO vo);
 	public void matchingStd(MatchingVO vo);
 	public void matchingChangeOrder(MatchingChangeVO vo);
 	public void matchingType(MatchingVO vo);
 	public void matchingYes(MatchingVO vo);
 	public void matchingNo(MatchingChangeVO vo);
+	public void changeStatus(MatchingStdVO vo);
+	public void changeCancel(MatchingChangeVO vo);
+	
 }

@@ -30,7 +30,7 @@ public class LoginController {
     }
     // 로그인 실패
     @GetMapping("/denied")
-    public String denied() {
+    public String denied(UserVo vo) {
     	return "denied";
     }
     // 로그인 성공
@@ -42,18 +42,28 @@ public class LoginController {
         return "";
     }
     
-    // 비밀번호 찾기
-    @GetMapping("/check/findPw")
-    public @ResponseBody Map<String, Boolean> userfindPw(String userEmail, String userName) {
-    		Map<String, Boolean> json = new HashMap<>();
-    		boolean pwFindCheck = userService.userEmailCheck(userEmail, userName);
-    		System.out.println(pwFindCheck);
-    		json.put("check", pwFindCheck);
-    		return json;
+    @GetMapping("/findPw")
+    public String userfindPw(String userEmail, String userName) {
+    	Map<String,Boolean> json = new HashMap<>();
+    	boolean pwFindCheck = userService.userEmailCheck(userEmail, userName);
+    	json.put("check", pwFindCheck);
+    	
+    	return "findPw";
     }
     
+//    // 비밀번호 찾기
+//    @GetMapping("/check/findPw")
+//    public @ResponseBody Map<String, Boolean> userfindPw(String userEmail, String userName) {
+//		Map<String, Boolean> json = new HashMap<>();
+//		boolean pwFindCheck = userService.userEmailCheck(userEmail, userName);
+//		System.out.println(pwFindCheck);
+//		json.put("check", pwFindCheck);
+//		return json;
+//
+//    }
+    
     // 비밀번호 이메일
-    @PostMapping("/check/findPw/sendEmail")
+    @PostMapping("/findPw/sendEmail")
     public @ResponseBody void sendEmail(String userEmail, String userName) {
     	MailDto dto = sendEmailService.createMailAndChangePassword(userEmail, userName);
     	sendEmailService.mailSend(dto);

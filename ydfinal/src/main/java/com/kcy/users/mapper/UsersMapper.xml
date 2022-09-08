@@ -10,12 +10,11 @@
 </select>
 
 
-<!-- 전체 학생 학적 목록 (행정) -->
-<select id="allStuInfoCnt" resultType="int">
-  SELECT COUNT(*) FROM k_users
-  WHERE user_type = 'ROLE_STU'
+<!-- start: 전체 학생 학적 목록 (행정) -->
+  <!-- 조건 공통 쿼리 -->
+<sql id="allStuCri">
   <if test=" schId != null and schId != '' ">
-    and user_id like concat('%',#{schId},'%') <!-- 달러는 맵의 밸류에 따옴표를 뺀 것 -->
+    and user_id like concat('%',#{schId},'%')  <!-- 달러 변수는 값에 따옴표가 없고, 샵변수는 있고 차이임 -->
   </if>
   <if test=" schName != null and schName != '' ">
     and user_name like concat('%',#{schName},'%')
@@ -41,8 +40,17 @@
   <if test=" schNation != null and schNation != '' ">
     and user_nation like concat('%',#{schNation},'%')
   </if>
+</sql>
+
+
+  <!-- 전체 카운팅 -->
+<select id="allStuInfoCnt" resultType="int">
+  SELECT COUNT(*) FROM k_users
+  WHERE user_type = 'ROLE_STU'
+  <include refid="allStuCri"></include>
 </select>
 
+  <!-- 메인 쿼리 -->
 <select id="allStuInfoProc" resultType="CustomMap">
   select if(SUBSTR(user_id,1,2) > 50, concat('19',user_id), concat('20',user_id)) nId, 
          user_id, 
@@ -57,33 +65,7 @@
          user_nation
   from k_users
   where user_type = 'ROLE_STU' 
-  <if test=" schId != null and schId != '' ">
-    and user_id like concat('%',#{schId},'%') <!-- 달러는 맵의 밸류에 따옴표를 뺀 것 -->
-  </if>
-  <if test=" schName != null and schName != '' ">
-    and user_name like concat('%',#{schName},'%')
-  </if>
-  <if test=" schSsn != null and schSsn != '' ">
-    and SUBSTR(user_ssn,1,6) like concat('%',#{schSsn},'%')
-  </if>
-  <if test=" schSex != null and schSex != '' ">
-    and user_sex like concat('%',#{schSex},'%')
-  </if>
-  <if test=" schDept != null and schDept != '' ">
-    and user_dept like concat('%',#{schDept},'%')
-  </if>
-  <if test=" schPhone != null and schPhone != '' ">
-    and user_phone like concat('%',#{schPhone},'%')
-  </if>
-  <if test=" schEmail != null and schEmail != '' ">
-    and user_email like concat('%',#{schEmail},'%')
-  </if>
-  <if test=" schAddr != null and schAddr != '' ">
-    and user_addr like concat('%',#{schAddr},'%')
-  </if>
-  <if test=" schNation != null and schNation != '' ">
-    and user_nation like concat('%',#{schNation},'%')
-  </if>
+  <include refid="allStuCri"></include>
   
   order by
   <if test="order == 0 and orderDir == 'asc'">nId</if>
@@ -108,6 +90,7 @@
 <!--   limit #{param1}, #{param2}          mybatis에서 파라미터 2개일때 작성법(순서대로 param1, param2, ...) -->
   limit #{start}, #{length} <!-- 서비스 파라미터가 n개로 늘어날거 같아서 map방식으로 변경함 -->
 </select>
+<!-- end: 전체 학생 학적 목록 (행정) -->
 
 
 

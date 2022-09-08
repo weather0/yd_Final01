@@ -41,7 +41,7 @@
         },
       });
       
-      // 항목 클릭 시 세부보기로 이동(DB쿼리 실행 없이 세션스토리지 이용)
+      // 항목 클릭 시 세부보기로 이동
       $('#myAcaInfos tbody').on('click', 'tr', function(){
 
         let acaId = this.getAttribute('data-acaId');
@@ -62,7 +62,7 @@
   <th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
 
   <!-- 본문 start -->
-  <div class="container-fluid py-4">
+  <div class="container-fluid">
 
     <div class="row justify-content-center">
       <div class="col-lg-3 col-sm-3 mb-4"></div>

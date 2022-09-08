@@ -2,7 +2,19 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 
 <th:block th:fragment="sidebarFragment">
-
+<script  th:inline="javascript">
+$(function(){
+  let soMenu = $('#sidenav-collapse-main .collapse a')
+  console.log([[${#authentication.principal.myName}]])
+  soMenu.on('click', function () {
+    console.log(this.text)
+//     Cookies.set()
+  })
+  
+  
+  
+})
+</script>
 
 
   <div class="sidenav-header">
@@ -61,10 +73,10 @@
           <div class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">
             <a class="nav-link text-white py-1" href="#" >교수정보 조회</a>
           </div>
-          <div class="nav-item">
+          <div class="nav-item d-none">
             <a class="nav-link text-white py-1" href="#">졸업요건 확인</a>
           </div>
-          <div class="nav-item">
+          <div class="nav-item d-none">
             <a class="nav-link text-white py-1" href="#">증명서 출력</a>
           </div>
 
@@ -92,7 +104,7 @@
 
 
 
-      <li class="nav-item">
+      <li class="nav-item" sec:authorize="hasAnyRole('ROLE_STU','ROLE_ADMIN')">
         <a class="nav-link text-white btn btn-secondary" data-bs-toggle="collapse" href="#billMgr">
           <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
             <i class="material-icons opacity-10">dashboard</i>
@@ -113,17 +125,20 @@
             $('#billMgr').addClass('show')
           }
         </script>
-        <div class="navbar-nav">
-          <div class="nav-item">
+        <div class="navbar-nav" sec:authorize="hasAnyRole('ROLE_STU','ROLE_ADMIN')">
+          <div class="nav-item" sec:authorize="hasRole('ROLE_STU')">
             <a class="nav-link text-white py-1" href="/payList">수납 전체 이력</a>
           </div>
-          <div class="nav-item">
+          <div class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">
             <a class="nav-link text-white py-1" href="/payCheck">납부자 조회</a>
           </div>
-          <div class="nav-item">
+          <div class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">
+            <a class="nav-link text-white py-1" href="/billsInsert">등록금 고지서 등록</a>
+          </div>
+          <div class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">
             <a class="nav-link text-white py-1" href="/billList">등록금 고지서 확인</a>
           </div>
-          <div class="nav-item">
+          <div class="nav-item" sec:authorize="hasRole('ROLE_STU')">
             <a class="nav-link text-white py-1" href="/billCheck">등록금 고지서 확인</a>
           </div>
         </div>
@@ -155,45 +170,46 @@
           }
         </script>
         <div class="navbar-nav">
-          <div class="nav-item">
+          <div class="nav-item" sec:authorize="hasRole('ROLE_STU')">
             <a class="nav-link text-white py-1" href="/openlecturelist">수강신청</a>
           </div>
-          <div class="nav-item">
+          <div class="nav-item" sec:authorize="hasRole('ROLE_PROF')">
             <a class="nav-link text-white py-1" href="/studentinchargelist">담당학생 확인</a>
           </div>
-          <div class="nav-item">
-            <a class="nav-link text-white py-1" href="#">강의 시간표 조회</a>
+          <div class="nav-item" sec:authorize="hasRole('ROLE_PROF')">
+            <a class="nav-link text-white py-1" href="/studentinchargelist">출석 체크</a>
           </div>
-          <div class="nav-item">
+          <div class="nav-item" sec:authorize="hasRole('ROLE_STU')">
+            <a class="nav-link text-white py-1" href="/classScheduleSelect">강의 시간표 조회</a>
+          </div>
+          <div class="nav-item" sec:authorize="hasAnyRole('ROLE_STU','ROLE_PROF')">
             <a class="nav-link text-white py-1" href="/noticelist">공지 및 강의자료</a>
           </div>
-          <div class="nav-item">
+          <div class="nav-item" sec:authorize="hasAnyRole('ROLE_STU','ROLE_PROF')">
             <a class="nav-link text-white py-1" href="/quizlist">과제 게시판</a>
           </div>
-          <div class="nav-item">
+          <div class="nav-item" sec:authorize="hasRole('ROLE_STU')">
             <a class="nav-link text-white py-1" href="/profevaluationlist">만족도 평가</a>
           </div>
-          <br> -- 교수 전용(권한달고 줄 삭제) -- <br>
-          <div class="nav-item">
+          <div class="nav-item" sec:authorize="hasRole('ROLE_PROF')">
             <a class="nav-link text-white py-1" href="/quizinsert">과제 등록</a>
           </div>
-          <div class="nav-item">
+          <div class="nav-item" sec:authorize="hasRole('ROLE_PROF')">
             <a class="nav-link text-white py-1" href="/noticeinsert">공지 및 자료 등록</a>
           </div>
-          <div class="nav-item">
+          <div class="nav-item" sec:authorize="hasAnyRole('ROLE_PROF')">
             <a class="nav-link text-white py-1" href="/quizviewlist">과제 확인 페이지</a>
           </div>
-          <div class="nav-item">
+          <div class="nav-item" sec:authorize="hasRole('ROLE_PROF')">
             <a class="nav-link text-white py-1" href="/lectureinsert">강의 개설 신청</a>
           </div>
-          <div class="nav-item">
+          <div class="nav-item" sec:authorize="hasRole('ROLE_PROF')">
             <a class="nav-link text-white py-1" href="/scorelecturelist">성적 입력</a>
           </div>
-          <div class="nav-item">
+          <div class="nav-item" sec:authorize="hasRole('ROLE_PROF')">
             <a class="nav-link text-white py-1" href="/evaluationconfirmationlist">만족도 평가 열람</a>
           </div>
-          <br> -- 행정 전용(권한달고 줄 삭제) -- <br>
-          <div class="nav-item">
+          <div class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">
             <a class="nav-link text-white py-1" href="/lecturelist">강의 개설 승인</a>
           </div>
         </div>
@@ -225,10 +241,10 @@
           }
         </script>
         <div class="navbar-nav">
-          <div class="nav-item">
+          <div class="nav-item" sec:authorize="hasRole('ROLE_STU')">
             <a class="nav-link text-white py-1" href="#">전체 성적 조회</a>
           </div>
-          <div class="nav-item">
+          <div class="nav-item" sec:authorize="hasRole('ROLE_STU')">
             <a class="nav-link text-white py-1" href="#">학기별 세부 내역</a>
           </div>
         </div>
@@ -264,7 +280,7 @@
           <div class="nav-item">
             <a class="nav-link text-white py-1" href="/matchingList">매칭 이력 관리</a>
           </div>
-          <div class="nav-item">
+          <div class="nav-item" sec:authorize="hasRole('ROLE_STU')">
             <a class="nav-link text-white py-1" href="/matchingChange">지도교수 변경 신청</a>
           </div>
           <div class="nav-item">
@@ -277,7 +293,7 @@
 
 
 
-      <li class="nav-item">
+      <li class="nav-item" sec:authorize="hasAnyRole('ROLE_STU','ROLE_PROF')">
         <a class="nav-link text-white btn btn-secondary" data-bs-toggle="collapse" href="#mentorMgr" role="button" aria-expanded="false" aria-controls="mentorMgr">
           <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
             <i class="material-icons opacity-10">dashboard</i>
@@ -335,7 +351,7 @@
       
       
       <li class="nav-item" sec:authorize="isAuthenticated()">
-        <a class="nav-link text-white " href="/doLogout">
+        <a class="nav-link text-white" href="/doLogout" id="btn-logout">
           <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
             <i class="material-icons opacity-10">assignment</i>
           </div>
@@ -379,6 +395,10 @@
 //       $('.collapse-kcy').removeClass('show');
 //       $('#' + item).addClass('show');
 //     }
+
+  $('#btn-logout').on('click', function(){
+    sessionStorage.removeItem("myName");
+  })
   </script>
 
 </th:block>

@@ -69,18 +69,30 @@ public class MatchingController {
 	
 	//지도교수 변경 신청 페이지
 	@RequestMapping("/matchingChange")
-	public String matchingChangePage(MatchingChangeVO vo, Model model,  Principal principal, MatchingStdVO svo) {
+	public String matchingChangePage(MatchingChangeVO vo, Model model,  Principal principal, MatchingStdVO svo, MatchingChangeVO cvo) {
 		model.addAttribute("matchingProf", service.matchingProfList(null));
 		svo.setUserId(principal.getName());
+		cvo.setStuId(principal.getName());
 		model.addAttribute("matchingName", service.matchingName(svo));
+		model.addAttribute("changeProgress", service.changeProgress(cvo));
 		return "pages/mentorMgr/matching/matchingChange";
 	}
 	
 	//지도교수 변경 신청
 	@RequestMapping(value = "/matchingChangeOrder", method = RequestMethod.POST)
-	public String matchingChangeOrder(MatchingChangeVO vo) {
+	public String matchingChangeOrder(MatchingChangeVO vo, MatchingStdVO svo) {
 		service.matchingChangeOrder(vo);
-		return "redirect:matchingChangeList";
+		service.changeStatus(svo);
+		return "redirect:matchingChange";
+	}
+	
+	//지도교수 변경 신청 취소
+	@PostMapping("/changeCancel")
+	@ResponseBody
+	public String changeCancel(MatchingChangeVO vo, MatchingStdVO svo) {
+		service.changeCancel(vo);
+		service.changeStatus(svo);
+		return "1";
 	}
 	
 	//지도교수 변경 신청자 리스트
@@ -93,19 +105,21 @@ public class MatchingController {
 	//지도교수 변경 승인
 	@PostMapping("/changeMatching")
 	@ResponseBody
-	public String changeMatching(MatchingVO vo) {
+	public String changeMatching(MatchingVO vo, MatchingStdVO svo) {
 		service.matching(vo);
 		service.matchingStd(vo);
 		service.matchingType(vo);
 		service.matchingYes(vo);
+		service.changeStatus(svo);
 		return "1";
 	}
 	
 	//지도교수 변경 거부
 	@PostMapping("/changeReject")
 	@ResponseBody
-	public String changeReject(MatchingChangeVO vo) {
+	public String changeReject(MatchingChangeVO vo, MatchingStdVO svo) {
 		service.matchingNo(vo);
+		service.changeStatus(svo);
 		return "1";
 	}
 	

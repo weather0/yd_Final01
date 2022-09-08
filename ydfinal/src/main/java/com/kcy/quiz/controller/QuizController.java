@@ -51,10 +51,17 @@ public class QuizController {
 		return map.getClassId(vo);
 	}
 	
+	// 강좌 코드
+	@ModelAttribute("profClassId") 
+	public List<QuizVo> getClassIdProf(Principal principal, QuizVo vo) {
+		vo.setUserId(principal.getName());
+		return map.getClassIdProf(vo);
+	}
+	
 	// 과제 등록(교수)
 	@GetMapping("/quizinsert")
 	public String quizInsertPage() {
-		return "/pages/quizMgr/prof/quizinsert";
+		return "pages/quizMgr/prof/quizinsert";
 	}
 	
 	// 과제 등록(교수) 프로그램
@@ -108,7 +115,7 @@ public class QuizController {
 		vo.setUserId(principal.getName());
 		model.addAttribute("quiz", quizService.quizDetailView(vo));
 		quizService.quizDetailView(vo);
-		return "/pages/quizMgr/prof/quizdetailview";
+		return "pages/quizMgr/prof/quizdetailview";
 	}
 	
 	// 과제 점수 등록 페이지 프로그램(교수)
@@ -150,9 +157,9 @@ public class QuizController {
 			vo.setQuizROrginal(oriFileNmae);
 		}	
 		
+		quizService.quizModify(vo);
 		quizService.quizAccept(vo);
 		quizService.quizDUpdate(vo);
-		quizService.quizModify(vo);
 		return "redirect:quizlist";
 	}
 	

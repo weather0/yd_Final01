@@ -16,4 +16,5 @@ public interface BillsService {
 	public void chkPayInsert(PayVO vo);
 	public void payChange(PayVO vo);
 	public void payChangeCancel(PayVO vo);
+	public void insertToken(PayVO vo);
 }

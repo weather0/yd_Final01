@@ -45,4 +45,15 @@ public class ScoresServiceImpl implements ScoresService {
 		return map.classScoreList(vo);
 	}
 
+	@Override
+	public List<ScoresVo> getClassSem(ScoresVo vo) {
+		return map.getClassSem(vo);
+	}
+
+	@Override
+	public void gpaPointInsert(ScoresVo vo) {
+		map.gpaPointInsert(vo);
+		
+	}
+
 }

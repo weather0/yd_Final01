@@ -5,8 +5,6 @@
 	<th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
 
 	<head>
-<link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>
-<link href="css/uicons-regular-rounded.css" rel="stylesheet">
 <style>
 [v-cloak] {
 	display: none;
@@ -95,7 +93,7 @@ svg {
 
 	<body>
 		<div id="app" v-cloak>
-			<div sec:authorize="hasRole('ROLE_STU')">
+			<div sec:authorize="hasRole('ROLE_STU')" class="w-65">
 				<button class="HeaderBtn" style="border: none; float: right;" onclick="location.href=`/chat/room`">
 					<svg xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 24 24" width="20" height="20">
 						<path d="M22.535,8.46A4.965,4.965,0,0,0,19,7h0L2.8,7,7.1,2.7A1,1,0,0,0,5.682,1.288L.732,6.237a2.5,2.5,0,0,0,0,3.535l4.95,4.951A1,1,0,1,0,7.1,13.309L2.788,9,19,9h0a3,3,0,0,1,3,3v7a3,3,0,0,1-3,3H5a1,1,0,0,0,0,2H19a5.006,5.006,0,0,0,5-5V12A4.969,4.969,0,0,0,22.535,8.46Z" /></svg>
@@ -118,7 +116,11 @@ svg {
 					<h2 v-model="stuId">{{room.roomName}}</h2>
 				</div>
 				<div>
-					<input type="hidden" id="userId" v-model="userId" class="form-control" th:value="${#authentication.name}"> <input type="hidden" id="userType" v-model="profstu" class="form-control"> <input type="hidden" id="userName" v-model="name" class="form-control">
+					<input type="hidden" id="userId" v-model="userId" class="form-control" th:value="${#authentication.name}"> 
+					<input type="hidden" id="userType" v-model="profstu" class="form-control">
+					<input type="hidden" id="userName" v-model="name" class="form-control">
+					
+					
 				</div>
 
 				<div id="chatList" class="row w-65 justify-content-center" style="overflow: scroll; height: 550px;">
@@ -128,10 +130,10 @@ svg {
 				</div>
 
 
-				<div class="p-4">
+				<div class="p-4 w-70" >
 					<div class="input-group input-group-sm input-group-outline mb-4">
-						<label>내용</label> <input type="text" ref="messages" v-model="message" v-on:keypress.enter="sendMessage">
-						<button type="button" @click="sendMessage">보내기</button>
+						<input class="input w-80" type="text" ref="messages" v-model="message" v-on:keypress.enter="sendMessage" placeholder='내용을 입력하세요'>
+						<button class="w-20"  type="button" @click="sendMessage">보내기</button>
 					</div>
 				</div>
 			</div>
@@ -175,18 +177,19 @@ svg {
                     this.sender = localStorage.getItem('wschat.sender');
                     this.findRoom();
                     
-    	            console.log(this.stuId + " 아이디")
                     
                     
                     axios.get('/userInfo').then(response => { 
-    	            	console.log(response)
     	            	
     	            	this.name = response.data.userName;
     	            	this.userId = response.data.userId;
     	            	this.profstu = response.data.userTpye;
     	            	
+	                   	$('#stuId').val(this.stuId);
+	                   	$('#profId').val(this.userId);
                     
                     })
+                    
                     
                     var seId = $('#userId').val();
                     
@@ -223,11 +226,9 @@ svg {
          					type: "post",
          					data : { stuId : this.stuId},
          					success: function (result) {
-         						console.log('성공')
          						location.href="/applyList"
          					},
          					error: function (result) {
-         						console.log(result);
          					}
          				});   
                     },
@@ -246,8 +247,29 @@ svg {
             });
             
         	function sendMemo(){
-        		console.log("클릭");
+        		$('#stuId').val()
+        		
+        		$.ajax({
+        			url: "/insertMemo",
+        			type : "post",
+        			data : {
+        				stuId : $('#stuId').val(),
+        				profId : $('#profId').val(),
+        				mtrMemoContent : $('#mtrMemoContent').val(),
+        			},
+        			success : function() {
+        				alert('저장되었습니다.')
+        				$('#memoBtn').attr('disabled', true)
+        			},
+        			error : function() {
+
+        				alert('이미 저장된 메모가 있습니다.')
+        				$('#memoBtn').attr('disabled', true)
+        			}
+        		});
+        		
         	}
+
 
             function connect() {
                 // pub/sub event

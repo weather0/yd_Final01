@@ -23,13 +23,15 @@ public class StudentInChargeController {
 	@Autowired  StudentInChargeService service;
 	@Autowired  ClassIdMapper classId;
 	
+	
+	//교수가 개설한 강좌 코드
 	@ModelAttribute("classId")
 	public List<ClassIdVO> getDepartments(Principal principal,ClassIdVO vo){
 		vo.setUserId(principal.getName());
 		return classId.selectClassId(vo);
 	}
 	
-	
+	//교수가 수업하는 모든 강좌에 학생을 확인하는 페이지
 	@GetMapping("/studentinchargelist")
 	public String studentInChargeList(Model model, Principal principal, StudentInChargeVO vo ) {
 		vo.setUserId(principal.getName());
@@ -37,6 +39,7 @@ public class StudentInChargeController {
 		return "pages/classMgr/StudentInChargeList";
 	}
 	
+	//강좌에 맞는 학생을 확인하는 페이지
 	@GetMapping("/studentSelect")
 	public String studentSelect(Model model, Principal principal, StudentInChargeVO vo ) {
 		vo.setUserId(principal.getName());

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+<th:block layout:fragment="content">
+
+  <!-- 상단 내비바 -->
+  <th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
+
+  <!-- 본문 start -->
+      <h1>교수 강의자료 및 공지 수정 페이지</h1>
+ 		
+ 	<form action="noticeModify" method="post" enctype="multipart/form-data">
+ 	<input type="hidden" th:value="${noticeList.classNoticeNo}" />
+ 		<div class="container-fluid py-4">
+ 	<div class="input-group input-group-static mb-4">
+ 	
+ 	<select class="form-control" name="classId">
+			<option>강좌 선택123</option>
+		<th:block th:each="c : ${profClassId}">
+			<option th:text="${c.classId}" th:value="${c.classId}"></option>
+		</th:block> 		
+	</select>
+  
+    <select class="form-control" name="classNoticeType" id="classNoticeType">
+    	<option value="">구분</option>
+		<option value="notice">공지</option>
+		<option value="noticedata">자료</option>
+    </select>
+    </div>
+ 		
+ 	 <div class="input-group input-group-outline my-3">
+      <input type="text" class="form-control" th:value="${noticeList.classNoticeTitle}" name="classNoticeTitle">
+    </div>	
+    
+     <div class="input-group input-group-outline my-3">
+      <textarea type="text" class="form-control" th:text="${noticeList.classNoticeCon}" name="classNoticeCon"></textarea>
+    </div>	
+      
+    <div class="input-group input-group-outline my-3">
+      <a th:href="${'/noticedownload?classNoticeFile='+noticeList.classNoticeFile}"><label th:id="quizRFile" th:text="${noticeList.classNoticeOriginal}" class="form-label"></label></a>
+      <input type="file" class="form-control" multiple="multiple" th:value="${noticeList.classNoticeOriginal}" name="classNoticeFileSyl">
+      <input type="hidden" class="form-control" multiple="multiple" name="classNoticeOriginal">
+    </div>
+
+    
+    <button class="btn bg-gradient-primary">수정</button>
+</form>
+    
+  <!-- 본문 end-->
+
+</div>
+</th:block>
+</html>

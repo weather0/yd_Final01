@@ -50,5 +50,11 @@ public class NoticeServiceImpl implements NoticeService {
 		// TODO Auto-generated method stub
 		return map.getClassIdProf(vo);
 	}
+
+	@Override
+	public void noticeModify(NoticeVo vo) {
+		map.noticeModify(vo);
+		
+	}
 	
 }

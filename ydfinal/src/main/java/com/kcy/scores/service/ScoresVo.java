@@ -48,6 +48,8 @@ public class ScoresVo {
 	private String stuId;
 	private String userDept;
 	
+	private int quizRPoint;
+	
 	private int studentGrade;
 	private int studentSem;
 	private String studentAcaYn;

@@ -10,5 +10,5 @@ public interface UserMapper {
 	UserVo updateUserPassword(String userId, String userPw);
 	UserVo findById(String userId);
 	boolean userEmailCheck(String userEmail, String userName);
-	UserVo findUserByUserId(String userEmail);
+	public UserVo findUserByUserId(String userEmail);
 	}

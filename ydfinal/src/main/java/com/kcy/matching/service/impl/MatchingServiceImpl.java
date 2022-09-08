@@ -83,4 +83,22 @@ public class MatchingServiceImpl implements MatchingService {
 		return mapper.majorbList(vo);
 	}
 
+	@Override
+	public void changeStatus(MatchingStdVO vo) {
+		mapper.changeStatus(vo);
+		
+	}
+
+	@Override
+	public List<MatchingChangeVO> changeProgress(MatchingChangeVO vo) {
+		return mapper.changeProgress(vo);
+	}
+
+	@Override
+	public void changeCancel(MatchingChangeVO vo) {
+		mapper.changeCancel(vo);
+		
+	}
+
+
 }
