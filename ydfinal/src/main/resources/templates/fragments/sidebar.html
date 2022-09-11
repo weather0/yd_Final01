@@ -4,12 +4,12 @@
 <th:block th:fragment="sidebarFragment">
 <script  th:inline="javascript">
 $(function(){
-  let soMenu = $('#sidenav-collapse-main .collapse a')
-  console.log([[${#authentication.principal.myName}]])
-  soMenu.on('click', function () {
-    console.log(this.text)
-//     Cookies.set()
-  })
+//   let soMenu = $('#sidenav-collapse-main .collapse a');
+//   let myId = [[${#authentication.name}]];
+//   soMenu.on('click', function () {
+//     console.log(this.text);
+//     Cookies.set(myId + '-' + this.text);
+//   })
   
   
   
@@ -68,7 +68,7 @@ $(function(){
             <a class="nav-link text-white py-1" href="allStuInfo" >학적정보 조회</a>
           </div>
           <div class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">
-            <a class="nav-link text-white py-1" href="allAcaInfo" >학적변동 승인</a>
+            <a class="nav-link text-white py-1" href="allAcaInfo" >학적변동 관리</a>
           </div>
           <div class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">
             <a class="nav-link text-white py-1" href="#" >교수정보 조회</a>
@@ -219,7 +219,7 @@ $(function(){
 
 
 
-      <li class="nav-item">
+      <li class="nav-item" sec:authorize="hasRole('ROLE_STU')">
         <a class="nav-link text-white btn btn-secondary" data-bs-toggle="collapse" href="#scoreMgr">
           <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
             <i class="material-icons opacity-10">dashboard</i>

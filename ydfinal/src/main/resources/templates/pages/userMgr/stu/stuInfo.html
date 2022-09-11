@@ -14,23 +14,20 @@
 
   <!-- 본문 start -->
   <div class="container-fluid">
-
-
     <div class="row justify-content-center">
-      <div class="col-lg-3 col-sm-3 mb-4"></div>
-      <div class="col-lg-7 col-sm-9 mb-4">
-<!--         <th:block th:replace="pages/userMgr/stu/stuNavbar :: stuNavbarFragment"></th:block> -->
+    
+      <div class="px-2 pb-4">
+        <div class="bg-secondary bg-gradient-secondary shadow-secondary border-radius-lg py-3">
+          <h6 class="text-white ps-3 m-0">학적 조회</h6>
+        </div>
       </div>
-    </div>
-
-    <div class="row justify-content-center">
+      
       <div class="col-lg-3 col-sm-3 mb-4">
         <div class="card">
           <img th:src="@{ '../aa/userImg/'+ ${myInfo.userPic} }" class="img-fluid border-radius-lg shadow"
             th:alt="${myInfo.userPic}">
         </div>
       </div>
-
 
       <div class="col-lg-7 col-sm-9 mb-4">
         <div class="card">
@@ -80,21 +77,13 @@
                 <td>..</td>
               </tr>
             </table>
-          </div>
+          </div> <!-- div table-responsive -->
 
-        </div>
-      </div>
+        </div> <!-- card -->
+      </div> <!-- col -->
 
-
-    </div>
-
-
-
-
-    <!-- 하단 푸터(본문div 안에 있어야 안 어그러짐) -->
-    <!--     <th:block th:replace="fragments/footer :: footerFragment"></th:block> -->
-
-  </div>
+    </div> <!-- row -->
+  </div> <!-- container -->
   <!-- 본문 end-->
 </th:block>
 </html>
