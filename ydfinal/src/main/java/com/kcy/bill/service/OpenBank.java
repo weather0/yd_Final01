@@ -163,7 +163,7 @@ public class OpenBank {
 		}
 
 		// 입금이체
-		public static String getDeposit(BankVO vo) {
+		public static String getDeposit(PayVO vo) {
 
 			StringBuilder sb = new StringBuilder();
 

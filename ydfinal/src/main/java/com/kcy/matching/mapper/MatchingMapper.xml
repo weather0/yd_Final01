@@ -163,7 +163,7 @@
 
 <delete id="changeCancel" parameterType="com.kcy.matching.service.MatchingChangeVO">
 		DELETE FROM k_matching_change 
-		WHERE stu_id = #{delId}
+		WHERE stu_id = #{stuId}
 </delete>
 
 </mapper>
