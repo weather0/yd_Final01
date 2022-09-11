@@ -1,127 +1,167 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layouts/layout}">  
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/layout}">
 
 <th:block layout:fragment="content">
-  <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css"/>
-  <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
-  <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
-<style>
+	<style>
 .stdactive {
-	background-color : gray
+	background-color: gray
 }
-</style> 
-    
-  <!-- 상단 내비바 -->
-  <th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
- 
-  <!-- 본문 start -->  
-  <h3>지도교수 변경 신청자 목록</h3>
-  <table class="table table-striped" id="matchingChageList">
-	<thead>
-		<tr>
-			<th>학번</th>
-			<th>이름</th>
-			<th>전공</th>
-			<th>학년</th>
-			<th>학적상태</th>
-			<th style="display:none">지도교수교번</th>
-			<th>현재 지도교수</th>		
-			<th>변경 사유</th>
-			<th style="display:none">지정 지도교수 교번</th>
-			<th>지도교수 지정</th>
-			<th>승인여부</th>
-		</tr>
-	</thead>
-	<tbody>	
-		<tr th:each="std:${matchingChange}" class="changeInfo">
-			<td th:text="${std.stuId}"></td>
-			<td th:text="${std.userName}"></td>
-			<td th:text="${std.userDept}"></td>
-			<td th:text="${std.studentGrade}"></td>
-			<td th:text="${std.studentAcaYn}"></td>
-			<td th:text="${std.profId}" style="display:none"></td>			
-			<td th:text="${std.prof}"></td>					
-			<td th:text="${std.matchingChangeReason}"></td>
-			<td th:text="${std.wantprofId}" style="display:none"></td>					
-			<td th:text="${std.wantprof}"></td>
-			<td>
-				<button class="btn btn-primary OK">승인</button>	
-   				<button type="button" class="btn btn-primary reject" data-bs-toggle="modal" data-bs-target="#reject" data-bs-whatever="NO">거부</button> 			
-			</td>
-		</tr>
-	</tbody>
-   </table>
- 	
-	<div class="modal fade" id="reject" tabindex="-1" aria-labelledby="rejectLabel" aria-hidden="true">
-	  <div class="modal-dialog">
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <h5 class="modal-title" id="rejectLabel">승인 거부 사유 작성</h5>
-	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-	      </div>
-	      <div class="modal-body">
-	        <form>	          
-	          <div class="mb-3">	           
-	            <input type="text" class="form-control" id="reject-text" placeholder="거부 사유를 입력해주세요"></textarea>
-	          </div>
-	        </form>
-	      </div>
-	      <div class="modal-footer">
-	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-	        <button type="button" class="btn btn-primary NO">등록</button>
-	      </div>
-	    </div>
-	  </div>
+
+.pagination .active .page-link {
+	background-color: #7b809a;
+	border-color: #7b809a;
+}
+
+.page-link:focus {
+	box-shadow: 0 0 0 0.2rem rgb(123 128 154/ 25%);
+}
+</style>
+
+	<!-- 상단 내비바 -->
+	<th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
+
+	<!-- 본문 start -->
+	<div class="card p-3 me-3">
+		<div class="row justify-content-center">
+
+			<!-- 각 페이지 타이틀바 -->
+			<div class="card-header p-0 position-relative mt-n4 mb-4 z-index-2">
+				<div
+					class="bg-secondary bg-gradient-secondary shadow-secondary border-radius-lg py-3">
+					<h6 class="text-white ps-3 m-0">지도교수 변경 신청자 목록</h6>
+				</div>
+			</div>
+			<table class="table table-striped" id="matchingChageList">
+				<thead>
+					<tr>
+						<th>학번</th>
+						<th>이름</th>
+						<th>전공</th>
+						<th>학년</th>
+						<th>학적상태</th>
+						<th style="display: none">지도교수교번</th>
+						<th>현재 지도교수</th>
+						<th>변경 사유</th>
+						<th style="display: none">지정 지도교수 교번</th>
+						<th>지도교수 지정</th>
+						<th>승인여부</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="std:${matchingChange}" class="changeInfo">
+						<td th:text="${std.stuId}"></td>
+						<td th:text="${std.userName}"></td>
+						<td th:text="${std.userDept}"></td>
+						<td th:text="${std.studentGrade}"></td>
+						<td th:text="${std.studentAcaYn}"></td>
+						<td th:text="${std.profId}" style="display: none"></td>
+						<td th:text="${std.prof}"></td>
+						<td th:text="${std.matchingChangeReason}"></td>
+						<td th:text="${std.wantprofId}" style="display: none"></td>
+						<td th:text="${std.wantprof}"></td>
+						<td>
+							<button class="btn btn-primary OK">승인</button>
+							<button type="button" class="btn btn-primary reject"
+								data-bs-toggle="modal" data-bs-target="#reject"
+								data-bs-whatever="NO">거부</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+
+			<div class="modal fade" id="reject" tabindex="-1"
+				aria-labelledby="rejectLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="rejectLabel">승인 거부 사유 작성</h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal"
+								aria-label="Close"></button>
+						</div>
+						<div class="modal-body">
+							<form>
+								<div class="mb-3">
+									<textarea class="form-control" id="reject-text"
+										placeholder="거부 사유를 입력해주세요">
+							</textarea>
+								</div>
+							</form>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary"
+								data-bs-dismiss="modal">닫기</button>
+							<button type="button" class="btn btn-primary NO">등록</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
-	      
-   <script>
-   	$("#matchingChageList").DataTable({ });
-   	
-   	$(".OK").on("click", function () {   		
-   		var matchingS = ($(this).closest("tr").find("td:first").text())
-   		var matchingO = ($(this).closest("tr").find("td:eq(5)").text())
-   		var matchingN = ($(this).closest("tr").find("td:eq(8)").text())
-   		$.ajax({
-   			type: "POST",
-   			url: "/changeMatching",
-   			data: {userId : matchingN,
-   					studentId : matchingS,
-   					beforeProf : matchingO},
-   			success : function (result) {
-   				if(result == "1") {
-   					alert ("변경 승인")
-   					location.href = "matchingChangeList"
-   				}	
-   			}   					
-   		})
-   	});
-   	   	
-   	$(".reject").on("click", function () {
-   		var rejectS = ($(this).closest("tr").find("td:first").text())
-   		$(".NO").on("click", function () {
-   			var rejectR = document.getElementById('reject-text').value;	   		
-	   		$.ajax({
-	   			type : "POST",
-	   			url : "/changeReject",
-	   			data : { stuId : rejectS,
-	   					 matchingChangeReject : rejectR},
-	   			success : function (result) {
-	   				if(result == "1") {
-	   					alert ("변경 신청 거부")
-	   					location.href = "matchingChangeList"
-	   				}
-	   			}   			
-	   			
-	   		})
-   		})
-   	});   	
-   	
-   	
-   </script>
-      	  
-  <!-- 본문 end-->
-</th:block>	
+
+	<script>
+		$("#matchingChageList").DataTable({
+			language : {
+				lengthMenu : "페이지 당: _MENU_",
+				search : "검색:",
+				searchPlaceholder : "키워드를 입력하세요",
+				zeroRecords : "검색결과가 없습니다",
+				info : "_START_ - _END_ (전체: _MAX_건)",
+				infoFiltered : "(검색결과: _TOTAL_건)",
+				infoEmpty : "",
+				paginate : {
+					previous : "<",
+              next: ">",
+				}
+			}
+		});
+
+		$(".OK").on("click", function() {
+			var matchingS = ($(this).closest("tr").find("td:first").text())
+			var matchingO = ($(this).closest("tr").find("td:eq(5)").text())
+			var matchingN = ($(this).closest("tr").find("td:eq(8)").text())
+			$.ajax({
+				type : "POST",
+				url : "/changeMatching",
+				data : {
+					userId : matchingN,
+					studentId : matchingS,
+					beforeProf : matchingO
+				},
+				success : function(result) {
+					if (result == "1") {
+						alert("변경 승인")
+						location.href = "matchingChangeList"
+					}
+				}
+			})
+		});
+
+		$(".reject").on("click", function() {
+			var rejectS = ($(this).closest("tr").find("td:first").text())
+			$(".NO").on("click", function() {
+				var rejectR = document.getElementById('reject-text').value;
+				$.ajax({
+					type : "POST",
+					url : "/changeReject",
+					data : {
+						stuId : rejectS,
+						matchingChangeReject : rejectR
+					},
+					success : function(result) {
+						if (result == "1") {
+							alert("변경 신청 거부")
+							location.href = "matchingChangeList"
+						}
+					}
+
+				})
+			})
+		});
+	</script>
+
+	<!-- 본문 end-->
+</th:block>
 </html>
