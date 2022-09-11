@@ -93,9 +93,7 @@
    	
    	$(".prof").on("click", function () {
    		var matchingP = ($(this).closest("tr").find("td:first").text())
-   		var matchingS = ($(".stdactive").find("td:first").text())
-   		console.log(matchingP)
-   		console.log(matchingS)
+   		var matchingS = ($(".stdactive").find("td:first").text())   	
    		$.ajax({
    			type: "post",
    			url: "/matching",
