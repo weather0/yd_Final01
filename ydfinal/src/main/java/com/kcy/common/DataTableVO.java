@@ -13,9 +13,9 @@ public class DataTableVO {
     private int recordsTotal;
     private int recordsFiltered;
 
-    private List data;
+    private List<?> data;
 
-    public List getData() {
+    public List<?> getData() {
         if (CollectionUtils.isEmpty(data)) {
             data = new ArrayList();
         }

@@ -32,7 +32,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 	@Override
 	public void scheduleAllInsert(List<ClassScheduleVO> list) {
 		  for(ClassScheduleVO vo : list ) {
-			  mapper.scheduleInsert(vo); 
+			  mapper.scheduleInsert(vo);
 			  }
 	}
 

@@ -10,107 +10,107 @@
 	<th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
 
 	<!-- 본문 start -->
-	<div class="card p-3 me-3">
-		<div class="row justify-content-center">
+	<div class="container-fluid">
+		<div class="card p-3 me-3">
+			<div class="row justify-content-center">
 
-			<!-- 각 페이지 타이틀바 -->
-			<div class="card-header p-0 position-relative mt-n4 mb-4 z-index-2">
-				<div
-					class="bg-secondary bg-gradient-secondary shadow-secondary border-radius-lg py-3">
-					<h6 class="text-white ps-3 m-0">등록금 고지서 확인</h6>
+				<!-- 각 페이지 타이틀바 -->
+				<div class="card-header p-0 position-relative mt-n4 mb-4 z-index-2">
+					<div
+						class="bg-secondary bg-gradient-secondary shadow-secondary border-radius-lg py-3">
+						<h6 class="text-white ps-3 m-0">등록금 고지서 확인</h6>
+					</div>
 				</div>
+				<form action="billListInfo">
+					<div class="row">
+						<div class="col-md-2">
+							<div class="input-group input-group-outline my-3">
+								<label class="form-label"></label><input type="number"
+									class="form-control" name="billYear" id="billYear">
+							</div>
+						</div>
+						<div class="col-md-2">
+							<div class="input-group input-group-outline my-3">
+								<label class="form-label"></label> <select class="form-control"
+									name="billSem" id="billSem">
+									<option value="1">1학기</option>
+									<option value="2">2학기</option>
+								</select>
+							</div>
+						</div>
+						<div class="col-md-2">
+							<div class="input-group input-group-outline my-3">
+								<label class="form-label"></label> <select class="form-control"
+									name="majorbId" id="majorbId">
+									<option value=''>학과선택</option>
+									<th:block th:each="mjr : ${majorb}">
+										<option th:text="${mjr.majorName}" th:value="${mjr.majorId}"></option>
+									</th:block>
+								</select>
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="input-group input-group-outline my-3">
+								<button class="btn bg-gradient-primary">조회</button>
+							</div>
+						</div>
+					</div>
+				</form>
 			</div>
-			<form action="billListInfo">
-				<div class="row">
-					<div class="col-md-2">
-						<div class="input-group input-group-outline my-3">
-							<label class="form-label"></label><input type="number"
-								class="form-control" name="billYear" id="billYear">
-						</div>
-					</div>
-					<div class="col-md-2">
-						<div class="input-group input-group-outline my-3">
-							<label class="form-label"></label> <select class="form-control"
-								name="billSem" id="billSem">
-								<option value="1">1학기</option>
-								<option value="2">2학기</option>
-							</select>
-						</div>
-					</div>
-					<div class="col-md-2">
-						<div class="input-group input-group-outline my-3">
-							<label class="form-label"></label> <select class="form-control"
-								name="majorbId" id="majorbId">
-								<option value=''>학과선택</option>
-								<th:block th:each="mjr : ${majorb}">
-									<option th:text="${mjr.majorName}" th:value="${mjr.majorId}"></option>
-								</th:block>
-							</select>
-						</div>
-					</div>
-					<div class="col-md-3">
-						<div class="input-group input-group-outline my-3">
-							<button class="btn bg-gradient-primary">조회</button>
-						</div>
-					</div>
+
+
+
+			<div class="table-responsive">
+				<table class="table align-items-center mb-0">
+					<thead>
+						<tr>
+							<th>선택</th>
+							<th>납부코드</th>
+							<th>학과</th>
+							<th>등록년도</th>
+							<th>등록학기</th>
+							<th hidden="">학과번호</th>
+							<th>등록금</th>
+							<th>고지서 등록 여부</th>
+							<th>고지서 수정/발부</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="bill:${billListInfo}">
+							<td><input type="checkbox" name="billchk"></td>
+							<td th:text="${bill.billId}" name="billId" id="billId"></td>
+							<td th:text="${bill.majorName}"></td>
+							<td th:text="${bill.billYear}"></td>
+							<td th:text="${bill.billSem}"></td>
+							<td th:text="${bill.majorId}" hidden="" name="majorId"
+								id="majorId"></td>
+							<td><input type="number" name="billAmount" id="billAmount"
+								th:value="${bill.billAmount}"></td>
+							<td><span class="badge badge-lg bg-gradient-danger"
+								th:if="${bill.pId == null}">등록안됨</span> <span
+								class="badge badge-lg bg-gradient-success"
+								th:if="${bill.pId != null}">등록됨</span></td>
+							<td>
+								<button class="btn bg-gradient-primary update">수정</button> <span
+								th:if="${bill.pId == null}">
+									<button class="btn bg-gradient-primary insert"
+										aria-pressed="true">고지</button>
+							</span> <span th:if="${bill.pId != null}">
+									<button class="btn bg-gradient-primary insert" disabled>고지</button>
+							</span>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+			<div class="col-md-3">
+				<div class="input-group input-group-outline my-3">
+					<button class="btn bg-gradient-primary check">일괄고지</button>
 				</div>
-			</form>
-		</div>
-
-
-
-		<div class="table-responsive">
-			<table class="table align-items-center mb-0">
-				<thead>
-					<tr>
-						<th>선택</th>
-						<th>납부코드</th>
-						<th>학과</th>
-						<th>등록년도</th>
-						<th>등록학기</th>
-						<th hidden="">학과번호</th>
-						<th>등록금</th>
-						<th>고지서 등록 여부</th>
-						<th>고지서 수정/발부</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr th:each="bill:${billListInfo}">
-						<td><input type="checkbox" name="billchk"></td>
-						<td th:text="${bill.billId}" name="billId" id="billId"></td>
-						<td th:text="${bill.majorName}"></td>
-						<td th:text="${bill.billYear}"></td>
-						<td th:text="${bill.billSem}"></td>
-						<td th:text="${bill.majorId}" hidden="" name="majorId"
-							id="majorId"></td>
-						<td><input type="number" name="billAmount" id="billAmount"
-							th:value="${bill.billAmount}"></td>
-						<td><span class="badge badge-lg bg-gradient-danger"
-							th:if="${bill.pId == null}">등록안됨</span> <span
-							class="badge badge-lg bg-gradient-success"
-							th:if="${bill.pId != null}">등록됨</span></td>
-						<td>
-							<button class="btn bg-gradient-primary update">수정</button> <span
-							th:if="${bill.pId == null}">
-								<button class="btn bg-gradient-primary insert"
-									aria-pressed="true">고지</button>
-						</span> <span th:if="${bill.pId != null}">
-								<button class="btn bg-gradient-primary insert" disabled>고지</button>
-						</span>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-
-		<div class="col-md-3">
-			<div class="input-group input-group-outline my-3">
-				<button class="btn bg-gradient-primary check">일괄고지</button>
 			</div>
 		</div>
 	</div>
-
-
 
 	<script>
 		$(".update").on("click", function() {

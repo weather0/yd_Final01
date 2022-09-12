@@ -116,7 +116,7 @@
         ajax: {
           url: "allStuInfoProc",
           type: "POST",
-          
+          data: { uType: "stu" },
           // 이부분은 굳이 안해줘도 되는 듯(컨트롤러에서 vo.setData(data)로 자동처리 됨)
 //           dataSrc: function(res) {
 //             var data = res.data;
@@ -158,7 +158,7 @@
           lengthMenu: "페이지 당: _MENU_",
           buttons: {
             // 밑에 buttons옵션 자체에서 지정도 가능(text옵션)
-//             colvis: '열 숨기기',
+//             colvis: '열 표시',
 //             colvisRestore: '열 초기화'
           },
           search: "검색:",
@@ -176,7 +176,7 @@
         buttons: [
           {
             extend: 'colvis', 
-            text: '열 숨기기',
+            text: '열 표시',
             columns: 'th:gt(0)', // 학번은 못 숨기도록(단건조회 오류방지)
             postfixButtons: [
               {
@@ -369,12 +369,11 @@
   <div class="container-fluid">
 
     <div class="row justify-content-center">
-      <div class="card p-3 me-3">
+      <div class="card p-3 me-3 border border-5" style="margin-top: 3px;">
       
         <div class="card-header p-0 position-relative mt-n4 mb-4 z-index-2">
           <div class="bg-secondary bg-gradient-secondary shadow-secondary border-radius-lg py-3">
             <h6 class="text-white ps-3 m-0">학적 정보 조회</h6>
-<!--             <input  th:value="${#authentication.principal.username}" type="hidden" id="userid"> -->
           </div>
         </div>
         

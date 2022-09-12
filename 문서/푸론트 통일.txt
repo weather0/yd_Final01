@@ -1,0 +1,95 @@
+프론트 통일
+■1. 타이틀바(상단에 바로 테이블 나오는 경우)
+
+  <!-- 상단 내비바 -->
+  <th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
+
+  <!-- 본문 start -->
+  <div class="container-fluid">
+    <div class="row justify-content-center">
+      <div class="card p-3 me-3 border border-5" style="margin-top: 3px;">
+      
+        <!-- 각 페이지 타이틀바 -->
+        <div class="card-header p-0 position-relative mt-n4 mb-4 z-index-2">
+          <div class="bg-secondary bg-gradient-secondary shadow-secondary border-radius-lg py-3">
+            <h6 class="text-white ps-3 m-0">페이지명</h6>
+          </div>
+        </div>
+
+      <!-- 여기에 자기 코드 -->
+
+      </div>
+    </div>
+  </div>
+
+
+
+-------------------------------
+1-2. 타이틀바(상단에 테이블 없는 경우)
+
+  <!-- 상단 내비바 -->
+  <th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
+
+  <!-- 본문 start -->
+  <div class="container-fluid">
+    <div class="row justify-content-center">
+
+        <!-- 각 페이지 타이틀바 -->
+        <div class="px-2 pb-4">
+          <div class="bg-secondary bg-gradient-secondary shadow-secondary border-radius-lg py-3">
+            <h6 class="text-white ps-3 m-0">페이지명</h6>
+          </div>
+        </div>
+
+     <!-- 여기에 자기 코드 -->
+
+    </div>
+  </div>
+
+
+
+──────────────────────
+■2. 각 페이지 데이터테이블, 제이쿼리 CDN 다 지우기
+   (layout.html 최상단에 공통으로 달아놔서 문제없음. 혹시 어그러지면 말해줘)
+
+
+
+──────────────────────
+■3. 데이터테이블 페이지네이션 색깔
+<th:block layout:fragment="content">
+<style>
+    .pagination .active .page-link {
+      background-color: #7b809a;
+      border-color: #7b809a;
+    }
+    
+    .page-link:focus {
+      box-shadow: 0 0 0 0.2rem rgb(123 128 154/ 25%);
+    }
+</style>
+
+
+──────────────────────
+■4. 데이터테이블 한글화
+$('#자기테이블아이디').DataTable({
+          language: {
+            lengthMenu: "페이지 당: _MENU_",
+            search: "검색:",
+            searchPlaceholder: "키워드를 입력하세요",
+            zeroRecords: "검색결과가 없습니다",
+            info: "_START_ - _END_ (전체: _MAX_건)",
+            infoFiltered: "(검색결과: _TOTAL_건)",
+            infoEmpty: "",
+            paginate: {
+              previous: "<",
+              next: ">",
+            }
+          }
+});
+
+──────────────────────
+■5. 테이블헤드 th
+<th class="text-center">제목</th>
+클래스에 잡다한거 text-uppercase, text-xxs 등등 달려있으면 다 지우고 심플하게 text-center만 달기
+(중앙정렬 안해도 되는 칼럼이면 굳이 클래스 안 달아도 됨!)
+

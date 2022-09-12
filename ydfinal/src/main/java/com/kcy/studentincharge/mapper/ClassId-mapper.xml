@@ -3,7 +3,7 @@
 <mapper namespace="com.kcy.studentincharge.mapper.ClassIdMapper">
 
 	<select id="selectClassId" resultType="com.kcy.studentincharge.service.ClassIdVO">
-			SELECT c.course_title, kc.class_id
+			SELECT c.course_title, kc.class_id, kc.class_ck
 				from k_class kc join k_course c on kc.course_id  = c.course_id 
 			WHERE kc.prof_id = #{userId};
 	

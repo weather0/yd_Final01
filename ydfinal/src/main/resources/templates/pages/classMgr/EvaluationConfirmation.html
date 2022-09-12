@@ -1,90 +1,100 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layouts/layout}">
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/layout}">
 <th:block layout:fragment="content">
 
- 
- 
-  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-  <!-- 상단 내비바 -->
-  <th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
-  <!-- 본문 start -->
-  
-<div class="container-fluid py-4">
-    <div class="row"> 
-      <div class="card my-7">
-          <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-            <div class="bg-gradient-primary shadow-primary border-radius-lg pt-3 pb-2" style="background: #fc9209">
-              <h6 class="text-white text-capitalize ps-3">교직원평가 확인</h6>
-              <input  th:value="${#authentication.principal.username}" type="hidden" id="userid">
-            </div>
-          </div>
- 
- 		<div id="columnchart_material"  style="margin: auto;"></div>
- 			<p>1문항: 강의계획서가 강좌의 목표,내용,성적평가 방법 등 과목의 성격을 이해하기 쉽게 구성되었다.</p>
- 			<p>2문항: 강의계획서 진도에 맞게 해당 주차에 온라인 수업 콘텐츠가 게시되었다.</p>
- 			<p>3문항: 강의교재나 참고자료가 수업내용을 이해하는데 적절하게 구성되었으며 다양한 학습자료가 제공되었다.</p>
- 			<p>4문항: 학생들의 질의응답 게시판 또는 이메일, 모바일 등을 활용하여 질의 내용에 성실하게 답변하였다.</p>
- 			<p>5문항: 과제의 방법과 성적 평가기준 및 방식은 객관적이고 합리적으로 제시되었다.</p>
- 			<p>6문항: 과제의 내용 및 분량은 적절하였으며 강의 내용을 이해하는데 도움을 주었다</p>
- 			<p>7문항: 이 강의를 통해 관련 지식과 전공능력(핵심역량)이 증진되었다.</p>
-          <input type="hidden" th:value="${classId}" id="classId">
+
+
+	<script type="text/javascript"
+		src="https://www.gstatic.com/charts/loader.js"></script>
+	<!-- 상단 내비바 -->
+	<th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
+	<!-- 본문 start -->
+
+	<div class="container-fluid">
+		<div class="row justify-content-center">
+			<div class="px-2 pt-3 pb-4">
+				<div
+					class="bg-secondary bg-gradient-secondary shadow-secondary border-radius-lg py-3">
+					<h6 class="text-white ps-3 m-0">페이지명</h6>
+					<input th:value="${#authentication.principal.username}"
+						type="hidden" id="userid">
+				</div>
+			</div>
+
+			<div id="columnchart_material" style="margin: auto;"></div>
+			<p>1문항: 강의계획서가 강좌의 목표,내용,성적평가 방법 등 과목의 성격을 이해하기 쉽게 구성되었다.</p>
+			<p>2문항: 강의계획서 진도에 맞게 해당 주차에 온라인 수업 콘텐츠가 게시되었다.</p>
+			<p>3문항: 강의교재나 참고자료가 수업내용을 이해하는데 적절하게 구성되었으며 다양한 학습자료가 제공되었다.</p>
+			<p>4문항: 학생들의 질의응답 게시판 또는 이메일, 모바일 등을 활용하여 질의 내용에 성실하게 답변하였다.</p>
+			<p>5문항: 과제의 방법과 성적 평가기준 및 방식은 객관적이고 합리적으로 제시되었다.</p>
+			<p>6문항: 과제의 내용 및 분량은 적절하였으며 강의 내용을 이해하는데 도움을 주었다</p>
+			<p>7문항: 이 강의를 통해 관련 지식과 전공능력(핵심역량)이 증진되었다.</p>
+			<input type="hidden" th:value="${classId}" id="classId">
 		</div>
 	</div>
-</div>
-          
-    <script type="text/javascript">
-    
-      google.charts.load('current', {'packages':['bar']});
-      google.charts.setOnLoadCallback(drawChart);
 
-      function drawChart() {
-    	  	let classId = $("#classId").val();
-    	  $.ajax({
-    	  	url:"http://localhost/evaluationconfirmationjson",
-    	  	dataType:"json",
-    	  	data: {
-    	  		classId: classId
-    	  	},
-    	  	success: function(result){
-          	            
-	            	        
-    	  	  let ck = result['prof_r_result'] ;
-    	  	  let name =['EV1000','EV1001','EV1002','EV1003','EV1004','EV1005','EV1006'];
-              let chart1= [];
-              chart1.push(['교직원평가 결과 통계표', '매우좋음', '좋음', '보통이다', '별로다', '매우별로다',{ role: 'annotation' }]);
-              for(var i =0; i<7; i++){
- 	     		 let val = [(i+1)+'문항'];
- 	 	    	 for(var j =0; j<5; j++){    			  
- 	 	    		  val.push(ck[name[i]][j].cnt)
- 	     		 }    
- 	 	    	 val.push('')
- 	     	  	 chart1.push(val)
- 	     	  }
-              console.log(ck)
- 	     	  
-	            var data = google.visualization.arrayToDataTable(chart1);
- 	     	  
-	          var options = {
-	        	        width: 1000,
-	        	        height: 500,
-	        	        legend: { position: 'top', maxLines: 3 },
-	        	        bar: { groupWidth: '75%' },
-	        	        isStacked: true,
-	        	      };
-			  var chart = new google.charts.Bar(document.getElementById('columnchart_material'));
-			
-			  chart.draw(data, google.charts.Bar.convertOptions(options));
-	        
-    	  } //end of success
-    	})
-     }
-      
-      
-      
+	<script type="text/javascript">
+		google.charts.load('current', {
+			'packages' : [ 'bar' ]
+		});
+		google.charts.setOnLoadCallback(drawChart);
 
-    </script>
+		function drawChart() {
+			let classId = $("#classId").val();
+			$
+					.ajax({
+						url : "http://localhost/evaluationconfirmationjson",
+						dataType : "json",
+						data : {
+							classId : classId
+						},
+						success : function(result) {
+
+							let ck = result['prof_r_result'];
+							let name = [ 'EV1000', 'EV1001', 'EV1002',
+									'EV1003', 'EV1004', 'EV1005', 'EV1006' ];
+							let chart1 = [];
+							chart1.push([ '교직원평가 결과 통계표', '매우좋음', '좋음', '보통이다',
+									'별로다', '매우별로다', {
+										role : 'annotation'
+									} ]);
+							for (var i = 0; i < 7; i++) {
+								let val = [ (i + 1) + '문항' ];
+								for (var j = 0; j < 5; j++) {
+									val.push(ck[name[i]][j].cnt)
+								}
+								val.push('')
+								chart1.push(val)
+							}
+							console.log(ck)
+
+							var data = google.visualization
+									.arrayToDataTable(chart1);
+
+							var options = {
+								width : 1000,
+								height : 500,
+								legend : {
+									position : 'top',
+									maxLines : 3
+								},
+								bar : {
+									groupWidth : '75%'
+								},
+								isStacked : true,
+							};
+							var chart = new google.charts.Bar(document
+									.getElementById('columnchart_material'));
+
+							chart.draw(data, google.charts.Bar
+									.convertOptions(options));
+
+						} //end of success
+					})
+		}
+	</script>
 </th:block>
 </html>

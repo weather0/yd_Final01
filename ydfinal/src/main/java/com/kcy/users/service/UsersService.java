@@ -7,11 +7,11 @@ public interface UsersService {
     // 기본 인적사항 (모든 사용자)
     public Map<String, String> userInfo(String id);
     // 전체 학생 학적 목록 (행정)
-    public int allStuInfoCnt(Map cri);
-    public List<Map<String, String>> allStuInfoProc(Map cri);
+    public int allStuInfoCnt(Map<?, ?> cri);
+    public List<Map<String, String>> allStuInfoProc(Map<?, ?> cri);
     
-    // 전체 교수 목록 (행정)
-    public List<Map<String, String>> allProfInfo();
+    // 본인 정보 조회 (교수)
+    public Map<String, String> profInfo(String id);
     
     // 본인 학적 조회 (학생)
     public Map<String, String> stuInfo(String id);

@@ -23,16 +23,18 @@
       </div>
       
       <div class="col-lg-3 col-sm-3 mb-4">
-        <div class="card">
-          <img th:src="@{ '../aa/userImg/'+ ${myInfo.userPic} }" class="img-fluid border-radius-lg shadow"
-            th:alt="${myInfo.userPic}">
+        <div class="card ratio ratio-1x1">
+          <img th:src="@{ '../aa/userImg/'+ ${myInfo.userPic} }" 
+               class="img-fluid border-radius-lg shadow border border-5"
+               th:alt="${myInfo.userPic}" 
+               style="object-fit: cover; object-position: center 30%; ">
         </div>
       </div>
 
       <div class="col-lg-7 col-sm-9 mb-4">
         <div class="card">
 
-          <div class="table-responsive border-radius-lg">
+          <div class="table-responsive border-radius-lg border border-5">
             <table class="table align-items-center text-center mb-0 fw-bold" style="height: 60vh" id="myTable">
               <tr>
                 <td class="table-secondary">학번</td>

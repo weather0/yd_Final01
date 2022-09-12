@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+      layout:decorate="~{layouts/layout}">
+
+<th:block layout:fragment="content">
+
+  <style>
+  
+  </style>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      $.ajax ({
+        url: '/allSchProc',
+        success: function (data) {
+          console.log(data);
+          allSch(data);
+        }
+      })
+      
+      
+      
+      function allSch (data) {
+        var calendarEl = document.getElementById('allSch');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+          height: 'auto',
+          locale: 'kr',
+          initialView: 'dayGridMonth',
+          headerToolbar : {
+            left : 'prev,next today',
+            center : 'title',
+            right : 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+          },
+          editable : true,
+          selectable : true,
+          selectMirror : true,
+          
+          eventTimeFormat: { // like '14:30:00'
+            hour: '2-digit',
+            minute: '2-digit',
+            meridiem: false,
+            hour12: false
+          },
+//           displayEventTime: false,
+          
+          
+          // 개꿀 기능! sql문 각 칼럼 AS 쓸 필요 없이 *로 조지고 여기서 약속key명(title,start등)으로 바꾸자
+          eventDataTransform: function (data) {
+            data.id = data.schId;
+            data.title = data.schTitle;
+            data.start = data.schStart;
+            data.end = data.schEnd;
+            return data;
+          },
+          events: data
+        });
+        calendar.render();
+        
+      }
+        
+
+      
+      
+    })
+  </script>
+
+  <!-- 상단 내비바 -->
+  <th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
+
+  <!-- 본문 start -->
+  <div class="container-fluid">
+
+    <div class="row justify-content-center">
+    
+<!--       <div class="px-2 pb-4"> -->
+<!--         <div class="bg-secondary bg-gradient-secondary shadow-secondary border-radius-lg py-3"> -->
+<!--           <h6 class="text-white ps-3 m-0">학사 일정</h6> -->
+<!--         </div> -->
+<!--       </div> -->
+    
+      <div class="card p-3 me-3 mb-10 w-80 border border-5" style="margin-top: 3px;">
+      
+        <div class="card-header p-0 position-relative mt-n4 mb-4 z-index-2">
+          <div class="bg-secondary bg-gradient-secondary shadow-secondary border-radius-lg py-3">
+            <h6 class="text-white ps-3 m-0">학사 일정</h6>
+          </div>
+        </div>
+
+
+        <div id="allSch"></div>
+        
+        
+      </div> <!-- card -->
+    </div> <!-- row -->
+  </div>
+  <!-- 본문 end-->
+  
+</th:block>
+</html>

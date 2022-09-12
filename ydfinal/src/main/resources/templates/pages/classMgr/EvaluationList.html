@@ -4,19 +4,29 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/layout}">
 <th:block layout:fragment="content">
-
+<!-- 토스터 -->
+	<link rel="stylesheet"
+		href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css"
+		integrity="sha512-3pIirOrwegjM6erE5gPSwkUzO+3cTjpnV9lexlNZqvupR64iZBnOOTiiLPb9M36zpMScbmUNIcHUqKD47M719g=="
+		crossorigin="anonymous" referrerpolicy="no-referrer" />
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"
+		integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw=="
+		crossorigin="anonymous" referrerpolicy="no-referrer"></script>
  
   <!-- 상단 내비바 -->
   <th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
   <!-- 본문 start -->
   
-<div class="container-fluid py-4">
-    <div class="row">
-      <div class="col-12">
-        <div class="card my-4">
-          <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-            <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3" style="background: #fc9209">
-              <h6 class="text-white text-capitalize ps-3">교직원평가</h6>
+<div class="container-fluid">
+   <div class="row justify-content-center">
+      <div class="card p-3 me-3">
+      
+        <!-- 각 페이지 타이틀바 -->
+        <div class="card-header p-0 position-relative mt-n4 mb-4 z-index-2">
+          <div class="bg-secondary bg-gradient-secondary shadow-secondary border-radius-lg py-3">
+            <h6 class="text-white ps-3 m-0">교직원 평가</h6>
+			</div>
               <input  th:value="${#authentication.principal.username}" type="hidden" id="userid">
             </div>
           </div>
@@ -47,12 +57,11 @@
         <input type="hidden" th:value="${classId}" class="cid">
         	<input type="hidden" th:value="${ck.class_member_id}" id="cmid">
         <input  th:value="${#authentication.principal.username}" type="hidden" id="userid">
-        <button class="btn bg-gradient-warning btn-sm" id="btn"  th:text="제출하기"</button>
+        <button class="btn btn btn-secondary btn-sm" id="btn"  th:text="제출하기"></button>
             </div>
           </div>
         </div>
       </div>
-    </div>
 <script>
 	
 	
@@ -64,7 +73,7 @@
 			
 			
 			if(lenghtCk < 7){
-				alert("모든 문항에 답변해주세요")
+				toastr.error("모든 문항에 답변하세요")
 			}
 			
 			else if(lenghtCk == 7){
@@ -89,8 +98,8 @@
 				    classMemberId:cmid
 				},
 				success:function(data){
-					alert("제출완료")
-					location.href= '/profevaluationlist'
+					toastr.success("제출완료","성공")
+				setTimeout("location.href= '/profevaluationlist'",1000);
 				}
 			})
 			

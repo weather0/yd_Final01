@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/layout}">
+
+<th:block layout:fragment="content">
+<style>
+/*    #myTable tr td:nth-child(odd) {  */
+/*      background-color: darkgray;  */
+/*      color: white  */
+/*    }  */
+</style>
+  <!-- 상단 내비바 -->
+  <th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
+
+  <!-- 본문 start -->
+  <div class="container-fluid" th:object="${myInfo}">
+    <div class="row justify-content-center">
+    
+      <div class="px-2 pb-4">
+        <div class="bg-secondary bg-gradient-secondary shadow-secondary border-radius-lg py-3">
+          <h6 class="text-white ps-3 m-0">교수 정보</h6>
+        </div>
+      </div>
+      
+      <div class="col-lg-3 col-sm-3 mb-4">
+        <div class="card ratio ratio-1x1">
+          <img th:src="@{ '../aa/userImg/'+ *{userPic} }" 
+               class="img-fluid border-radius-lg shadow border border-5"
+               th:alt="*{userPic}" 
+               style="object-fit: cover; object-position: center 30%; ">
+        </div>
+      </div>
+
+      <div class="col-lg-7 col-sm-9 mb-4">
+        <div class="card">
+
+          <div class="table-responsive border-radius-lg border border-5">
+            <table class="table align-items-center text-center mb-0 fw-bold" style="height: 40vh" id="myTable">
+              <tr>
+                <td class="table-secondary">교번</td>
+                <td>[[*{userId}]]</td>
+                <td class="table-secondary">성명</td>
+                <td>[[*{userName}]]</td>
+              </tr>
+              <tr>
+                <td class="table-secondary">학과 / 연구실</td>
+                <td>[[*{userDept}]] / [[*{profLab}]]</td>
+                <td class="table-secondary">생년월일</td>
+                <td>[[*{userBirth}]]</td>
+              </tr>
+              <tr>
+                <td class="table-secondary">연락처</td>
+                <td>[[*{userPhone}]]</td>
+                <td class="table-secondary">성별</td>
+                <td>[[*{userSex}]]</td>
+              </tr>
+              <tr>
+                <td class="table-secondary">이메일</td>
+                <td>[[*{userEmail}]]</td>
+                <td class="table-secondary">국적</td>
+                <td>[[*{userNation}]]</td>
+              </tr>
+            </table>
+          </div> <!-- div table-responsive -->
+
+        </div> <!-- card -->
+        
+        <div>[[*{profField}]]</div>
+        <div>[[*{profEdu}]]</div>
+        <div>[[*{profCareer}]]</div>
+        <div>[[*{profPaper}]]</div>
+        
+      </div> <!-- col -->
+
+    </div> <!-- row -->
+  </div> <!-- container -->
+  <!-- 본문 end-->
+</th:block>
+</html>

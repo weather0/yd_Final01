@@ -8,4 +8,5 @@ public class ClassIdVO {
 	private String classId;
 	private String userId;
 	private String courseTitle;
+	private int classCk;
 }
