@@ -1,4 +1,7 @@
+
+/*
 package com.kcy.bill.service;
+
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -21,10 +24,10 @@ import org.springframework.web.client.RestTemplate;
 import com.google.gson.Gson;
 
 import lombok.RequiredArgsConstructor;
-
+	
 @RequiredArgsConstructor
 public class OpenBank {
-	
+
 	private final HttpHeaders httpHeaders;
 	private final RestTemplate restTemplate;
 
@@ -225,3 +228,4 @@ public class OpenBank {
 		return result.toString();
 	}
 }
+*/

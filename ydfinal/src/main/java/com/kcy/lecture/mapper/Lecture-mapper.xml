@@ -33,17 +33,21 @@
 		
 		
 		<select id="lectureList" resultType="com.kcy.lecture.service.LectureVO">
-			select 
+		select 
 			kcr.class_title , 
-			kcr.class_id, 
+			kcr.class_id,
+		    kc.course_title,
 			kcr.course_id, 
+			ku.user_name,
 			kcr.prof_id, 
 			kc.course_credit, 
 			kcr.class_to, 
 			kcr.class_sem,
 			kcr.class_syl_original,
 			kcr.class_yn
-			 from k_class_reg kcr join k_course kc on kcr.course_id = kc.course_id 
+			 from k_class_reg kcr 
+			 join k_users ku on ku.user_id  = kcr.prof_id 
+			 join k_course kc on kcr.course_id = kc.course_id 
 			 order by class_id;
 		</select>
 		
