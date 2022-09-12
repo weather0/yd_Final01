@@ -42,18 +42,19 @@ public class UsersController {
     
     // 전체 학생 학적 목록 (행정)(단순 페이지 이동)
     @RequestMapping("/allStuInfo")
-    public String allStuInfo(Model model) {
+    public String allStuInfo() {
         return "pages/userMgr/admin/allStuInfo";
     };
     
     @PostMapping(value = "/allStuInfoProc") // (서비스실행) (Datatables Server-side처리 참고: zamezzz.tistory.com/310)
     @ResponseBody 
-    public DataTableVO example(DataTableVO vo, @RequestBody MultiValueMap<String, String> formData){ 
-        int draw = Integer.parseInt(formData.get("draw").get(0)); 
-        int start = Integer.parseInt(formData.get("start").get(0)); 
-        int length = Integer.parseInt(formData.get("length").get(0));
-        int order = Integer.parseInt(formData.get("order[0][column]").get(0));
-        String orderDir = formData.get("order[0][dir]").get(0);
+    public DataTableVO allStuInfoProc(DataTableVO vo, @RequestBody MultiValueMap<String, String> formData){ 
+        int draw = Integer.parseInt(formData.get("draw").get(0)); // 필수
+        int start = Integer.parseInt(formData.get("start").get(0));  // 현 페이지의 첫 레코드의 순번(전체 레코드 중)
+        int length = Integer.parseInt(formData.get("length").get(0)); // 페이지 당 레코드 수
+        int order = Integer.parseInt(formData.get("order[0][column]").get(0)); // 정렬칼럼번호
+        String orderDir = formData.get("order[0][dir]").get(0); // 정렬방향(오름,내림차순)
+        String uType = formData.get("uType").get(0); // 학생,교수 구분
         
         String schId = formData.get("columns[0][search][value]").get(0);
         String schName = formData.get("columns[1][search][value]").get(0);
@@ -64,20 +65,20 @@ public class UsersController {
         String schEmail = formData.get("columns[6][search][value]").get(0);
         String schAddr = formData.get("columns[7][search][value]").get(0);
         String schNation = formData.get("columns[8][search][value]").get(0);
-
         
         System.out.println(formData);
-        System.out.println(draw);
-        System.out.println(start);
-        System.out.println(length);
-        System.out.println(order);
+        System.out.println(start + " ▶ 현 페이지의 첫 레코드 순번(전체 레코드 중)");
+        System.out.println(length + " ▶ 페이지 당 레코드 수");
+        System.out.println(order + ", " + orderDir + " ▶ 정렬칼럼");
+        System.out.println(uType + " ▶ 유저구분" );
         
-        Map cri = new HashMap();
+        // Map에 담기
+        Map<String, Comparable> cri = new HashMap<String, Comparable>();
         cri.put("start", start);
         cri.put("length", length);
         cri.put("order", order);
         cri.put("orderDir", orderDir);
-        
+        cri.put("uType", uType);
         
         cri.put("schId", schId);
         cri.put("schName", schName);
@@ -89,28 +90,44 @@ public class UsersController {
         cri.put("schAddr", schAddr);
         cri.put("schNation", schNation);
         
-        
+        // 서비스 실행
         int total = (int)service.allStuInfoCnt(cri); 
-        List data = service.allStuInfoProc(cri); 
+        List<?> data = service.allStuInfoProc(cri); 
 
-        vo.setDraw(draw); 
-        vo.setRecordsFiltered(total); 
-        vo.setRecordsTotal(total); 
-        vo.setData(data); 
+        vo.setDraw(draw);
+        vo.setRecordsFiltered(total);
+        vo.setRecordsTotal(total);
+        vo.setData(data);
 
         return vo; 
     }
     
     
     
-    // 전체 교수 목록 (행정)
+    // 전체 교수 목록 (행정)(단순 페이지 이동)
     @RequestMapping("/allProfInfo")
-    public String allProfInfo(Model model) {
-        model.addAttribute("allProfInfos", service.allProfInfo());
+    public String allProfInfo() {
         return "pages/userMgr/admin/allProfInfo";
     };
     
-
+   
+    // 본인 정보 조회 (교수)
+    @RequestMapping("/profInfo")
+    public String profInfo(Model model, Principal principal) {
+        model.addAttribute("myInfo", service.profInfo(principal.getName()));
+        return "pages/userMgr/prof/profInfo";
+    }
+    
+    // 단일 교수 조회 (행정)
+    @RequestMapping("/oneProfInfo")
+    public String oneProfInfo(Model model, String id) {
+        model.addAttribute("myInfo", service.profInfo(id));
+        return "pages/userMgr/prof/profInfo";
+    }
+    
+    
+    
+    
     // 본인 학적 조회 (학생)
     @RequestMapping("/stuInfo")
     public String stuInfo(Model model, Principal principal) {

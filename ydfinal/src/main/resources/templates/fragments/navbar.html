@@ -40,45 +40,45 @@ $(function(){
   <nav class="navbar navbar-main navbar-expand-lg mx-1 mt-3 mb-4 shadow-none border-radius-xl" id="navbarBlur" navbar-scroll="true">
     <div class="container-fluid">
     
-    <nav id="qm">
-      <ul class="navbar-nav align-items-center">
-        <li>
-          <h6 class="my-0 me-2">퀵메뉴 <i class="fa-solid fa-square-caret-right"></i></h6>
-        </li>
-        <li>
-            <a class="fw-bold" id="qm1"></a>
-        </li>
-        <li>
-            <a class="fw-bold" id="qm2"></a>
-        </li>
-        <li>
-            <a class="fw-bold" id="qm3"></a>
-        </li>
-      </ul>
-      <script>
-        let myId = [[${#authentication.name}]];
-        let qm1 = Cookies.get(myId + '-qm1');
-        let qm2 = Cookies.get(myId + '-qm2');
-        let qm3 = Cookies.get(myId + '-qm3');
-        if (qm1 && qm1 != 'undefined') {
-          $('#qm1').text(qm1);
-          $('#qm1').prop('href',$('a:contains('+qm1+')').prop('href'));
-          $('#qm1').addClass('p-2'); // 원 html에 박아놓으면 공란일때 hover공간 보여서(버그느낌), 퀵메뉴 생성 시 클래스 삽입하기로 함
-          $('#qm1').parent().append('|'); // 마찬가지로 퀵메뉴 생성시에 구분선 추가
-        }
-        if (qm2 && qm2 != 'undefined') {
-          $('#qm2').text(qm2);
-          $('#qm2').prop('href',$('a:contains('+qm2+')').prop('href'));
-          $('#qm2').addClass('p-2');
-          $('#qm2').parent().append('|');
-        }
-        if (qm3 && qm3 != 'undefined') {
-          $('#qm3').text(qm3);
-          $('#qm3').prop('href',$('a:contains('+qm3+')').prop('href'));
-          $('#qm3').addClass('p-2');
-        }
-      </script>
-    </nav>
+      <nav id="qm">
+        <ul class="navbar-nav align-items-center">
+          <li>
+            <h6 class="my-0 me-2">퀵메뉴 <i class="fa-solid fa-square-caret-right"></i></h6>
+          </li>
+          <li>
+              <a class="fw-bold" id="qm1"></a>
+          </li>
+          <li>
+              <a class="fw-bold" id="qm2"></a>
+          </li>
+          <li>
+              <a class="fw-bold" id="qm3"></a>
+          </li>
+        </ul>
+        <script>
+          let myId = [[${#authentication.name}]];
+          let qm1 = Cookies.get(myId + '-qm1');
+          let qm2 = Cookies.get(myId + '-qm2');
+          let qm3 = Cookies.get(myId + '-qm3');
+          if (qm1 && qm1 != 'undefined') {
+            $('#qm1').text(qm1);
+            $('#qm1').prop('href',$('a:contains('+qm1+')').prop('href'));
+            $('#qm1').addClass('p-2'); // 원 html에 박아놓으면 공란일때 hover공간 보여서(버그느낌), 퀵메뉴 생성 시 클래스 삽입하기로 함
+            $('#qm1').parent().append('|'); // 마찬가지로 퀵메뉴 생성시에 구분선 추가
+          }
+          if (qm2 && qm2 != 'undefined') {
+            $('#qm2').text(qm2);
+            $('#qm2').prop('href',$('a:contains('+qm2+')').prop('href'));
+            $('#qm2').addClass('p-2');
+            $('#qm2').parent().append('|');
+          }
+          if (qm3 && qm3 != 'undefined') {
+            $('#qm3').text(qm3);
+            $('#qm3').prop('href',$('a:contains('+qm3+')').prop('href'));
+            $('#qm3').addClass('p-2');
+          }
+        </script>
+      </nav>
     
     
       <div class="collapse navbar-collapse" id="navbar">

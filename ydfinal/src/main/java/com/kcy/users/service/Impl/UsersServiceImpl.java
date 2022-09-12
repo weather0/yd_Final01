@@ -64,23 +64,23 @@ public class UsersServiceImpl implements UsersService {
     }
 
     @Override
-    public List<Map<String, String>> allProfInfo() {
-        return mapper.allProfInfo();
-    }
-
-    @Override
     public Map<String, String> stuAcaView(String acaId) {
         return mapper.stuAcaView(acaId);
     }
 
     @Override
-    public int allStuInfoCnt(Map cri) {
+    public int allStuInfoCnt(Map<?, ?> cri) {
         return mapper.allStuInfoCnt(cri);
     }
 
     @Override
-    public List<Map<String, String>> allStuInfoProc(Map cri) {
+    public List<Map<String, String>> allStuInfoProc(Map<?, ?> cri) {
         return mapper.allStuInfoProc(cri);
+    }
+
+    @Override
+    public Map<String, String> profInfo(String id) {
+        return mapper.profInfo(id);
     }
 
 

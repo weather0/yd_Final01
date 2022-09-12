@@ -51,10 +51,17 @@
   <div class="container-fluid" th:object="${aca}">
 
     <div class="row justify-content-center">
+    
+      <div class="px-2 pb-4">
+        <div class="bg-secondary bg-gradient-secondary shadow-secondary border-radius-lg py-3">
+          <h6 class="text-white ps-3 m-0">학적 변동 상세</h6>
+        </div>
+      </div>
+      
       <div class="col-lg-5 mb-4">
         <div class="card">
 
-          <div class="table-responsive border-radius-lg">
+          <div class="table-responsive border-radius-lg border border-5">
             <table class="table text-center mb-0">
               <tr>
                 <td class="table-secondary">성명</td>
@@ -83,7 +90,7 @@
 
           <div class="card mb-2">
             
-            <div class="table-responsive border-radius-lg">
+            <div class="table-responsive border-radius-lg border border-5">
               <table class="table align-items-center mb-0 fw-bold" id="table2">
                 <tr>
                   <td class="table-secondary text-center" width="150px">신청구분</td>
@@ -110,7 +117,7 @@
                   <td class="table-secondary text-center">복학적용학기</td>
                   <td id="returnPeriod">
                     <div class="input-group input-group-outline align-items-center ms-3 w-50">
-                      <input class="form-control me-2" type="text" th:value="|*{acaStartT} (*{acaStartS} ~ )|" readonly>
+                      <input class="form-control me-2" type="text" th:value="|*{acaStartT} (${#calendars.format(aca.acaStartS,'yyyy-MM-dd')} ~ )|" readonly>
                       부터
                     </div>
                   </td>
@@ -156,11 +163,11 @@
                   <td class="table-secondary text-center">휴학신청기간</td>
                   <td id="leavePeriod">
                     <div class="input-group input-group-outline align-items-center ms-3 w-50">
-                      <input class="form-control me-2" type="text" th:value="|*{acaStartT} (*{acaStartS} ~ *{acaStartE})|" readonly>
+                      <input class="form-control me-2" type="text" th:value="|*{acaStartT} (${#calendars.format(aca.acaStartS,'yyyy-MM-dd')} ~ )|" readonly>
                       부터
                     </div>
                     <div class="input-group input-group-outline align-items-center ms-3 w-50">
-                      <input class="form-control me-2" type="text" th:value="|*{acaEndT} (*{acaEndS} ~ *{acaEndE})|" readonly>
+                      <input class="form-control me-2" type="text" th:value="|*{acaEndT} ( ~ ${#calendars.format(aca.acaEndE,'yyyy-MM-dd')})|" readonly>
                       까지
                     </div>
                   </td>
@@ -190,7 +197,7 @@
                   <td class="table-secondary text-center">반려사유</td>
                   <td>
                     <div class="form-floating input-group input-group-dynamic mx-4 my-3 w-90 align-items-center">
-                      <textarea class="form-control" placeholder="Leave a comment here" name="acaRejectD" id="acaRejectD" style="height: 15vh" readonly>[[*{acaReject}]]</textarea>
+                      <textarea class="form-control" placeholder="Leave a comment here" name="acaRejectD" id="acaRejectD" style="height: 8vh" readonly>[[*{acaReject}]]</textarea>
                     </div>
                     
                   </td>

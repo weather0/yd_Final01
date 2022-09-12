@@ -9,7 +9,7 @@
 
 
   <style>
-    #allStuInfos_filter input {
+    #allProfInfos_filter input {
       border: 1px solid #d2d6da;
     }
     
@@ -25,42 +25,6 @@
     option:disabled {
       background-color: lightgray;
     }
-    
-    
-    
-    /* Start 상단검색창 */
-    #searchValue:focus {
-      border-color: gray;
-    }
-    
-    /* 검색대상select 화살표생성 */
-    #searchType {
-      /* 기본 form-control의 높이가 미묘하게 2px정도 떠서 새 속성 덮어씌움 */
-      line-height: 1.3rem !important; 
-    }
-    
-    .wrap {
-      display: inline-block;
-      position: relative;
-    }
-    
-    .wrap:after {
-      content: '';
-      display: block;
-      position: absolute;
-      z-index: 1;
-      top: 50%;
-      right: 10px;
-      transform: translate(0, -50%);
-      width: 0;
-      height: 0;
-      border: 10px solid lightgray;
-      border-left: 7px solid transparent;
-      border-right: 7px solid transparent;
-      border-bottom: none;
-    }
-    /* End 상단검색창 */
-    
     
     
     /* Start 멀티칼럼 검색 */
@@ -86,7 +50,6 @@
     /* End 멀티칼럼 검색 */
     
     
-    
     .dt-buttons .btn {
       margin-bottom: 0;
     }
@@ -110,18 +73,13 @@
     $(function() {
       
       // Datatables Server-side처리 참고: zamezzz.tistory.com/310
-      let table = $('#allStuInfos').DataTable({
+      let table = $('#allProfInfos').DataTable({
         processing: true,
         serverSide: true,
         ajax: {
           url: "allStuInfoProc",
           type: "POST",
-          data: { uType: "stu" },
-          // 이부분은 굳이 안해줘도 되는 듯(컨트롤러에서 vo.setData(data)로 자동처리 됨)
-//           dataSrc: function(res) {
-//             var data = res.data;
-//             return data;
-//           },
+          data: { uType: "prof" },
           error: function(e) {
             console.log(e);
           }
@@ -134,17 +92,13 @@
           {data: 'userDept', className: 'dt-center'},
           {data: 'userPhone', className: 'dt-center'},
           {data: 'userEmail'},
-          // 말줄임플러그인(ellipsis)
-          {data: 'userAddr', render: $.fn.dataTable.render.ellipsis( 30 )}, // 뒤에 true붙이면 단어단위끊기(30, true)
-//           {data: 'userAddr', render: function(data) {
-//             return data.length > 30 ? data.substr(0, 30) + '...' : data
-//           }},
+          {data: 'userAddr', render: $.fn.dataTable.render.ellipsis( 30 )}, 
           {data: 'userNation', className: 'dt-center'},
         ],
         search: {
-          return: true, // 순정검색창 엔터키 쳐야 검색되는 옵션 (매 keystroke마다 trigger되는 게 아니라)
+          return: true, 
         },
-        order: [0, 'desc'], // 페이지 첫 로딩 시 초기 정렬 기준
+        order: [0, 'desc'],
 
         
         // 기본레이아웃(datatables.net/reference/option/dom)
@@ -156,11 +110,6 @@
              
         language: {
           lengthMenu: "페이지 당: _MENU_",
-          buttons: {
-            // 밑에 buttons옵션 자체에서 지정도 가능(text옵션)
-//             colvis: '열 표시',
-//             colvisRestore: '열 초기화'
-          },
           search: "검색:",
           searchPlaceholder: "키워드를 입력하세요",
           zeroRecords: "검색결과가 없습니다",
@@ -177,7 +126,7 @@
           {
             extend: 'colvis', 
             text: '열 표시',
-            columns: 'th:gt(0)', // 학번은 못 숨기도록(단건조회 오류방지)
+            columns: 'th:gt(0)',
             postfixButtons: [
               {
                 extend: 'colvisRestore',
@@ -185,14 +134,14 @@
               }]
           }, 
           {
-            extend: 'excelHtml5', 
-            title: '학적 정보', // export파일이름
+            extend: 'excelHtml5',
+            title: '교수 정보',
             exportOptions: {
-              columns: ':visible', // 표시중인 칼럼만
-              orthogonal: 'export', // render없이 원데이터로 
-              format: { // 참고: datatables.net/reference/api/buttons.exportData()
+              columns: ':visible',
+              orthogonal: 'export',
+              format: {
                 header: function ( data, column, node ) {
-                  return $(node).find('span').text(); // thead에 select요소 같이 표시 안되게(방법1)
+                  return $(node).find('span').text();
                 }
               }
             },
@@ -200,7 +149,7 @@
           },
           {
             extend: 'print', 
-            title: '<h3 class="ms-3">[학적 정보]</h3>',
+            title: '<h3 class="ms-3">[교수 정보]</h3>',
             exportOptions: {
               columns: ':visible',
               orthogonal: 'export',
@@ -212,60 +161,10 @@
             },
 //             autoPrint: false, // 프린트창 자동 띄우기 해제
             
-         // thead에 select요소 같이 표시 안되게(방법2-print만 적용 가능)
-//             customize: function (win) {
-//               $(win.document.body).find('th:contains("성별")').text('성별')
-//             },
-
           }
         ]
       });
       // End: DataTables 객체
-      
-      
-      
-//       // 상단검색창: 데이터테이블 순정검색창(f) 날리고 변수customSch 자리에 커스텀 검색창 삽입
-//       $('div.customSch').html(
-//         `<div class="input-group input-group-outline">
-          
-//           <div class="wrap w-30">
-//             <select class="form-control px-2" id="searchType" name="searchType" aria-label="searchType">
-//               <option value="" disabled selected>검색 대상</option>
-//               <option value="0">학번</option>
-//               <option value="1">이름</option>
-//               <option value="2">생년월일</option>
-//               <option value="3">성별</option>
-//               <option value="4">전공</option>
-//               <option value="5">연락처</option>
-//               <option value="6">이메일</option>
-//               <option value="7">주소</option>
-//               <option value="8">국적</option>
-//             </select>
-//           </div>
-          
-//           <input type="text" class="form-control w-40" id="searchValue">
-//           <button class="btn btn-outline-secondary mb-0 me-3" type="button" id="searchBtn">검색</button>
-//         </div>`
-//       );
-      
-//       // 상단검색창 실행 콜백함수
-//       function xxsearch (){
-//         // 기존 검색조건 초기화
-//         var numCols = table.columns().nodes().length;
-//         for(var i=0; i<numCols; i++) { table.column(i).search(''); }
-//         // 실행: 테이블객체.column(번호).search(키워드).draw();
-//         table.column($("#searchType").val()).search($("#searchValue").val()).draw();
-//       }
-      
-//       // 검색버튼 클릭 or 엔터키업 시 실행
-//       $("#searchBtn").on('click',function () {
-//         xxsearch();
-//       })
-//       $("#searchValue").on('keyup',function (e) {
-//         if (e.keyCode == 13) {
-//           xxsearch();
-//         }
-//       })
       
       
       
@@ -275,10 +174,10 @@
       
       // 모든 돋보기 아이콘 클릭시
       $('th i').on('click', function() {
-        event.stopPropagation() // 정렬 이벤트버블링 차단
+        event.stopPropagation()
         // 헤더 타이틀 토글
         $(this).parent().siblings('input').toggle('fast')
-        $(this).parent().siblings('input').focus() // 토글하고 커서 포커싱
+        $(this).parent().siblings('input').focus()
         $(this).parent().siblings('select').toggle('fast')
         $(this).parent().siblings('span').toggle('fast')
       })
@@ -291,7 +190,7 @@
       // 검색창 엔터 누르는 순간 버블링 차단
       $('th input').on('keydown', function() {
         if (event.keyCode == 13) {
-          event.preventDefault() // 내장 이벤트라 preventDefault로 해야 먹힘
+          event.preventDefault()
         }
       })
 
@@ -306,8 +205,6 @@
       // select option 선택 순간 검색실행
       $('th select').on('change', function() {
         event.preventDefault()
-//         let idxCol = $('th input, th select').index(this) // 모든 input, select들 중에 이놈의 인덱스
-//         let selVal = this.children[this.selectedIndex].value // 각 option의 value 추출하기
         search();
       })
       
@@ -323,19 +220,18 @@
           arr[i] = i;
         }
         for (let n = 0; n < $('table th').length; n++) { 
-          let ths = $('th:eq('+n+')'); // 숨겨지지 않은(=화면표시중인) 모든 열 대상(datatable colvis기능은 th요소 자체를 지워버림)
-          let idx = ths[0].id.substring(2); // 칼럼인덱스찾기(id는 태그에 수동부여 → 열숨기기 시에도 완벽 대응 가능)
-          arr2[n] = parseInt(idx); // 숨겨지지 않은 칼럼번호 배열
-          let val = ths.find('input').length ? ths.find('input').val() : ths.find('select').val(); // 제이쿼리 요소의 존재유무 검증 시 반드시 .length를 붙여줘야 검증 가능
-          if(ths.find('span').css('display') != 'none') { // span이 드러나면(=돋보기 검색모드OFF면)
-            search += 'column(' +idx+ ').search("").'; // 빈 값 넣기
+          let ths = $('th:eq('+n+')');
+          let idx = ths[0].id.substring(2);
+          arr2[n] = parseInt(idx);
+          let val = ths.find('input').length ? ths.find('input').val() : ths.find('select').val(); 
+          if(ths.find('span').css('display') != 'none') {
+            search += 'column(' +idx+ ').search("").';
           } else { // 검색모드 ON이면
-            search += 'column(' +idx+ ').search("'+val+'").'; // 칼럼인덱스, 검색값 넣기
+            search += 'column(' +idx+ ').search("'+val+'").';
           }
         }
         
-        // 일단 검색 draw()한 후 해당 칼럼을 숨기기해도 그 column()과 search() 정보는 그대로 보존되기 때문에, 매 검색시마다 모든 칼럼의 search()값을 비워줘야만 한다!
-        // (차집합: 총칼럼번호 배열 - 숨겨지지 않은 칼럼번호 배열 = 숨겨진 칼럼번호 배열)을 이용하여 search()값을 비워준다
+        // search()값을 비워준다
         let diff = arr.filter(x => !arr2.includes(x))
         diff.forEach((val) => {
           search += 'column(' +val+ ').search("").';
@@ -343,7 +239,7 @@
         
         
         // 최종 완성 검색문
-        console.log('table.'+ search + 'draw()'); // 반드시 column(0)~column(총칼럼번호)까지 다 찍혀야 함(ex.최초 9개면 9개 전부)
+        console.log('table.'+ search + 'draw()');
         // eval: 단순 문자열을 실제 함수로 변환하여 실행
         eval('table.'+ search + 'draw()');
       }
@@ -354,8 +250,8 @@
       
       
       // 단일 행 클릭시 단건 조회
-      $('#allStuInfos tbody').on('click', 'tr', function(){
-        location.href="oneStuInfo?id="+this.children[0].innerText;
+      $('#allProfInfos tbody').on('click', 'tr', function(){
+        location.href="oneProfInfo?id="+this.children[0].innerText;
       })
       
       
@@ -373,17 +269,17 @@
       
         <div class="card-header p-0 position-relative mt-n4 mb-4 z-index-2">
           <div class="bg-secondary bg-gradient-secondary shadow-secondary border-radius-lg py-3">
-            <h6 class="text-white ps-3 m-0">학적 정보 조회</h6>
+            <h6 class="text-white ps-3 m-0">교수 정보 조회</h6>
           </div>
         </div>
         
         <div class="table-responsive">
-          <table id="allStuInfos" class="table align-items-center table-hover" style="width:100%">
+          <table id="allProfInfos" class="table align-items-center table-hover" style="width:100%">
             <thead>
               <tr style="height: 70px">
                 <th class="text-center" id="th0">
-                  <span>학번</span>
-                  <input style="width: 80px" type="text"  onfocus="this.select()" placeholder="학번">
+                  <span>교번</span>
+                  <input style="width: 80px" type="text"  onfocus="this.select()" placeholder="교번">
                   <!-- 아이콘 호버 시 커짐효과로 인해 주변 요소들의 크기,위치 등이 영향 안 받으려면 div로 감싸고 너비지정 해줘야 함-->
                   <div class="d-inline-block" style="width: 20px"> 
                     <i class="fa-solid fa-magnifying-glass"></i>
@@ -415,8 +311,8 @@
                   </div>
                 </th>
                 <th class="text-center" id="th4">
-                  <span>전공</span>
-                  <input style="width: 80px" type="text" onfocus="this.select()" placeholder="전공">
+                  <span>학과</span>
+                  <input style="width: 80px" type="text" onfocus="this.select()" placeholder="학과">
                   <div class="d-inline-block" style="width: 20px"> 
                     <i class="fa-solid fa-magnifying-glass"></i>
                   </div>

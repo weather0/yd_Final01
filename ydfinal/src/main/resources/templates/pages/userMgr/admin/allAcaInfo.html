@@ -25,7 +25,7 @@
     $(function() {
       // DataTable
       $('#allAcaInfos').DataTable({
-        "order": [0, "desc"],
+        "order": [6, "desc"],
         "language": {
           "lengthMenu": "페이지 당: _MENU_",
           "search": "검색:",
@@ -93,12 +93,11 @@
   <div class="container-fluid">
   
     <div class="row justify-content-center">
-      <div class="card p-3 me-3">
+      <div class="card p-3 me-3 border border-5" style="margin-top: 3px;">
 
         <div class="card-header p-0 position-relative mt-n4 mb-4 z-index-2">
           <div class="bg-secondary bg-gradient-secondary shadow-secondary border-radius-lg py-3">
             <h6 class="text-white ps-3 m-0">학적 변동 관리</h6>
-            <input  th:value="${#authentication.principal.username}" type="hidden" id="userid">
           </div>
         </div>
         

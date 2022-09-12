@@ -2,27 +2,12 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 
 <th:block th:fragment="sidebarFragment">
-<script  th:inline="javascript">
-$(function(){
-//   let soMenu = $('#sidenav-collapse-main .collapse a');
-//   let myId = [[${#authentication.name}]];
-//   soMenu.on('click', function () {
-//     console.log(this.text);
-//     Cookies.set(myId + '-' + this.text);
-//   })
-  
-  
-  
-})
-</script>
-
 
   <div class="sidenav-header">
-    <i class="fas fa-times p-3 cursor-pointer text-white opacity-5 position-absolute end-0 top-0 d-none d-xl-none"
-      aria-hidden="true" id="iconSidenav"></i>
     <a class="navbar-brand m-0" href="/">
-      <img src="/img/logo-ct.png" class="navbar-brand-img h-100" alt="main_logo">
-      <span class="ms-1 font-weight-bold text-white">KCY학사관리</span>
+      <span class="font-weight-bold text-white fs-6">
+        <i class="fa-solid fa-building-columns mx-3 mt-1" style="font-size: x-large;"></i>KCY학사관리
+      </span>
     </a>
   </div>
   <hr class="horizontal light mt-0 mb-2">
@@ -32,12 +17,11 @@ $(function(){
         
     
     
-      <li class="nav-item">
+      <li class="nav-item" sec:authorize="hasAnyRole('ROLE_STU','ROLE_ADMIN')">
         <a class="nav-link text-white btn btn-secondary" data-bs-toggle="collapse" href="#userMgr">
-          <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-            <i class="material-icons opacity-10">dashboard</i>
-          </div>
-          <span class="nav-link-text ms-1">학적관리</span>
+          <span class="nav-link-text ms-1">
+            <i class="fa-solid fa-user me-2" style="width: 20px;"></i>학적 관리
+          </span>
         </a>
       </li>
 
@@ -56,22 +40,19 @@ $(function(){
         </script>
         <div class="navbar-nav">
           <div class="nav-item" sec:authorize="hasRole('ROLE_STU')">
-            <a class="nav-link text-white py-1" href="stuInfo">학적조회</a>
+            <a class="nav-link text-white py-1" href="/stuInfo">학적조회</a>
           </div>
           <div class="nav-item" sec:authorize="hasRole('ROLE_STU')">
-            <a class="nav-link text-white py-1" href="stuAcaInfo" >학적변동 조회</a>
+            <a class="nav-link text-white py-1" href="/stuAcaInfo" >학적변동 조회</a>
           </div>
           <div class="nav-item" sec:authorize="hasRole('ROLE_STU')">
-            <a class="nav-link text-white py-1" href="stuAcaInsert">학적변동 신청</a>
+            <a class="nav-link text-white py-1" href="/stuAcaInsert">학적변동 신청</a>
           </div>
           <div class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">
-            <a class="nav-link text-white py-1" href="allStuInfo" >학적정보 조회</a>
+            <a class="nav-link text-white py-1" href="/allStuInfo" >학적정보 조회</a>
           </div>
           <div class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">
-            <a class="nav-link text-white py-1" href="allAcaInfo" >학적변동 관리</a>
-          </div>
-          <div class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">
-            <a class="nav-link text-white py-1" href="#" >교수정보 조회</a>
+            <a class="nav-link text-white py-1" href="/allAcaInfo" >학적변동 관리</a>
           </div>
           <div class="nav-item d-none">
             <a class="nav-link text-white py-1" href="#">졸업요건 확인</a>
@@ -104,12 +85,48 @@ $(function(){
 
 
 
+
+
+      <li class="nav-item" sec:authorize="hasAnyRole('ROLE_PROF','ROLE_ADMIN')">
+        <a class="nav-link text-white btn btn-secondary" data-bs-toggle="collapse" href="#profMgr">
+          <span class="nav-link-text ms-1">
+            <i class="fa-solid fa-graduation-cap me-2" style="width: 20px;"></i>교수 정보
+          </span>
+        </a>
+      </li>
+
+      <div class="collapse" id="profMgr">
+        <script>
+          // 스크립트 위치가 중요!! 최초에 밑에 것들 렌더링 전에 여기서 show/hide 여부를 결정하고 쿠키에 상태 저장함
+          $('#profMgr').on('show.bs.collapse', function(){
+            Cookies.set('profMgr')
+          })
+          $('#profMgr').on('hide.bs.collapse', function(){
+            Cookies.remove('profMgr')
+          })
+          if (Cookies.get('profMgr')) {
+            $('#profMgr').addClass('show')
+          }
+        </script>
+        <div class="navbar-nav">
+          <div class="nav-item" sec:authorize="hasRole('ROLE_PROF')">
+            <a class="nav-link text-white py-1" href="/profInfo">내 정보 조회</a>
+          </div>
+          <div class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">
+            <a class="nav-link text-white py-1" href="/allProfInfo" >교수정보 조회</a>
+          </div>
+
+        </div>
+      </div>
+
+
+
+
       <li class="nav-item" sec:authorize="hasAnyRole('ROLE_STU','ROLE_ADMIN')">
         <a class="nav-link text-white btn btn-secondary" data-bs-toggle="collapse" href="#billMgr">
-          <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-            <i class="material-icons opacity-10">dashboard</i>
-          </div>
-          <span class="nav-link-text ms-1">등록금 관리</span>
+          <span class="nav-link-text ms-1">
+            <i class="fa-regular fa-credit-card me-2" style="width: 20px;"></i>등록금 관리
+          </span>
         </a>
       </li>
       
@@ -150,10 +167,9 @@ $(function(){
 
       <li class="nav-item">
         <a class="nav-link text-white btn btn-secondary" data-bs-toggle="collapse" href="#classMgr" role="button" aria-expanded="false" aria-controls="classMgr">
-          <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-            <i class="material-icons opacity-10">dashboard</i>
-          </div>
-          <span class="nav-link-text ms-1">강의관리</span>
+          <span class="nav-link-text ms-1">
+            <i class="fa-solid fa-pen-clip me-2" style="width: 20px;"></i>강의 관리
+          </span>
         </a>
       </li>
       
@@ -221,10 +237,9 @@ $(function(){
 
       <li class="nav-item" sec:authorize="hasRole('ROLE_STU')">
         <a class="nav-link text-white btn btn-secondary" data-bs-toggle="collapse" href="#scoreMgr">
-          <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-            <i class="material-icons opacity-10">dashboard</i>
-          </div>
-          <span class="nav-link-text ms-1">성적 관리</span>
+          <span class="nav-link-text ms-1">
+            <i class="fa-solid fa-book-open-reader me-2" style="width: 20px;"></i>성적 관리
+          </span>
         </a>
       </li>
       
@@ -254,10 +269,9 @@ $(function(){
 
       <li class="nav-item">
         <a class="nav-link text-white btn btn-secondary" data-bs-toggle="collapse" href="#jidoMgr">
-          <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-            <i class="material-icons opacity-10">dashboard</i>
-          </div>
-          <span class="nav-link-text ms-1">지도교수 관리</span>
+          <span class="nav-link-text ms-1">
+            <i class="fa-solid fa-people-arrows me-2" style="width: 20px;"></i>지도교수 관리
+          </span>
         </a>
       </li>
       
@@ -295,10 +309,9 @@ $(function(){
 
       <li class="nav-item" sec:authorize="hasAnyRole('ROLE_STU','ROLE_PROF')">
         <a class="nav-link text-white btn btn-secondary" data-bs-toggle="collapse" href="#mentorMgr" role="button" aria-expanded="false" aria-controls="mentorMgr">
-          <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-            <i class="material-icons opacity-10">dashboard</i>
-          </div>
-          <span class="nav-link-text ms-1">상담관리</span>
+          <span class="nav-link-text ms-1">
+            <i class="fa-solid fa-comments me-2" style="width: 20px;"></i>상담 관리
+          </span>
         </a>
       </li>
       
@@ -339,11 +352,40 @@ $(function(){
 
 
 
+
+      <li class="nav-item">
+        <a class="nav-link text-white btn btn-secondary" data-bs-toggle="collapse" href="#schMgr">
+          <span class="nav-link-text ms-1">
+            <i class="fa-regular fa-calendar-check me-2" style="width: 20px;"></i>학사 일정
+          </span>
+        </a>
+      </li>
+      
+      <div class="collapse" id="schMgr">
+        <script>
+          $('#schMgr').on('show.bs.collapse', function(){
+            Cookies.set('schMgr')
+          })
+          $('#schMgr').on('hide.bs.collapse', function(){
+            Cookies.remove('schMgr')
+          })
+          if (Cookies.get('schMgr')) {
+            $('#schMgr').addClass('show')
+          }
+        </script>
+        <div class="navbar-nav">
+          <div class="nav-item" sec:authorize="isAuthenticated()">
+            <a class="nav-link text-white py-1" href="/allSch">학사 일정 조회</a>
+          </div>
+        </div>
+      </div>
+
+
+
+
+
       <li class="nav-item" sec:authorize="isAnonymous()">
         <a class="nav-link text-white " th:classappend="${active} == 'click_login' ? 'active bg-gradient-primary'" href="/login">
-          <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-            <i class="material-icons opacity-10">login</i>
-          </div>
           <span class="nav-link-text ms-1">Sign In</span>
         </a>
       </li>
@@ -352,24 +394,18 @@ $(function(){
       
       <li class="nav-item" sec:authorize="isAuthenticated()">
         <a class="nav-link text-white" href="/doLogout" id="btn-logout">
-          <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-            <i class="material-icons opacity-10">assignment</i>
-          </div>
-          <span class="nav-link-text ms-1">Logout</span>
+          <span class="nav-link-text ms-1">
+            <i class="fa-solid fa-arrow-right-from-bracket me-2" style="width: 20px;"></i>Logout
+          </span>
         </a>
       </li>
     </ul>
   </div>
   
-  <!-- 
-  <div class="sidenav-footer position-absolute w-100 bottom-0 ">
-    <div class="mx-3">
-      <a class="btn bg-gradient-primary mt-4 w-100"
-        href="https://www.creative-tim.com/product/material-dashboard-pro?ref=sidebarfree" type="button">Upgrade to
-        pro</a>
-    </div>
-  </div>
-  -->
+
+
+
+
 
 
 
@@ -396,9 +432,9 @@ $(function(){
 //       $('#' + item).addClass('show');
 //     }
 
-  $('#btn-logout').on('click', function(){
-    sessionStorage.removeItem("myName");
-  })
+//   $('#btn-logout').on('click', function(){
+//     sessionStorage.removeItem("myName");
+//   })
   </script>
 
 </th:block>

@@ -10,7 +10,7 @@
 </select>
 
 
-<!-- start: 전체 학생 학적 목록 (행정) -->
+<!-- Start 전체 학생 학적 목록 (행정) -->
   <!-- 조건 공통 쿼리 -->
 <sql id="allStuCri">
   <if test=" schId != null and schId != '' ">
@@ -46,7 +46,9 @@
   <!-- 전체 카운팅 -->
 <select id="allStuInfoCnt" resultType="int">
   SELECT COUNT(*) FROM k_users
-  WHERE user_type = 'ROLE_STU'
+  WHERE user_type = 
+  <if test=" uType == 'stu' ">'ROLE_STU'</if>
+  <if test=" uType == 'prof' ">'ROLE_PROF'</if>
   <include refid="allStuCri"></include>
 </select>
 
@@ -64,7 +66,9 @@
          user_addr,
          user_nation
   from k_users
-  where user_type = 'ROLE_STU' 
+  where user_type = 
+  <if test=" uType == 'stu' ">'ROLE_STU'</if>
+  <if test=" uType == 'prof' ">'ROLE_PROF'</if>
   <include refid="allStuCri"></include>
   
   order by
@@ -90,16 +94,39 @@
 <!--   limit #{param1}, #{param2}          mybatis에서 파라미터 2개일때 작성법(순서대로 param1, param2, ...) -->
   limit #{start}, #{length} <!-- 서비스 파라미터가 n개로 늘어날거 같아서 map방식으로 변경함 -->
 </select>
-<!-- end: 전체 학생 학적 목록 (행정) -->
+<!-- End 전체 학생 학적 목록 (행정) -->
 
 
 
-<!-- 전체 교수 목록 (행정) -->
-<select id="allProfInfo" resultType="CustomMap">
-  select * 
-    from k_users
-   where user_type = 'ROLE_PROF'
+
+
+
+
+
+<!-- 본인 정보 조회 (교수) -->
+<select id="profInfo" resultType="CustomMap">
+  select u.user_id, u.user_name, 
+         u.user_dept, substr(u.user_ssn,1,6) user_birth,
+         u.user_phone, if(u.user_sex = 'f','여','남') user_sex, 
+         u.user_email, u.user_nation,
+         p.prof_lab,
+         p.prof_field,
+         p.prof_edu,
+         p.prof_career,
+         p.prof_paper,
+         u.user_pic
+         
+    from k_users u 
+    join k_professors p on (u.user_id = p.prof_id) 
+    
+   where u.user_id = #{param} <!-- get방식으로 파라미터 id 하나만 들어가므로 임의로 적어도 됨(예:param) -->
 </select>
+
+
+
+
+
+
 
 
 <!-- 본인 학적 조회 (학생) -->
