@@ -5,16 +5,19 @@
 	layout:decorate="~{layouts/layout}">
 
 <th:block layout:fragment="content">
-	<link rel="stylesheet"
-		href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css" />
-	<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-	<script
-		src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
-	<script
-		src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
+
 	<style>
-.stdactive {
-	background-color: gray
+.changebtn {
+	float: right;
+}
+
+.pagination .active .page-link {
+	background-color: #7b809a;
+	border-color: #7b809a;
+}
+
+.page-link:focus {
+	box-shadow: 0 0 0 0.2rem rgb(123 128 154/ 25%);
 }
 </style>
 
@@ -23,109 +26,144 @@
 
 	<!-- 본문 start -->
 	<th:block th:each="matchingName:${matchingName}">
-		<div class="container-fluid py-4">
-			<div class="row">
-				<h1>지도교수 변경 신청</h1>
-				<form action="matchingChangeOrder" method="post">
-					<div class="row">
-						<div class="col-md-3">
-							<div class="input-group input-group-outline my-3">
-								<input th:value="${matchingName.userName}" type="text"
-									id="userName" readonly="readonly">
-							</div>
-						</div>
-						<div class="col-md-3">
-							<div class="input-group input-group-outline my-3">
-								<input th:value="${matchingName.stuId}" type="text" name="stuId"
-									id="stuId" readonly="readonly">
-							</div>
-						</div>
-						<div class="col-md-3">
-							<div class="input-group input-group-outline my-3">
-								<input th:value="${matchingName.profname}" type="text"
-									id="profname" readonly="readonly">
-							</div>
-						</div>
-						<div class="col-md-3">
-							<div class="input-group input-group-outline my-3">
-								<input th:value="${matchingName.studentProf}" type="text"
-									name="profId" id="profId" readonly="readonly">
-							</div>
+		<div class="row justify-content-center">
+			<div class="px-2 pt-3 pb-4">
+				<div class="card p-3 me-3">
+					<div class="card-header p-0 position-relative mt-n4 mb-4 z-index-2">
+						<div
+							class="bg-secondary bg-gradient-secondary shadow-secondary border-radius-lg py-3">
+							<h6 class="text-white ps-3 m-0">지도교수 변경 신청</h6>
 						</div>
 					</div>
-					<div class="input-group input-group-outline my-3">
-						<!-- 	      <label class="form-label">지도교수 변경사유</label> -->
-						<textarea class="form-control" name="matchingChangeReason"
-							id="matchingChangeReason" placeholder="지도교수 변경사유를 입력해주세요(미입력 불이익이 있을 수도 있습니다)"></textarea>
-					</div>
+					<div>
+						<form action="matchingChangeOrder" method="post">
+							<div class="row">
+								<div class="col-md-3">
+									<div class="input-group input-group-outline my-3">
+										<input th:value="${matchingName.userName}" type="text"
+											id="userName" readonly="readonly">
+									</div>
+								</div>
+								<div class="col-md-3">
+									<div class="input-group input-group-outline my-3">
+										<input th:value="${matchingName.stuId}" type="text"
+											name="stuId" id="stuId" readonly="readonly">
+									</div>
+								</div>
+								<div class="col-md-3">
+									<div class="input-group input-group-outline my-3">
+										<input th:value="${matchingName.profname}" type="text"
+											id="profname" readonly="readonly">
+									</div>
+								</div>
+								<div class="col-md-3">
+									<div class="input-group input-group-outline my-3">
+										<input th:value="${matchingName.studentProf}" type="text"
+											name="profId" id="profId" readonly="readonly">
+									</div>
+								</div>
+							</div>
+							<div class="input-group input-group-outline my-3">
+								<!-- 	      <label class="form-label">지도교수 변경사유</label> -->
+								<textarea class="form-control" name="matchingChangeReason"
+									id="matchingChangeReason"
+									placeholder="지도교수 변경사유를 입력해주세요(미입력 불이익이 있을 수도 있습니다)"></textarea>
+							</div>
 
-					<div class="input-group input-group-outline my-3">
-						<!-- 	      <label class="form-label">지도교수 지정</label> -->
-						<input type="text" class="form-control" name="matchingWant"
-							id="matchingWant"
-							placeholder="변경을 원하는 지도교수를 선택해주세요. 미 선택시 무작위로 선별됩니다"
-							readonly="readonly">
-					</div>
+							<div class="input-group input-group-outline my-3">
+								<!-- 	      <label class="form-label">지도교수 지정</label> -->
+								<input type="text" class="form-control" name="matchingWant"
+									id="matchingWant"
+									placeholder="변경을 원하는 지도교수를 선택해주세요. 미 선택시 무작위로 선별됩니다"
+									readonly="readonly">
+							</div>
 
-					<div id="changeProgress">						
-						<th:block th:each="cp:${changeProgress}">
-							<table class="table text-center mb-0">
-								<tr>
-									<td class="table-secondary">진행 상황</td>
-									<td><span
-										th:if="${cp.matchingChangeYn.toString().equals('0')}">진행중</span>
-										<span th:if="${cp.matchingChangeYn.toString().equals('1')}">승인</span>
-										<span th:if="${cp.matchingChangeYn.toString().equals('2')}">거부</span>										
-									</td>
-								</tr>
-								<tr th:if="${cp.matchingChangeYn.toString().equals('2')}">
-									<td th:text="${cp.matchingChangeReject}"></td>
-								</tr>
-							</table>
-						</th:block>
+							<div id="changeProgress">
+								<th:block th:each="cp:${changeProgress}">
+									<table class="table text-center mb-0">
+										<tr>
+											<td class="table-secondary">진행 상황</td>
+											<td><span
+												th:if="${cp.matchingChangeYn.toString().equals('0')}">진행중</span>
+												<span th:if="${cp.matchingChangeYn.toString().equals('1')}">승인</span>
+												<span th:if="${cp.matchingChangeYn.toString().equals('2')}">거부</span>
+											</td>
+										</tr>
+										<tr th:if="${cp.matchingChangeYn.toString().equals('2')}">
+											<td th:text="${cp.matchingChangeReject}"></td>
+										</tr>
+									</table>
+								</th:block>
+							</div>
 					</div>
+				</div>
+			</div>
+			<div class="row-3 changebtn">
+				<button class="btn bg-gradient-primary"
+					th:if="${matchingName.studentChangeStatus.toString().equals('0')}">변경
+					신청</button>
+				<input type="button" class="btn bg-gradient-primary cancel"
+					th:if="${matchingName.studentChangeStatus.toString().equals('1')}"
+					value="신청 취소">
+				</form>
 			</div>
 		</div>
-			<button class="btn bg-gradient-primary" th:if="${matchingName.studentChangeStatus.toString().equals('0')}">변경 신청</button>
-			<input type="button" class="btn bg-gradient-primary cancel" th:if="${matchingName.studentChangeStatus.toString().equals('1')}" value="신청 취소">
-		</form>
-		</div>
-		<br>
+
 
 		<div id="profList"
 			th:if="${matchingName.studentChangeStatus.toString().equals('0')}">
-			<h3>매칭 가능한 교수 목록</h3>
-			<table class="table table-striped" id="matchingProf">
-				<thead>
-					<tr>
-						<th>교번</th>
-						<th>이름</th>
-						<th>전공</th>
-						<th>연구실</th>
-						<th>담당 가능 학생 수</th>
-						<th>선택</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr th:each="Prof:${matchingProf}">
-						<td th:text="${Prof.profId}"></td>
-						<td th:text="${Prof.userName}"></td>
-						<td th:text="${Prof.userDept}"></td>
-						<td th:text="${Prof.profLab}"></td>
-						<td th:text="${Prof.mentee}"></td>
-						<td>
-							<button class="btn btn-primary" onclick="select()">선택</button>
-						</td>
-					</tr>
-				</tbody>
-			</table>
+			<div class="card p-3 me-3">
+				<div class="card-header p-0 position-relative mt-n4 mb-4 z-index-2">
+					<div
+						class="bg-secondary bg-gradient-secondary shadow-secondary border-radius-lg py-3">
+						<h6 class="text-white ps-3 m-0">교수 목록</h6>
+					</div>
+				</div>
+				<table class="table table-striped" id="matchingProf">
+					<thead>
+						<tr>
+							<th>교번</th>
+							<th>이름</th>
+							<th>전공</th>
+							<th>연구실</th>
+							<th>담당 가능 학생 수</th>
+							<th>선택</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="Prof:${matchingProf}">
+							<td th:text="${Prof.profId}"></td>
+							<td th:text="${Prof.userName}"></td>
+							<td th:text="${Prof.userDept}"></td>
+							<td th:text="${Prof.profLab}"></td>
+							<td th:text="${Prof.mentee}"></td>
+							<td>
+								<button class="btn btn-primary" onclick="select()">선택</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
 		</div>
-		</div>
-		</div>
+
 	</th:block>
 
 	<script>
-		$("#matchingProf").DataTable({});
+		$("#matchingProf").DataTable({
+			language : {
+				lengthMenu : "페이지 당: _MENU_",
+				search : "검색:",
+				searchPlaceholder : "키워드를 입력하세요",
+				zeroRecords : "검색결과가 없습니다",
+				info : "_START_ - _END_ (전체: _MAX_건)",
+				infoFiltered : "(검색결과: _TOTAL_건)",
+				infoEmpty : "",
+				paginate : {
+					previous : "<",
+	              next: ">",
+				}
+			}
+		});
 
 		function select(e) {
 			e = window.event || e;
@@ -138,25 +176,24 @@
 			prof.value = ($(".profactive").find("td:first").text())
 
 		}
-		
-		
-		$(".cancel").on("click", function () {
+
+		$(".cancel").on("click", function() {
 			var id = document.getElementById("stuId").value;
 			console.log(id)
 			$.ajax({
 				type : "POST",
-				url : "/ChangeCancel",
-				data : { delId : id	},
-				success : function (result) {
+				url : "/changeCancel",
+				data : {
+					stuId : id
+				},
+				success : function(result) {
 					if (result == "1") {
-						alert ("매칭 변경 신청 취소")
+						alert("매칭 변경 신청 취소")
 						document.location.href = document.location.href;
-						}
 					}
-				});	
+				}
 			});
-		
-		
+		});
 	</script>
 	<!-- 본문 end-->
 </th:block>

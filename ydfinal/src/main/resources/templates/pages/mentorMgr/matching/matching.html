@@ -1,115 +1,181 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layouts/layout}">  
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/layout}">
 
 <th:block layout:fragment="content">
-  <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css"/>  
-  <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-  <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
-  <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
-<style>
-.stdactive {
-	background-color : gray
-}
-</style> 
-    
-  <!-- 상단 내비바 -->
-  <th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
+	<link rel="stylesheet"
+		href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css" />
+	<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+	<script
+		src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+	<script
+		src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
 
-  <!-- 본문 start -->  
-  <h3>지도교수가 없는 학생 목록</h3>
-  <table class="table table-striped" id="matchingStd">
-	<thead>
-		<tr>
-			<th>학번</th>
-			<th>이름</th>
-			<th>전공</th>
-			<th>학년</th>
-			<th>연락처</th>
-			<th>학적</th>
-			<th>매칭</th>
-		</tr>
-	</thead>
-	<tbody>	
-		<tr th:each="std:${matchingStd}">
-			<td th:text="${std.stuId}"></td>
-			<td th:text="${std.userName}"></td>
-			<td th:text="${std.userDept}"></td>
-			<td th:text="${std.studentGrade}"></td>
-			<td th:text="${std.userPhone}"></td>
-			<td th:text="${std.studentAcaYn}"></td>
-			<td>
-				<span th:if="${std.studentProf == null}">
-				<button class="btn btn-primary" onclick="onDisplay()">선택</button>
-				</span>
-			</td>		
-		</tr>
-	</tbody>
-   </table>
-   <br>
-   <br>
-   <div id="profList" class="text-center" style="display: none;">
-   <h3>매칭 가능한 교수 목록</h3>
-	  <table class="table table-striped" id="matchingProf">
-		<thead>
-			<tr>
-				<th>교번</th>
-				<th>이름</th>
-				<th>전공</th>
-				<th>연구실</th>
-				<th>담당 가능 학생 수</th>
-				<th>매칭여부</th>
-			</tr>
-		</thead>
-		<tbody>	
-			<tr th:each="Prof:${matchingProf}">
-				<td th:text="${Prof.profId}"></td>
-				<td th:text="${Prof.userName}"></td>
-				<td th:text="${Prof.userDept}"></td>
-				<td th:text="${Prof.profLab}"></td>
-				<td th:text="${Prof.mentee}"></td>
-				<td>				
-					<button class="btn btn-primary prof">매칭</button>				
-				</td>
-			</tr>
-		</tbody>
-	   </table>
-   </div>
-   
-   <script>
-   	$("#matchingStd").DataTable({ });
-   	$("#matchingProf").DataTable({ });
-   	
-   	function onDisplay(e) {
-   		e = window.event || e; 
-   		$(".stdactive").css("backgroundColor","")
-   		$(".stdactive").removeClass("stdactive")
-   		$(e.target).closest("tr").addClass("stdactive")
-   		$(e.target).closest("tr").css("backgroundColor", "aqua")  
-   		$('#profList').show();
-   	}
-   	
-   	$(".prof").on("click", function () {
-   		var matchingP = ($(this).closest("tr").find("td:first").text())
-   		var matchingS = ($(".stdactive").find("td:first").text())   	
-   		$.ajax({
-   			type: "post",
-   			url: "/matching",
-   			data: {userId : matchingP,
-   				    studentId : matchingS},
-   			success : function (result){
-   				if(result == "1") {
-   					alert ("매칭 완료")
-   					location.href = "matchingStd"
-   				}
-   			}	  
-   			
-   		})
-   	});   	
-   </script>
-      	  
-  <!-- 본문 end-->
-</th:block>	
+	<style>
+.stdactive {
+	background-color: gray
+}
+
+.card {
+	margin-bottom: 20px;
+}
+
+.pagination .active .page-link {
+	background-color: #7b809a;
+	border-color: #7b809a;
+}
+
+.page-link:focus {
+	box-shadow: 0 0 0 0.2rem rgb(123 128 154/ 25%);
+}
+</style>
+
+	<!-- 상단 내비바 -->
+	<th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
+
+	<!-- 본문 start -->
+	<div class="card p-3 me-3">
+		<div class="row justify-content-center">
+
+			<!-- 각 페이지 타이틀바 -->
+			<div class="card-header p-0 position-relative mt-n4 mb-4 z-index-2">
+				<div
+					class="bg-secondary bg-gradient-secondary shadow-secondary border-radius-lg py-3">
+					<h6 class="text-white ps-3 m-0">지도 교수가 없는 학생 목록</h6>
+				</div>
+			</div>
+			<table class="table table-striped" id="matchingStd">
+				<thead>
+					<tr>
+						<th>학번</th>
+						<th>이름</th>
+						<th>전공</th>
+						<th>학년</th>
+						<th>연락처</th>
+						<th>학적</th>
+						<th>매칭</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="std:${matchingStd}">
+						<td th:text="${std.stuId}"></td>
+						<td th:text="${std.userName}"></td>
+						<td th:text="${std.userDept}"></td>
+						<td th:text="${std.studentGrade}"></td>
+						<td th:text="${std.userPhone}"></td>
+						<td th:text="${std.studentAcaYn}"></td>
+						<td><span th:if="${std.studentProf == null}">
+								<button class="btn btn-primary" onclick="onDisplay()">선택</button>
+						</span></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+
+	<div id="profList" style="display: none;">
+		<div class="card p-3 me-3">
+			<div class="row justify-content-center">
+				<div class="card-header p-0 position-relative mt-n4 mb-4 z-index-2">
+					<div
+						class="bg-secondary bg-gradient-secondary shadow-secondary border-radius-lg py-3">
+						<h6 class="text-white ps-3 m-0">교수 목록</h6>
+					</div>
+				</div>
+				<table class="table table-striped" id="matchingProf">
+					<thead>
+						<tr>
+							<th>교번</th>
+							<th>이름</th>
+							<th>전공</th>
+							<th>연구실</th>
+							<th>담당 가능 학생 수</th>
+							<th>매칭여부</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="Prof:${matchingProf}">
+							<td th:text="${Prof.profId}"></td>
+							<td th:text="${Prof.userName}"></td>
+							<td th:text="${Prof.userDept}"></td>
+							<td th:text="${Prof.profLab}"></td>
+							<td th:text="${Prof.mentee}"></td>
+							<td>
+								<button class="btn btn-primary prof">매칭</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+
+
+	<script>
+		$("#matchingStd").DataTable({
+			language : {
+				lengthMenu : "페이지 당: _MENU_",
+				search : "검색:",
+				searchPlaceholder : "키워드를 입력하세요",
+				zeroRecords : "검색결과가 없습니다",
+				info : "_START_ - _END_ (전체: _MAX_건)",
+				infoFiltered : "(검색결과: _TOTAL_건)",
+				infoEmpty : "",
+				paginate : {
+					previous : "<",
+	              next: ">",
+				}
+			}
+		});
+		$("#matchingProf").DataTable({
+			language : {
+				lengthMenu : "페이지 당: _MENU_",
+				search : "검색:",
+				searchPlaceholder : "키워드를 입력하세요",
+				zeroRecords : "검색결과가 없습니다",
+				info : "_START_ - _END_ (전체: _MAX_건)",
+				infoFiltered : "(검색결과: _TOTAL_건)",
+				infoEmpty : "",
+				paginate : {
+					previous : "<",
+	              next: ">",
+				}
+			}
+		});
+
+		function onDisplay(e) {
+			e = window.event || e;
+			$(".stdactive").css("backgroundColor", "")
+			$(".stdactive").removeClass("stdactive")
+			$(e.target).closest("tr").addClass("stdactive")
+			$(e.target).closest("tr").css("backgroundColor", "aqua")
+			$('#profList').show();
+		}
+
+		$(".prof").on("click", function() {
+			var matchingP = ($(this).closest("tr").find("td:first").text())
+			var matchingS = ($(".stdactive").find("td:first").text())
+			$.ajax({
+				type : "post",
+				url : "/matching",
+				data : {
+					userId : matchingP,
+					studentId : matchingS
+				},
+				success : function(result) {
+					if (result == "1") {
+						alert("매칭 완료")
+						location.href = "matchingStd"
+					}
+				}
+
+			})
+		});
+	</script>
+
+	<!-- 본문 end-->
+</th:block>
 </html>
