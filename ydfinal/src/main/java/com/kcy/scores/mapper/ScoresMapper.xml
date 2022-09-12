@@ -25,6 +25,7 @@
 			        st.student_sem, 
 			        st.student_aca_yn, 
 			        
+			        
 			        cm.class_member_id,
 			        cm.class_id,
 			        
@@ -47,10 +48,13 @@
             ON
                     r.class_member_id = cm.class_member_id
 			WHERE
-			        cm.class_id = #{classId};
+			        cm.class_id = #{classId}
 	</select>
 	
 	<insert id="scoresInsert">
+		<selectKey order="BEFORE" keyProperty="scoreId" resultType="String">
+		 SELECT CONCAT("Score", NEXTVAL(score_seq))
+		</selectKey>
 		INSERT INTO
 			k_scores
 		(
@@ -64,7 +68,7 @@
 		)
 		VALUES
 		(
-			CONCAT("Score", NEXTVAL(score_seq)),
+			#{scoreId},
 			#{classMemberId},
 			#{scoreAttn},
 			#{scoreQuiz},
@@ -177,13 +181,7 @@
 		WHERE
     		cm.stu_id = #{userId}
     	<choose>
-			<when test="classSem != null and classSem == 1 || classYear != null">
-				AND
-					c.class_sem = #{classSem}
-				AND
-					c.class_year = #{classYear}
-			</when>
-			<when test="classSem != null and classSem == 2 || classYear != null">
+			<when test="classSem != null || classYear != null">
 				AND
 					c.class_sem = #{classSem}
 				AND
@@ -191,4 +189,18 @@
 			</when>
 		</choose>
 	</select>
+	
+	<select id="scoresCtn" resultType="com.kcy.scores.service.ScoresVo">
+		SELECT 
+			   COUNT(*) as stuCtn 
+		from 
+			   k_quiz_r kqr
+        join 
+               k_class_member kcm 
+        on 
+               kqr.class_member_id = kcm.class_member_id 
+        WHERE 
+               kcm.class_id = #{classId} 
+	</select>
+	
 </mapper>

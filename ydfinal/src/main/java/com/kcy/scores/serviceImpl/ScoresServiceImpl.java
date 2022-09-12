@@ -56,4 +56,12 @@ public class ScoresServiceImpl implements ScoresService {
 		
 	}
 
+	@Override
+	public void scoresAllInsert(List<ScoresVo> list) {
+		for(ScoresVo vo : list) {
+			map.scoresInsert(vo);
+			map.gpaPointInsert(vo);
+		}
+	}
+
 }

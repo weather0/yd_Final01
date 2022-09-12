@@ -7,10 +7,18 @@
 
   <!-- 상단 내비바 -->
   <th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
-
+<div class="container-fluid py-4">
   <!-- 본문 start -->
-      <h1>교수 강의자료 및 공지 등록 페이지</h1>
- 		
+       <div class="row justify-content-center">
+      <div class="card p-3 me-3">
+      
+        <!-- 각 페이지 타이틀바 -->
+        <div class="card-header p-0 position-relative mt-n4 mb-4 z-index-2">
+          <div class="bg-secondary bg-gradient-secondary shadow-secondary border-radius-lg py-3">
+            <h6 class="text-white ps-3 m-0">공지 등록</h6>
+          </div>
+        </div>
+        
  		<form action="noticeInsert" method="post" enctype="multipart/form-data">
  		<div class="container-fluid py-4">
  	<div class="input-group input-group-static mb-4">
@@ -49,7 +57,8 @@
 </form>
     
   <!-- 본문 end-->
-
+</div>
+</div>
 </div>
 </th:block>
 </html>

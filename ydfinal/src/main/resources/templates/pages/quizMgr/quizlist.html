@@ -12,23 +12,31 @@
   <!-- 본문 start -->
   <!-- Button trigger modal -->
 <div class="container-fluid py-4">
-    <div class="row"> 
+           <div class="row justify-content-center">
+      <div class="card p-3 me-3">
+      
+        <!-- 각 페이지 타이틀바 -->
+        <div class="card-header p-0 position-relative mt-n4 mb-4 z-index-2">
+          <div class="bg-secondary bg-gradient-secondary shadow-secondary border-radius-lg py-3">
+            <h6 class="text-white ps-3 m-0">과제 게시판</h6>
+          </div>
+        </div>
     
        <form name="searchform" autocomplete="off">
    <input th:value="${#authentication.principal.username}" type="hidden" id="userid">
-     <select sec:authorize="hasRole('ROLE_STU')" name="classId">
+     <select class="form-control" sec:authorize="hasRole('ROLE_STU')" name="classId">
 			<option>강좌 선택</option>
 		<th:block th:each="c : ${classId}">
 			<option th:text="${c.classId}" th:value="${c.classId}"></option>
 		</th:block> 		
 	</select>
- 	<select sec:authorize="hasRole('ROLE_PROF')" name="classId">
+ 	<select class="form-control" sec:authorize="hasRole('ROLE_PROF')" name="classId">
 			<option>강좌 선택</option>
 		<th:block th:each="c : ${profClassId}">
 			<option th:text="${c.classId}" th:value="${c.classId}"></option>
 		</th:block> 		
 	</select>
-		<button type="submit" th:value="검색">검색</button>
+		<button type="submit" class="btn bg-gradient-primary" th:value="검색">검색</button>
 	</form>
     
  <table id="quizTable" class="table table-striped" style="width:100%;" >
@@ -51,6 +59,7 @@
         </tbody>
   <!-- 본문 end-->
 </table>
+ </div>
  </div>
  </div>
  <script>

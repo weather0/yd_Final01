@@ -15,6 +15,7 @@ public class ScoresVo {
 	private int scoreMid;
 	private int scoreFinal;
 	private int total;
+	private int stuCtn;
 	
 	// k_gpa
 	private String gpaId;

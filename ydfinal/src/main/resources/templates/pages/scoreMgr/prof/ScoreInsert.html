@@ -14,15 +14,20 @@
   <!-- 본문 start -->
   
 <div class="container-fluid py-4">
-    <div class="row"> 
-      <div class="card my-4">
-          <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-            <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3" style="background: #fc9209">
-              <h6 class="text-white text-capitalize ps-3">강좌신청 승인</h6>
-              <input  th:value="${#authentication.principal.username}" type="hidden" id="userid">
-            </div>
+    <div class="row justify-content-center">
+      <div class="card p-3 me-3">
+      
+        <!-- 각 페이지 타이틀바 -->
+        <div class="card-header p-0 position-relative mt-n4 mb-4 z-index-2">
+          <div class="bg-secondary bg-gradient-secondary shadow-secondary border-radius-lg py-3">
+            <h6 class="text-white ps-3 m-0">성적 입력</h6>
           </div>
+        </div>
+
+<!-- 여기에 자기 코드 -->
+
                   	<form action="scoreInsert" method="post">
+          
  <table id="letureTable" class="table align-items-center mb-0" >
         <thead>
             <tr>
@@ -35,29 +40,31 @@
                 <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">출석</th>
                 <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">등급</th>
                 <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">총점</th>
-                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">등록</th>
             </tr>
         </thead>
+        <th:block th:each="data : ${count}">
+         <input type="hidden" class="stuCtn" id="stuCtn" th:value="${data.stuCtn}" /> 
+         </th:block>
         <tbody>
-        	 <tr th:each="data: ${memberlist}">
-        	    <input type="hidden" class="classId" th:value="${data.classId}" />
-        	    <input type="hidden" class="classMemberId" th:value="${data.classMemberId}" />
+                	<th:block th:each="data, idx : ${memberlist}">
+        	 <tr>
+        	    <input type="hidden" class="classMemberId" id="classMemberId" th:name="|classMemberId${idx.index}|" th:value="${data.classMemberId}" />
+        	    <input type="hidden" class="classId" id="classId" th:value="${data.classId}" />
         		<td th:text="|${data.userName}/${data.stuId}|"></td>
         		<td th:text="|${data.userDept}/${data.studentGrade}학년|"></td>
         		<td th:text="|${data.studentSem}학기/${data.studentAcaYn}|"></td>
-        		<td><input class="form-control jt_form_field wt500 scoreMid" type="text" th:id="scoreMid" th:name="scoreMid" /></td>
-        		<td><input class="form-control jt_form_field wt500 scoreFinal" type="text" th:id="scoreFinal" th:name="scoreFinal" /></td>
-        		<td><input class="form-control jt_form_field wt500 scoreQuiz" type="text" th:id="scoreQuiz" th:name="scoreQuiz" /></td>
-        		<td><input class="form-control jt_form_field wt500 scoreAttn" type="text" th:id="scoreAttn" th:name="scoreAttn" /></td>
-        		<td><input class="form-control" th:name="gpaGrade" th:value="등급" /></td>
-        		<td><input class="form-control jt_form_field wt500" type="text" readonly="readonly" th:id="gpaPoint" th:name="gpaPoint" /></td>
-        		<td><button type="button" class="btn bg-gradient-primary">등록</button></td>
+        		<td><input class="form-control jt_form_field wt500 scoreMid" type="text" th:id="scoreMid" th:name="|scoreMid${idx.index}|" /></td>
+        		<td><input class="form-control jt_form_field wt500 scoreFinal" type="text" th:id="scoreFinal" th:name="|scoreFinal${idx.index}|" /></td>
+        		<td><input class="form-control jt_form_field wt500 scoreQuiz" type="text" th:value="${data.quizRPoint}" th:id="scoreQuiz" th:name="|scoreQuiz${idx.index}|" /></td>
+        		<td><input class="form-control jt_form_field wt500 scoreAttn" type="text" th:id="scoreAttn" th:name="|scoreAttn${idx.index}|" /></td>
+        		<td><input class="form-control gpaGrade" th:name="|gpaGrade${idx.index}|" readonly="readonly" th:id="gpaGrade" /></td>
+        		<td><input class="form-control jt_form_field wt500 gpaPoint" type="text" readonly="readonly" th:id="gpaPoint" th:name="|gpaPoint${idx.index}|" /></td>
         	</tr> 
-        	
-        </tbody>
-        
+        	</th:block>     
+        </tbody>   
   <!-- 본문 end-->
 </table>
+<button type="button" class="btn bg-gradient-primary" style="float: right">등록</button>
 </form>
 </div>
  </div>
@@ -73,44 +80,125 @@ $(".scoreMid, .scoreFinal, .scoreQuiz, .scoreAttn").on("change input paste", fun
 	var scoreFinal = fnReplace(tr.find("#scoreFinal").val());
 	var scoreQuiz = fnReplace(tr.find("#scoreQuiz").val());
 	var scoreAttn = fnReplace(tr.find("#scoreAttn").val());
-	
+	var grade = "";
 	var gpaPoint = tr.find("#gpaPoint").val((scoreMid + scoreFinal + scoreQuiz + scoreAttn) / 4);
-
+	var gpaGrade = tr.find("#gpaGrade").val(grade);
+	var point = parseInt(gpaPoint.val());
+	
+	if(point >= 95 && point <= 100) {
+		grade = "A+";
+	} else if(point >= 90 && point < 95) {
+ 		grade = "A";
+	} else if(point >= 85 && point < 90) {
+		grade = "B+";
+	} else if(point >= 80 && point < 85) {
+		grade = "B";
+	} else if(point >= 75 && point < 80) {
+		grade = "C+";
+	} else if(point >= 70 && point < 75) {
+		grade = "C";
+	} else if(point >= 0 && point < 70){
+		grade = "F";
+	}
+	
+	var gpaGrade = tr.find("#gpaGrade").val(grade);
+	
 });
 
+
+
 function submitData() {
+
+	 if(scoreMid != null && scoreFinal != null && scoreQuiz != null && scoreAttn != null) {
 	
-	console.log("ㅎㅇ")
-	
-	var tr = $(".scoreMid, .scoreFinal, .scoreQuiz, .scoreAttn").closest("tr");
-	let scoreMid = fnReplace(tr.find("#scoreMid").val());
-	let scoreFinal = fnReplace(tr.find("#scoreFinal").val());
-	let scoreQuiz = fnReplace(tr.find("#scoreQuiz").val());
-	let scoreAttn = fnReplace(tr.find("#scoreAttn").val());
-	let gpaPoint = fnReplace(tr.find("#gpaPoint").val());
-	let gpaGrade = fnReplace(tr.find("#gpaGrade").val());
-	let classMemberId = $(".classMemberId").eq(0).val();
-	let classId = $(".classId").eq(0).val();
-	
-	$.ajax({
-		url: "http://localhost/scoreinsert",
-		type: "post",
-		data: {
-			classId: classId,
-			classMemberId: classMemberId,
-			scoreMid: scoreMid,
-			scoreFinal: scoreFinal,
-			scoreQuiz: scoreQuiz,
-			scoreAttn: scoreAttn,
+			var stuCtn = $(".stuCtn").val();
+			var classId = $(".classId").val();
 			
-			gpaPoint: gpaPoint,
-			gpaGrade: gpaGrade
-		},
-		success:function(data) {
+			var scoreMid = [];
+			var scoreFinal = [];
+			var scoreAttn = [];
+			var scoreQuiz = [];
+			var gpaPoint = [];
+			var gpaGrade = [];
+			var classMemberId = [];
 			
-		}
-	});
-	
+			var scoreList = new Array();
+			
+			for(var j = 0; j < stuCtn; j++) {
+				
+				smid = "scoreMid" + j;
+				sfinal = "scoreFinal" + j;
+				sattn = "scoreAttn" + j;
+				squiz = "scoreQuiz" + j;
+				spoint = "gpaPoint" + j;
+				sgrade = "gpaGrade" + j;
+				sclassMember = "classMemberId" + j;
+				
+				$("input[name="+smid+"]").each(function() {
+					scoreMid.push($(this).val());	
+				});
+				
+				$("input[name="+sfinal+"]").each(function() {
+					scoreFinal.push($(this).val());	
+				});
+				
+				$("input[name="+sattn+"]").each(function() {
+					scoreAttn.push($(this).val());	
+				});
+				
+				$("input[name="+squiz+"]").each(function() {
+					scoreQuiz.push($(this).val());	
+				});
+				
+				$("input[name="+spoint+"]").each(function() {
+					gpaPoint.push($(this).val());	
+				});
+				
+				$("input[name="+sgrade+"]").each(function() {
+					gpaGrade.push($(this).val());	
+				});
+				
+				$("input[name="+sclassMember+"]").each(function() {
+					classMemberId.push($(this).val());	
+				});
+				
+				var data = new Object();
+				
+				data.classId = classId;
+				data.scoreMid = scoreMid[j];
+				data.scoreFinal = scoreFinal[j];
+				data.scoreAttn = scoreAttn[j];
+				data.scoreQuiz = scoreQuiz[j];
+				data.gpaPoint = gpaPoint[j];
+				data.gpaGrade = gpaGrade[j];
+				data.classMemberId = classMemberId[j];
+				
+				scoreList.push(data);
+			}
+			
+			var jsonData = JSON.stringify(scoreList);
+			console.log(scoreList);
+		
+		$.ajax({
+			url: "http://localhost/scoreinsert",
+			type: "post",
+			data: jsonData,
+			dataType: "json",
+			contentType : 'application/json; charset=UTF-8',
+			success:function(data) {
+				alert("성적 등록 완료");
+				location.reload();
+			}
+		});
+		
+		
+	} else {
+		alert("점수를 전부 입력해 주세요.");
+		return false;
+	}
+	 
+	/*
+	 */
 }
 
 function fnReplace(val) {
