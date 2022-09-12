@@ -24,82 +24,86 @@
 	<th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
 
 	<!-- 본문 start -->
-	<div class="card p-3 me-3">
-		<div class="row justify-content-center">
+	<div class="container-fluid">
+		<div class="card p-3 me-3">
+			<div class="row justify-content-center">
 
-			<!-- 각 페이지 타이틀바 -->
-			<div class="card-header p-0 position-relative mt-n4 mb-4 z-index-2">
-				<div
-					class="bg-secondary bg-gradient-secondary shadow-secondary border-radius-lg py-3">
-					<h6 class="text-white ps-3 m-0">지도교수 변경 신청자 목록</h6>
-				</div>
-			</div>
-			<table class="table table-striped" id="matchingChageList">
-				<thead>
-					<tr>
-						<th>학번</th>
-						<th>이름</th>
-						<th>전공</th>
-						<th>학년</th>
-						<th>학적상태</th>
-						<th style="display: none">지도교수교번</th>
-						<th>현재 지도교수</th>
-						<th>변경 사유</th>
-						<th style="display: none">지정 지도교수 교번</th>
-						<th>지도교수 지정</th>
-						<th>승인여부</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr th:each="std:${matchingChange}" class="changeInfo">
-						<td th:text="${std.stuId}"></td>
-						<td th:text="${std.userName}"></td>
-						<td th:text="${std.userDept}"></td>
-						<td th:text="${std.studentGrade}"></td>
-						<td th:text="${std.studentAcaYn}"></td>
-						<td th:text="${std.profId}" style="display: none"></td>
-						<td th:text="${std.prof}"></td>
-						<td th:text="${std.matchingChangeReason}"></td>
-						<td th:text="${std.wantprofId}" style="display: none"></td>
-						<td th:text="${std.wantprof}"></td>
-						<td>
-							<button class="btn btn-primary OK">승인</button>
-							<button type="button" class="btn btn-primary reject"
-								data-bs-toggle="modal" data-bs-target="#reject"
-								data-bs-whatever="NO">거부</button>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-
-			<div class="modal fade" id="reject" tabindex="-1"
-				aria-labelledby="rejectLabel" aria-hidden="true">
-				<div class="modal-dialog">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h5 class="modal-title" id="rejectLabel">승인 거부 사유 작성</h5>
-							<button type="button" class="btn-close" data-bs-dismiss="modal"
-								aria-label="Close"></button>
-						</div>
-						<div class="modal-body">
-							<form>
-								<div class="mb-3">
-									<textarea class="form-control" id="reject-text"
-										placeholder="거부 사유를 입력해주세요">
-							</textarea>
-								</div>
-							</form>
-						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-secondary"
-								data-bs-dismiss="modal">닫기</button>
-							<button type="button" class="btn btn-primary NO">등록</button>
-						</div>
+				<!-- 각 페이지 타이틀바 -->
+				<div class="card-header p-0 position-relative mt-n4 mb-4 z-index-2">
+					<div
+						class="bg-secondary bg-gradient-secondary shadow-secondary border-radius-lg py-3">
+						<h6 class="text-white ps-3 m-0">지도교수 변경 신청자 목록</h6>
 					</div>
+				</div>
+				<table id="matchingChageList">
+					<thead>
+						<tr>
+							<th>학번</th>
+							<th>이름</th>
+							<th>전공</th>
+							<th>학년</th>
+							<th>학적상태</th>
+							<th style="display: none">지도교수교번</th>
+							<th>현재 지도교수</th>
+							<th>변경 사유</th>
+							<th style="display: none">지정 지도교수 교번</th>
+							<th>지도교수 지정</th>
+							<th>승인여부</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="std:${matchingChange}" class="changeInfo">
+							<td th:text="${std.stuId}"></td>
+							<td th:text="${std.userName}"></td>
+							<td th:text="${std.userDept}"></td>
+							<td th:text="${std.studentGrade}"></td>
+							<td th:text="${std.studentAcaYn}"></td>
+							<td th:text="${std.profId}" style="display: none"></td>
+							<td th:text="${std.prof}"></td>
+							<td th:text="${std.matchingChangeReason}"></td>
+							<td th:text="${std.wantprofId}" style="display: none"></td>
+							<td th:text="${std.wantprof}"></td>
+							<td>
+								<button class="btn btn-primary OK">승인</button>
+								<button type="button" class="btn btn-primary reject"
+									data-bs-toggle="modal" data-bs-target="#reject"
+									data-bs-whatever="NO">거부</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="reject" tabindex="-1"
+		aria-labelledby="rejectLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="rejectLabel">승인 거부 사유 작성</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<form>
+						<div class="mb-3">
+							<textarea class="form-control" id="reject-text"
+								placeholder="거부 사유를 입력해주세요">
+							</textarea>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-bs-dismiss="modal">닫기</button>
+					<button type="button" class="btn btn-primary NO">등록</button>
 				</div>
 			</div>
 		</div>
 	</div>
+
+
 
 	<script>
 		$("#matchingChageList").DataTable({

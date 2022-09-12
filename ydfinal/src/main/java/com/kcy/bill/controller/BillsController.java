@@ -172,7 +172,6 @@ public class BillsController {
 		JsonNode node = objectMapper.readValue(token, JsonNode.class);
 		vo.setAccessToken(node.get("access_token").asText());	
 		vo.setStuId(principal.getName());
-		//vo.setToken(token);
 		service.insertToken(vo);		
 		return "redirect:billCheck";
 	}
