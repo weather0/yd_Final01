@@ -10,9 +10,16 @@
 	<th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
 
 	<!-- 본문 start -->
-	<div class="container-fluid py-4">
-		<div class="row">
-			<h1>등록금 고지서 확인</h1>
+	<div class="card p-3 me-3">
+		<div class="row justify-content-center">
+
+			<!-- 각 페이지 타이틀바 -->
+			<div class="card-header p-0 position-relative mt-n4 mb-4 z-index-2">
+				<div
+					class="bg-secondary bg-gradient-secondary shadow-secondary border-radius-lg py-3">
+					<h6 class="text-white ps-3 m-0">등록금 고지서 확인</h6>
+				</div>
+			</div>
 			<form action="billListInfo">
 				<div class="row">
 					<div class="col-md-2">
@@ -46,10 +53,12 @@
 							<button class="btn bg-gradient-primary">조회</button>
 						</div>
 					</div>
+				</div>
 			</form>
 		</div>
-	</div>
-	<div class="card" id="ListInfo">
+
+
+
 		<div class="table-responsive">
 			<table class="table align-items-center mb-0">
 				<thead>
@@ -76,35 +85,37 @@
 							id="majorId"></td>
 						<td><input type="number" name="billAmount" id="billAmount"
 							th:value="${bill.billAmount}"></td>
+						<td><span class="badge badge-lg bg-gradient-danger"
+							th:if="${bill.pId == null}">등록안됨</span> <span
+							class="badge badge-lg bg-gradient-success"
+							th:if="${bill.pId != null}">등록됨</span></td>
 						<td>
-							<span class="badge badge-lg bg-gradient-danger" th:if="${bill.pId == null}">등록안됨</span> 
-							<span class="badge badge-lg bg-gradient-success" th:if="${bill.pId != null}">등록됨</span>
-						</td>
-						<td> 
-							<button class="btn bg-gradient-primary update">수정</button> 
-							<span th:if="${bill.pId == null}">
-								<button class="btn bg-gradient-primary insert" aria-pressed="true">고지</button>
-							</span>
-							<span th:if="${bill.pId != null}">
+							<button class="btn bg-gradient-primary update">수정</button> <span
+							th:if="${bill.pId == null}">
+								<button class="btn bg-gradient-primary insert"
+									aria-pressed="true">고지</button>
+						</span> <span th:if="${bill.pId != null}">
 								<button class="btn bg-gradient-primary insert" disabled>고지</button>
-							</span>
+						</span>
 						</td>
 					</tr>
 				</tbody>
 			</table>
 		</div>
-	</div>
-	<div class="col-md-3">
-		<div class="input-group input-group-outline my-3">
-			<button class="btn bg-gradient-primary check">일괄고지</button>
+
+		<div class="col-md-3">
+			<div class="input-group input-group-outline my-3">
+				<button class="btn bg-gradient-primary check">일괄고지</button>
+			</div>
 		</div>
 	</div>
+
 
 
 	<script>
 		$(".update").on("click", function() {
 			var id = ($(this).closest("tr").find("td:eq(1)").text())
-			var amount = ($(this).closest("tr").find("input#billAmount").val())			
+			var amount = ($(this).closest("tr").find("input#billAmount").val())
 			$.ajax({
 				type : "POST",
 				url : "/billsUpdate",

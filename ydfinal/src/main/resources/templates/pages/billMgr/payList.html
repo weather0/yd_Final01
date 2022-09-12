@@ -20,35 +20,41 @@
 
 	<!-- 본문 start -->
 	<div class="container-fluid py-4">
-		<div class="row">
-			<h1>등록금 납부 이력 조회</h1>
-			<form action="payListInfo">
-				<div class="row">
-					<div class="col-md-3">
-						<div class="input-group input-group-outline my-3">
-							<label class="form-label"></label> <input type="number"
-								class="form-control" name="billYear" id="billYear">
+		<div class="row justify-content-center">
+			<div class="card p-3 me-3">
+				<div class="card-header p-0 position-relative mt-n4 mb-4 z-index-2">
+					<div
+						class="bg-secondary bg-gradient-secondary shadow-secondary border-radius-lg py-3">
+						<h6 class="text-white ps-3 m-0">등록금 납부 이력 조회</h6>
+					</div>
+				</div>
+				<form action="payListInfo">
+					<div class="row">
+						<div class="col-md-2">
+							<div class="input-group input-group-outline my-3">
+								<label class="form-label"></label> <input type="number"
+									class="form-control" name="billYear" id="billYear">
+							</div>
+						</div>
+						<div class="col-md-2">
+							<div class="input-group input-group-outline my-3">
+								<label class="form-label"></label> <select class="form-control"
+									name="billSem" id="billSem">
+									<option value="1">1학기</option>
+									<option value="2">2학기</option>
+								</select>
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="input-group input-group-outline my-3">
+								<button class="btn bg-gradient-primary" onclick="onDisplay()">조회</button>
+							</div>
 						</div>
 					</div>
-					<div class="col-md-3">
-						<div class="input-group input-group-outline my-3">
-							<label class="form-label"></label> <select class="form-control"
-								name="billSem" id="billSem">
-								<option value="1">1학기</option>
-								<option value="2">2학기</option>
-							</select>
-						</div>
-					</div>
-					<div class="col-md-3">
-						<div class="input-group input-group-outline my-3">
-							<button class="btn bg-gradient-primary" onclick="onDisplay()">조회</button>
-						</div>
-					</div>
-			</form>
+				</form>
 
-			<th:block th:each="payStd:${payStdInfo}">
-				<div class="row justify-content-center">
-					<div class="card">
+				<th:block th:each="payStd:${payStdInfo}">
+					<div class="row justify-content-center">
 						<div class="table-responsive">
 							<table class="table text-center mb-0" id="payList">
 								<tr>
@@ -65,8 +71,8 @@
 								</tr>
 								<tr>
 									<td class="table-secondary">납부방식</td>
-									<td>
-										<span th:if="${payStd.payHType.toString().equals('b')}">일괄납부</span> 
+									<td><span
+										th:if="${payStd.payHType.toString().equals('b')}">일괄납부</span>
 										<span th:if="${payStd.payHType.toString().equals('s1')}">분할납부A</span>
 										<span th:if="${payStd.payHType.toString().equals('s2')}">분할납부B</span>
 									<td class="table-secondary">납부여부</td>
@@ -78,37 +84,48 @@
 							</table>
 						</div>
 					</div>
-				</div>
-			</th:block>
-
-			<h5>납부 내역</h5>
-			<div class="card" id="ListInfo">
-				<div class="table-responsive">
-					<table class="table align-items-center mb-0">
-						<thead>
-							<tr>
-								<th>납부일자</th>
-								<th>납부유형</th>
-								<th>납부처</th>
-								<th>납부액</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr th:each="pay:${payList}">
-								<td th:text="${#calendars.format(pay.payDDay, 'yyyy-MM-dd')}"></td>
-								<td><span th:if="${pay.payHType.toString().equals('b')}">일괄납부</span>
-									<span th:if="${pay.payHType.toString().equals('s1')}">분할납부A</span>
-									<span th:if="${pay.payHType.toString().equals('s2')}">분할납부B</span>
-								</td>
-								<td th:text="${pay.payDBank}"></td>
-								<td th:text="${pay.payDAmount}"></td>
-							</tr>
-						</tbody>
-					</table>
+				</th:block>
+			</div>
+		</div>
+		
+	
+		<div class="container-fluid py-4">
+			<div class="row justify-content-center">
+				<div class="card" id="ListInfo">
+					<div class="card-header p-0 position-relative mt-n4 mb-4 z-index-2">
+						<div
+							class="bg-secondary bg-gradient-secondary shadow-secondary border-radius-lg py-3">
+							<h6 class="text-white ps-3 m-0">납부 내역</h6>
+						</div>
+					</div>
+					<div class="table-responsive">
+						<table class="table align-items-center mb-0">
+							<thead>
+								<tr>
+									<th>납부일자</th>
+									<th>납부유형</th>
+									<th>납부처</th>
+									<th>납부액</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="pay:${payList}">
+									<td th:text="${#calendars.format(pay.payDDay, 'yyyy-MM-dd')}"></td>
+									<td><span th:if="${pay.payHType.toString().equals('b')}">일괄납부</span>
+										<span th:if="${pay.payHType.toString().equals('s1')}">분할납부A</span>
+										<span th:if="${pay.payHType.toString().equals('s2')}">분할납부B</span>
+									</td>
+									<td th:text="${pay.payDBank}"></td>
+									<td th:text="${pay.payDAmount}"></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
+
 
 	<script>
 		let date = new Date();

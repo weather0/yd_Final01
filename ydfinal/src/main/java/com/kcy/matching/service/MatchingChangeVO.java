@@ -8,6 +8,7 @@ import lombok.Data;
 public class MatchingChangeVO {
 	private String stuId;
 	private String userId;
+	private String delId;
 	private String matchingChangeYn;
 	private Date matchingChangeDate;
 	private String matchingChangeReject;
