@@ -25,5 +25,4 @@ public interface BillsMapper {
 	public void payChangeCancel(PayVO vo);
 	public void insertToken(PayVO vo);
 	
-
 }

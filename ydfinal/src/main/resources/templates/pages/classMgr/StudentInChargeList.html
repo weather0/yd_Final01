@@ -4,76 +4,95 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layouts/layout}">
 <th:block layout:fragment="content">
+	<style>
+.pagination .active .page-link {
+	background-color: #7b809a;
+	border-color: #7b809a;
+}
 
-	<link rel="stylesheet"
-		href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css" />
-	<script
-		src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
-	<script
-		src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
+.page-link:focus {
+	box-shadow: 0 0 0 0.2rem rgb(123 128 154/ 25%);
+}
+</style>
+
+
 	<!-- 상단 내비바 -->
 	<th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
 	<!-- 본문 start -->
 
-	<div class="container-fluid py-4">
-		<div class="row">
-			<div class="card my-4">
-				<div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+	<div class="container-fluid">
+		<div class="row justify-content-center">
+			<div class="card p-3 me-3">
+				<!-- 각 페이지 타이틀바 -->
+				<div class="card-header p-0 position-relative mt-n4 mb-4 z-index-2">
 					<div
-						class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3"
-						style="background: #fc9209">
-						<h6 class="text-white text-capitalize ps-3">담당 학생 확인</h6>
+						class="bg-secondary bg-gradient-secondary shadow-secondary border-radius-lg py-3">
+						<h6 class="text-white ps-3 m-0">페이지명</h6>
 					</div>
-				</div>
-				<form action="studentSelect">
-
-					<div class="input-group input-group-static mb-4">
-						<select class="form-control" style="width:30px" name="classId" id="classId">
+					<form action="studentSelect">
+						<select class="form-control" style="width: 30px" name="classId"
+							id="classId">
 							<option value="">강좌선택</option>
 							<th:block th:each="classId : ${classId}">
 								<option th:text="${classId.courseTitle}"
 									th:value="${classId.classId}"></option>
 							</th:block>
 						</select>
-						<button class="btn bg-gradient-warning btn-sm" th:text="검색"/>
-				</form>
+
+						<button class="btn btn btn-secondary btn-sm" th:text="검색"></button>
+					</form>
+				</div>
+				<table id="studentInCharge" class="table align-items-center mb-0">
+					<thead>
+						<tr>
+							<th
+								class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">학생이름</th>
+							<th
+								class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">학번</th>
+							<th
+								class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">전공</th>
+							<th
+								class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">성별</th>
+							<th
+								class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">주소</th>
+							<th
+								class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">전화번호</th>
+							<th
+								class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">이메일</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="data:${stulist}">
+							<td th:text="${data.user_name}"></td>
+							<td th:text="${data.stu_id}"></td>
+							<td th:text="${data.user_dept}"></td>
+							<td th:text="${data.user_sex}"></td>
+							<td th:text="${data.user_addr}"></td>
+							<td th:text="${data.user_phone}"></td>
+							<td th:text="${data.user_email}"></td>
+						</tr>
+					</tbody>
+					<!-- 본문 end-->
+				</table>
 			</div>
-			<table id="letureTable" class="table align-items-center mb-0">
-				<thead>
-					<tr>
-						<th
-							class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">학생이름</th>
-						<th
-							class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">학번</th>
-						<th
-							class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">전공</th>
-						<th
-							class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">성별</th>
-						<th
-							class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">주소</th>
-						<th
-							class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">전화번호</th>
-						<th
-							class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">이메일</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr th:each="data:${stulist}">
-						<td th:text="${data.user_name}"></td>
-						<td th:text="${data.stu_id}"></td>
-						<td th:text="${data.user_dept}"></td>
-						<td th:text="${data.user_sex}"></td>
-						<td th:text="${data.user_addr}"></td>
-						<td th:text="${data.user_phone}"></td>
-						<td th:text="${data.user_email}"></td>
-					</tr>
-				</tbody>
-				<!-- 본문 end-->
-			</table>
 		</div>
 	</div>
 	<script>
-		$('#letureTable').DataTable({});
+		$('#studentInCharge').DataTable({
+			language : {
+				lengthMenu : "페이지 당: _MENU_",
+				search : "검색:",
+				searchPlaceholder : "키워드를 입력하세요",
+				zeroRecords : "검색결과가 없습니다",
+				info : "_START_ - _END_ (전체: _MAX_건)",
+				infoFiltered : "(검색결과: _TOTAL_건)",
+				infoEmpty : "",
+				paginate : {
+					previous : "<",
+	              next: ">",
+				}
+			}
+		});
 	</script>
 </th:block>
 </html>

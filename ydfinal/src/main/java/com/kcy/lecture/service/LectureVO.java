@@ -20,6 +20,7 @@ public class LectureVO {
 	private String courseType;
 	private double courseCredit;
 	private String courseTitle;
+	private String userName;
 	
 	
 	// 하경
