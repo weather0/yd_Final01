@@ -46,6 +46,7 @@ public class QuizVo {
 	private String uuid;
 	private String fileName;
 	private String contentType;
+	private String courseTitle;
 	
 	public QuizVo() {}
 	

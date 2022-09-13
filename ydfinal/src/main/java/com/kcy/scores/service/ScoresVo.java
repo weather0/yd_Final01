@@ -15,6 +15,7 @@ public class ScoresVo {
 	private int scoreMid;
 	private int scoreFinal;
 	private int total;
+	private int stuCtn;
 	
 	// k_gpa
 	private String gpaId;
@@ -22,10 +23,10 @@ public class ScoresVo {
 	private String gpaGrade;
 	
 	// k_gpa_standard
-	private int gpaStandardAttn;
-	private int gpaStandardQuiz;
-	private int gpaStandardMid;
-	private int gpaStandardFinal;
+	private Double gpaStandardAttn;
+	private Double gpaStandardQuiz;
+	private Double gpaStandardMid;
+	private Double gpaStandardFinal;
 	
 	// k_credit
 	private int creditTotal;

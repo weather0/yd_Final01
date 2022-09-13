@@ -147,7 +147,7 @@
 	
 		<!-- 담당교수 정보 불러오기 -->
 	<select id="profCheck" resultType="com.kcy.mentoring.counseling.vo.ApplyInfoVO" parameterType="String">
-		SELECT pr.prof_edu, pr.prof_career, pr.prof_paper, pr.prof_lab, us.user_id, us.user_name, us.user_sex, us.user_dept,  us.user_phone, us.user_email
+		SELECT pr.prof_edu, pr.prof_career, pr.prof_paper, pr.prof_lab, us.user_id, us.user_name, us.user_sex, us.user_dept,  us.user_phone, us.user_email, us.user_pic
 		FROM k_professors pr join k_users us
 		on us.user_id = pr.prof_id 
 		WHERE prof_id=(SELECT prof_id

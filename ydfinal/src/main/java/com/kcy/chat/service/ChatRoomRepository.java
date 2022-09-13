@@ -2,6 +2,7 @@ package com.kcy.chat.service;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,9 +44,10 @@ public class ChatRoomRepository {
     }
 
     //채팅방 생성
-    public ChatRoom createRoom(String name) {
-        ChatRoom chatRoom = ChatRoom.create(name);
+    public ChatRoom createRoom(String name , String profId) {
+        ChatRoom chatRoom = ChatRoom.create(name,profId);
         chatRooms.put(chatRoom.getRoomId(), chatRoom);
+       
         return chatRoom;
     }
 }

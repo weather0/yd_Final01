@@ -14,4 +14,7 @@ public interface ScoresMapper {
 	public List<ScoresVo> classScoreList(ScoresVo vo);
 	public List<ScoresVo> getClassSem(ScoresVo vo);
 	public void gpaPointInsert(ScoresVo vo);
+	public List<ScoresVo> scoresCtn(ScoresVo vo);
+	public void scoresAllInsert(List<ScoresVo> list);
+	public ScoresVo standardSelect(ScoresVo vo);
 }

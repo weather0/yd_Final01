@@ -28,6 +28,7 @@ public class NoticeVo {
 	private String uuid;
 	private String fileName;
 	private String contentType;
+	private String courseTitle;
 	
 	public NoticeVo() {}
 	
