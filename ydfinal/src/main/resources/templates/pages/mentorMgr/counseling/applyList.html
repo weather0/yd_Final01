@@ -192,7 +192,7 @@ td {
 							}
 
 							if (data.mtrStatus == 'ing') {
-								$(row).children('td:nth-child(6)').children().text('채팅생성').attr("onclick", `chat('${data.userName}','${data.stuId}');`);
+								$(row).children('td:nth-child(6)').children().text('채팅생성').attr("onclick", `chat('${data.userName}','${data.stuId}','${data.profId}');`);
 							}
 
 
@@ -457,20 +457,19 @@ td {
 		}
 
 		//채팅방 생성
-		function chat(name, id) {
+		function chat(name, id, profId) {
 			var nameId = name + "(" + id + ")";
-			console.log(nameId)
 
 			$.ajax({
 				url: "/chat/room",
 				type: "post",
-				data: { name: nameId },
+				data: { name: nameId,
+					profId : profId},
 				success: function (result) {
-					console.log('성공')
 					alert('생성 완료')
 				},
 				error: function (result) {
-					console.log(result);
+					alert('생성 실패')
 				}
 			});
 
