@@ -16,4 +16,5 @@ public interface ScoresMapper {
 	public void gpaPointInsert(ScoresVo vo);
 	public List<ScoresVo> scoresCtn(ScoresVo vo);
 	public void scoresAllInsert(List<ScoresVo> list);
+	public ScoresVo standardSelect(ScoresVo vo);
 }

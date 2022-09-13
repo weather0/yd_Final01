@@ -45,6 +45,11 @@
         <th:block th:each="data : ${count}">
          <input type="hidden" class="stuCtn" id="stuCtn" th:value="${data.stuCtn}" /> 
          </th:block>
+         
+         <input type="hidden" class="gpaStandardAttn" id="gpaStandardAttn" th:value="${standard.gpaStandardAttn}" />
+         <input type="hidden" class="gpaStandardQuiz" id="gpaStandardQuiz" th:value="${standard.gpaStandardQuiz}" />
+         <input type="hidden" class="gpaStandardMid" id="gpaStandardMid" th:value="${standard.gpaStandardMid}" />
+         <input type="hidden" class="gpaStandardFinal" id="gpaStandardFinal" th:value="${standard.gpaStandardFinal}" /> 
         <tbody>
                 	<th:block th:each="data, idx : ${memberlist}">
         	 <tr>
@@ -80,8 +85,16 @@ $(".scoreMid, .scoreFinal, .scoreQuiz, .scoreAttn").on("change input paste", fun
 	var scoreFinal = fnReplace(tr.find("#scoreFinal").val());
 	var scoreQuiz = fnReplace(tr.find("#scoreQuiz").val());
 	var scoreAttn = fnReplace(tr.find("#scoreAttn").val());
+	
+	var gpaStandardMid = $("#gpaStandardMid").val();
+	var gpaStandardFinal = $("#gpaStandardFinal").val();
+	var gpaStandardQuiz = $("#gpaStandardQuiz").val();
+	var gpaStandardAttn = $("#gpaStandardAttn").val();
+	
 	var grade = "";
-	var gpaPoint = tr.find("#gpaPoint").val((scoreMid + scoreFinal + scoreQuiz + scoreAttn) / 4);
+	var gpaPoint = tr.find("#gpaPoint").val(
+			((gpaStandardMid * scoreMid) + (gpaStandardFinal* scoreFinal) + (gpaStandardQuiz * scoreQuiz) + (gpaStandardAttn * scoreAttn))
+			);
 	var gpaGrade = tr.find("#gpaGrade").val(grade);
 	var point = parseInt(gpaPoint.val());
 	

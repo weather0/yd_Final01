@@ -5,7 +5,15 @@
 	layout:decorate="~{layouts/layout}">
 
 <th:block layout:fragment="content">
-<!-- 토스터 -->
+<style>
+	.input-group.input-group-static .form-control,
+.input-group.input-group-static .form-control:focus{
+background-image: linear-gradient(0deg, #4d5665 2px, rgba(156, 39, 176, 0) 0),
+linear-gradient(0deg, #d2d2d2 1px, rgba(209, 209, 209, 0) 0);
+}
+
+</style>
+	<!-- 토스터 -->
 	<link rel="stylesheet"
 		href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css"
 		integrity="sha512-3pIirOrwegjM6erE5gPSwkUzO+3cTjpnV9lexlNZqvupR64iZBnOOTiiLPb9M36zpMScbmUNIcHUqKD47M719g=="
@@ -17,35 +25,36 @@
 	<!-- 상단 내비바 -->
 	<th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
 
-
 	<!-- 본문 start -->
 	<div class="container-fluid">
-		<div class="row justify-content-center">
-			<div class="card p-3 me-3">
+	<div class="row justify-content-center">
+			<div class="card p-3 me-3 col-10">
 				<!-- 각 페이지 타이틀바 -->
 				<div class="card-header p-0 position-relative mt-n4 mb-4 z-index-2">
 					<div
 						class="bg-secondary bg-gradient-secondary shadow-secondary border-radius-lg py-3">
-						<h6 class="text-white ps-3 m-0">페이지명</h6>
+						<h6 class="text-white ps-3 m-0">수강신청</h6>
 					</div>
 				</div>
 				<div class="card-body px-0 pb-2">
-				<form action="openlectureSelect">
-								<select class="majorCk" name="majorName">
-									<option>전공선택</option>
-									<th:block th:each="major:${major}">
-										<option th:text="${major.majorName}"
-											th:value="${major.majorName}"></option>
-									</th:block>
-								</select> <input th:value="${#authentication.principal.username}"
-									type="hidden" id="userid" name="userId">
-								<button th:text="검색"></button>
-							</form>
-								<th:block th:each="geades:${gradesCk}">
-							<p th:text="|총 학점:${geades.courseCredit}|"/>
+					<form action="openlectureSelect">
+					<div class="input-group mb-1 input-group-static" id="test">
+						<select class="majorCk form-control mb-3" name="majorName" style="width: 50px">
+							<option>전공선택</option>
+							<th:block th:each="major:${major}">
+								<option th:text="${major.majorName}"
+									th:value="${major.majorName}"></option>
 							</th:block>
+						</select> <input th:value="${#authentication.principal.username}"
+							type="hidden" id="userid" name="userId">
+						<button th:text="검색" class="btn btn-outline-secondary"></button>
+						</div>
+					</form>
+					<th:block th:each="geades:${gradesCk}">
+						<p th:text="|총 학점:${geades.courseCredit}|" />
+					</th:block>
 					<div class="table-responsive p-0">
-						<table class="table align-items-center mb-0">
+						<table class="table align-items-center mb-0 table table-hover overflow-auto">
 							<thead>
 								<tr>
 									<th
@@ -65,7 +74,7 @@
 										th:text="교과목코드"></th>
 									<th
 										class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
-										th:text="이수전공"></th>
+										th:text="이수구분"></th>
 									<th
 										class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
 										th:text="학점"></th>
@@ -104,14 +113,12 @@
 												th:if="${geades.courseCredit} + ${data.courseCredit} <= 18">
 
 												<th:block th:if="${data.classCk} < ${data.classTo}">
-													<td><button
-															class="btn btn btn-secondary btn-sm btn1" th:text="신청"
-															th:data-class_id="${data.classId}"></button></td>
+													<td><button class="btn btn btn-secondary btn-sm btn1"
+															th:text="신청" th:data-class_id="${data.classId}"></button></td>
 												</th:block>
 
 												<th:block th:if="${data.classCk} >= ${data.classTo}">
-													<td><button
-															class="btn btn btn-secondary btn-sm btn1"
+													<td><button class="btn btn btn-secondary btn-sm btn1"
 															th:text="인원완료" disabled='disabled'
 															th:data-class_id="${data.classId}"></button></td>
 												</th:block>
@@ -139,19 +146,19 @@
 				</div>
 			</div>
 		</div>
+		
 		<br>
 		<div class="row justify-content-center">
-			<div class="card p-3 me-3">
+			<div class="card p-3 me-3 col-10">
 				<div class="card-header p-0 position-relative mt-n4 mb-4 z-index-2">
 					<div
 						class="bg-secondary bg-gradient-secondary shadow-secondary border-radius-lg py-3">
-						<h6 class="text-white ps-3 m-0">페이지명</h6>
+						<h6 class="text-white ps-3 m-0">수강신청완료</h6>
 					</div>
 				</div>
 				<div class="card-body px-0 pb-2">
 					<div class="table-responsive p-0">
-						<table
-							class="table align-items-center justify-content-center mb-0">
+						<table class="table align-items-center mb-0 table table-hover overflow-auto">
 							<thead>
 								<tr>
 									<th
@@ -162,25 +169,27 @@
 										th:text="전공"></th>
 									<th
 										class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
-										th:text="교수이름"></th>
+										th:text="교수"></th>
 									<th
 										class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
-										th:text="교과명"></th>
+										th:text="교과목"></th>
 									<th
 										class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
-										th:text="교과코드"></th>
+										th:text="교과목코드"></th>
 									<th
 										class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
 										th:text="이수구분"></th>
 									<th
 										class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
-										th:text="정원"></th>
-									<th
-										class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
 										th:text="학점"></th>
 									<th
 										class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+										th:text="학기"></th>
+									<th
+										class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
 										th:text="강의계획서"></th>
+									<th
+										class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"></th>
 								</tr>
 							</thead>
 							<tbody>
@@ -191,10 +200,10 @@
 									<td th:text="${data.course_title}"></td>
 									<td th:text="${data.course_id}"></td>
 									<td th:text="${data.course_type}"></td>
-									<td th:text="${data.class_to}"></td>
 									<td th:text="${data.course_credit}"></td>
+									<td th:text="|${data.class_sem}학기|"></td>
 									<td><a th:href="${'/download?classSyl='+data.class_syl}"
-										th:text="${data.class_syl}"></a></td>
+										th:text="${data.class_syl_original}"></a></td>
 									<td><button class="btn btn btn-secondary btn-sm enbtn"
 											th:text="삭제" th:data-en_class_id="${data.class_id}"></button></td>
 								</tr>
@@ -223,11 +232,12 @@
 					userId : id
 				},
 				success : function(data) {
-					toastr.success('신청완료','성공')
-					setTimeout("location.reload()",800);
+					toastr.success('신청완료', '성공')
+					setTimeout("location.reload()", 800);
 				},
 				error : function(error) {
-					toastr.error("신청실패","경고")
+					toastr.error("신청실패", "경고")
+					return false
 				}
 			});
 
@@ -242,11 +252,12 @@
 					classId : deletes
 				},
 				success : function(data) {
-					toastr.success('삭제완료','성공')
-					setTimeout("location.reload()",800);
+					toastr.success('삭제완료', '성공')
+					setTimeout("location.reload()", 800);
 				},
 				error : function(error) {
-					toastr.error('삭제실패','경고')
+					toastr.error('삭제실패', '경고')
+					return false
 				}
 			})
 		}
@@ -254,13 +265,14 @@
 		$(".btn2").on("click", CreditCk);
 
 		function CreditCk() {
-			toastr.error("18학점을 초과","경고")
+			toastr.error("18학점을 초과", "경고")
 		}
 
 		$(".btn3").on("click", majorCk);
 
 		function majorCk() {
-			toastr("전공에 맞게 신청하시오",'경고')
+			toastr.error("전공에 맞게 신청하시오", '경고')
+			return false
 		}
 	</script>
 	<!-- 본문 end-->

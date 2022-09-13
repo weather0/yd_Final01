@@ -21,6 +21,10 @@ public class LectureVO {
 	private double courseCredit;
 	private String courseTitle;
 	private String userName;
+	private String gpaStandardAttn;
+	private String gpaStandardQuiz;
+	private String gpaStandardMid;
+	private String gpaStandardFinal;
 	
 	
 	// 하경

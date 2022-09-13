@@ -27,13 +27,13 @@
      <select class="form-control" sec:authorize="hasRole('ROLE_STU')" name="classId">
 			<option>강좌 선택</option>
 		<th:block th:each="c : ${classId}">
-			<option th:text="${c.classId}" th:value="${c.classId}"></option>
+			<option th:text="${c.courseTitle}" th:value="${c.classId}"></option>
 		</th:block> 		
 	</select>
  	<select class="form-control" sec:authorize="hasRole('ROLE_PROF')" name="classId">
 			<option>강좌 선택</option>
 		<th:block th:each="c : ${profClassId}">
-			<option th:text="${c.classId}" th:value="${c.classId}"></option>
+			<option th:text="${c.courseTitle}" th:value="${c.classId}"></option>
 		</th:block> 		
 	</select>
 		<button type="submit" class="btn bg-gradient-primary" th:value="검색">검색</button>
