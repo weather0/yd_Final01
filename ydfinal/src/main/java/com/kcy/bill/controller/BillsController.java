@@ -21,6 +21,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.kcy.bill.service.AccountListVO;
 import com.kcy.bill.service.BillsService;
 import com.kcy.bill.service.BillsVO;
 import com.kcy.bill.service.MajorbVO;
@@ -174,6 +175,13 @@ public class BillsController {
 		vo.setStuId(principal.getName());
 		service.insertToken(vo);		
 		return "redirect:billCheck";
+	}
+	
+	@GetMapping("/accountList")
+	@ResponseBody 
+	public void accountList(AccountListVO vo) {
+	OpenBank.getAccountInfo(vo);
+	
 	}
 	
 

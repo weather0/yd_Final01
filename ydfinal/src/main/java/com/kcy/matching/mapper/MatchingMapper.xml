@@ -58,7 +58,7 @@
 	FROM k_professors p 
 	JOIN k_users u
 	ON p.prof_id = u.user_id
-	JOIN k_matching m
+	LEFT JOIN k_matching m
 	ON p.prof_id = m.prof_id 
 	GROUP BY prof_id 	
 	<![CDATA[HAVING mentee > 0]]>

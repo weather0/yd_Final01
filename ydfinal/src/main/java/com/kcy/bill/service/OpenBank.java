@@ -9,18 +9,20 @@ import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponents;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import com.google.gson.Gson;
 
@@ -28,10 +30,36 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class OpenBank {
-
-	private final HttpHeaders httpHeaders;
-	private final RestTemplate restTemplate;
-	private String base_url = "https://testapi.openbanking.or.kr/v2.0";
+	
+	public static void main(String[] args) {
+		//Map<String,Object> map = BankAPI.getBalanceInfo();
+		//Map<String,Object> map = BankAPI.getTransactionInfo();
+		//Map<String,Object> map = BankAPI.getInquiryInfo();
+		//System.out.println(map);
+		AccountListVO vo = new AccountListVO();
+		vo.setAccessToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiIxMTAxMDEyNDI2Iiwic2NvcGUiOlsiaW5xdWlyeSIsImxvZ2luIiwidHJhbnNmZXIiXSwiaXNzIjoiaHR0cHM6Ly93d3cub3BlbmJhbmtpbmcub3Iua3IiLCJleHAiOjE2NzAzODM3NzIsImp0aSI6IjUwZjk2OTBmLTVjNjctNDE5Mi04MTNjLWU1ZTJhYThmYmY1ZCJ9.GIm1pP-mHdOy53xgtyL2U2K2S3EVzpurB9dV5KmZN4Q");
+		vo.setFintechUseNum("12022017288894115890060");
+	}		
+	
+	String org_access_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiIxMTAxMDEyNDI2Iiwic2NvcGUiOlsiaW5xdWlyeSIsImxvZ2luIiwidHJhbnNmZXIiXSwiaXNzIjoiaHR0cHM6Ly93d3cub3BlbmJhbmtpbmcub3Iua3IiLCJleHAiOjE2NzAzODM3NzIsImp0aSI6IjUwZjk2OTBmLTVjNjctNDE5Mi04MTNjLWU1ZTJhYThmYmY1ZCJ9.GIm1pP-mHdOy53xgtyL2U2K2S3EVzpurB9dV5KmZN4Q";
+	
+	public static long seq = 20;
+	
+	public String getSequence() {
+		long t = System.nanoTime();
+		String result =String.valueOf(t);
+		result = result.substring(result.length()-9);
+		return result;
+	}
+	
+	public String getDate() {
+		String result = "";
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmss");
+		Date date = new Date();
+		result = sdf.format(date);
+		return result;
+	}
+	
 
 	// 사용자인증
 	public static String getAccessToken(String code) {
@@ -126,6 +154,27 @@ public class OpenBank {
 		return sb.toString();
 	}
 	
+	
+	public static Map<String,Object> getAccountInfo(AccountListVO vo){
+		String reqURL = "https://testapi.openbanking.or.kr/v2.0/account/list";
+		String param = "user_seq_no=" + "1101012426";
+		param +="&include_cancel_yn="+"Y";
+		param +="&sort_order="+ "D";
+
+		
+		HttpHeaders headers = new HttpHeaders();		
+		headers.set("Authorization","Bearer "+vo.getAccessToken());
+		
+        HttpEntity<MultiValueMap<String, String>> request = 
+        		new HttpEntity<MultiValueMap<String, String>>( null, headers);
+        
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<Map> response = restTemplate.exchange(	reqURL + "?" + param,
+				        									HttpMethod.GET,
+														    request,
+														    Map.class );
+        return response.getBody();
+	}
 	
 	// 출금이체
 	public static String getWithDraw(Map vo) {
