@@ -3,7 +3,7 @@ package com.kcy.bill.service;
 import lombok.Data;
 
 @Data
-public class AcocountListVO {
+public class AccountListVO {
 	private String accessToken;
 	private String userSeqNo;
 	private String includeCancelYn;
