@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+<th:block layout:fragment="content">
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css"/>  
+  <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
+  <!-- 상단 내비바 -->
+  <th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
+  <!-- 본문 start -->
+<div class="container-fluid py-4">
+    <div class="row"> 
+    
+<!--    <form name="searchform" autocomplete="off">
+   <input th:value="${#authentication.principal.username}" type="hidden" id="userid">
+    <select sec:authorize="hasRole('ROLE_PROF')" name="classId">
+         <option>강좌 선택123</option>
+      <th:block th:each="c : ${profClassId}">
+         <option th:text="${c.classId}" th:value="${c.classId}"></option>
+      </th:block>       
+   </select>
+      <button type="submit" th:value="검색">검색</button>
+   </form> -->
+   
+   <table id="noticeTable" class="table table-striped" style="width:100%;" >
+        <thead>
+            <tr>
+               <th>강좌 코드</th>
+               <th>교과목명</th>
+               <th>수강 인원</th>
+            </tr>
+        </thead>
+        <tbody>
+           <tr th:each="data : ${lecturelist}">
+              <td th:text="${data.classId}"></td>
+              <td>
+              <a th:text="${data.courseTitle}" th:href="@{/scoreinsert(classId=${data.classId})}"></a>
+              </td> 
+              <td th:text="|${data.classCk}/${data.classTo}|"></td>
+           </tr>
+        </tbody>
+  <!-- 본문 end-->
+   </table>
+   
+ </div>
+ </div>
+ <script>
+       $('#noticeTable').DataTable({});
+ </script>
+</th:block>
+</html>

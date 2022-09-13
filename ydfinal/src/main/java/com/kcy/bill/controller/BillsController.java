@@ -21,6 +21,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.kcy.bill.service.AccountListVO;
 import com.kcy.bill.service.BillsService;
 import com.kcy.bill.service.BillsVO;
 import com.kcy.bill.service.MajorbVO;
@@ -37,10 +38,11 @@ import com.kcy.bill.service.PayVO;
  */
 
 @Controller
-public class BillsController {
+public class BillsController {	
 	
 	@Autowired
-	BillsService service;	
+	BillsService service;
+	OpenBank bank;
 	
 	//등록금 고지 페이지 이동
 	@GetMapping("/billsInsert")
@@ -163,7 +165,7 @@ public class BillsController {
 		return "1";
 	}
 	
-	//개인 인증
+	//개인 인증 + 토큰 발급
 	@RequestMapping(value="/bankcallBack", produces = "application/json" )
 	public String bankCallback(@RequestParam Map map, String code, Principal principal, PayVO vo) throws JsonMappingException, JsonProcessingException {
 		System.out.println("callback===" + map);
@@ -175,7 +177,5 @@ public class BillsController {
 		service.insertToken(vo);		
 		return "redirect:billCheck";
 	}
-	
-
-	
+		
 }

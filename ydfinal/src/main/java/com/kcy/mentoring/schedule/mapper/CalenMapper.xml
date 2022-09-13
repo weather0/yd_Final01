@@ -9,7 +9,7 @@
 	</select>
 	
 	<select id="calendarSelect" resultType="com.kcy.mentoring.schedule.vo.scheduleVO" parameterType="com.kcy.mentoring.schedule.vo.scheduleVO">
-		SELECT mtr_sch_id, user_id, mtr_sch_date, mtr_sch_timecode
+		SELECT mtr_sch_id, user_id, mtr_sch_date, mtr_sch_timecode, check_code
 		FROM k_mentoring_schedule
 		WHERE mtr_sch_id= #{mtrSchId}
 	</select>

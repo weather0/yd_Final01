@@ -58,6 +58,8 @@ public class CalendarController {
 			hash.put("timecode", listAll.get(i).getMtrSchTimecode());
 			hash.put("timeStart", listAll.get(i).getMtrSchStart());
 			hash.put("timeEnd", listAll.get(i).getMtrSchEnd());
+			hash.put("chk", listAll.get(i).getCheckCode());
+			hash.put("title", listAll.get(i).getTitle());
 
 			jsonObj = new JSONObject(hash);
 			jsonArr.add(jsonObj);

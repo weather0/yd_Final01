@@ -26,11 +26,12 @@ th {
 	margin-right: 10%;
 	margin-top: 3%;
 }
+
 .toolbar div {
-	display : inline;
-	 justify-content: center;
-	 align-items: center;
-	 line-height: 42px;
+	display: inline;
+	justify-content: center;
+	align-items: center;
+	line-height: 42px;
 }
 
 td {
@@ -47,6 +48,7 @@ td {
 .page-link:focus {
 	box-shadow: 0 0 0 0.2rem rgb(123 128 154/ 25%);
 }
+
 </style>
 	<script>
 		jQuery(function ($) {
@@ -192,7 +194,7 @@ td {
 							}
 
 							if (data.mtrStatus == 'ing') {
-								$(row).children('td:nth-child(6)').children().text('채팅생성').attr("onclick", `chat('${data.userName}','${data.stuId}');`);
+								$(row).children('td:nth-child(6)').children().text('채팅생성').attr("onclick", `chat('${data.userName}','${data.stuId}','${data.profId}');`);
 							}
 
 
@@ -457,20 +459,19 @@ td {
 		}
 
 		//채팅방 생성
-		function chat(name, id) {
+		function chat(name, id, profId) {
 			var nameId = name + "(" + id + ")";
-			console.log(nameId)
 
 			$.ajax({
 				url: "/chat/room",
 				type: "post",
-				data: { name: nameId },
+				data: { name: nameId,
+					profId : profId},
 				success: function (result) {
-					console.log('성공')
 					alert('생성 완료')
 				},
 				error: function (result) {
-					console.log(result);
+					alert('생성 실패')
 				}
 			});
 
@@ -491,189 +492,205 @@ td {
 		<label class="control-label"> 구분:</label>
 		<div class="col-2 custom-control custom-radio custom-control-inline">
 			<input type="radio" id="customRadioInline" name="customRadioInline" class="fill custom-control-input form-control-sm" value="" checked> <label class="custom-control-label" for="customRadioInline">All</label>
-		</div>&nbsp;
+		</div>
+		&nbsp;
 		<div class="col-2 custom-control custom-radio custom-control-inline">
 			<input type="radio" id="customRadioInline1" name="customRadioInline" class="fill custom-control-input form-control-sm" value="상담필요"> <label class="custom-control-label" for="customRadioInline1">상담필요</label>
-		</div>&nbsp;
+		</div>
+		&nbsp;
 		<div class="col-2 custom-control custom-radio custom-control-inline">
 			<input type="radio" id="customRadioInline2" name="customRadioInline" class="fill custom-control-input form-control-sm" value="상담완료"> <label class="custom-control-label" for="customRadioInline2">상담완료</label>
-		</div>&nbsp;
+		</div>
+		&nbsp;
 		<div class="col-2 custom-control custom-radio custom-control-inline">
 			<input type="radio" id="customRadioInline3" name="customRadioInline" class="fill custom-control-input form-control-sm" value="일지작성필요"> <label class="custom-control-label" for="customRadioInline3">일지작성필요</label>
-		</div>&nbsp;
+		</div>
+		&nbsp;
 		<div class="col-2 custom-control custom-radio custom-control-inline">
 			<input type="radio" id="customRadioInline4" name="customRadioInline" class="fill custom-control-input form-control-sm" value="상담취소"> <label class="custom-control-label" for="customRadioInline4">상담취소</label>
 		</div>
 	</div>
-	<table id="foo-table" class="table table-bordered text-center align-items-center">
-		<thead>
-			<tr class="text-center">
-				<th>이름</th>
-				<th>회차</th>
-				<th>상담일자</th>
-				<th>상담시작시간</th>
-				<th>진행현황</th>
-				<th>진행현황(숫자)</th>
-				<th>상담일지</th>
-				<th>상담메모</th>
-				<th>검사결과</th>
-				<th>정보</th>
-				<th>신청취소</th>
-			</tr>
 
-		</thead>
-	</table>
-	<!-- 상담일지 상세보기 -->
-	<div id="journal-table" class="row align-items-center justify-content-center">
-		<div class="modal-content col-lg-5 mb-4">
-			<div class="modal-header">
-				<h4 class="modal-title" id="myModalLabel">상담일지</h4>
-			</div>
-			<div class="table-responsive border-radius-lg align-items-center">
-				<table class="table table-bordered text-center table text-center mb-0">
-					<tbody id="journalClone" div class="modal-body">
+	<div class="container-fluid ">
 
-					</tbody>
+		<div class="row justify-content-center" style="margin: 6px">
+			<div class="card py-3 col-10">
+				<div class="card-header p-0 position-relative mt-n4 mb-4 z-index-2">
+					<div class="bg-secondary bg-gradient-secondary shadow-secondary border-radius-lg py-3">
+						<h6 class="text-white ps-3 m-0">상담신청 이력관리</h6>
+					</div>
+				</div>
+				<table id="foo-table" class="table table-bordered text-center align-items-center">
+					<thead>
+						<tr class="text-center">
+							<th>이름</th>
+							<th>회차</th>
+							<th>상담일자</th>
+							<th>상담시작시간</th>
+							<th>진행현황</th>
+							<th>진행현황(숫자)</th>
+							<th>상담일지</th>
+							<th>상담메모</th>
+							<th>검사결과</th>
+							<th>정보</th>
+							<th>신청취소</th>
+						</tr>
+
+					</thead>
 				</table>
 			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn bg-gradient-secondary btn-sm" onclick="changeList()">목록</button>
-			</div>
 		</div>
-	</div>
-
-
-
-
-
-	<!-- 모달1 결과창 -->
-	<div class="modal fade" id="resultModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-		<div class="modal-dialog modal-lg" role="document">
-			<div class="modal-content">
+		<!-- 상담일지 상세보기 -->
+		<div id="journal-table" class="row align-items-center justify-content-center">
+			<div class="modal-content col-lg-5 mb-4">
 				<div class="modal-header">
-					<h4 class="modal-title" id="myModalLabel">진로 탐색 검사 결과</h4>
+					<h4 class="modal-title" id="myModalLabel">상담일지</h4>
 				</div>
-				<div class="modal-body">
-					<table class="table" style="word-wrap: break-word; word-break: break-all;">
-						<thead>
-							<th width="15%">번호</th>
-							<th width="35%" style="word-break: break-all">질문</th>
-							<th width="50%">응답</th>
-						</thead>
-						<tbody id="resultClone">
+				<div class="table-responsive border-radius-lg align-items-center">
+					<table class="table table-bordered text-center table text-center mb-0">
+						<tbody id="journalClone" div class="modal-body">
 
 						</tbody>
 					</table>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-default" onclick="modalClose();">닫기</button>
+					<button type="button" class="btn bg-gradient-secondary btn-sm" onclick="changeList()">목록</button>
 				</div>
 			</div>
 		</div>
-	</div>
 
-	<!-- 모달2 학생 정보를 보여주는 모달창 -->
-	<div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-		<div class="modal-dialog modal-lg" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h4 class="modal-title" id="myModalLabel">학생 정보</h4>
-				</div>
-				<div class="modal-body">
-					<table class="table">
-						<tbody id="infoClone" class="align-items-center">
 
-						</tbody>
-					</table>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-default" onclick="modalClose();">닫기</button>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- 모달3 취소 모달창 취소하는 이유와 함께 전송 -->
-	<div class="modal fade" id="cancelModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h4 class="modal-title" id="myModalLabel">진로 탐색 검사 결과</h4>
-				</div>
-				<form th:action="@{/applyCancel}" method="post">
-					<div class="modal-body align-items-center">
-						<div class="p-4">
-							<input type="hidden" name="matchingId">
-							<div class="input-group input-group-dynamic mb-4">
-								<label class="form-label">취소사유</label> <input type="text" class="form-control" name="mtrCancel">
-							</div>
-						</div>
+
+
+
+		<!-- 모달1 결과창 -->
+		<div class="modal fade" id="resultModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+			<div class="modal-dialog modal-lg" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title" id="myModalLabel">진로 탐색 검사 결과</h4>
 					</div>
-					<div class="modal-footer">
-						<button class="btn btn-default">전송</button>
-						<button type="button" class="btn btn-default" onclick="modalClose();">닫기</button>
-					</div>
-				</form>
-			</div>
-		</div>
-	</div>
-	<!-- 모달4 상담일지 작성 -->
-	<div class="modal fade" id="insertModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-		<div class="modal-dialog modal-lg" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h4 class="modal-title" id="myModalLabel">상담일지 작성</h4>
-				</div>
-				<form id="jInsert" th:action="@{/journalInsert}" method="post">
-					<!-- <form id="jInsert" action="#" > -->
 					<div class="modal-body">
-						<div class="p-4 align-items-center">
-							<input type="hidden" name="mtrId">
-							<div class="input-group input-group-dynamic mb-4">
-								<label class="form-label">거주상황</label> <input type="text" class="form-control" name="mtrHome">
-							</div>
-							<div class="input-group input-group-dynamic mb-4">
-								<label class="form-label">상담주제</label> <input type="text" class="form-control" name="mtrLogSubject">
-							</div>
-							<div class="input-group input-group-dynamic mb-4">
-								<label class="form-label">상담내용</label>
-								<textarea rows="12" class="form-control" name="mtrLogContent"></textarea>
-							</div>
-							<div class="input-group input-group-dynamic mb-4">
-								<label class="form-label">교수의견</label> <input type="text" class="form-control" name="mtrLogComment">
-							</div>
-						</div>
+						<table class="table" style="word-wrap: break-word; word-break: break-all;">
+							<thead>
+								<th width="15%">번호</th>
+								<th width="35%" style="word-break: break-all">질문</th>
+								<th width="50%">응답</th>
+							</thead>
+							<tbody id="resultClone">
+
+							</tbody>
+						</table>
 					</div>
 					<div class="modal-footer">
-						<button class="btn btn-default">전송</button>
 						<button type="button" class="btn btn-default" onclick="modalClose();">닫기</button>
 					</div>
-				</form>
+				</div>
 			</div>
 		</div>
-	</div>
 
-	<!-- 상담메모 상세보기 -->
-	<div class="modal fade" id="memoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h4 class="modal-title" id="myModalLabel">상담 메모</h4>
+		<!-- 모달2 학생 정보를 보여주는 모달창 -->
+		<div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-lg" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title" id="myModalLabel">학생 정보</h4>
+					</div>
+					<div class="modal-body">
+						<table class="table">
+							<tbody id="infoClone" class="align-items-center">
+
+							</tbody>
+						</table>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" onclick="modalClose();">닫기</button>
+					</div>
 				</div>
-
-				<div class="modal-body align-items-center">
-
-
-					<textarea id="memoTextArea" class="form-control bg-transparent" cols="90%" rows="10" readonly></textarea>
-
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-default" onclick="modalClose();">닫기</button>
-				</div>
-
 			</div>
 		</div>
-	</div>
+		<!-- 모달3 취소 모달창 취소하는 이유와 함께 전송 -->
+		<div class="modal fade" id="cancelModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title" id="myModalLabel">진로 탐색 검사 결과</h4>
+					</div>
+					<form th:action="@{/applyCancel}" method="post">
+						<div class="modal-body align-items-center">
+							<div class="p-4">
+								<input type="hidden" name="matchingId">
+								<div class="input-group input-group-dynamic mb-4">
+									<label class="form-label">취소사유</label> <input type="text" class="form-control" name="mtrCancel">
+								</div>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button class="btn btn-default">전송</button>
+							<button type="button" class="btn btn-default" onclick="modalClose();">닫기</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+		<!-- 모달4 상담일지 작성 -->
+		<div class="modal fade" id="insertModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-lg" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title" id="myModalLabel">상담일지 작성</h4>
+					</div>
+					<form id="jInsert" th:action="@{/journalInsert}" method="post">
+						<!-- <form id="jInsert" action="#" > -->
+						<div class="modal-body">
+							<div class="p-4 align-items-center">
+								<input type="hidden" name="mtrId">
+								<div class="input-group input-group-dynamic mb-4">
+									<label class="form-label">거주상황</label> <input type="text" class="form-control" name="mtrHome">
+								</div>
+								<div class="input-group input-group-dynamic mb-4">
+									<label class="form-label">상담주제</label> <input type="text" class="form-control" name="mtrLogSubject">
+								</div>
+								
+								<div class="form-floating input-group input-group-dynamic mb-4 align-items-center">
+									<textarea class="form-control" placeholder="Leave a comment here" name="mtrLogContent" id="mtrLogContent" style="height: 15vh"></textarea>
+									<label for="mtrLogContent">상담내용</label>
+								</div>
+								<div class="input-group input-group-dynamic mb-4">
+									<label class="form-label">교수의견</label> <input type="text" class="form-control" name="mtrLogComment">
+								</div>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button class="btn btn-default">전송</button>
+							<button type="button" class="btn btn-default" onclick="modalClose();">닫기</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
 
+		<!-- 상담메모 상세보기 -->
+		<div class="modal fade" id="memoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title" id="myModalLabel">상담 메모</h4>
+					</div>
+
+					<div class="modal-body align-items-center">
+
+
+						<textarea id="memoTextArea" class="form-control bg-transparent" cols="90%" rows="10" readonly></textarea>
+
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" onclick="modalClose();">닫기</button>
+					</div>
+
+				</div>
+			</div>
+		</div>
 </th:block>
 
 </html>

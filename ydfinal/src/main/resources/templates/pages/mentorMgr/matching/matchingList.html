@@ -11,9 +11,14 @@
 	border-color: #7b809a;
 }
 
-.page-link:focus {
+#page-link:focus {
 	box-shadow: 0 0 0 0.2rem rgb(123 128 154/ 25%);
 }
+
+/* div#radio.col-md-3 { */
+/* 	margin-left: -30px; */
+/* 	margin-right: -60px; */
+/* } */
 </style>
 
 	<!-- 상단 내비바 -->
@@ -21,8 +26,8 @@
 
 	<!-- 본문 start -->
 	<div class="container-fluid">
+      <div class="row justify-content-center">
 		<div class="card p-3 me-3">
-			<div class="row justify-content-center">
 
 				<!-- 각 페이지 타이틀바 -->
 				<div class="card-header p-0 position-relative mt-n4 mb-4 z-index-2">
@@ -55,19 +60,21 @@
 								</select>
 							</div>
 						</div>
-						<div class="col-md-2">
+						<div class="col-md-2" name="radio" id="radio">
 							<div class="input-group input-group-outline my-3">
-								<label class="form-label"></label> <select class="form-control"
-									name="matchingType" id="matchingType">
-									<option value="">매칭상태</option>
-									<option value="0">매칭중</option>
-									<option value="1">매칭해지</option>
-								</select>
+							<div class="form-check form-check-inline px-0 mx-4">
+								<input class="form-check-input" type="radio" name="matchingType" value="0">
+								<label class="custom-control-label fs-6 fw-bold mb-0">매칭중</label>
 							</div>
+							<div class="form-check form-check-inline px-0 mx-4">
+								<input class="form-check-input" type="radio" name="matchingType" value="1">
+								<label class="custom-control-label fs-6 fw-bold mb-0">매칭해지</label>
+							</div>
+							</div>							
 						</div>
 						<div class="col-md-2">
 							<div class="input-group input-group-outline my-3">
-								<button class="btn bg-gradient-primary">조회</button>
+								<button class="btn btn-secondary">조회</button>
 							</div>
 						</div>
 					</div>

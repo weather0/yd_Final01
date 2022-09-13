@@ -13,20 +13,20 @@
 		src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"
 		integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw=="
 		crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-		
+
 	<style>
-    .pagination .active .page-link {
-      background-color: #7b809a;
-      border-color: #7b809a;
-    }
-    
-    .page-link:focus {
-      box-shadow: 0 0 0 0.2rem rgb(123 128 154/ 25%);
-    }
+.pagination .active .page-link {
+	background-color: #7b809a;
+	border-color: #7b809a;
+}
+
+.page-link:focus {
+	box-shadow: 0 0 0 0.2rem rgb(123 128 154/ 25%);
+}
 </style>
 
-		
-		
+
+
 	<!-- 상단 내비바 -->
 	<th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
 	<!-- 본문 start -->
@@ -45,7 +45,7 @@
 					</div>
 				</div>
 
-				<table id="attendanceTable" class="table align-items-center mb-0">
+				<table id="attendanceTable" class="table align-items-center mb-0 ">
 					<thead>
 						<tr>
 							<th
@@ -83,9 +83,12 @@
 					</tbody>
 					<!-- 본문 end-->
 				</table>
-				<button id="attendanceInsert" th:text="입력" class="btn btn btn-secondary btn-sm"></button>
-				<a class="btn btn btn-secondary btn-sm movebtn"
-					th:text="돌아가기" th:href="@{/attendanceSelect}"></a>
+				<div class="d-grid gap-2 d-md-flex justify-content-md-end">
+					<button id="attendanceInsert" th:text="입력"
+						class="btn btn btn-secondary me-md-2"></button>
+					<a class="btn btn btn-secondary me-md-2 movebtn" th:text="돌아가기"
+						th:href="@{/attendanceSelect}"></a>
+				</div>
 			</div>
 		</div>
 	</div>

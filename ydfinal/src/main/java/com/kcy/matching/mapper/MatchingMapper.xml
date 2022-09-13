@@ -54,11 +54,11 @@
 		   u.user_name, 
 		   u.user_dept, 
 		   p.prof_lab, 
-		   p.prof_mentee - COUNT(CASE WHEN m.matching_type ='매칭중' THEN 1 END) AS mentee
+		   p.prof_mentee - COUNT(CASE WHEN m.matching_type ='0' THEN 1 END) AS mentee
 	FROM k_professors p 
 	JOIN k_users u
 	ON p.prof_id = u.user_id
-	JOIN k_matching m
+	LEFT JOIN k_matching m
 	ON p.prof_id = m.prof_id 
 	GROUP BY prof_id 	
 	<![CDATA[HAVING mentee > 0]]>
@@ -108,7 +108,7 @@
 		ON ku.user_id = s.student_prof  
 		JOIN k_users ku2 
 		ON ku2.user_id = c.matching_want
-		WHERE c.matching_change_yn = '0'
+		WHERE c.matching_change_yn = '0'		
 </select>
 
 <select id="changeProgress" resultType="com.kcy.matching.service.MatchingChangeVO">

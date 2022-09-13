@@ -10,256 +10,237 @@
 	<th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
 
 	<!-- 본문 start -->
-	<div class="container-fluid py-4">
-		<div class="row justify-content-center">
-			<div class="card p-3 me-3">
-				<div class="card-header p-0 position-relative mt-n4 mb-4 z-index-2">
-					<div
-						class="bg-secondary bg-gradient-secondary shadow-secondary border-radius-lg py-3">
-						<h6 class="text-white ps-3 m-0">등록금 고지서 확인</h6>
+	<div class="container-fluid">
+	  <div class="row justify-content-center">
+      	<div class="card p-3 me-3">
+		  <div class="card-header p-0 position-relative mt-n4 mb-4 z-index-2">
+		    <div class="bg-secondary bg-gradient-secondary shadow-secondary border-radius-lg py-3">
+		      <h6 class="text-white ps-3 m-0">등록금 고지서 확인</h6>
+		    </div>
+		  </div>	
+	<form action="billCheck">
+		<div class="row">
+			<div class="col-md-3">
+				<div class="input-group input-group-outline my-3">
+					<label class="form-label"></label> 
+					<input type="number" class="form-control" name="billYear" id="billYear">
+				</div>
+			</div>
+			<div class="col-md-3">
+				<div class="input-group input-group-outline my-3">
+					<label class="form-label"></label> 
+					<select class="form-control" name="billSem" id="billSem">						
+						<option value="1" th:selected="${payVO.billSem}=='1'">1학기</option>
+						<option value="2" th:selected="${payVO.billSem}=='2'">2학기</option>
+					</select>
+				</div>
+			</div>						
+			<div class="col-md-3">
+				<div class="input-group input-group-outline my-3">
+					<button class="btn bg-gradient-primary">조회</button>
+				</div>
+			</div>
+	</form>
+	
+	<th:block th:each="bill:${billCheck}">	
+	<h5>상세</h5>	
+	<div class="col-md-2" th:if="${!bill.payHType.toString().equals('b')}">
+		<div class="input-group input-group-outline my-3">
+			<label class="form-label"></label> 
+				<select class="form-control" name="payCount" id="payCount">
+					<option value="p0" th:selected="${payVO.payCount}=='p0'">전체조회</option>
+					<option value="p1" th:selected="${payVO.payCount}=='p1'">1회차</option>
+					<option value="p2" th:selected="${payVO.payCount}=='p2'">2회차</option>
+					<option value="p3" th:selected="${payVO.payCount}=='p3'" th:if="${bill.payHType.toString().equals('s1')}">3회차</option>
+					<option value="p4" th:selected="${payVO.payCount}=='p4'" th:if="${bill.payHType.toString().equals('s1')}">4회차</option>
+				</select>
+			</div>
+		</div>
+		
+		<div class="col-md-3" th:if="${!bill.payHType.toString().equals('b')}">
+			<div class="input-group input-group-outline my-3">
+				<button class="btn bg-gradient-primary">조회</button>
+			</div>
+		</div>
+		
+					<table class="table text-center mb-0" id="payList">
+						<tr>
+							<td class="table-secondary">년도</td>
+							<td th:text="${bill.billYear}"></td>
+							<td class="table-secondary">학기</td>
+							<td th:text="${bill.billSem}"></td>
+						</tr>
+						<tr>
+							<td class="table-secondary">학번</td>
+							<td th:text="${bill.userId}"></td>
+							<td class="table-secondary">이름</td>
+							<td th:text="${bill.userName}"></td>
+						</tr>
+						<tr>
+							<td class="table-secondary">학과</td>
+							<td th:text="${bill.userDept}"></td>
+							<td class="table-secondary">학년</td>
+							<td th:text="${bill.payHGrade}"></td>
+						</tr>
+						<tr hidden="">
+							<td th:text="${bill.payId}" name="payId" id="payId"></td>
+							<td th:text="${bill.studentToken}" name="token" id="token"></td>
+						</tr>
+						<span th:if="${bill.payHType.toString().equals('b')}">
+							<tr>
+								<td class="table-secondary">등록금 총액</td>
+								<td th:text="${bill.billAmount}" name="amt" id="amt"></td>
+								<td class="table-secondary">납부방식</td>
+								<td><span th:if="${bill.payHType.toString().equals('b')}">일괄납부</span>
+									<span th:if="${bill.payHType.toString().equals('s1')}">분할납부A</span>
+									<span th:if="${bill.payHType.toString().equals('s2')}">분할납부B</span>
+								</td>
+							</tr>
+						<tr>
+							<td class="table-secondary">납부기간</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td class="table-secondary">가상계좌</td>
+							<td th:text="${bill.payHAcc}"></td>
+						</tr>
+						</span>
+						
+						<span th:if="${bill.payHType.toString().equals('s1')}">
+							<tr>
+								<td class="table-secondary">등록금 총액</td>
+								<td th:text="${bill.billAmount}"></td>
+								<td class="table-secondary">납부방식</td>
+								<td><span th:if="${bill.payHType.toString().equals('b')}">일괄납부</span>
+									<span th:if="${bill.payHType.toString().equals('s1')}">분할납부A</span>
+									<span th:if="${bill.payHType.toString().equals('s2')}">분할납부B</span>
+								</td>
+							</tr>							
+							<tr th:if="${payVO.payCount == 'p1'} or ${payVO.payCount == 'p0'}">
+								<td class="table-secondary">1차 분납금액</td>
+								<td th:text="${bill.a}"></td>
+								<td class="table-secondary">납부기간</td>
+								<td></td>
+							</tr>
+							<tr th:if="${payVO.payCount == 'p2'} or ${payVO.payCount == 'p0'}">
+								<td class="table-secondary">2차 분납금액</td>
+								<td th:text="${bill.b}"></td>
+								<td class="table-secondary">납부기간</td>
+								<td></td>
+							</tr>
+							<tr th:if="${payVO.payCount == 'p3'} or ${payVO.payCount == 'p0'}">
+								<td class="table-secondary">3차 분납금액</td>
+								<td th:text="${bill.c}"></td>
+								<td class="table-secondary">납부기간</td>
+								<td></td>
+							</tr>
+							<tr th:if="${payVO.payCount == 'p4'} or ${payVO.payCount == 'p0'}">
+								<td class="table-secondary">4차 분납금액</td>
+								<td th:text="${bill.d}"></td>
+								<td class="table-secondary">납부기간</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td class="table-secondary">가상계좌</td>
+								<td th:text="${bill.payHAcc}"></td>
+							</tr>
+						</span>
+						
+						<span th:if="${bill.payHType.toString().equals('s2')}">
+							<tr>
+								<td class="table-secondary">등록금 총액</td>
+								<td th:text="${bill.billAmount}"></td>
+								<td class="table-secondary">납부방식</td>
+								<td><span th:if="${bill.payHType.toString().equals('b')}">일괄납부</span>
+									<span th:if="${bill.payHType.toString().equals('s1')}">분할납부A</span>
+									<span th:if="${bill.payHType.toString().equals('s2')}">분할납부B</span>
+								</td>
+							</tr>
+							<tr th:if="${payVO.payCount == 'p1'} or ${payVO.payCount == 'p0'}">
+								<td class="table-secondary">1차 분납금액</td>
+								<td th:text="${bill.a}">></td>
+								<td class="table-secondary">납부기간</td>
+								<td></td>
+							</tr>
+							<tr th:if="${payVO.payCount == 'p2'} or ${payVO.payCount == 'p0'}">
+								<td class="table-secondary">2차 분납금액</td>
+								<td th:text="${bill.b}">></td>
+								<td class="table-secondary">납부기간</td>
+								<td></td>
+							</tr>
+						<tr>
+							<td class="table-secondary">가상계좌</td>
+							<td th:text="${bill.payHAcc}"></td>
+						</tr>
+						</span>
+					</table>
+		
+
+		<span th:if="${bill.payHType.toString().equals('b')}">
+			<div class="col-md-3">
+				<div class="input-group input-group-outline my-3">
+					<button type="button" class="btn btn-primary change"
+						data-bs-toggle="modal" data-bs-target="#change"
+						data-bs-whatever="NO">분할 납부 신청</button>
+				</div>
+			</div>
+		</span>
+		
+		<div class="col-md-3">
+			<div class="input-group input-group-outline my-3">
+				<button type="button" class="btn btn-primary change" id="bankAuth" name="bankAuth">사용자 인증</a>
+			</div>
+		</div>	
+		
+		<form id="acount" method="get" action="/acount/list">
+			<input type="hidden" id="accessToken" name="accessToken" th:value="${bill.studentToken}" value=""></input>
+    		<input type="hidden" id="userSeqNo" name="userSeqNo" value="1101012426"></input>
+		    <input type="hidden" id="includeCancelYn" name="includeCancelYn" value="N"></input>
+    		<input type="hidden" id="sortOrder" name="sortOrder" value="D"></input>
+				<div class="col-md-3">
+						<button type="button" class="btn btn-primary" id="payIn" name="payIn">계좌</a>				
+				</div>
+		</form>		
+		
+		<span th:if="${!bill.payHType.toString().equals('b')}">		
+			<div class="col-md-3">
+				<div class="input-group input-group-outline my-3">
+					<button class="btn bg-gradient-primary cancel">분할 납부 취소</button>
+				</div>
+			</div>
+		</span>
+		 
+		
+
+		<div class="modal fade" id="change" tabindex="-1"
+			aria-labelledby="changeLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="changeLabel">납부 방식 선택</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal"
+							aria-label="Close"></button>
+					</div>
+					<div class="modal-body">					
+					<p style="color: red;">(변경기간 마감 이후, 추가 변경 및 취소 불가)</p>
+						<form action="payChange">
+							<div class="mb-3">
+								<select class="form-control" name="payHType" id="payHType">
+									<option value="s1">분할납부A (4회 분할 납부)</option>
+									<option value="s2">분할납부B (2회 분할 납부)</option>
+								</select>
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary"
+							data-bs-dismiss="modal">닫기</button>
+						<button type="button" class="btn btn-primary on">변경</button>
 					</div>
 				</div>
-				<form action="billCheck">
-					<div class="row">
-						<div class="col-md-3">
-							<div class="input-group input-group-outline my-3">
-								<label class="form-label"></label> <input type="number"
-									class="form-control" name="billYear" id="billYear">
-							</div>
-						</div>
-						<div class="col-md-3">
-							<div class="input-group input-group-outline my-3">
-								<label class="form-label"></label> <select class="form-control"
-									name="billSem" id="billSem">
-									<option value="1" th:selected="${payVO.billSem}=='1'">1학기</option>
-									<option value="2" th:selected="${payVO.billSem}=='2'">2학기</option>
-								</select>
-							</div>
-						</div>
-						<div class="col-md-3">
-							<div class="input-group input-group-outline my-3">
-								<button class="btn bg-gradient-primary">조회</button>
-							</div>
-						</div>
-					</div>
-				</form>
-
-
-				<th:block th:each="bill:${billCheck}">
-					<div class="row">
-						<div class="col-md-2"
-							th:if="${!bill.payHType.toString().equals('b')}">
-							<div class="input-group input-group-outline my-3">
-								<label class="form-label"></label> <select class="form-control"
-									name="payCount" id="payCount">
-									<option value="p0" th:selected="${payVO.payCount}=='p0'">전체조회</option>
-									<option value="p1" th:selected="${payVO.payCount}=='p1'">1회차</option>
-									<option value="p2" th:selected="${payVO.payCount}=='p2'">2회차</option>
-									<option value="p3" th:selected="${payVO.payCount}=='p3'"
-										th:if="${bill.payHType.toString().equals('s1')}">3회차</option>
-									<option value="p4" th:selected="${payVO.payCount}=='p4'"
-										th:if="${bill.payHType.toString().equals('s1')}">4회차</option>
-								</select>
-							</div>
-						</div>
-
-						<div class="col-md-3"
-							th:if="${!bill.payHType.toString().equals('b')}">
-							<div class="input-group input-group-outline my-3">
-								<button class="btn bg-gradient-primary">조회</button>
-							</div>
-						</div>
-					</div>
-
-
-					<div class="row justify-content-center">
-						<div class="table-responsive">
-							<table class="table text-center mb-0" id="payList">
-								<tr>
-									<td class="table-secondary">년도</td>
-									<td th:text="${bill.billYear}"></td>
-									<td class="table-secondary">학기</td>
-									<td th:text="${bill.billSem}"></td>
-								</tr>
-								<tr>
-									<td class="table-secondary">학번</td>
-									<td th:text="${bill.userId}"></td>
-									<td class="table-secondary">이름</td>
-									<td th:text="${bill.userName}"></td>
-								</tr>
-								<tr>
-									<td class="table-secondary">학과</td>
-									<td th:text="${bill.userDept}"></td>
-									<td class="table-secondary">학년</td>
-									<td th:text="${bill.payHGrade}"></td>
-								</tr>
-								<tr hidden="">
-									<td th:text="${bill.payId}" name="payId" id="payId"></td>
-									<td th:text="${bill.studentToken}" name="token" id="token"></td>
-								</tr>
-								<span th:if="${bill.payHType.toString().equals('b')}">
-									<tr>
-										<td class="table-secondary">등록금 총액</td>
-										<td th:text="${bill.billAmount}" name="amt" id="amt"></td>
-										<td class="table-secondary">납부방식</td>
-										<td><span th:if="${bill.payHType.toString().equals('b')}">일괄납부</span>
-											<span th:if="${bill.payHType.toString().equals('s1')}">분할납부A</span>
-											<span th:if="${bill.payHType.toString().equals('s2')}">분할납부B</span>
-										</td>
-									</tr>
-									<tr>
-										<td class="table-secondary">납부기간</td>
-										<td></td>
-									</tr>
-									<tr>
-										<td class="table-secondary">가상계좌</td>
-										<td th:text="${bill.payHAcc}"></td>
-									</tr>
-								</span>
-
-								<span th:if="${bill.payHType.toString().equals('s1')}">
-									<tr>
-										<td class="table-secondary">등록금 총액</td>
-										<td th:text="${bill.billAmount}"></td>
-										<td class="table-secondary">납부방식</td>
-										<td><span th:if="${bill.payHType.toString().equals('b')}">일괄납부</span>
-											<span th:if="${bill.payHType.toString().equals('s1')}">분할납부A</span>
-											<span th:if="${bill.payHType.toString().equals('s2')}">분할납부B</span>
-										</td>
-									</tr>
-									<tr
-										th:if="${payVO.payCount == 'p1'} or ${payVO.payCount == 'p0'}">
-										<td class="table-secondary">1차 분납금액</td>
-										<td th:text="${bill.a}"></td>
-										<td class="table-secondary">납부기간</td>
-										<td></td>
-									</tr>
-									<tr
-										th:if="${payVO.payCount == 'p2'} or ${payVO.payCount == 'p0'}">
-										<td class="table-secondary">2차 분납금액</td>
-										<td th:text="${bill.b}"></td>
-										<td class="table-secondary">납부기간</td>
-										<td></td>
-									</tr>
-									<tr
-										th:if="${payVO.payCount == 'p3'} or ${payVO.payCount == 'p0'}">
-										<td class="table-secondary">3차 분납금액</td>
-										<td th:text="${bill.c}"></td>
-										<td class="table-secondary">납부기간</td>
-										<td></td>
-									</tr>
-									<tr
-										th:if="${payVO.payCount == 'p4'} or ${payVO.payCount == 'p0'}">
-										<td class="table-secondary">4차 분납금액</td>
-										<td th:text="${bill.d}"></td>
-										<td class="table-secondary">납부기간</td>
-										<td></td>
-									</tr>
-									<tr>
-										<td class="table-secondary">가상계좌</td>
-										<td th:text="${bill.payHAcc}"></td>
-									</tr>
-								</span>
-
-								<span th:if="${bill.payHType.toString().equals('s2')}">
-									<tr>
-										<td class="table-secondary">등록금 총액</td>
-										<td th:text="${bill.billAmount}"></td>
-										<td class="table-secondary">납부방식</td>
-										<td><span th:if="${bill.payHType.toString().equals('b')}">일괄납부</span>
-											<span th:if="${bill.payHType.toString().equals('s1')}">분할납부A</span>
-											<span th:if="${bill.payHType.toString().equals('s2')}">분할납부B</span>
-										</td>
-									</tr>
-									<tr
-										th:if="${payVO.payCount == 'p1'} or ${payVO.payCount == 'p0'}">
-										<td class="table-secondary">1차 분납금액</td>
-										<td th:text="${bill.a}">></td>
-										<td class="table-secondary">납부기간</td>
-										<td></td>
-									</tr>
-									<tr
-										th:if="${payVO.payCount == 'p2'} or ${payVO.payCount == 'p0'}">
-										<td class="table-secondary">2차 분납금액</td>
-										<td th:text="${bill.b}">></td>
-										<td class="table-secondary">납부기간</td>
-										<td></td>
-									</tr>
-									<tr>
-										<td class="table-secondary">가상계좌</td>
-										<td th:text="${bill.payHAcc}"></td>
-									</tr>
-								</span>
-							</table>
-						</div>
-
-					</div>
-
-					<div class="row">
-						<span th:if="${bill.payHType.toString().equals('b')}">
-							<div class="col-md-3">
-								<div class="input-group input-group-outline my-3">
-									<button type="button" class="btn btn-primary change"
-										data-bs-toggle="modal" data-bs-target="#change"
-										data-bs-whatever="NO">분할 납부 신청</button>
-								</div>
-							</div>
-						</span>
-
-						<div class="col-md-3">
-							<div class="input-group input-group-outline my-3">
-								<button type="button" class="btn btn-primary change"
-									id="bankAuth" name="bankAuth">사용자 인증</button>
-							</div>
-						</div>
-
-						<div class="col-md-3">
-							<div class="input-group input-group-outline my-3">
-								<button type="button" class="btn btn-primary change" id="payIn"
-									name="payIn">납부</button>
-							</div>
-						</div>
-
-						<span th:if="${!bill.payHType.toString().equals('b')}">
-							<div class="col-md-3">
-								<div class="input-group input-group-outline my-3">
-									<button class="btn bg-gradient-primary cancel">분할 납부
-										취소</button>
-								</div>
-							</div>
-						</span>
-					</div>
-
-					<div class="modal fade" id="change" tabindex="-1"
-						aria-labelledby="changeLabel" aria-hidden="true">
-						<div class="modal-dialog">
-							<div class="modal-content">
-								<div class="modal-header">
-									<h5 class="modal-title" id="changeLabel">납부 방식 선택</h5>
-									<button type="button" class="btn-close" data-bs-dismiss="modal"
-										aria-label="Close"></button>
-								</div>
-								<div class="modal-body">
-									<p style="color: red;">(변경기간 마감 이후, 추가 변경 및 취소 불가)</p>
-									<form action="payChange">
-										<div class="mb-3">
-											<select class="form-control" name="payHType" id="payHType">
-												<option value="s1">분할납부A (4회 분할 납부)</option>
-												<option value="s2">분할납부B (2회 분할 납부)</option>
-											</select>
-										</div>
-									</form>
-								</div>
-								<div class="modal-footer">
-									<button type="button" class="btn btn-secondary"
-										data-bs-dismiss="modal">닫기</button>
-									<button type="button" class="btn btn-primary on">변경</button>
-								</div>
-							</div>
-						</div>
-					</div>
-				</th:block>
-
+			</div>
+		</div>
+	</th:block>
 				<script>
 					let date = new Date();
 					let year = document.getElementById("billYear");
@@ -319,45 +300,28 @@
 												});
 									});
 
-					$("#bankAuth")
-							.click(
-									function() {
-										var tmpWindow = window
-												.open('about:blank')
-										tmpWindow.location = "https://testapi.openbanking.or.kr/oauth/2.0/authorize?"
-												+ "response_type=code&"
-												+ "client_id=482b4dac-6f12-4754-bbb4-e1b2e41dfe6f&"
-												+ "client_secret=1dc26f9a-2573-4252-8e64-f81999d9d117&"
-												+ "redirect_uri=http://localhost/bankcallBack&"
-												+ "auth_type=0&"
-												+ "scope=login%20inquiry%20transfer&"
-												+ "state=12345678901234567890123456789012"
-
-									});
-
-					$("#payIn")
-							.click(
-									function() {
-										var tk = document
-												.getElementById("token").innerHTML;
-										$
-												.ajax({
-													type : "GET",
-													url : "https://testapi.openbanking.or.kr/v2.0/account/list?"
-															+ "user_seq_no=1101012426&"
-															+ "include_cancel_yn=Y&"
-															+ "sort_order=D",
-													beforeSend : function(xhr) {
-														xhr
-																.setRequestHeader(
-																		'Authorization',
-																		'Bearer'
-																				+ tk);
-													},
-
-												});
-
-									});
+					$("#bankAuth").click(function() {
+						var tmpWindow = window.open('about:blank')
+						tmpWindow.location = "https://testapi.openbanking.or.kr/oauth/2.0/authorize?"
+						+ "response_type=code&"
+						+ "client_id=482b4dac-6f12-4754-bbb4-e1b2e41dfe6f&"
+						+ "client_secret=1dc26f9a-2573-4252-8e64-f81999d9d117&"
+						+ "redirect_uri=http://localhost/bankcallBack&"
+						+ "auth_type=0&"
+						+ "scope=login%20inquiry%20transfer&"
+						+ "state=12345678901234567890123456789012"
+						});
+					
+//  					$("#payIn").click(function() {
+//  						var tk = document.getElementById("token").innerHTML; 						
+//  						$.ajax({
+//  							type : "GET",
+//  							url : "/accountList",
+//  							data : {
+//  								accessToken : tk
+//  							}
+// 							});
+//  						});
 				</script>
 
 				<!-- 본문 end-->
