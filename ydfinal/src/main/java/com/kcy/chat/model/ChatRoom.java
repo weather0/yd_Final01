@@ -13,14 +13,15 @@ public class ChatRoom {
 
     private String roomId;
     private String roomName;
+    private String profId;
     
 
 
-    public static ChatRoom create(String name) {
+    public static ChatRoom create(String name , String profId) {
         ChatRoom room = new ChatRoom();
-        room.roomId = UUID.randomUUID().toString();
+        room.roomId = name;
         room.roomName = name;
-        System.out.println(name);
+        room.profId = profId;
         return room;
     }
 }

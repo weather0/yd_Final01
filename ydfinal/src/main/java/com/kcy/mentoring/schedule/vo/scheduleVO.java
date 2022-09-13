@@ -18,6 +18,9 @@ public class scheduleVO {
 	private String mtrSchTimecode;
 	private String mtrSchStart;
 	private String mtrSchEnd;
+	private String checkCode ;
+	private String title ;
+	
 	
 
 }
