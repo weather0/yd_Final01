@@ -203,4 +203,16 @@
                kcm.class_id = #{classId} 
 	</select>
 	
+	<select id="standardSelect" resultType="com.kcy.scores.service.ScoresVo">
+		SELECT
+				TRUNCATE((gpa_standard_attn / 100), 2) as gpa_standard_attn, 
+				TRUNCATE((gpa_standard_quiz / 100), 2) as gpa_standard_quiz, 
+				TRUNCATE((gpa_standard_mid / 100), 2) as gpa_standard_mid, 
+				TRUNCATE((gpa_standard_final / 100), 2) as gpa_standard_final
+		FROM
+				k_gpa_standard
+		WHERE
+				class_id = #{classId}
+	</select>
+	
 </mapper>

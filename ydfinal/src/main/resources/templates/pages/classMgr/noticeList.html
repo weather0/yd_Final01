@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+<th:block layout:fragment="content">
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css"/>  
+  <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
+  <!-- 상단 내비바 -->
+  <th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
+  <!-- 본문 start -->
+<div class="container-fluid py-4">
+       <div class="row justify-content-center">
+      <div class="card p-3 me-3">
+      
+        <!-- 각 페이지 타이틀바 -->
+        <div class="card-header p-0 position-relative mt-n4 mb-4 z-index-2">
+          <div class="bg-secondary bg-gradient-secondary shadow-secondary border-radius-lg py-3">
+            <h6 class="text-white ps-3 m-0">공지 및 자료 게시판</h6>
+          </div>
+        </div>
+        
+   <form name="searchform" autocomplete="off">
+   <input th:value="${#authentication.principal.username}" type="hidden" id="userid">
+     <select class="form-control" sec:authorize="hasRole('ROLE_STU')" name="classId">
+         <option value="">강좌 선택</option>
+      <th:block th:each="c : ${classId}">
+         <option th:text="${c.courseTitle}" th:value="${c.classId}"></option>
+      </th:block>       
+   </select>
+    <select class="form-control" sec:authorize="hasRole('ROLE_PROF')" name="classId">
+         <option value="">강좌 선택</option>
+      <th:block th:each="c : ${profClassId}">
+         <option th:text="${c.courseTitle}" th:value="${c.classId}"></option>
+      </th:block>       
+   </select>
+   <select class="form-control" name="classNoticeType">
+   	<option value="">구분</option>
+   	<option value="notice">공지</option>
+   	<option value="noticedata">자료</option>
+   </select>
+      <button type="submit" class="btn bg-gradient-primary" th:value="검색">검색</button>
+   </form>
+   
+   <table id="noticeTable" class="table table-striped" style="width:100%;" >
+        <thead>
+            <tr>
+               <th>No.</th>
+               <th>전공</th>
+               <th>자료구분</th>
+               <th>제목</th>
+                <th>작성자</th>
+                <th>등록일</th>
+            </tr>
+        </thead>
+        <tbody>
+           <tr th:each="data : ${noticeList}">
+              <td th:text="${data.class_notice_no}"></td>
+              <td th:text="${data.class_id}"></td>
+              <td th:text="${data.class_notice_type}"></td>
+              <td>
+              <a th:text="${data.class_notice_title}" th:href="@{/noticeview(classNoticeNo=${data.class_notice_no})}"></a>
+              </td> 
+              <td th:text="${data.user_name}"></td>
+              <td th:text="${data.class_notice_date}"></td>
+           </tr>
+        </tbody>
+  <!-- 본문 end-->
+   </table>
+   
+ </div>
+ </div>
+ </div>
+ <script>
+       $('#noticeTable').DataTable({});
+ </script>
+</th:block>
+</html>

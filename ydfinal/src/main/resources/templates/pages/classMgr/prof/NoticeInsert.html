@@ -24,9 +24,9 @@
  	<div class="input-group input-group-static mb-4">
  	
  	<select class="form-control" name="classId">
-			<option>강좌 선택123</option>
+			<option>강좌 선택</option>
 		<th:block th:each="c : ${profClassId}">
-			<option th:text="${c.classId}" th:value="${c.classId}"></option>
+			<option th:text="${c.courseTitle}" th:value="${c.classId}"></option>
 		</th:block> 		
 	</select>
   
@@ -53,7 +53,7 @@
     </div>
 
     
-    <button class="btn bg-gradient-primary">신청하기</button>
+    <button class="btn bg-gradient-primary">등록</button>
 </form>
     
   <!-- 본문 end-->

@@ -103,21 +103,33 @@
 	
 		<!-- 강좌 코드 -->
 	<select id="getClassId" resultType="com.kcy.notice.service.NoticeVo">
-		SELECT
-			class_id
+       SELECT
+			c.class_id, co.course_title, cm.class_member_id
 		FROM
-			k_class_member
+			k_class_member as cm
+        join
+            k_class as c
+        on
+            c.class_id = cm.class_id
+        join
+            k_course as co
+        on
+            co.course_id = c.course_id
 		WHERE
-			stu_id = #{userId}
+			cm.stu_id = #{userId}
 	</select>
 	
 	<select id="getClassIdProf" resultType="com.kcy.quiz.service.QuizVo">
-		SELECT
-			class_id
+        SELECT
+			c.class_id, co.course_title
 		FROM
-			k_class
-		WHERE
-			prof_id = #{userId}
+            k_class as c
+        join
+            k_course as co
+        on
+            co.course_id = c.course_id
+        where
+			c.prof_id = #{userId}
 	</select>
 	
 </mapper>
