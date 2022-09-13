@@ -14,12 +14,14 @@ public class ApplyInfoVO {
 	private String userAddr;
 	private String userPhone;
 	private String userNation;
+	private String userPic;
 	
 	private String studentGrade;
 	private String studentSem;
 	private String studentAcaYn;
 	private String studentProf;
 	
+	private String profField;
 	private String profEdu;
 	private String profCareer;
 	private String profPaper;
