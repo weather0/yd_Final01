@@ -128,7 +128,7 @@ public class LectureController {
 
 		lectureService.lectureInsert(vo);
 
-		return "redirect:lecturelist";
+		return "redirect:lectureinsert";
 	}
 
 	// 첨부파일 다운로드 처리하는 부분

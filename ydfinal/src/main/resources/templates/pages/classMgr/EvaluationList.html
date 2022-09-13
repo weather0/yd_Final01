@@ -20,19 +20,15 @@
   
 <div class="container-fluid">
    <div class="row justify-content-center">
-      <div class="card p-3 me-3">
-      
+      <div class="card p-3 me-3 col-10">
         <!-- 각 페이지 타이틀바 -->
         <div class="card-header p-0 position-relative mt-n4 mb-4 z-index-2">
           <div class="bg-secondary bg-gradient-secondary shadow-secondary border-radius-lg py-3">
-            <h6 class="text-white ps-3 m-0">교직원 평가</h6>
-			</div>
+            <h6 class="text-white ps-3 m-0">페이지명</h6>
               <input  th:value="${#authentication.principal.username}" type="hidden" id="userid">
-            </div>
           </div>
-          <div class="card-body px-0 pb-2">
-            <div class="table-responsive p-0">
-              <table class="table align-items-center mb-0" style="text-align: center;">
+        </div>
+              <table class="table align-items-center mb-0 " style="text-align: center;">
         <thead>
             <tr>
             	<th>문항</th>
@@ -57,10 +53,11 @@
         <input type="hidden" th:value="${classId}" class="cid">
         	<input type="hidden" th:value="${ck.class_member_id}" id="cmid">
         <input  th:value="${#authentication.principal.username}" type="hidden" id="userid">
-        <button class="btn btn btn-secondary btn-sm" id="btn"  th:text="제출하기"></button>
-            </div>
-          </div>
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+        <button class="btn btn btn-secondary me-md-2" id="btn"  th:text="제출하기"></button>
         </div>
+        </div>
+      </div>
       </div>
 <script>
 	

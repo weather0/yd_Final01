@@ -11,8 +11,10 @@
 			c.course_id, 
 			i.course_type, 
 			c.class_to, 
+			c.class_sem,
 			i.course_credit, 
-			c.class_syl
+			c.class_syl,
+			c.class_syl_original
 			
 	from k_class  as c 
 	 join k_class_member  as m  on c.class_id = m.class_id

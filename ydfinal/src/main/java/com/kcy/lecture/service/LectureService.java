@@ -7,6 +7,8 @@ public interface LectureService {
 	
 	public void lectureInsert(LectureVO vo);
 	
+	public void gpaStandardInsert(LectureVO vo);
+	
 	public List<LectureVO> lectureList(LectureVO vo);
 	
 	public void lectureUpdate(LectureVO vo);

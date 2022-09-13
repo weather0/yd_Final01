@@ -3,6 +3,11 @@
 <mapper namespace="com.kcy.lecture.mapper.LectureMapper">
 
 		<insert id="lectureInsert">
+		<selectKey order="BEFORE" keyProperty="classId" resultType="String">
+			select CONCAT("CL",NEXTVAL(class_no_seq))
+		</selectKey>
+		
+		
 			insert into k_class_reg(
 				  class_id,
 				  course_id,
@@ -16,7 +21,7 @@
 			      class_syl_original
 			      )
 			values(
-				   CONCAT("CL",NEXTVAL(class_no_seq)),
+				   #{classId},
 				   #{courseId},
 				   #{profId},
 				   #{classTo},
@@ -30,7 +35,24 @@
 		
 		</insert>
 		
+		<insert id="gpaStandardInsert">
+			insert into 
+					k_gpa_standard (
+						gpa_standard_attn, 
+						gpa_standard_quiz, 
+						gpa_standard_mid, 
+						gpa_standard_final, 
+						class_id
+					)
+					values (
+						#{gpaStandardAttn},
+						#{gpaStandardQuiz},
+						#{gpaStandardMid},
+						#{gpaStandardFinal},
+						#{classId}
+					);
 		
+		</insert>
 		
 		<select id="lectureList" resultType="com.kcy.lecture.service.LectureVO">
 		select 
@@ -92,7 +114,8 @@
 			       CONCAT(c.class_sem,'학기') as classSem,
 			       c.class_to, 
 			       c.class_ck, 
-			       c.class_syl
+			       c.class_syl,
+			       c.class_syl_original
 			       
 			  from k_class  as c 
 			  join k_course as co  on c.course_id  = co.course_id 
