@@ -44,6 +44,14 @@
 .btn-dark {
 	width: 63.16px;
 }
+.custom-control-label {
+	font-size : 1.2em;
+}
+
+.form-check {
+	align-items:center;
+}
+
 </style>
 <script>
 	document.addEventListener('DOMContentLoaded', function() {
@@ -56,14 +64,14 @@
 			},
 			dataType : "json",
 			success : function(data) {
-				
+
 				for (var i = 0; i < data.length; i++) {
 					if (data[i].chk === '1') {
-						data[i].color='red'
-						data[i].title='예약중'
+						data[i].color = 'red'
+						data[i].title = '예약중'
 					} else {
-						data[i].title=''
-						
+						data[i].title = ''
+
 					}
 				}
 				fullCalendar(data);
@@ -73,72 +81,76 @@
 	function fullCalendar(data) {
 		var calendarEl = document.getElementById('calendar');
 
-		var calendar = new FullCalendar.Calendar(calendarEl, {
-			initialDate : '2022-09-07',
-			initialView : 'dayGridMonth',
-			locale : 'kr',
-			headerToolbar : {
-				left : 'prev,next today',
-				center : 'title',
-				right : 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
-			},
-			editable : true,
-			droppable : true, // this allows things to be dropped onto the calendar
-			drop : function(arg) {
-				if (document.getElementById('drop-remove').checked) {
-					arg.draggedEl.parentNode.removeChild(arg.draggedEl);
-				}
-			},
-			selectable : true,
-			selectMirror : true,
-			select : function(arg) { // 등록 이벤트
-				var today = new Date();
-				const year = today.getFullYear();
-				const month = today.getMonth() + 1;
-				const date = today.getDate();
-				
-				
-				var clickDate = new Date(arg.startStr);
-				var now = new Date(`${year}-${month >= 10 ? month : '0' + month}-${date >= 10 ? date : '0' + date}`)
+		var calendar = new FullCalendar.Calendar(
+				calendarEl,
+				{
+					height : 'auto',
+					initialDate : '2022-09-07',
+					initialView : 'dayGridMonth',
+					locale : 'kr',
+					headerToolbar : {
+						left : 'prev,next today',
+						center : 'title',
+						right : 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+					},
+					editable : true,
+					droppable : true, // this allows things to be dropped onto the calendar
+					drop : function(arg) {
+						if (document.getElementById('drop-remove').checked) {
+							arg.draggedEl.parentNode.removeChild(arg.draggedEl);
+						}
+					},
+					selectable : true,
+					selectMirror : true,
+					select : function(arg) { // 등록 이벤트
+						var today = new Date();
+						const year = today.getFullYear();
+						const month = today.getMonth() + 1;
+						const date = today.getDate();
 
-				
-				if(clickDate >= now){
-				$("#calendar_insert_modal").modal("show");
-				}
-				else {
-					alert("이전 일정은 등록이 불가능합니다.")
-				}
+						var clickDate = new Date(arg.startStr);
+						var now = new Date(
+								`${year}-${month >= 10 ? month : '0' + month}-${date >= 10 ? date : '0' + date}`)
 
+						if (clickDate >= now) {
+							$("#calendar_insert_modal").modal("show");
+						} else {
+							alert("이전 일정은 등록이 불가능합니다.")
+						}
 
-				var start = arg.startStr;
-				$("#calendar_start_date").val(start);
+						var start = arg.startStr;
+						$("#calendar_start_date").val(start);
 
-			},
-			eventClick : function(info) { // 수정 이벤트
-				calendarSelect(info.event._def.extendedProps.MtrSchId);
+					},
+					eventClick : function(info) { // 수정 이벤트
+						calendarSelect(info.event._def.extendedProps.MtrSchId);
+						if(info.event._def.extendedProps.chk == '1'){
+							alert("상담 신청이 완료된 일자는 삭제할 수 없습니다.");
+							return;
+						}
 
-				$("#calendar_update_modal").modal("show");
-			},
-			dateClick : function(info) {
-				//info.dayEl.style.backgroundColor = '#DAEAF1'; // 클릭 시 배경색 바꾸는 속성
-			},
-			dayMaxEvents : true,
-			events : function(info, successCallback) {
+						$("#calendar_update_modal").modal("show");
+					},
+					dateClick : function(info) {
+						//info.dayEl.style.backgroundColor = '#DAEAF1'; // 클릭 시 배경색 바꾸는 속성
+					},
+					dayMaxEvents : true,
+					events : function(info, successCallback) {
 
-				for (var i = 0; i < data.length; i++) {
+						for (var i = 0; i < data.length; i++) {
 
-					data[i].id = data[i].MtrSchId;
-					
-					//data[i].title = "";
-					console.log(data[i])
+							data[i].id = data[i].MtrSchId;
 
-					data[i].start = data[i].date + "T" + data[i].timeStart;
-					data[i].end = data[i].date + "T" + data[i].timeEnd;
-				}
-				successCallback(data);
-			}
+							//data[i].title = "";
 
-		});
+							data[i].start = data[i].date + "T"
+									+ data[i].timeStart;
+							data[i].end = data[i].date + "T" + data[i].timeEnd;
+						}
+						successCallback(data);
+					}
+
+				});
 
 		calendar.render();
 	}
@@ -238,7 +250,6 @@
 			},
 			dataType : "json",
 			success : function(result) {
-				console.log(result);
 				$("#mtrSchId").val(result.mtrSchId);
 
 			}
@@ -260,8 +271,59 @@
 					</div>
 					<div class="modal-body">
 						<form id="frm" th:action="@{/scheduleInsert}" method="post" class="text-start">
-							<input type="date" id="calendar_start_date" name="mtrSchDate" required="required"> <input type="hidden" id="userId" name="userId" th:value="${#authentication.name}"> <br /> <input type="checkbox" id="time0" name="mtrSchTimecode" value="0"> 09:00 ~ 09:50 </input> <br /> <input type="checkbox" id="time1" name="mtrSchTimecode" value="1"> 10:00 ~ 10:50 </input> <br /> <input type="checkbox" id="time2" name="mtrSchTimecode" value="2"> 11:00 ~ 11:50 </input> <br /> <input type="checkbox" id="time3" name="mtrSchTimecode" value="3"> 12:00 ~ 12:50 </input> <br /> <input type="checkbox" id="time4" name="mtrSchTimecode" value="4"> 13:00 ~ 13:50 </input> <br /> <input type="checkbox" id="time5" name="mtrSchTimecode" value="5"> 14:00 ~ 14:50 </input> <br /> <input type="checkbox" id="time6" name="mtrSchTimecode" value="6"> 15:00 ~ 15:50 </input> <br /> <input type="checkbox" id="time7" name="mtrSchTimecode" value="7"> 16:00 ~ 16:50 </input> <br /> <input
-								type="checkbox" id="time8" name="mtrSchTimecode" value="8"> 17:00 ~ 17:50 </input> <br /> <input type="checkbox" id="time9" name="mtrSchTimecode" value="9"> 18:00 ~ 18:50 </input> <br />
+							<input type="hidden" id="userId" name="userId" th:value="${#authentication.name}"> 
+							<div class="input-group input-group-static">
+							     <label>신청 날짜</label>
+							     <input type="date" class="form-control" id="calendar_start_date" name="mtrSchDate" required="required" readonly>
+						    </div>
+							<br />
+							<div class="form-check">
+								<input class="form-check-input" type="checkbox" id="time0" name="mtrSchTimecode" value="0"> 
+								<label class="custom-control-label" for="time0">09:00 ~ 09:50</label> <br />
+							</div>
+							<div class="form-check">
+								<input class="form-check-input" type="checkbox" id="time1" name="mtrSchTimecode" value="1"> 
+								<label class="custom-control-label" for="time1">10:00 ~ 10:50</label> <br />
+							</div>
+							<div class="form-check">
+								<input class="form-check-input" type="checkbox" id="time2" name="mtrSchTimecode" value="2">
+								<label class="custom-control-label" for="time2">11:00 ~ 11:50</label> <br />
+							</div>
+							
+							<div class="form-check">
+								<input class="form-check-input" type="checkbox" id="time3" name="mtrSchTimecode" value="3"> 
+								<label class="custom-control-label" for="time3">12:00 ~ 12:50</label> <br />
+							</div>
+							
+							<div class="form-check">
+								<input class="form-check-input" type="checkbox" id="time4" name="mtrSchTimecode" value="4">
+								<label class="custom-control-label" for="time4">13:00 ~ 13:50</label> <br />
+							</div>
+							
+							<div class="form-check">
+								<input class="form-check-input" type="checkbox" id="time5" name="mtrSchTimecode" value="5">
+								<label class="custom-control-label" for="time5">14:00 ~ 14:50</label> <br />
+							</div>
+							
+							<div class="form-check">
+								<input class="form-check-input" type="checkbox" id="time6" name="mtrSchTimecode" value="6">
+								<label class="custom-control-label" for="time6">15:00 ~ 15:50</label> <br />
+							</div>
+							
+							<div class="form-check">
+								<input class="form-check-input" type="checkbox" id="time7" name="mtrSchTimecode" value="7">
+								<label class="custom-control-label" for="time7">16:00 ~ 16:50</label> <br />
+							</div>
+							
+							<div class="form-check">
+								<input class="form-check-input" type="checkbox" id="time8" name="mtrSchTimecode" value="8">
+								<label class="custom-control-label" for="time8">17:00 ~ 17:50</label> <br />
+							</div>
+							<div class="form-check">
+								<input class="form-check-input" type="checkbox" id="time9" name="mtrSchTimecode" value="9">
+								<label class="custom-control-label" for="time9">18:00 ~ 18:50</label> <br />
+							</div>
+				
 							<div class="modal-footer">
 								<button type="button" id="add" class="btn-dark" onclick="calendarInsert();">등록</button>
 								<button type="button" class="btn-dark btn-secondary" data-dismiss="modal" onclick="close1();">닫기</button>
@@ -291,7 +353,20 @@
 				</div>
 			</div>
 		</div>
-		<div id='calendar'></div>
+		<div class="container-fluid">
+			<div class="row justify-content-center">
+				<div class="card p-3 me-3 border border-5 col-8" style="margin-top: 3px;">
+
+					<!-- 각 페이지 타이틀바 -->
+					<div class="card-header p-0 position-relative mt-n4 mb-4 z-index-2">
+						<div class="bg-secondary bg-gradient-secondary shadow-secondary border-radius-lg py-3">
+							<h6 class="text-white ps-3 m-0">상담스케줄 관리</h6>
+						</div>
+					</div>
+					<div id='calendar'></div>
+				</div>
+			</div>
+		</div>
 	</body>
 </th:block>
 </html>

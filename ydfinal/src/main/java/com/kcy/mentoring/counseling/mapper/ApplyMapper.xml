@@ -15,10 +15,12 @@
 		SELECT IFNULL(mtr_status,'xxx') as mtr_status
 		FROM k_mentoring 
 		RIGHT OUTER JOIN (SELECT '') AS m_dual
-		ON mtr_count =  (SELECT max(mtr_count) FROM k_mentoring)
- 				   			AND matching_id=(SELECT matching_id
-			       			FROM k_matching
-			      			WHERE stu_id=#{id} AND matching_type = '0')
+		ON mtr_count =  (SELECT max(mtr_count) FROM k_mentoring where matching_id=(SELECT matching_id
+							       			FROM k_matching
+							      			WHERE stu_id=#{id} AND matching_type = '0'))
+		AND matching_id=(SELECT matching_id
+						FROM k_matching
+						WHERE stu_id=#{id} AND matching_type = '0')
 	</select>
 	
 	<select id="applyCheckPrint" resultType="com.kcy.mentoring.counseling.vo.ApplyVO" parameterType="String">
@@ -142,7 +144,10 @@
 		WHERE matching_id=(SELECT matching_id
 						   FROM k_matching
 						   WHERE stu_id=#{stuId} AND matching_type = '0')  
-		AND mtr_count = (SELECT MAX(mtr_count) AS mtr_count FROM k_mentoring)
+		AND mtr_count = (SELECT MAX(mtr_count) AS mtr_count FROM k_mentoring
+						 where matching_id=(SELECT matching_id
+						   FROM k_matching
+						   WHERE stu_id=#{stuId} AND matching_type = '0'))
 	</update>
 	
 		<!-- 담당교수 정보 불러오기 -->

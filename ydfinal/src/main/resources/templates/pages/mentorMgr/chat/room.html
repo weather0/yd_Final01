@@ -1,41 +1,48 @@
 <!doctype html>
-<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml"
-	xmlns:v-bind="http://www.w3.org/1999/xhtml"
-	xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{layouts/layout}">
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/layout}">
 <th:block layout:fragment="content">
-<!-- 상단 내비바 -->
-  <th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
-<head>
+	<!-- 상단 내비바 -->
+	<th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
+	<head>
+<style>
+.card>.list-group {
+	border-top: 0px
+}
+
+li:hover {
+	background : #ddd
+}
+</style>
 
 <!-- CSS -->
 <!-- <link rel="stylesheet"
 	href="/webjars/bootstrap/4.3.1/dist/css/bootstrap.min.css"> -->
 
-</head>
-<body>
-	<div class="container" id="app" v-cloak>
-		<div class="row">
-			<div class="col-md-12">
-				<h3>채팅방 리스트</h3>
+	</head>
+	<body>
+		<div class="container-fluid" id="app" v-cloak>
+			<div class="row justify-content-center">
+				<div class="card p-3 me-3 border border-5 col-8 " style="margin-top: 3px; height:80vh;">
+
+					<!-- 각 페이지 타이틀바 -->
+					<div class="card-header p-0 position-relative mt-n4 mb-4 z-index-2">
+						<div class="bg-secondary bg-gradient-secondary shadow-secondary border-radius-lg py-3">
+							<h6 class="text-white ps-3 m-0">채팅방 리스트</h6>
+						</div>
+					</div>
+					<div class="input-group">
+						<input type="hidden" id="userId" class="form-control" th:value="${#authentication.name}"> <input type="hidden" id="userType" class="form-control"> <input type="hidden" id="userName" class="form-control">
+					</div>
+					<ul class="list-group justify-content-center">
+						<li style="height:60px; line-height:40px" class="list-group-item list-group-item-action" v-for="item in chatrooms" v-bind:key="item.roomId" :value="item.roomName" v-on:click="enterRoom(item.roomId,item.roomName)">{{item.roomName}}<br></li>
+					</ul>
+				</div>
 			</div>
 		</div>
-		<div class="input-group">
-			<input type="hidden" id="userId" class="form-control" th:value="${#authentication.name}">
-			<input type="hidden" id="userType" class="form-control">
-			<input type="hidden" id="userName" class="form-control" >
-		</div>
-		<ul class="list-group">
-			<li class="list-group-item list-group-item-action"
-				v-for="item in chatrooms" v-bind:key="item.roomId" :value="item.roomName"
-				v-on:click="enterRoom(item.roomId,item.roomName)">{{item.roomName}}</li>
-		</ul>
-	</div>
-	<!-- JavaScript -->
-	<script src="/webjars/vue/2.5.16/dist/vue.min.js"></script>
-	<script src="/webjars/axios/0.17.1/dist/axios.min.js"></script>
-	<script>
+		<!-- JavaScript -->
+		<script src="/webjars/vue/2.5.16/dist/vue.min.js"></script>
+		<script src="/webjars/axios/0.17.1/dist/axios.min.js"></script>
+		<script>
     var vm = new Vue({
         el: '#app',
         data: {
@@ -57,8 +64,9 @@
                 axios.get('/chat/rooms').then(response => { 
                 	for(var i = 0 ; i < response.data.length; i++){
 	                	var id = response.data[i].profId;
+	                	var stuId = response.data[i].roomName.substring(response.data[i].roomName.indexOf("(")+1,response.data[i].roomName.indexOf(")"));
 	                	var userId = $('#userId').val()
-	                	if(id == userId){
+	                	if(id == userId || stuId == userId){
 		                	this.chatrooms = response.data;
 	                	}
                 	}

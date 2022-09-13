@@ -20,6 +20,7 @@
 	margin-bottom: 20px;
 	background: #fff;
 }
+
 .table td, .table th {
 	white-space: pre-line;
 }
@@ -81,6 +82,7 @@
 				var calendarEl = document.getElementById('calendar');
 
 				var calendar = new FullCalendar.Calendar(calendarEl, {
+					height : 'auto',
 					initialDate: '2022-09-20',
 					initialView: 'dayGridMonth',
 					locale : 'kr',
@@ -300,7 +302,20 @@
 			</div>
 		</div>
 		</div>
-		<div id='calendar'></div>
+		<div class="container-fluid">
+			<div class="row justify-content-center">
+				<div class="card p-3 me-3 border border-5 col-8" style="margin-top: 3px;">
+
+					<!-- 각 페이지 타이틀바 -->
+					<div class="card-header p-0 position-relative mt-n4 mb-4 z-index-2">
+						<div class="bg-secondary bg-gradient-secondary shadow-secondary border-radius-lg py-3">
+							<h6 class="text-white ps-3 m-0">상담신청</h6>
+						</div>
+					</div>
+					<div id='calendar'></div>
+				</div>
+			</div>
+		</div>
 	</body>
 </th:block>
 

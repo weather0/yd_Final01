@@ -18,9 +18,8 @@
 				profId : profId,
 			},
 			success : function(profId) {
-				console.log("성공")
-				alert('profId' + profId);
-				location.href = "/careerSelectList/" + profId
+				alert("생성되었습니다");
+				location.href = "/careerSelectList?prof_id=" + profId
 			},
 			error : function() {
 				console.log("실패요")
@@ -34,7 +33,7 @@
 
 		<h2>현재 [[${#authentication.name}]]님에 대한 검사 기록이 없습니다.</h2>
 		<form action="#" method="post">
-			<input type="text" id="profId" name="profId" th:value="${#authentication.name}"> <input type="button" onclick="sendListCareer();" value="생성하기">
+			<input type="hidden" id="profId" name="profId" th:value="${#authentication.name}"> <input type="button" onclick="sendListCareer();" value="생성하기">
 		</form>
 
 

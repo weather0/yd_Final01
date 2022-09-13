@@ -8,7 +8,7 @@
 <meta charset='utf-8' />
 <link rel="stylesheet" href="https://cdn.datatables.net/v/bs5/dt-1.12.1/datatables.min.css" />
 <script src="https://cdn.datatables.net/v/bs5/dt-1.12.1/datatables.min.js"></script>
-	
+
 <style>
 #myAcaInfos_filter input {
 	border: 1px solid #d2d6da;
@@ -18,36 +18,36 @@
 	background-color: #7b809a;
 	border-color: #7b809a;
 }
+
 .table td, .table th {
 	white-space: pre-line;
-	vertical-align : middle;
+	vertical-align: middle;
 }
 </style>
 
 
 <script>
-jQuery(function($){
-    $("#careerList").DataTable({
-    	 "language": {
-             "lengthMenu": "페이지 당: _MENU_",
-             "search": "검색:",
-             "searchPlaceholder": "키워드를 입력하세요",
-             "zeroRecords": "검색결과가 없습니다",
-             "info": "_START_ - _END_ (전체: _MAX_건)",
-             "infoFiltered": "(검색결과: _TOTAL_건)",
-             "infoEmpty": "",
-             "paginate": {
-               "previous": "<",
+	jQuery(function($) {
+		$("#careerList").DataTable({
+			"language" : {
+				"lengthMenu" : "페이지 당: _MENU_",
+				"search" : "검색:",
+				"searchPlaceholder" : "키워드를 입력하세요",
+				"zeroRecords" : "검색결과가 없습니다",
+				"info" : "_START_ - _END_ (전체: _MAX_건)",
+				"infoFiltered" : "(검색결과: _TOTAL_건)",
+				"infoEmpty" : "",
+				"paginate" : {
+					"previous" : "<",
                "next": ">",
-             }
-           },
-           destroy: true,
-    });
-});
+				}
+			},
+			destroy : true,
 
-		
-	
-	
+		});
+
+	});
+
 	function carUpdateY(e) {
 		if (!confirm("해당 질문을 활성화 하시겠습니까?? 확인(예) 또는 취소(아니오)를 선택해주세요.")) {
 			return;
@@ -129,6 +129,7 @@ jQuery(function($){
 	function sendCareer() {
 		var careerQContent = document.getElementById('careerQContent').value;
 		var careerListId = document.getElementById('careerListId').value;
+
 		var profId = document.getElementById('profId').value;
 
 		$.ajax({
@@ -139,7 +140,7 @@ jQuery(function($){
 				careerQContent : careerQContent
 			},
 			success : function() {
-				location.reload();
+				//location.reload();
 			},
 			error : function() {
 				console.log("실패요")
@@ -152,20 +153,40 @@ jQuery(function($){
 
 	<body style="overflow-x: hidden">
 
-		<div class="row justify-content-center  w-95">
+		<div class="container-fluid ">
 
-			<form th:action="@{/careerInsert}">
-				<table>
-					<th>추가할 질문을 입력해주세요</th>
-					<td><input type="hidden" id="careerListId" name="careerListId" th:value="${listid}"></td>
-					<td><input type="hidden" id="profId" name="profId" th:value="${#authentication.name}"></td>
-					<td><input type="text" id="careerQContent" name="careerQContent"></td>
-					<td><button type="button" class="btn-dark" onclick="sendCareer();" >등록</button></td>
-				</table>
-			</form>
+			<div class="row justify-content-center" style="margin: 6px">
+				<div class="card py-3 col-7">
+					<div class="card-header p-0 position-relative mt-n4 mb-4 z-index-2">
+						<div class="bg-secondary bg-gradient-secondary shadow-secondary border-radius-lg py-3">
+							<h6 class="text-white ps-3 m-0">진로탐색 문답지 관리</h6>
+						</div>
+					</div>
+					<form th:action="@{/careerInsert}">
+						<table style="margin: auto;" class="w-100">
+							<tr>
+								<td><input type="hidden" id="careerListId" name="careerListId" th:value="${listid}"></td>
+								<td><input type="hidden" id="profId" name="profId" th:value="${#authentication.name}"></td>
+							</tr>
+							<tr>
+								<td width="85%">
+									<div class="input-group input-group-outline">
+										<label class="form-label">추가할 질문을 입력해주세요</label> <input type="text" class="form-control w-50" id="careerQContent" name="careerQContent">
+									</div>
+								</td>
+								<td width="15%">
+									<div style="display: flex; justify-content: center; margin-top: 16px">
+										<button type="button" class="btn bg-gradient-secondary btn-sm btn2" onclick="sendCareer();">등록</button>
+									</div>
+								</td>
+							</tr>
+						</table>
+					</form>
+				</div>
+			</div>
 
-			<div class="row justify-content-center w-93">
-				<div class="card py-3">
+			<div class="row justify-content-center  w-93">
+				<div class="card py-3 col-9">
 
 					<div class="table-responsive ">
 						<table id="careerList" class="table align-items-center table-hover justify-content-center" style="width: 100%">
@@ -179,22 +200,22 @@ jQuery(function($){
 									<td width="10%" class="text-center">삭제</td>
 								</tr>
 							</thead>
-							<tbody >
+							<tbody>
 								<tr th:each="item : ${list}">
 									<td class="text-center">[[${itemStat.count}]]</td>
 									<td class="text-center">[[${item.careerQContent}]]</td>
 									<td class="text-center">[[${item.careerListDate}]]</td>
 									<td class="text-center">[[${item.careerQYn}]]</td>
 									<th:block th:switch="${item.careerQYn}">
-										<td  th:case="Y"  class="text-center">
+										<td th:case="Y" class="text-center">
 											<button type="button" class="btn bg-gradient-secondary btn-sm btn1" th:data-qid="${item.careerQId}" th:onclick="carUpdateN()" th:text="해제"></button>
 										</td>
-										<td th:case="N"  class="text-center">
+										<td th:case="N" class="text-center">
 											<button type="button" class="btn bg-gradient-secondary btn-sm btn1" th:data-qid="${item.careerQId}" th:onclick="carUpdateY(this.getAttribute('QId'))" th:text="사용"></button>
 										</td>
 									</th:block>
 									<div>
-										<td  class="text-center">
+										<td class="text-center">
 											<button type="button" class="btn bg-gradient-secondary btn-sm btn2" th:data-qid="${item.careerQId}" th:onclick="carDelete(this.getAttribute('QId'))" th:text="삭제">
 										</td>
 									</div>
@@ -206,6 +227,7 @@ jQuery(function($){
 			</div>
 		</div>
 		</div>
+
 	</body>
 </th:block>
 
