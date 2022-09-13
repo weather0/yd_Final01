@@ -7,7 +7,7 @@
 <th:block layout:fragment="content">
 
   <style>
-  
+
   </style>
   
   <script>
@@ -37,14 +37,15 @@
           selectable : true,
           selectMirror : true,
           
-          eventTimeFormat: { // like '14:30:00'
+          eventTimeFormat: {
             hour: '2-digit',
             minute: '2-digit',
             meridiem: false,
             hour12: false
           },
 //           displayEventTime: false,
-          
+//           slotMinTime: '03:00:01',
+//           slotMaxTime: '20:59:59',
           
           // 개꿀 기능! sql문 각 칼럼 AS 쓸 필요 없이 *로 조지고 여기서 약속key명(title,start등)으로 바꾸자
           eventDataTransform: function (data) {
@@ -80,7 +81,7 @@
 <!--         </div> -->
 <!--       </div> -->
     
-      <div class="card p-3 me-3 mb-10 w-80 border border-5" style="margin-top: 3px;">
+      <div class="card p-3 me-3 mb-1 w-80 border border-5" style="margin-top: 3px;">
       
         <div class="card-header p-0 position-relative mt-n4 mb-4 z-index-2">
           <div class="bg-secondary bg-gradient-secondary shadow-secondary border-radius-lg py-3">
@@ -93,6 +94,103 @@
         
         
       </div> <!-- card -->
+      
+      
+      
+      <button type="button" class="btn btn-block btn-light mb-3" data-bs-toggle="modal" data-bs-target="#modal-schInsert">Form</button>
+      
+      <div class="modal fade" id="modal-schInsert" tabindex="-1" role="dialog" aria-labelledby="modal-schInsert" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-sm" role="document"> <!-- modal-sm: 가로 크기 조절 -->
+          <div class="modal-content">
+            <div class="modal-body p-0">
+              <div class="card card-plain">
+              
+                <div class="card-header pb-0 text-left">
+                  <h5 class="">일정 등록</h5>
+<!--                   <p class="mb-0">Enter your email and password to sign in</p> -->
+                </div>
+                
+                <div class="card-body pt-0">
+                  <form role="form text-left">
+                  
+                    <div class="form-check form-switch d-flex align-items-center">
+                      <input class="form-check-input my-2" type="checkbox" id="allday" checked>
+                      <label class="form-check-label mb-0 ms-3 fw-bold" for="allday">종일</label>
+                    </div>
+                    <div class="input-group input-group-outline my-3">
+                      <label class="form-label">시작</label>
+                      <input type="text" class="form-control" id="schS" readonly/>
+                    </div>
+                    <div class="input-group input-group-outline my-3">
+                      <label class="form-label">종료</label>
+                      <input type="text" class="form-control" id="schE" readonly/>
+                    </div>
+                    
+                    <script>
+                      $('#allday').prop('checked') ? $('#schE').prop('disabled', true) : null ;
+                    </script>
+
+                    <div class="input-group input-group-outline my-3">
+                      <label class="form-label">내용</label>
+                      <input type="text" class="form-control">
+                    </div>
+                    <div class="input-group input-group-outline my-3">
+                      <label class="form-label">담당자</label>
+                      <input type="text" class="form-control">
+                    </div>
+                    <div class="input-group input-group-outline mb-3">
+                        <select class="form-control" id="exampleFormControlSelect1">
+                          <option style="background-color: lightgrey" disabled selected>일정구분</option>
+                          <option class="fw-bold">일반</option>
+                          <option class="fw-bold">신청</option>
+                          <option class="fw-bold">수업</option>
+                          <option class="fw-bold">시험</option>
+                          <option class="fw-bold">공휴일</option>
+                      </select>
+                    </div>
+                    
+                    <div class="text-center">
+                      <button type="button" class="btn btn-round bg-gradient-info btn-lg w-100 mt-4 mb-0">Sign in</button>
+                    </div>
+                    
+                  </form>
+                </div>
+                
+                <div class="card-footer text-center pt-0 px-lg-2 px-1">
+<!--                   <p class="mb-4 text-sm mx-auto"> -->
+<!--                     Don't have an account? -->
+<!--                     <a href="javascript:;" class="text-info text-gradient font-weight-bold">Sign up</a> -->
+<!--                   </p> -->
+                </div>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      
+
+      
+      <script>
+        jQuery.datetimepicker.setLocale('kr');
+        $('#schS').datetimepicker({
+          format: 'Y.m.d. (D) H:i',
+          step: 10,
+          defaultTime:'00:00',
+          closeOnTimeSelect: false,
+          validateOnBlur: false, // 이거 false해줘야 인풋창 바깥 눌렀을때 초기화(=현재시각) 안 됨. 또한 위치주의!! 이 옵션은 맨 밑에 가야 함
+        });
+        $('#schE').datetimepicker({
+          format: 'Y.m.d. (D) H:i',
+          step: 10,
+          defaultTime:'00:00',
+          closeOnTimeSelect: false,
+          validateOnBlur: false
+        });
+      </script>
+      
+      
     </div> <!-- row -->
   </div>
   <!-- 본문 end-->
