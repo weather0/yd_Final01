@@ -54,7 +54,7 @@
 		   u.user_name, 
 		   u.user_dept, 
 		   p.prof_lab, 
-		   p.prof_mentee - COUNT(CASE WHEN m.matching_type ='매칭중' THEN 1 END) AS mentee
+		   p.prof_mentee - COUNT(CASE WHEN m.matching_type ='0' THEN 1 END) AS mentee
 	FROM k_professors p 
 	JOIN k_users u
 	ON p.prof_id = u.user_id
