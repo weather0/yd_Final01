@@ -20,8 +20,8 @@
 
 	<!-- 본문 start -->
 	<div class="container-fluid">
+      <div class="row justify-content-center">
 		<div class="card p-3 me-3">
-			<div class="row justify-content-center">
 
 				<!-- 각 페이지 타이틀바 -->
 				<div class="card-header p-0 position-relative mt-n4 mb-4 z-index-2">
@@ -44,8 +44,8 @@
 								<label class="form-label"></label> <select class="form-control"
 									name="billSem" id="billSem">
 									<option value='0'>학기선택</option>
-									<option value=1>1학기</option>
-									<option value=2>2학기</option>
+									<option value="1" th:selected="${payVO.billSem}=='1'">1학기</option>
+									<option value="2" th:selected="${payVO.billSem}=='2'">2학기</option>
 								</select>
 							</div>
 						</div>
@@ -65,8 +65,9 @@
 								<label class="form-label"></label> <select class="form-control"
 									name="payHType" id="payHType">
 									<option value="">납부방식</option>
-									<option value="b">일괄납부</option>
-									<option value="s">분할납부</option>
+									<option value="b" th:selected="${payVO.payHType}=='b'">일괄납부</option>
+									<option value="s1" th:selected="${payVO.payHType}=='s1'">분할납부A</option>
+									<option value="s2" th:selected="${payVO.payHType}=='s2'">분할납부B</option>
 								</select>
 							</div>
 						</div>
@@ -75,15 +76,15 @@
 								<label class="form-label"></label> <select class="form-control"
 									name="payHYn" id="payHYn">
 									<option value="">납부여부</option>
-									<option value="y">완납</option>
-									<option value="n">미납</option>
-									<option value="s">부분미납</option>
+									<option value="y" th:selected="${payVO.payHYn}=='y'">완납</option>
+									<option value="n" th:selected="${payVO.payHYn}=='n'">미납</option>
+									<option value="s" th:selected="${payVO.payHYn}=='s'">부분미납</option>
 								</select>
 							</div>
 						</div>
 						<div class="col-md-2">
 							<div class="input-group input-group-outline my-3">
-								<button class="btn bg-gradient-primary">조회</button>
+								<button class="btn btn-secondary">조회</button>
 							</div>
 						</div>
 					</div>

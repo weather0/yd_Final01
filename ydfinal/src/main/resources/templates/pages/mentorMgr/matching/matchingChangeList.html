@@ -6,18 +6,30 @@
 
 <th:block layout:fragment="content">
 	<style>
-.stdactive {
-	background-color: gray
-}
-
-.pagination .active .page-link {
-	background-color: #7b809a;
-	border-color: #7b809a;
-}
-
-.page-link:focus {
-	box-shadow: 0 0 0 0.2rem rgb(123 128 154/ 25%);
-}
+ #allProfInfos_filter input {
+      border: 1px solid #d2d6da;
+    }
+    
+    .pagination .active .page-link {
+      background-color: #7b809a;
+      border-color: #7b809a;
+    }
+    
+    .page-link:focus {
+      box-shadow: 0 0 0 0.2rem rgb(123 128 154/ 25%);
+    }
+    
+    option:disabled {
+      background-color: lightgray;
+    }
+    
+    table.dataTable thead>tr>th.sorting {
+      text-align: center;
+    }
+    
+    table.dataTable td {
+      text-align: center;
+    }
 </style>
 
 	<!-- 상단 내비바 -->
@@ -25,8 +37,8 @@
 
 	<!-- 본문 start -->
 	<div class="container-fluid">
+	  <div class="row justify-content-center">
 		<div class="card p-3 me-3">
-			<div class="row justify-content-center">
 
 				<!-- 각 페이지 타이틀바 -->
 				<div class="card-header p-0 position-relative mt-n4 mb-4 z-index-2">
@@ -35,9 +47,11 @@
 						<h6 class="text-white ps-3 m-0">지도교수 변경 신청자 목록</h6>
 					</div>
 				</div>
-				<table id="matchingChageList">
+				
+				<div class="table-responsive">
+				<table id="matchingChageList" class="table align-items-center table-hover" width="100%">
 					<thead>
-						<tr>
+						<tr style="height: 70px">
 							<th>학번</th>
 							<th>이름</th>
 							<th>전공</th>
@@ -64,14 +78,15 @@
 							<td th:text="${std.wantprofId}" style="display: none"></td>
 							<td th:text="${std.wantprof}"></td>
 							<td>
-								<button class="btn btn-primary OK">승인</button>
-								<button type="button" class="btn btn-primary reject"
+								<button class="btn btn-success OK" >승인</button>
+								<button type="button" class="btn btn-danger reject"
 									data-bs-toggle="modal" data-bs-target="#reject"
 									data-bs-whatever="NO">거부</button>
 							</td>
 						</tr>
 					</tbody>
 				</table>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -89,15 +104,15 @@
 					<form>
 						<div class="mb-3">
 							<textarea class="form-control" id="reject-text"
-								placeholder="거부 사유를 입력해주세요">
+								required placeholder="거부 사유를 입력해주세요">
 							</textarea>
 						</div>
 					</form>
 				</div>
 				<div class="modal-footer">
+					<button type="button" class="btn btn-success NO">등록</button>
 					<button type="button" class="btn btn-secondary"
 						data-bs-dismiss="modal">닫기</button>
-					<button type="button" class="btn btn-primary NO">등록</button>
 				</div>
 			</div>
 		</div>
@@ -121,7 +136,7 @@
 				}
 			}
 		});
-
+		
 		$(".OK").on("click", function() {
 			var matchingS = ($(this).closest("tr").find("td:first").text())
 			var matchingO = ($(this).closest("tr").find("td:eq(5)").text())

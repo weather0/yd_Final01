@@ -39,8 +39,8 @@
 					<div>
 						<form action="matchingChangeOrder" method="post">
 							<div class="row">
-								<div class="col-md-3">
-									<div class="input-group input-group-outline my-3">
+								<div class="form-floating col-md-3">
+									<div class="input-group input-group-outline my-3">									
 										<input th:value="${matchingName.userName}" type="text"
 											id="userName" readonly="readonly">
 									</div>
@@ -100,10 +100,10 @@
 				</div>
 			</div>
 			<div class="row-3 changebtn">
-				<button class="btn bg-gradient-primary"
+				<button class="btn btn-secondary"
 					th:if="${matchingName.studentChangeStatus.toString().equals('0')}">변경
 					신청</button>
-				<input type="button" class="btn bg-gradient-primary cancel"
+				<input type="button" class="btn btn-secondary cancel"
 					th:if="${matchingName.studentChangeStatus.toString().equals('1')}"
 					value="신청 취소">
 				</form>
@@ -139,7 +139,7 @@
 							<td th:text="${Prof.profLab}"></td>
 							<td th:text="${Prof.mentee}"></td>
 							<td>
-								<button class="btn btn-primary" onclick="select()">선택</button>
+								<button class="btn btn-secondary" onclick="select()">선택</button>
 							</td>
 						</tr>
 					</tbody>
