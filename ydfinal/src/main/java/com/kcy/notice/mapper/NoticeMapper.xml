@@ -68,6 +68,10 @@
         	c.class_id = #{classId}
        	AND
         </when>
+        <when test="classNoticeType != null">
+        	cn.class_id = #{classId}
+       	AND
+        </when>
        </choose>
             c.class_id in (
             				SELECT class_id 
