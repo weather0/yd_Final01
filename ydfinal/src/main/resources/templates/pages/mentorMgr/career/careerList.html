@@ -131,6 +131,10 @@
 		var careerListId = document.getElementById('careerListId').value;
 
 		var profId = document.getElementById('profId').value;
+		
+		if(careerQContent == ''){
+			alert()
+		}
 
 		$.ajax({
 			url : "/careerInsert",
@@ -140,7 +144,7 @@
 				careerQContent : careerQContent
 			},
 			success : function() {
-				//location.reload();
+				location.reload();
 			},
 			error : function() {
 				console.log("실패요")
