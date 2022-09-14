@@ -60,7 +60,7 @@
 				WHERE stu_id=#{userId} 
 				AND matching_type ='0'),(select IFNULL(MAX(mtr_count)+1,1)
 										 from k_mentoring ALIAS_FOR_SUBQUERY
-										 where mtr_status='com' AND matching_id = (SELECT matching_id
+										 where mtr_status in ('com','can') AND matching_id = (SELECT matching_id
 																				   FROM k_matching
 																				   WHERE stu_id=#{userId} 
 																				   AND matching_type ='0')), default, nextval(sq_mtr_id), #{mtrSchId}, default, default, #{profId});
