@@ -25,6 +25,9 @@ public interface LectureMapper {
     
     public OpenLectureVO myMajor(OpenLectureVO vo);
     
+    
+    
+    
 
     
     

@@ -190,6 +190,7 @@
 			h.class_id,
 
             c.class_to,
+            co.course_title,
 
             d.quiz_d_date,
             d.quiz_d_id,
@@ -204,6 +205,10 @@
             k_quiz_d as d
         ON
             d.quiz_h_id = h.quiz_h_id
+        JOIN
+            k_course as co
+        ON
+            co.course_id = c.course_id
         WHERE
             c.prof_id = #{userId}
 	</select>

@@ -51,7 +51,7 @@
 						</div>
 					</form>
 					<th:block th:each="geades:${gradesCk}">
-						<p th:text="|총 학점:${geades.courseCredit}|" />
+						<h4 th:text="|나의 총 학점:${geades.courseCredit}|" />
 					</th:block>
 					<div class="table-responsive p-0">
 						<table
@@ -283,12 +283,6 @@
 							
 						});  
 						}
-						
-						
-							
-					
-						
-				
 			
 				}
 			})

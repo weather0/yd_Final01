@@ -25,7 +25,7 @@ public class SequrityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception{
 		http
 			.authorizeRequests()
-			.antMatchers("/login", "/check/findPw").permitAll()
+			.antMatchers("/login", "/check/findPw", "/changePw").permitAll()
 			
 			// 9.1.추가: 곽ㅈㅇ
 			.antMatchers(

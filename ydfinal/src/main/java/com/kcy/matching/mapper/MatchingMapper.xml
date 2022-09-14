@@ -44,9 +44,14 @@
 	   s.student_prof 
 	FROM k_users AS u 
 	JOIN k_students AS s
-	ON u.user_id = s.stu_id  
-	WHERE user_type = 'ROLE_STU' 
-	 AND s.student_prof IS NULL
+	ON u.user_id = s.stu_id
+	<where>
+	and user_type = 'ROLE_STU'
+	and s.student_prof IS NULL
+		<if test="stdDept != null and stdDept != ''">
+			and u.user_dept = #{stdDept}
+		</if>			
+	</where>	
 </select>
 
 <select id="matchingProfList" resultType="com.kcy.matching.service.MatchingProfVO">
@@ -60,20 +65,30 @@
 	ON p.prof_id = u.user_id
 	LEFT JOIN k_matching m
 	ON p.prof_id = m.prof_id 
+	<where>
+		<if test="userDept != null and userDept != ''">
+			and u.user_dept = #{userDept}
+		</if>		
+	</where> 
 	GROUP BY prof_id 	
 	<![CDATA[HAVING mentee > 0]]>
 </select>
 
 <insert id="matching" parameterType="com.kcy.matching.service.MatchingVO">		
-		INSERT INTO k_matching 
-		( prof_id, matching_date, matching_type, matching_id, stu_id ) 
-		VALUES (#{userId}, NOW(), '0', nextval(matchigId_seq), #{studentId})
+		INSERT INTO k_matching ( prof_id, matching_date, matching_type, matching_id, stu_id ) VALUES
+		<foreach collection="id" item="Id" separator="," >		
+		 (#{userId}, NOW(), '0', nextval(matchigId_seq), #{Id})	
+		</foreach>
+					 
 </insert>
 
 <update id="matchingStd" parameterType="com.kcy.matching.service.MatchingVO">		
 		UPDATE k_students 
-		   SET student_prof = #{userId}
-		WHERE stu_id = #{studentId}
+		 SET student_prof = #{userId}
+		WHERE stu_id IN  
+		<foreach collection="id" item="Id" separator="," open="(" close=")" >
+		#{Id}
+		</foreach>
 </update>
 
 <insert id="matchingChangeOrder" parameterType="com.kcy.matching.service.MatchingChangeVO">

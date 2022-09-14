@@ -37,9 +37,10 @@
 			</div>						
 			<div class="col-md-3">
 				<div class="input-group input-group-outline my-3">
-					<button class="btn bg-gradient-primary">조회</button>
+					<button class="btn btn-secondary">조회</button>
 				</div>
 			</div>
+		
 	</form>
 	
 	<th:block th:each="bill:${billCheck}">	
@@ -59,7 +60,7 @@
 		
 		<div class="col-md-3" th:if="${!bill.payHType.toString().equals('b')}">
 			<div class="input-group input-group-outline my-3">
-				<button class="btn bg-gradient-primary">조회</button>
+				<button class="btn btn-secondary">조회</button>
 			</div>
 		</div>
 		
@@ -99,11 +100,7 @@
 						<tr>
 							<td class="table-secondary">납부기간</td>
 							<td></td>
-						</tr>
-						<tr>
-							<td class="table-secondary">가상계좌</td>
-							<td th:text="${bill.payHAcc}"></td>
-						</tr>
+						</tr>						
 						</span>
 						
 						<span th:if="${bill.payHType.toString().equals('s1')}">
@@ -139,11 +136,7 @@
 								<td th:text="${bill.d}"></td>
 								<td class="table-secondary">납부기간</td>
 								<td></td>
-							</tr>
-							<tr>
-								<td class="table-secondary">가상계좌</td>
-								<td th:text="${bill.payHAcc}"></td>
-							</tr>
+							</tr>							
 						</span>
 						
 						<span th:if="${bill.payHType.toString().equals('s2')}">
@@ -167,51 +160,29 @@
 								<td th:text="${bill.b}">></td>
 								<td class="table-secondary">납부기간</td>
 								<td></td>
-							</tr>
-						<tr>
-							<td class="table-secondary">가상계좌</td>
-							<td th:text="${bill.payHAcc}"></td>
-						</tr>
+							</tr>						
 						</span>
 					</table>
 		
-
+	
 		<span th:if="${bill.payHType.toString().equals('b')}">
 			<div class="col-md-3">
 				<div class="input-group input-group-outline my-3">
-					<button type="button" class="btn btn-primary change"
+					<button type="button" class="btn btn-secondary change"
 						data-bs-toggle="modal" data-bs-target="#change"
 						data-bs-whatever="NO">분할 납부 신청</button>
 				</div>
 			</div>
-		</span>
-		
-		<div class="col-md-3">
-			<div class="input-group input-group-outline my-3">
-				<button type="button" class="btn btn-primary change" id="bankAuth" name="bankAuth">사용자 인증</a>
-			</div>
-		</div>	
-		
-		<form id="acount" method="get" action="/acount/list">
-			<input type="hidden" id="accessToken" name="accessToken" th:value="${bill.studentToken}" value=""></input>
-    		<input type="hidden" id="userSeqNo" name="userSeqNo" value="1101012426"></input>
-		    <input type="hidden" id="includeCancelYn" name="includeCancelYn" value="N"></input>
-    		<input type="hidden" id="sortOrder" name="sortOrder" value="D"></input>
-				<div class="col-md-3">
-						<button type="button" class="btn btn-primary" id="payIn" name="payIn">계좌</a>				
-				</div>
-		</form>		
-		
+		</span>	
+			
 		<span th:if="${!bill.payHType.toString().equals('b')}">		
 			<div class="col-md-3">
 				<div class="input-group input-group-outline my-3">
-					<button class="btn bg-gradient-primary cancel">분할 납부 취소</button>
+					<button class="btn btn-secondary cancel">분할 납부 취소</button>
 				</div>
 			</div>
 		</span>
-		 
-		
-
+	
 		<div class="modal fade" id="change" tabindex="-1"
 			aria-labelledby="changeLabel" aria-hidden="true">
 			<div class="modal-dialog">

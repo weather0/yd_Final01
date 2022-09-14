@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.kcy.lecture.service.ClassScheduleVO;
+import com.kcy.lecture.service.LectureVO;
 
 
 
@@ -24,6 +25,8 @@ public interface ScheduleMapper {
 	
 	
 	public List<Map<String,String>> classScheduleSelect(ClassScheduleVO vo);
+	
+	public void lectureCheck(LectureVO vo);
 	
 }
 

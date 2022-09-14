@@ -49,6 +49,7 @@ import com.kcy.lecture.service.OpenLectureVO;
 import com.kcy.lecture.service.RoomVO;
 import com.kcy.lecture.service.TimetableVO;
 import com.kcy.lecture.service.Impl.ScheduleServiceImpl;
+import com.kcy.mentoring.schedule.vo.scheduleVO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -242,6 +243,12 @@ public class LectureController {
 	@ResponseBody
 	public String scheduleInsert(@RequestBody List<ClassScheduleVO> list) {
 		scheduleservice.scheduleAllInsert(list);
+		return "true";
+	}
+	@PostMapping("/lectureCheck")
+	@ResponseBody
+	public String lectureCheck(LectureVO vo) {
+		scmapper.lectureCheck(vo);
 		return "true";
 	}
 	//나의 맞는 강의 시간표를 보여주는 페이지
