@@ -20,37 +20,6 @@
   <script>
     document.addEventListener('DOMContentLoaded', function() {
       
-      // 두 날짜 차이 구하기 함수 (매개값으로 날짜형식같이 생긴 스트링값이면 인식함)
-      const getDateDiff = (d1, d2) => {
-        const date1 = new Date(d1);
-        const date2 = new Date(d2);
-        
-        const diffDate = date1.getTime() - date2.getTime();
-        
-        return diffDate / (1000 * 60 * 60 * 24);
-      }
-      
-      // yyyy-MM-dd 형식 변환 함수
-      const yyyy = (date) => {
-        
-        let year = date.getFullYear();
-        
-        let month = date.getMonth();
-        month += 1;
-        if (month <= 9){
-            month = "0" + month;
-        }
-        
-        let day = date.getDate();
-        if (day <= 9){
-            day = "0" + day;
-        }
-        
-        let newDate = year + '-' + month + '-' + day;
-        return newDate;
-      }
-
-      
       // 초기 로딩 시
       $.ajax ({
         url: '/allSchProc',
@@ -95,6 +64,7 @@
             data.start = data.schStart;
             data.end = data.schEnd;
             data.allDay = data.schAllday;
+//             console.log(data.title + ' / ' + data.end);
             switch (data.schType) {
               case 'APPLY': data.color = '#03a9f4'
                 break;
@@ -106,6 +76,9 @@
                 break;
               case 'HOLIDAY': data.color = '#f44335'
                 break;
+            }
+            if( data.id == 'A22-153' ||  data.id == 'A22-193'){
+              console.log(data)
             }
             return data;
           },
@@ -127,7 +100,6 @@
               Kcy.fire({
                 icon: 'error',
                 html: '<h5>지난 일정은 등록이 불가능합니다</h5>',
-                confirmButtonColor: '#3788d8'
               })
               
             // 정상 일정 선택시 처리
@@ -139,8 +111,9 @@
               // 2. getTime(): 1970.1.1. 기준 밀리초로 변환 (여기서 1빼면 전날 23:59:59.999가 됨)
               //   사실 2번은 생략해도 된다(숫자연산 시 자동 형변환 하는 듯). 즉, (arg.end-1) = (arg.end.getTime()-1)
               // 3. new Date(): 숫자타입(밀리초)을 다시 날짜타입으로 변환
-              // 4. 위에 정의한 yyyy함수로 yyyy-MM-dd형식으로 변환하자
-              let modEnd = yyyy(new Date(arg.end.getTime()-1));
+              // 4. moment.js로 포매팅
+              let modStart = moment(arg.start).format('YYYY-MM-DD (dd) HH:mm');
+              let modEnd = moment(new Date(arg.end.getTime()-1)).format('YYYY-MM-DD (dd) HH:mm');
               console.log(modEnd);
               
               // dur은 쉽게말해 달력에서 선택한 칸 수가 된다
@@ -149,22 +122,18 @@
               // '월달력'에서 '단일칸' 선택시에만 '종일 스위치' 사용 가능
               // (즉 다른 view에서 수동으로 24시간 맞춤 드래그한 경우는 제외)
               if (arg.view.type == 'dayGridMonth' && dur == 1) {
-                $('#allday').removeAttr('disabled') // 종일 스위치 언락
-                $('#schS').val(arg.startStr); // 시작일만 삽입
+                $('#schS').val(modStart); // 시작일만 삽입
                 $('#schS').parent().addClass('is-filled'); // is-filled: 인풋창 애니메이션 상태 ON (해야 이뿌게 나옴)
                 $('#schE').parent().addClass('is-filled');
                 $('#modal-schInsert').modal('show'); // 모달 켜기
-                $('#schS').datetimepicker('destroy'); // datetimepicker OFF
-                $('#schE').datetimepicker('destroy');
+                makeDTP(); // DT피커 생성
               } else {
-                $('#allday').prop('disabled',true); // 종일 스위치 락 *모든 버그의 원흉!!! 
-                $('#schS').val(arg.startStr);
-                $('#schE').val(modEnd); // modEnd 주의!
+                $('#schS').val(modStart);
+                $('#schE').val(modEnd);
                 $('#schS').parent().addClass('is-filled');
                 $('#schE').parent().addClass('is-filled');
                 $('#modal-schInsert').modal('show');
-                $('#schS').datetimepicker('destroy');
-                $('#schE').datetimepicker('destroy');
+                makeDTP();
               }
             
 //             calendar.addEvent({
@@ -179,7 +148,8 @@
           
           
         }); // End: 캘린더객체
-//         console.log( calendar.getEventById('C21-029') ); // 이벤트id로 일정 확인
+        console.log( calendar.getEventById('A22-153') ); // 이벤트id로 일정 확인
+        console.log( calendar.getEventById('A22-193') ); // 이벤트id로 일정 확인
 //         console.log( calendar.getEvents() ); // 전체 일정 뽑기
         calendar.render();
         
@@ -270,6 +240,7 @@
                           $('#schE').val(null); // 종료 input 날리고 
                           $('#schE').prop('disabled', true); // 비활성화
                         } else {
+                          $('#schS').val($('#schS').val().substring(0,15) + '00:00');
                           $('#schS').datetimepicker({timepicker:true, format: 'Y-m-d (D) H:i'});
                           $('#schE').removeAttr('disabled');
                         }
@@ -287,11 +258,11 @@
                     <div class="input-group input-group-outline mb-3">
                       <select class="form-control" id="schType">
                         <option style="background-color: lightgrey" disabled selected>일정구분</option>
-                        <option class="fw-bold">일반</option>
-                        <option class="fw-bold">신청</option>
-                        <option class="fw-bold">수업</option>
-                        <option class="fw-bold">시험</option>
-                        <option class="fw-bold">공휴일</option>
+                        <option class="fw-bold" value="GENERAL">일반</option>
+                        <option class="fw-bold" value="APPLY">신청</option>
+                        <option class="fw-bold" value="CLASS">수업</option>
+                        <option class="fw-bold" value="EXAM">시험</option>
+                        <option class="fw-bold" value="HOLIDAY">공휴일</option>
                       </select>
                     </div>
                     <script>
@@ -362,7 +333,8 @@
     
     // 수동 등록하기 버튼 클릭시
     $('#btn-showSchInsert').on('click', function(){
-      $('#allday').removeAttr('disabled'); // *모든 버그의 원흉!! 이걸 안 적어줘서 애먼 그 아래 input에 계속 자동 focus되는 개같은 버그가..
+    // $('#allday').removeAttr('disabled'); // *모든 버그의 원흉!! 이걸 안 적어줘서 애먼 그 아래 input에 계속 자동 focus되는 개같은 논리버그가.. 
+    // →9.15. 자유도도 늘릴 겸 락 기능 자체를 안하기로 함(위에 풀캘린터 스크립트에서도 관련 코드 다 뺌) 뭐만하면 계속 논리버그터져서
       makeDTP (); // DT피커 생성
     })
     
@@ -398,35 +370,30 @@
         Kcy.fire({
           icon: 'error',
           html: '<h5>시작일시는 필수입니다</h5>',
-          confirmButtonColor: '#3788d8'
         })
       } else if ( getDateDiff($('#schE').val(), $('#schS').val()) <= 0 ) {
-          event.preventDefault();
-          Kcy.fire({
-            icon: 'error',
-            html: '<h5>종료일시는 시작일시보다 이후여야 합니다</h5>',
-            confirmButtonColor: '#3788d8'
-          })
+        event.preventDefault();
+        Kcy.fire({
+          icon: 'error',
+          html: '<h5>종료일시는 시작일시보다 이후여야 합니다</h5>',
+        })
       } else if ($('#schT').val() == '' || $('#schT').val() == null) {
         event.preventDefault();
         Kcy.fire({
           icon: 'error',
           html: '<h5>내용은 필수입니다</h5>',
-          confirmButtonColor: '#3788d8'
         })
       } else if ($('#schM').val() == '' || $('#schM').val() == null) {
         event.preventDefault();
         Kcy.fire({
           icon: 'error',
           html: '<h5>담당자는 필수입니다</h5>',
-          confirmButtonColor: '#3788d8'
         })
       } else if ($('#schType').val() == '' || $('#schType').val() == null) {
         event.preventDefault();
         Kcy.fire({
           icon: 'error',
           html: '<h5>일정구분은 필수입니다</h5>',
-          confirmButtonColor: '#3788d8'
         })
       } else {
         event.preventDefault();
@@ -434,10 +401,39 @@
           title: '등록하시겠습니까?',
 //           html: "<h5>등록하시겠습니까?</h5>",
           icon: 'warning',
-          confirmButtonColor: '#3085d6',
           confirmButtonText: '등록',
           showCancelButton: true,
-          cancelButtonText: '취소'
+          cancelButtonText: '취소',
+          preConfirm: function () {
+            let schAllday = $('#allday').is(':checked') ? true : null; // null이든 ''이든 비워주는게 매우중요! DB에 false라고 저장하면 안됨! 풀캘린더가 제대로 인식을 못함! 
+            // 정규식: 1. 따옴표'' 대신 //gi로 감싼다고 생각
+            //         2. 특수문자 자체를 스트링으로 적고 싶으면 \붙임. 여기선 괄호니깐 \(
+            //         3. 모든 문자 찾고싶으면 걍 아스타 말고 쩜별.*
+            let schStart = $('#schS').val().replace(/ \(.*\)/gi,'')
+            let schEnd = $('#schE').val().replace(/ \(.*\)/gi,'')
+            let schManager = $('#schM').val()
+            let schTitle = $('#schT').val()
+            let schType = $('#schType').val()
+            
+            $.ajax ({
+              url: '/allSchInsert',
+              type: 'POST',
+              data: { 
+                schAllday : schAllday,
+                schStart : schStart,
+                schEnd : schEnd,
+                schManager : schManager,
+                schTitle : schTitle,
+                schType : schType,
+              },
+              success: () => {
+//                 window.location.href='allAcaInfo' 
+              },
+              error: (e) => { console.log(e) }
+            })
+            
+            
+          },
         }).then((result) => {
           if (result.isConfirmed) {
             Kcy.fire(

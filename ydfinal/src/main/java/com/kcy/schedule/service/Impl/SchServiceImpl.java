@@ -18,4 +18,9 @@ public class SchServiceImpl implements SchService {
         return mapper.allSchProc();
     }
 
+    @Override
+    public void allSchInsert(Map<?, ?> map) {
+        mapper.allSchInsert(map);
+    }
+
 }

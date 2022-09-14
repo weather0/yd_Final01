@@ -9,4 +9,29 @@
    where sch_type != 'SEMESTER'
 </select>
 
+
+<!-- 학사 일정 등록 (행정) -->
+<insert id="allSchInsert" parameterType="map">
+  insert into k_schedule
+  values (
+    CONCAT (
+      SUBSTR(#{schType},1,1), 
+      SUBSTR(YEAR(#{schStart}),3,2), 
+      '-', (
+        select NVL2(sch_id, MAX(SUBSTR(sch_id,5)) + 1, '100')  <!-- sch_id가 널이 아니면 시퀀스, 널이면 100번부터 넘버링 -->
+          from k_schedule ks  <!-- 서브쿼리문 대상 테이블이 본쿼리와 동일하면 별칭 달아줘야 오류 안 남 -->
+         where sch_type != 'SEMESTER'
+           and YEAR(sch_start) = YEAR(#{schStart})
+      )
+    ),
+    STR_TO_DATE(#{schStart},'%Y-%m-%d %H:%i'),
+    STR_TO_DATE(#{schEnd},'%Y-%m-%d %H:%i'),
+    #{schTitle},
+    #{schManager},
+    #{schType},
+    IF(#{schAllday} = '',NULL,#{schAllday}),
+    null
+  )
+</insert>
+
 </mapper>

@@ -25,12 +25,12 @@
       // 반려(행정) 실행
       $('#btn-stuAcaReject').on('click', function(){
         $.ajax ({
-          url: 'stuAcaReject',
+          url: '/stuAcaReject',
           type: 'POST',
           data: { acaId : /*[[${aca.acaId}]]*/, acaReject : $('#acaReject textarea').val() },
           success: () => {
             // ajax요청시 컨트롤러에서 redirect하면 서버만 따로 돌고, 페이지 이동이 안 됨. 여기서 location.href로 이동해야 함
-            window.location.href='allAcaInfo' 
+            window.location.href='/allAcaInfo' 
           },
           error: (e) => { console.log(e) }
         })

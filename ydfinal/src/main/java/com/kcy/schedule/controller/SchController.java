@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.kcy.schedule.service.SchService;
@@ -20,15 +21,20 @@ public class SchController {
     public String allSch() {
         return "pages/scheduleMgr/allSch";
     };
-
     
     // 학사 일정 표시 (모든 사용자)
     @ResponseBody
     @RequestMapping("/allSchProc")
     public List<Map<?, ?>> allSchProc() {
         List<Map<?, ?>> list = service.allSchProc();
-        
         return list;
+    };
+    
+    // 학사 일정 등록 (행정)
+    @ResponseBody
+    @RequestMapping("/allSchInsert")
+    public void allSchInsert(@RequestParam Map<?, ?> map) {
+        service.allSchInsert(map);
     };
 
 }
