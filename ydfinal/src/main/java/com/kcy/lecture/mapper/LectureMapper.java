@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.kcy.lecture.service.LectureVO;
 import com.kcy.lecture.service.OpenLectureVO;
+import com.kcy.lecture.service.TimetableVO;
 
 public interface LectureMapper {
 
@@ -23,6 +24,10 @@ public interface LectureMapper {
     public List<OpenLectureVO> 	majorSelect(OpenLectureVO vo);
     
     public OpenLectureVO myMajor(OpenLectureVO vo);
+    
+
+    
+    
 	
 	
 }

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kcy.lecture.mapper.TimetableMapper">
+
+	<select id="classtimeselect" resultType="com.kcy.lecture.service.TimetableVO">
+	
+		SELECT kct.class_timetable_id,kc.class_id
+		 from k_class kc 
+		join k_class_time kct on kc.class_id  = kct.class_id
+		
+		WHERE kc.class_id = #{classId};
+		
+	</select>
+	
+	<select id="classMembertimeselect" resultType="com.kcy.lecture.service.TimetableVO">
+	
+		SELECT kct.class_timetable_id, kcm.class_id
+		 from k_class_member kcm 
+		join k_class_time kct on kct.class_id = kcm.class_id
+		
+		where kcm.stu_id =#{userId};
+	
+	
+	</select>	
+	
+		
+</mapper>
