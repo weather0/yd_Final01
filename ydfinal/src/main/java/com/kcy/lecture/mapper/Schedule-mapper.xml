@@ -48,5 +48,11 @@
 		
 		</select>
 
+	<update id="lectureCheck">
+		UPDATE k_class_reg
+			 SET class_yn = 't'
+			WHERE class_id = #{classId}
+	
+	</update>
 
 </mapper>

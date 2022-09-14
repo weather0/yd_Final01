@@ -12,4 +12,5 @@ public interface ScheduleService {
 	public void scheduleAllInsert(List<ClassScheduleVO> list);
 	
 	public List<Map<String,String>> classScheduleSelect(ClassScheduleVO vo);
+	
 }

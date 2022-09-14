@@ -38,7 +38,7 @@
 					<thead>
 						<tr>
 							<th
-								class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">강좌</th>
+								class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">교과목</th>
 							<th
 								class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">학기</th>
 							<th
@@ -51,7 +51,7 @@
 
 					<tbody>
 						<tr th:each="data:${evalList}">
-							<td th:text="${data.class_id}">
+							<td th:text="${data.course_title}">
 							<td th:text="|${data.class_sem}학기|">
 							<td th:text="|${data.course_title}수업에 ${data.user_name}교수 평가지|">
 							<td><a class="btn btn btn-secondary btn-sm" th:text="결과보기"

@@ -63,4 +63,5 @@ public class LectureServiceImpl implements LectureService {
 		mapper.gpaStandardInsert(vo);
 	}
 
+	
 }
