@@ -124,7 +124,7 @@
             var now = new Date(`${year}-${month >= 10 ? month : '0' + month}-${date >= 10 ? date : '0' + date}`)
             
             if (clickDate < now) {
-              Swal.fire({
+              Kcy.fire({
                 icon: 'error',
                 html: '<h5>지난 일정은 등록이 불가능합니다</h5>',
                 confirmButtonColor: '#3788d8'
@@ -151,13 +151,13 @@
               if (arg.view.type == 'dayGridMonth' && dur == 1) {
                 $('#allday').removeAttr('disabled') // 종일 스위치 언락
                 $('#schS').val(arg.startStr); // 시작일만 삽입
-                $('#schS').parent().addClass('is-filled'); // is-filled: 인풋창 애니메이션 상태 ON
+                $('#schS').parent().addClass('is-filled'); // is-filled: 인풋창 애니메이션 상태 ON (해야 이뿌게 나옴)
                 $('#schE').parent().addClass('is-filled');
                 $('#modal-schInsert').modal('show'); // 모달 켜기
                 $('#schS').datetimepicker('destroy'); // datetimepicker OFF
                 $('#schE').datetimepicker('destroy');
               } else {
-                $('#allday').prop('disabled',true); // 종일 스위치 락
+                $('#allday').prop('disabled',true); // 종일 스위치 락 *모든 버그의 원흉!!! 
                 $('#schS').val(arg.startStr);
                 $('#schE').val(modEnd); // modEnd 주의!
                 $('#schS').parent().addClass('is-filled');
@@ -278,14 +278,14 @@
 
                     <div class="input-group input-group-outline my-3">
                       <label class="form-label">내용</label>
-                      <input type="text" class="form-control fw-bold" id="schT" required>
+                      <input type="text" class="form-control fw-bold" id="schT">
                     </div>
                     <div class="input-group input-group-outline my-3">
                       <label class="form-label">담당자</label>
-                      <input type="text" class="form-control fw-bold" id="schM" required>
+                      <input type="text" class="form-control fw-bold" id="schM">
                     </div>
                     <div class="input-group input-group-outline mb-3">
-                      <select class="form-control fw-bold" id="schType" required>
+                      <select class="form-control" id="schType">
                         <option style="background-color: lightgrey" disabled selected>일정구분</option>
                         <option class="fw-bold">일반</option>
                         <option class="fw-bold">신청</option>
@@ -296,7 +296,7 @@
                     </div>
                     <script>
                       $('#schType').on('change', function(){
-                        $(this).css('border','solid black 2px');
+                        $(this).css({'border':'solid black 2px', 'font-weight':'bold'});
                       })
                     </script>
                     
@@ -359,10 +359,13 @@
       });
     }
     
-    // 수동 등록 버튼 클릭시
+    
+    // 수동 등록하기 버튼 클릭시
     $('#btn-showSchInsert').on('click', function(){
-      makeDTP ();
+      $('#allday').removeAttr('disabled'); // *모든 버그의 원흉!! 이걸 안 적어줘서 애먼 그 아래 input에 계속 자동 focus되는 개같은 버그가..
+      makeDTP (); // DT피커 생성
     })
+    
     
     
     // 모달 닫을 때 폼 초기화
@@ -372,7 +375,15 @@
       // 종일스위치 켠 상태에서 모달 끄면 속성 상태 그대로 남아서 다시 모달 열 때 버그 생기니까, 스위치 끌 때와 똑같이 수동 처리해주자 
 //       $('#schS').datetimepicker({timepicker:true, format: 'Y-m-d (D) H:i'});
       $('#schE').removeAttr('disabled');
-      // 아니 아예 DT피커를 지워줘야 다시켤때 중복버그 안 뜸
+      
+      // is-filled: 인풋창 애니메이션 상태 OFF (다시 모달 켰을 때 input들 모양에 영향)
+      $('#schS').parent().removeClass('is-filled'); 
+      $('#schE').parent().removeClass('is-filled');
+      $('#schT').parent().removeClass('is-filled');
+      $('#schM').parent().removeClass('is-filled');
+      $('#schType').removeAttr('style');
+      
+     // DT피커 소멸
       $('#schS').datetimepicker('destroy');
       $('#schE').datetimepicker('destroy');
     })
@@ -381,69 +392,69 @@
     
     // 등록 버튼 클릭시
     // datetimepicker용 input은 required 옵션이 안 먹어서 수동으로 함수 제작
-    // schType는 옵션의 타이틀이 애초에 선택되어 있어서(disabled selected) required 안 먹는 듯
     $('#btn-schInsert').on('click', function(){
-//       console.log($('#schType').val())
       if ($('#schS').val() == '' || $('#schS').val() == null) {
         event.preventDefault(); // submit이벤트버블링 차단
-        Swal.fire({
+        Kcy.fire({
           icon: 'error',
           html: '<h5>시작일시는 필수입니다</h5>',
           confirmButtonColor: '#3788d8'
         })
       } else if ( getDateDiff($('#schE').val(), $('#schS').val()) <= 0 ) {
           event.preventDefault();
-          Swal.fire({
+          Kcy.fire({
             icon: 'error',
             html: '<h5>종료일시는 시작일시보다 이후여야 합니다</h5>',
             confirmButtonColor: '#3788d8'
           })
       } else if ($('#schT').val() == '' || $('#schT').val() == null) {
         event.preventDefault();
-        Swal.fire({
+        Kcy.fire({
           icon: 'error',
           html: '<h5>내용은 필수입니다</h5>',
           confirmButtonColor: '#3788d8'
         })
       } else if ($('#schM').val() == '' || $('#schM').val() == null) {
         event.preventDefault();
-        Swal.fire({
+        Kcy.fire({
           icon: 'error',
           html: '<h5>담당자는 필수입니다</h5>',
           confirmButtonColor: '#3788d8'
         })
       } else if ($('#schType').val() == '' || $('#schType').val() == null) {
         event.preventDefault();
-        Swal.fire({
+        Kcy.fire({
           icon: 'error',
           html: '<h5>일정구분은 필수입니다</h5>',
           confirmButtonColor: '#3788d8'
         })
       } else {
         event.preventDefault();
-        Swal.fire({
+        Kcy.fire({
           title: '등록하시겠습니까?',
-//           text: "You won't be able to revert this!",
+//           html: "<h5>등록하시겠습니까?</h5>",
           icon: 'warning',
-          showCancelButton: true,
           confirmButtonColor: '#3085d6',
-          confirmButtonText: 'Yes, delete it!'
+          confirmButtonText: '등록',
+          showCancelButton: true,
+          cancelButtonText: '취소'
         }).then((result) => {
           if (result.isConfirmed) {
-            Swal.fire(
-              'Deleted!',
-              'Your file has been deleted.',
+            Kcy.fire(
+              '등록완료!',
+              '',
               'success'
             )
           }
         })
+        
+        
       }
       
       
       
       
-      
-    }) // End: 등록 버튼 클릭
+    }) // End: 등록 버튼 클릭 이벤트
     
 
       
