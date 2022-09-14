@@ -15,6 +15,7 @@ public class UserVo implements UserDetails {
 	private String userId;
 	private String userType;
 	private String userPw;
+	private String pw;
 	private String userEmail;
 	private String myName; // 9.7. 곽ㅈㅇ: mybatis와 연동 수정
 	private String userSsn;

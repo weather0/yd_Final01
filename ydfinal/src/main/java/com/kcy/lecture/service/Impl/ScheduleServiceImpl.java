@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.kcy.lecture.mapper.ScheduleMapper;
 import com.kcy.lecture.service.ClassScheduleVO;
+import com.kcy.lecture.service.LectureVO;
 import com.kcy.lecture.service.ScheduleService;
 
 @Service
@@ -43,6 +44,10 @@ public class ScheduleServiceImpl implements ScheduleService {
 		
 		return mapper.classScheduleSelect(vo);
 	}
+
+
+
+
 	
 	 
 	

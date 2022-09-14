@@ -15,7 +15,9 @@
 		ON 
 				c.course_id = cs.course_id
 		WHERE 
-				prof_id = #{userId};
+				prof_id = #{userId}
+		AND
+                c.class_ck > 0
 	</select>
 	
 	<select id="scoresMemberList" resultType="com.kcy.scores.service.ScoresVo">

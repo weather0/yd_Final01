@@ -21,4 +21,42 @@
 		  FROM k_users
          WHERE USER_ID= #{userId}
 	</select>
+	
+	<select id="findUserByUserId" resultType="com.kcy.login.service.UserVo" parameterType="string">
+		SELECT
+				*
+		FROM
+				k_users
+		WHERE
+				user_email = #{userEmail}
+	</select>
+	 
+	<update id="updateUserPassword" parameterType="com.kcy.login.service.UserVo">
+		UPDATE
+				k_users
+		SET
+				user_pw = #{pw}
+		WHERE
+				user_email = #{userEmail}
+	</update>
+	
+	<select id="userChangePw" resultType="com.kcy.login.service.UserVo">
+		select 
+			   user_id, 
+			   user_type, 
+               user_name my_name, 
+               user_ssn, 
+               user_sex, 
+               user_dept, 
+               user_addr, 
+               user_phone, 
+               user_email, 
+               user_pw, 
+               user_nation, 
+               user_pic
+			from
+				k_users
+			where
+				user_email = #{userEmail}
+	</select>
 </mapper>

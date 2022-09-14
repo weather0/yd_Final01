@@ -37,6 +37,7 @@ import com.kcy.lecture.mapper.LectureMapper;
 import com.kcy.lecture.mapper.MajorMapper;
 import com.kcy.lecture.mapper.RoomMapper;
 import com.kcy.lecture.mapper.ScheduleMapper;
+import com.kcy.lecture.mapper.TimetableMapper;
 import com.kcy.lecture.service.ClassScheduleVO;
 import com.kcy.lecture.service.CourseVO;
 import com.kcy.lecture.service.EnrolmentService;
@@ -46,12 +47,13 @@ import com.kcy.lecture.service.LectureVO;
 import com.kcy.lecture.service.MajorVO;
 import com.kcy.lecture.service.OpenLectureVO;
 import com.kcy.lecture.service.RoomVO;
+import com.kcy.lecture.service.TimetableVO;
 import com.kcy.lecture.service.Impl.ScheduleServiceImpl;
+import com.kcy.mentoring.schedule.vo.scheduleVO;
 
 import lombok.RequiredArgsConstructor;
 
 @Controller
-@RequiredArgsConstructor
 public class LectureController {
 
 	@Autowired
@@ -66,8 +68,15 @@ public class LectureController {
 	MajorMapper majormapper;
 	@Autowired
 	LectureMapper mapper;
-	private final LectureService lectureService;
-	private final EnrolmentService enrolmentService;
+	
+	@Autowired
+	TimetableMapper tmapper;
+	
+	@Autowired
+	LectureService lectureService;
+	@Autowired
+	EnrolmentService enrolmentService;
+	
 	@Value("${spring.servlet.multipart.location}")
 	String filePath;
 
@@ -165,10 +174,11 @@ public class LectureController {
 
 	// 수강신청 페이지 보여주는 부분
 	@GetMapping("/openlecturelist")
-	public String openletureList(Model model, Principal principal, EnrolmentVO vo, OpenLectureVO vo1) {
+	public String openletureList(Model model, Principal principal, EnrolmentVO vo, OpenLectureVO vo1, TimetableVO vo2) {
 		// 섹션이 갖고 있는 userId를 vo에 실어서 보냄
 		vo.setUserId(principal.getName());
 		vo1.setUserId(principal.getName());
+		vo2.setUserId(principal.getName());
 
 		// 한 페이지에서 수강신청과 수강신청완료 페이지를 보여주기 위해서 두 데이터를 같이 넘긴다
 		// gradesCheck는 총 학점을 체크하기 위한 데이터를 보내는 부분
@@ -176,6 +186,7 @@ public class LectureController {
 		model.addAttribute("enrolmentlist", enrolmentService.enrolmentList(vo));
 		model.addAttribute("gradesCk", enrolmentService.gradesCheck(vo));
 		model.addAttribute("myMajor",mapper.myMajor(vo1));
+		model.addAttribute("classMemberTimeCk",tmapper.classMembertimeselect(vo2));
 		return "pages/classMgr/OpenLectureList";
 	}
 	
@@ -211,12 +222,33 @@ public class LectureController {
 	public List<ClassScheduleVO> schedulelist(Model model, ClassScheduleVO vo) {
 		model.addAttribute("list", scmapper.selectschedule(vo));
 		return scmapper.selectschedule(vo);
+		
 	}
+	
+	@GetMapping("/timeselect")
+	@ResponseBody
+	public List<TimetableVO> timeSelect( Model model, TimetableVO vo){
+		model.addAttribute("classTimeCk",tmapper.classtimeselect(vo));
+		return tmapper.classtimeselect(vo);
+	}
+	
+	
+	
+	
+	
+	
+	
 	//행정처가 체크한 시간/강의실을 추가하는 부분
 	@PostMapping("/scheduleinsert")
 	@ResponseBody
 	public String scheduleInsert(@RequestBody List<ClassScheduleVO> list) {
 		scheduleservice.scheduleAllInsert(list);
+		return "true";
+	}
+	@PostMapping("/lectureCheck")
+	@ResponseBody
+	public String lectureCheck(LectureVO vo) {
+		scmapper.lectureCheck(vo);
 		return "true";
 	}
 	//나의 맞는 강의 시간표를 보여주는 페이지

@@ -64,26 +64,14 @@
             m.major_name = u.user_dept
         WHERE
        <choose>
-        <when test="classId != null">
+        <when test="classId != null || classNoticeType != null">
         	c.class_id = #{classId}
        	AND
-        </when>
-        <when test="classNoticeType != null">
-        	cn.class_id = #{classId}
+       	        	cn.class_notice_type = #{classNoticeType}
        	AND
         </when>
        </choose>
-            c.class_id in (
-            				SELECT class_id 
-                              FROM k_class_member 
-                             WHERE stu_id = #{userId}
-                            )
-        OR
-        	c.class_id in (
-        					SELECT class_id
-        					  FROM k_class
-        					 WHERE prof_id = #{userId}
-        					)
+			u.user_id = #{userId}
 	</select>
 	
 	<update id="noticeModify">

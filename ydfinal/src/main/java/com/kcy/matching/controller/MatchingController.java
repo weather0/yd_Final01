@@ -6,10 +6,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.kcy.bill.service.MajorbVO;
@@ -52,7 +54,21 @@ public class MatchingController {
 	
 	//지도교수 매칭 페이지 
 	@RequestMapping("/matchingStd")
-	public String matchingStd(MatchingStdVO svo, MatchingProfVO pvo, Model model) {
+	public String matchingStd(MatchingStdVO svo, MatchingProfVO pvo, Model model) {		
+	return "pages/mentorMgr/matching/matching";
+	}
+	
+	//지도교수 매칭 상세
+	@RequestMapping(value = "/matchingStdInfo", method = RequestMethod.POST)
+	public String matchingStdInfo(MatchingStdVO svo, MatchingProfVO pvo, Model model) {
+		model.addAttribute("matchingStd", service.matchingStdList(svo));
+		model.addAttribute("matchingProf", service.matchingProfList(pvo));
+	return "pages/mentorMgr/matching/matching";
+	}
+	
+	//지도교수 매칭 상세
+	@RequestMapping(value = "/matchingProfInfo", method = RequestMethod.POST)
+	public String matchingProfInfo(MatchingStdVO svo, MatchingProfVO pvo, Model model) {
 		model.addAttribute("matchingStd", service.matchingStdList(svo));
 		model.addAttribute("matchingProf", service.matchingProfList(pvo));
 	return "pages/mentorMgr/matching/matching";
@@ -61,7 +77,11 @@ public class MatchingController {
 	//지도교수 매칭
 	@PostMapping("/matching")
 	@ResponseBody
-	public String matching(MatchingVO vo) {
+	public String matching(MatchingVO vo, @RequestParam(value="Id") List<String> id, @RequestParam(value="userId") String userId) {
+		System.out.println(userId);
+		System.out.println(id.size());
+		vo.setUserId(userId);
+		vo.setId(id);
 		service.matching(vo);
 		service.matchingStd(vo);
 		return "1";

@@ -35,10 +35,10 @@
          <option th:text="${c.courseTitle}" th:value="${c.classId}"></option>
       </th:block>       
    </select>
-   <select class="form-control" name="classNoticeType">
+   <select class="form-control" name="classNoticeType" id="classNoticeType">
    	<option value="">구분</option>
-   	<option value="notice">공지</option>
-   	<option value="noticedata">자료</option>
+   	<option th:value="notice">공지</option>
+   	<option th:value="noticedata">자료</option>
    </select>
       <button type="submit" class="btn bg-gradient-primary" th:value="검색">검색</button>
    </form>

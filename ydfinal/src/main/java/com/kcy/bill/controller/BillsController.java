@@ -147,7 +147,7 @@ public class BillsController {
 		return "1";
 	}	
 	
-	//등록금 고지(일괄)
+	//등록금 고지(단건)
 	@PostMapping("/payInsert")
 	@ResponseBody
 	public String payInsert(PayVO vo) {
@@ -158,8 +158,7 @@ public class BillsController {
 	//등록금 고지(선택)
 	@PostMapping("/chkPayInsert")
 	@ResponseBody
-	public String chkPayInsert(PayVO vo, @RequestParam(value="Id") List<String> id) {
-				
+	public String chkPayInsert(PayVO vo, @RequestParam(value="Id") List<String> id) {				
 		vo.setId(id);		
 		service.chkPayInsert(vo);
 		return "1";

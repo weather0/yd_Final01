@@ -46,6 +46,7 @@
 								id="button-addon2">검색</button>
 						</div>
 					</form>
+					
 				</div>
 				<table id="studentInCharge" class="table align-items-center mb-0 table-hover">
 					<thead>
@@ -54,6 +55,8 @@
 								class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">학생이름</th>
 							<th
 								class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">학번</th>
+							<th
+								class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">교과목</th>
 							<th
 								class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">전공</th>
 							<th
@@ -70,6 +73,7 @@
 						<tr th:each="data:${stulist}">
 							<td th:text="${data.user_name}"></td>
 							<td th:text="${data.stu_id}"></td>
+							<td th:text="${data.course_title}"></td>
 							<td th:text="${data.user_dept}"></td>
 							<td th:text="${data.user_sex}"></td>
 							<td th:text="${data.user_addr}"></td>
