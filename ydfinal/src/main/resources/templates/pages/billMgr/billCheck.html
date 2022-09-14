@@ -192,11 +192,15 @@
 			</div>
 		</div>	
 		
-		<div class="col-md-3">
-			<div class="input-group input-group-outline my-3">
-				<button type="button" class="btn btn-primary change" id="payIn" name="payIn">납부</a>
-			</div>
-		</div>		
+		<form id="acount" method="get" action="/acount/list">
+			<input type="hidden" id="accessToken" name="accessToken" th:value="${bill.studentToken}" value=""></input>
+    		<input type="hidden" id="userSeqNo" name="userSeqNo" value="1101012426"></input>
+		    <input type="hidden" id="includeCancelYn" name="includeCancelYn" value="N"></input>
+    		<input type="hidden" id="sortOrder" name="sortOrder" value="D"></input>
+				<div class="col-md-3">
+						<button type="button" class="btn btn-primary" id="payIn" name="payIn">계좌</a>				
+				</div>
+		</form>		
 		
 		<span th:if="${!bill.payHType.toString().equals('b')}">		
 			<div class="col-md-3">
@@ -308,17 +312,16 @@
 						+ "state=12345678901234567890123456789012"
 						});
 					
- 					$("#payIn").click(function() {
- 						var tk = document.getElementById("token").innerHTML;
- 						console.log(tk);
- 						$.ajax({
- 							type : "GET",
- 							url : "/accountList",
- 							data : {
- 								accessToken : tk
- 							}
-							});
- 						});
+//  					$("#payIn").click(function() {
+//  						var tk = document.getElementById("token").innerHTML; 						
+//  						$.ajax({
+//  							type : "GET",
+//  							url : "/accountList",
+//  							data : {
+//  								accessToken : tk
+//  							}
+// 							});
+//  						});
 				</script>
 
 				<!-- 본문 end-->

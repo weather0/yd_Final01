@@ -141,8 +141,8 @@
          u.user_pic
          
     from k_users u 
-    join k_students s on (u.user_id = s.stu_id) 
-    join k_credit c using (stu_id) 
+    left join k_students s on (u.user_id = s.stu_id) 
+    left join k_credit c using (stu_id) 
     
    where u.user_id = #{param} <!-- get방식으로 파라미터 id 하나만 들어가므로 임의로 적어도 됨(예:param) -->
 </select>

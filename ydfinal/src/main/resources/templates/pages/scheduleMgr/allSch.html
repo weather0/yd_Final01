@@ -7,25 +7,65 @@
 <th:block layout:fragment="content">
 
   <style>
-  
+    /* 모달닫기 꼽표(x) span */
+    #closeModal { 
+      cursor: default /* 커서 모양 화살표로 */
+    }
+    #closeModal:hover { 
+      font-size: larger;
+    }
+    
   </style>
   
   <script>
     document.addEventListener('DOMContentLoaded', function() {
+      
+      // 두 날짜 차이 구하기 함수 (매개값으로 날짜형식같이 생긴 스트링값이면 인식함)
+      const getDateDiff = (d1, d2) => {
+        const date1 = new Date(d1);
+        const date2 = new Date(d2);
+        
+        const diffDate = date1.getTime() - date2.getTime();
+        
+        return diffDate / (1000 * 60 * 60 * 24);
+      }
+      
+      // yyyy-MM-dd 형식 변환 함수
+      const yyyy = (date) => {
+        
+        let year = date.getFullYear();
+        
+        let month = date.getMonth();
+        month += 1;
+        if (month <= 9){
+            month = "0" + month;
+        }
+        
+        let day = date.getDate();
+        if (day <= 9){
+            day = "0" + day;
+        }
+        
+        let newDate = year + '-' + month + '-' + day;
+        return newDate;
+      }
+
+      
+      // 초기 로딩 시
       $.ajax ({
         url: '/allSchProc',
         success: function (data) {
-          console.log(data);
+//           console.log(data);
           allSch(data);
         }
       })
       
       
-      
+      // Start: 캘린더콜백함수
       function allSch (data) {
         var calendarEl = document.getElementById('allSch');
         var calendar = new FullCalendar.Calendar(calendarEl, {
-          height: 'auto',
+          height: 'auto', // 화면 맞춤
           locale: 'kr',
           initialView: 'dayGridMonth',
           headerToolbar : {
@@ -36,15 +76,17 @@
           editable : true,
           selectable : true,
           selectMirror : true,
+          navLinks: true, // 달력에서 일 글자 클릭시 day뷰로 전환
           
-          eventTimeFormat: { // like '14:30:00'
+          eventTimeFormat: {
             hour: '2-digit',
             minute: '2-digit',
             meridiem: false,
-            hour12: false
+            hour12: false // 24시간제
           },
 //           displayEventTime: false,
-          
+//           slotMinTime: '03:00:01',
+//           slotMaxTime: '20:59:59',
           
           // 개꿀 기능! sql문 각 칼럼 AS 쓸 필요 없이 *로 조지고 여기서 약속key명(title,start등)으로 바꾸자
           eventDataTransform: function (data) {
@@ -52,13 +94,97 @@
             data.title = data.schTitle;
             data.start = data.schStart;
             data.end = data.schEnd;
+            data.allDay = data.schAllday;
+            switch (data.schType) {
+              case 'APPLY': data.color = '#03a9f4'
+                break;
+              case 'CLASS': data.color = '#4caf50'
+                break;
+              case 'EXAM': data.color = '#fb8c00'
+                break;
+              case 'GENERAL': data.color = '#7b809a'
+                break;
+              case 'HOLIDAY': data.color = '#f44335'
+                break;
+            }
             return data;
           },
-          events: data
-        });
+          events: data, // 일정들[]
+          
+          // 칸 선택(드래그포함)시 동작
+          select: function (arg) { 
+            
+            // 지난 일정 선택시 처리
+            var today = new Date();
+            const year = today.getFullYear();
+            const month = today.getMonth() + 1;
+            const date = today.getDate();
+            
+            var clickDate = new Date(arg.startStr);
+            var now = new Date(`${year}-${month >= 10 ? month : '0' + month}-${date >= 10 ? date : '0' + date}`)
+            
+            if (clickDate < now) {
+              Swal.fire({
+                icon: 'error',
+                title: 'Oops..',
+                html: '<h5>지난 일정은 등록이 불가능합니다</h5>',
+                confirmButtonColor: '#3788d8'
+              })
+              
+            // 정상 일정 선택시 처리
+            } else {
+              console.log(arg); // 선택액션만으로 여러값들이 자동 생성된다 확인해보자
+              
+              // 풀캘린더의 요상한 select방식(예: 달력상으로 23일까지 선택하면 24일00시를 end로 잡음)을 직관적으로 처리해보자!
+              // 1. end: 날짜타입 원데이터(GMT기준)
+              // 2. getTime(): 1970.1.1. 기준 밀리초로 변환 (여기서 1빼면 전날 23:59:59.999가 됨)
+              //   사실 2번은 생략해도 된다(숫자연산 시 자동 형변환 하는 듯). 즉, (arg.end-1) = (arg.end.getTime()-1)
+              // 3. new Date(): 숫자타입(밀리초)을 다시 날짜타입으로 변환
+              // 4. 위에 정의한 yyyy함수로 yyyy-MM-dd형식으로 변환하자
+              let modEnd = yyyy(new Date(arg.end.getTime()-1));
+              console.log(modEnd);
+              
+              // dur은 쉽게말해 달력에서 선택한 칸 수가 된다
+              let dur = getDateDiff(arg.endStr, arg.startStr);
+              
+              // '월달력'에서 '단일칸' 선택시에만 '종일 스위치' 사용 가능
+              // (즉 다른 view에서 수동으로 24시간 맞춤 드래그한 경우는 제외)
+              if (arg.view.type == 'dayGridMonth' && dur == 1) {
+                $('#allday').removeAttr('disabled') // 종일 스위치 언락
+                $('#schS').val(arg.startStr); // 시작일만 삽입
+                $('#schS').parent().addClass('is-filled'); // is-filled: 인풋창 애니메이션 상태 ON
+                $('#schE').parent().addClass('is-filled');
+                $('#schS').datetimepicker('destroy'); // datetimepicker OFF
+                $('#schE').datetimepicker('destroy');
+                $('#modal-schInsert').modal('show'); // 모달 켜기
+              } else {
+                $('#allday').prop('disabled',true); // 종일 스위치 락
+                $('#schS').val(arg.startStr);
+                $('#schE').val(modEnd); // modEnd 주의!
+                $('#schS').parent().addClass('is-filled');
+                $('#schE').parent().addClass('is-filled');
+                $('#schS').datetimepicker('destroy');
+                $('#schE').datetimepicker('destroy');
+                $('#modal-schInsert').modal('show');
+              }
+            
+//             calendar.addEvent({
+//               title: title,
+//               start: arg.start,
+//               end: arg.end,
+//               allDay: arg.allDay,
+//             })
+
+            } // End: else
+          } // End: select
+          
+          
+        }); // End: 캘린더객체
+//         console.log( calendar.getEventById('C21-029') ); // 이벤트id로 일정 확인
+//         console.log( calendar.getEvents() ); // 전체 일정 뽑기
         calendar.render();
         
-      }
+      } // End: 캘린더콜백함수
         
 
       
@@ -80,7 +206,7 @@
 <!--         </div> -->
 <!--       </div> -->
     
-      <div class="card p-3 me-3 mb-10 w-80 border border-5" style="margin-top: 3px;">
+      <div class="card p-3 me-3 mb-1 w-80 border border-5" style="margin-top: 3px;">
       
         <div class="card-header p-0 position-relative mt-n4 mb-4 z-index-2">
           <div class="bg-secondary bg-gradient-secondary shadow-secondary border-radius-lg py-3">
@@ -89,13 +215,214 @@
         </div>
 
 
+        <!-- FullCalendar -->
         <div id="allSch"></div>
         
-        
       </div> <!-- card -->
+      
+      
+      
+      <!-- Start modal -->
+      <button type="button" class="btn btn-block btn-light mb-3" id="btn-showSchInsert" data-bs-toggle="modal" data-bs-target="#modal-schInsert">Form</button>
+      
+      <div class="modal fade" id="modal-schInsert" tabindex="-1" role="dialog" aria-labelledby="modal-schInsert" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-sm" role="document"> <!-- modal-sm: 가로 크기 조절 -->
+          <div class="modal-content">
+            <div class="modal-body p-0">
+              <div class="card card-plain">
+              
+                <div class="card-header pb-2 text-left">
+                  <div class="text-end fw-bold fs-5" style="height: 10px;">
+                    <span class="p-2" id="closeModal">×</span>
+                  </div>
+                  <script>
+                    // 모달닫기 꼽표(x)
+                    $('#closeModal').on('click', function(){
+                      $('#modal-schInsert').modal('hide');
+                    })
+                  </script>
+                  <h5>일정 등록</h5>
+                </div>
+                
+                <div class="card-body pt-0">
+                  <form role="form text-left">
+                  
+                    <div class="form-check form-switch d-flex align-items-center">
+                      <input class="form-check-input my-2" type="checkbox" id="allday">
+                      <label class="form-check-label mb-0 ms-3 fw-bold" for="allday" 
+                             data-bs-toggle="tooltip" title="하루 단위 일정에만 지정 가능">종일
+                      </label>
+                    </div>
+                    <div class="input-group input-group-outline my-3">
+                      <label class="form-label">시작</label>
+                      <input type="text" class="form-control fw-bold" id="schS" readonly />
+                    </div>
+                    <div class="input-group input-group-outline my-3">
+                      <label class="form-label">종료</label>
+                      <input type="text" class="form-control fw-bold" id="schE" readonly />
+                    </div>
+                    
+                    <script>
+                      // '종일'스위치 토글할 때
+                      $('#allday').on('change', function() {
+                        if( $(this).is(':checked') ) {
+                          $('#schS').val($('#schS').val().substring(0,15)); // 기존 input 값 시,분 날리고
+                          $('#schS').datetimepicker({timepicker:false, format: 'Y-m-d (D)'}); // 시간피커와 양식도 날리기
+                          $('#schE').val(null); // 종료 input 날리고 
+                          $('#schE').prop('disabled', true); // 비활성화
+                        } else {
+                          $('#schS').datetimepicker({timepicker:true, format: 'Y-m-d (D) H:i'});
+                          $('#schE').removeAttr('disabled');
+                        }
+                      })
+                    </script>
+
+                    <div class="input-group input-group-outline my-3">
+                      <label class="form-label">내용</label>
+                      <input type="text" class="form-control fw-bold" id="schT" required>
+                    </div>
+                    <div class="input-group input-group-outline my-3">
+                      <label class="form-label">담당자</label>
+                      <input type="text" class="form-control fw-bold" id="schM" required>
+                    </div>
+                    <div class="input-group input-group-outline mb-3">
+                      <select class="form-control fw-bold" id="schType" required>
+                        <option style="background-color: lightgrey" disabled selected>일정구분</option>
+                        <option class="fw-bold">일반</option>
+                        <option class="fw-bold">신청</option>
+                        <option class="fw-bold">수업</option>
+                        <option class="fw-bold">시험</option>
+                        <option class="fw-bold">공휴일</option>
+                      </select>
+                    </div>
+                    <script>
+                      $('#schType').on('change', function(){
+                        $(this).css('border','solid black 2px');
+                      })
+                    </script>
+                    
+                    <div class="text-center">
+                      <button type="submit" class="btn btn-round bg-gradient-info btn-lg w-100 mt-4 mb-0 fs-5"
+                              id="btn-schInsert">등록</button>
+                    </div>
+                    
+                  </form>
+                </div> <!-- card-body -->
+                
+                <div class="card-footer text-center pt-0 px-lg-2 px-1">
+<!--                   <p class="mb-4 text-sm mx-auto"> -->
+<!--                     Don't have an account? -->
+<!--                     <a href="javascript:;" class="text-info text-gradient font-weight-bold">Sign up</a> -->
+<!--                   </p> -->
+                </div>
+                
+              </div> <!-- card -->
+            </div> <!-- modal-body -->
+          </div> <!-- modal-content -->
+        </div> <!-- modal-dialog -->
+      </div> <!-- modal -->
+      
+      
+
+      
+      
+      
     </div> <!-- row -->
   </div>
   <!-- 본문 end-->
+  <script>
+    // 두 날짜 차이 구하기 함수 (매개값으로 날짜형식같이 생긴 스트링값이면 인식함)
+    const getDateDiff = (d1, d2) => {
+      const date1 = new Date(d1);
+      const date2 = new Date(d2);
+      
+      const diffDate = date1.getTime() - date2.getTime();
+      
+      return diffDate / (1000 * 60 * 60 * 24);
+    }
+    
+    // datetimepicker 생성
+    function makeDTP () {
+      jQuery.datetimepicker.setLocale('kr');
+      $('#schS').datetimepicker({
+        format: 'Y-m-d (D) H:i',
+        step: 30,
+        defaultTime:'00:00',
+        closeOnTimeSelect: false,
+        validateOnBlur: false, // 이거 false해줘야 인풋창 바깥 눌렀을때 초기화(=현재시각) 안 됨. 또한 위치주의!! 이 옵션은 맨 밑에 가야 함
+      });
+      $('#schE').datetimepicker({
+        format: 'Y-m-d (D) H:i',
+        step: 30,
+        defaultTime:'00:00',
+        closeOnTimeSelect: false,
+        validateOnBlur: false
+      });
+    }
+    
+    // 초기 로딩시
+    makeDTP ();
+    
+    // 수동 등록 버튼 클릭시
+    $('#btn-showSchInsert').on('click', function(){
+      makeDTP ();
+    })
+    
+    
+    // 모달 닫을 때 폼 초기화
+    $('#modal-schInsert').on('hide.bs.modal', function(){
+      $(this).find('form')[0].reset();
+      
+      // 종일스위치 켠 상태에서 모달 끄면 속성 상태 그대로 남아서 다시 모달 열 때 버그 생기니까, 
+      // 스위치 끌 때와 똑같이 수동 처리해주자 
+      $('#schE').removeAttr('disabled');
+      $('#schS').datetimepicker({timepicker:true, format: 'Y-m-d (D) H:i'});
+    })
+    
+    
+    // datetimepicker용 input은 required 옵션이 안 먹어서 수동으로 함수 제작
+    // schType는 옵션의 타이틀이 애초에 선택되어 있어서(disabled selected) required 안 먹는 듯
+    $('#btn-schInsert').on('click', function(){
+//       console.log($('#schType').val())
+      if ($('#schS').val() == '') {
+        event.preventDefault(); // submit이벤트버블링 차단
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops..',
+          html: '<h5>시작일시는 필수입니다</h5>',
+          confirmButtonColor: '#3788d8'
+        })
+      } else if ($('#schType').val() == null) {
+        event.preventDefault();
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops..',
+          html: '<h5>일정구분은 필수입니다</h5>',
+          confirmButtonColor: '#3788d8'
+        })
+      }
+
+      let dur = getDateDiff($('#schE').val(), $('#schS').val());
+//       console.log( dur )
+      if ( dur <= 0 ) {
+        event.preventDefault();
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops..',
+          html: '<h5>종료일시는 시작일시보다 이후여야 합니다</h5>',
+          confirmButtonColor: '#3788d8'
+        })
+      }
+      
+      
+    })
+    
+
+      
+   
+    
+    
+  </script>
   
 </th:block>
 </html>

@@ -6,6 +6,7 @@
 <select id="allSchProc" resultType="CustomMap">
   select * 
     from k_schedule
+   where sch_type != 'SEMESTER'
 </select>
 
 </mapper>

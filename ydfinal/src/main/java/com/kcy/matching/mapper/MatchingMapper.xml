@@ -108,7 +108,7 @@
 		ON ku.user_id = s.student_prof  
 		JOIN k_users ku2 
 		ON ku2.user_id = c.matching_want
-		WHERE c.matching_change_yn = '0'
+		WHERE c.matching_change_yn = '0'		
 </select>
 
 <select id="changeProgress" resultType="com.kcy.matching.service.MatchingChangeVO">

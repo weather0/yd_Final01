@@ -38,10 +38,11 @@ import com.kcy.bill.service.PayVO;
  */
 
 @Controller
-public class BillsController {
+public class BillsController {	
 	
 	@Autowired
-	BillsService service;	
+	BillsService service;
+	OpenBank bank;
 	
 	//등록금 고지 페이지 이동
 	@GetMapping("/billsInsert")
@@ -164,7 +165,7 @@ public class BillsController {
 		return "1";
 	}
 	
-	//개인 인증
+	//개인 인증 + 토큰 발급
 	@RequestMapping(value="/bankcallBack", produces = "application/json" )
 	public String bankCallback(@RequestParam Map map, String code, Principal principal, PayVO vo) throws JsonMappingException, JsonProcessingException {
 		System.out.println("callback===" + map);
@@ -176,14 +177,5 @@ public class BillsController {
 		service.insertToken(vo);		
 		return "redirect:billCheck";
 	}
-	
-	@GetMapping("/accountList")
-	@ResponseBody 
-	public void accountList(AccountListVO vo) {
-	OpenBank.getAccountInfo(vo);
-	
-	}
-	
-
-	
+		
 }

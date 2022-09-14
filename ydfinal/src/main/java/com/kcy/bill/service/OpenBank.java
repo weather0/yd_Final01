@@ -23,6 +23,8 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import com.google.gson.Gson;
 
@@ -31,6 +33,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class OpenBank {
 	
+	
+    private final HttpHeaders httpHeaders;
+    private final RestTemplate restTemplate;
+	
 	public static void main(String[] args) {
 		//Map<String,Object> map = BankAPI.getBalanceInfo();
 		//Map<String,Object> map = BankAPI.getTransactionInfo();
@@ -38,7 +44,7 @@ public class OpenBank {
 		//System.out.println(map);
 		AccountListVO vo = new AccountListVO();
 		vo.setAccessToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiIxMTAxMDEyNDI2Iiwic2NvcGUiOlsiaW5xdWlyeSIsImxvZ2luIiwidHJhbnNmZXIiXSwiaXNzIjoiaHR0cHM6Ly93d3cub3BlbmJhbmtpbmcub3Iua3IiLCJleHAiOjE2NzAzODM3NzIsImp0aSI6IjUwZjk2OTBmLTVjNjctNDE5Mi04MTNjLWU1ZTJhYThmYmY1ZCJ9.GIm1pP-mHdOy53xgtyL2U2K2S3EVzpurB9dV5KmZN4Q");
-		vo.setFintechUseNum("12022017288894115890060");
+		vo.setFintechUseNum("12022017288894115890060");		
 	}		
 	
 	String org_access_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiIxMTAxMDEyNDI2Iiwic2NvcGUiOlsiaW5xdWlyeSIsImxvZ2luIiwidHJhbnNmZXIiXSwiaXNzIjoiaHR0cHM6Ly93d3cub3BlbmJhbmtpbmcub3Iua3IiLCJleHAiOjE2NzAzODM3NzIsImp0aSI6IjUwZjk2OTBmLTVjNjctNDE5Mi04MTNjLWU1ZTJhYThmYmY1ZCJ9.GIm1pP-mHdOy53xgtyL2U2K2S3EVzpurB9dV5KmZN4Q";
@@ -154,6 +160,22 @@ public class OpenBank {
 		return sb.toString();
 	}
 	
+	public HttpHeaders setHeader(String access_token){
+        httpHeaders.add("Authorization", "Bearer "+access_token);
+        return httpHeaders;
+    }
+	
+	public AccountListVO requestAccountList(AccountListVO vo){
+        String url = "https://testapi.openbanking.or.kr/v2.0/account/list";
+        HttpEntity<String> openBankAcountSerchRequest = new HttpEntity<>(setHeader(vo.getAccessToken()));
+        UriComponents builder = UriComponentsBuilder.fromHttpUrl(url)
+                .queryParam("user_seq_no", "1101012426")
+                .queryParam("include_cancel_yn", "Y")
+                .queryParam("sort_order", "D")
+                .build();
+
+        return restTemplate.exchange(builder.toUriString(), HttpMethod.GET, openBankAcountSerchRequest, AccountListVO.class).getBody();
+    }
 	
 	public static Map<String,Object> getAccountInfo(AccountListVO vo){
 		String reqURL = "https://testapi.openbanking.or.kr/v2.0/account/list";
@@ -172,8 +194,8 @@ public class OpenBank {
         ResponseEntity<Map> response = restTemplate.exchange(	reqURL + "?" + param,
 				        									HttpMethod.GET,
 														    request,
-														    Map.class );
-        return response.getBody();
+														    Map.class );        
+        return response.getBody();        
 	}
 	
 	// 출금이체

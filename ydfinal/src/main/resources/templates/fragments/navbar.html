@@ -13,7 +13,7 @@
 
 </style>
 
-<script type="text/javascript">
+<script th:inline="javascript">
 $(function(){
   let soMenu = $('#sidenav-collapse-main .collapse a');
   let myId = [[${#authentication.name}]];
@@ -55,7 +55,7 @@ $(function(){
               <a class="fw-bold" id="qm3"></a>
           </li>
         </ul>
-        <script>
+        <script th:inline="javascript">
           let myId = [[${#authentication.name}]];
           let qm1 = Cookies.get(myId + '-qm1');
           let qm2 = Cookies.get(myId + '-qm2');
