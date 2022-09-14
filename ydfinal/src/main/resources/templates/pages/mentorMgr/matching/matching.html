@@ -5,14 +5,6 @@
 	layout:decorate="~{layouts/layout}">
 
 <th:block layout:fragment="content">
-	<link rel="stylesheet"
-		href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css" />
-	<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-	<script
-		src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
-	<script
-		src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
-
 	<style>
 .stdactive {
 	background-color: gray
@@ -47,9 +39,29 @@
 						<h6 class="text-white ps-3 m-0">지도 교수가 없는 학생 목록</h6>
 					</div>
 				</div>
-				<table class="table" id="matchingStd">
+				<form action="matchingStdInfo" method="post">
+					<div class="row">						
+						<div class="col-md-2">
+							<div class="input-group input-group-outline my-3">
+								<label class="form-label"></label> <select class="form-control"
+									name="stdDept" id="stdDept">
+									<option value="">학생 전공 선택</option>
+									<th:block th:each="mjr : ${majorb}">
+										<option th:text="${mjr.majorName}" th:value="${mjr.majorName}"></option>
+									</th:block>
+								</select>
+							</div>
+						</div>						
+						<div class="col-md-2">
+							<div class="input-group input-group-outline my-3">
+								<button class="btn btn-secondary">조회</button>
+							</div>
+						</div>
+					</div>
+				</form>
+				<table class="table" id="matchingStd">				
 					<thead>
-						<tr>
+						<tr>							
 							<th>학번</th>
 							<th>이름</th>
 							<th>전공</th>
@@ -60,16 +72,16 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr th:each="std:${matchingStd}">
+						<tr th:each="std:${matchingStd}">							
 							<td th:text="${std.stuId}"></td>
 							<td th:text="${std.userName}"></td>
 							<td th:text="${std.userDept}"></td>
 							<td th:text="${std.studentGrade}"></td>
 							<td th:text="${std.userPhone}"></td>
 							<td th:text="${std.studentAcaYn}"></td>
-							<td><span th:if="${std.studentProf == null}">
-									<button class="btn btn-secondary" onclick="onDisplay()">선택</button>
-							</span></td>
+							<td>
+								<input type="checkbox" name="stdchk" id="stdchk" onclick="stdset(this)"> 선택
+							</td>
 						</tr>
 					</tbody>
 				</table>
@@ -83,9 +95,10 @@
 					<div class="card-header p-0 position-relative mt-n4 mb-4 z-index-2">
 						<div
 							class="bg-secondary bg-gradient-secondary shadow-secondary border-radius-lg py-3">
-							<h6 class="text-white ps-3 m-0">교수 목록</h6>
+							<h6 class="text-white ps-3 m-0">매칭 가능한 교수 목록</h6>
 						</div>
-					</div>
+					</div>					
+				<iframe name='blankifr' style='display:none;'></iframe>				 
 					<table class="table" id="matchingProf">
 						<thead>
 							<tr>
@@ -103,40 +116,17 @@
 								<td th:text="${Prof.userName}"></td>
 								<td th:text="${Prof.userDept}"></td>
 								<td th:text="${Prof.profLab}"></td>
-								<td th:text="${Prof.mentee} + 명"></td>
+								<td th:text="${Prof.mentee}"></td>
 								<td>
-									<button class="btn btn-secondary prof" 
-									data-bs-toggle="modal" data-bs-target="#Confirm"
-									data-bs-whatever="NO">매칭</button>
+									<button class="btn btn-secondary prof">매칭</button>
 								</td>
 							</tr>
 						</tbody>
-					</table>
+					</table>					
 				</div>
 			</div>
 		</div>
 	</div>
-
-	<div class="modal fade" id="Confirm" tabindex="-1" role="dialog" aria-labelledby="ConfirmLabel" aria-hidden="true">
-	  <div class="modal-dialog modal-dialog-centered" role="document">
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <h5 class="modal-title font-weight-normal" id="ConfirmLabel">매칭 확인</h5>
-	        <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
-	          <span aria-hidden="true">&times;</span>
-	        </button>
-	      </div>
-	      <div class="modal-body">
-	        <p>해당 교수와 매칭을 진행하시겠습니까?</p>
-	      </div>
-	      <div class="modal-footer">
-	        <button type="button" class="btn bg-gradient-success Confirm">확인</button>
-	        <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">닫기</button>
-	      </div>
-	    </div>
-	  </div>
-	</div>
-
 
 	<script>
 		$("#matchingStd").DataTable({
@@ -169,6 +159,15 @@
 				}
 			}
 		});
+				 
+		
+		function stdset(t) {
+			td = t.parentNode;
+			td.style.backgroundColor = (t.checked) ? "lightgrey" : "";
+			tr = t.parentNode.parentNode;			
+			tr.style.backgroundColor = (t.checked) ? "lightgrey" : "";
+			$('#profList').show();
+		}
 
 		function onDisplay(e) {
 			e = window.event || e;
@@ -179,25 +178,67 @@
 			$('#profList').show();
 		}
 
-		$(".prof").on("click", function() {
-			var matchingP = ($(this).closest("tr").find("td:first").text())
-			var matchingS = ($(".stdactive").find("td:first").text())
-			$(".Confirm").on("click", function() {
-				$.ajax({
-					type : "post",
-					url : "/matching",
-					data : {
-						userId : matchingP,
-						studentId : matchingS
-					},
-					success : function(result) {
-						if (result == "1") {
-							alert("매칭 완료")
-							location.href = "matchingStd"
-						}
-					}	
-				})		
-			})
+// 		$(".prof").on("click", function() {			
+// 			var matchingP = ($(this).closest("tr").find("td:first").text())
+// 			var matchingS = ($(".stdactive").find("td:eq(1)").text())
+// 			console.log(matchingP)
+// 			console.log(matchingS)
+// 			$(".Confirm").on("click", function() {
+// 				$.ajax({
+// 					type : "post",
+// 					url : "/matching",
+// 					data : {
+// 						userId : matchingP,
+// 						studentId : matchingS
+// 					},
+// 					success : function(result) {
+// 						if (result == "1") {
+// 							alert("매칭 완료")
+// 							location.href = "matchingStd"
+// 						}
+// 					}	
+// 				})		
+// 			})
+// 		});
+		
+		$(document).ready(function() {
+			$('.prof').on('click', function() {
+				var checkbox = $('input[name=stdchk]:checked');
+				var stuctn = $('input[name=stdchk]:checked').length;
+				var prof = ($(this).closest("tr").find("td:eq(0)").text())
+	 			var Pmentee = ($(this).closest("tr").find("td:eq(4)").text())	 			
+	 			var matchingArr = new Array();	 			
+				checkbox.each(function(i) {
+					tr = checkbox.parent().parent().eq(i);
+					td = tr.children();
+					stuId = td.eq(0).text();					 
+					matchingArr.push(stuId);
+					jQuery.ajaxSettings.traditional = true;
+				});				
+				if (stuctn > Pmentee) {
+					alert("선택한 학생의 수가 교수가 담당 할 수 있는 학생의 수를 초과했습니다.")					
+				} else {
+					if(confirm('매칭을 진행하시겠습니까?')) {
+						$.ajax({
+		 					type : "post",
+		 					url : "/matching",
+		 					data : {
+		 						"userId" : prof,
+		 						"Id" : matchingArr
+		 					},
+		 					success : function(result) {
+		 						if (result == "1") {
+		 							alert("매칭 완료")
+		 							location.href = "matchingStd"
+		 						}
+		 					}	
+		 				});							
+					} else {
+						return false;
+					}  
+				}
+				
+			});
 		});
 	</script>
 
