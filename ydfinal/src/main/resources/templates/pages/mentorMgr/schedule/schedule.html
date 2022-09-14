@@ -115,7 +115,11 @@
 						if (clickDate >= now) {
 							$("#calendar_insert_modal").modal("show");
 						} else {
-							alert("이전 일정은 등록이 불가능합니다.")
+							Swal.fire({
+								icon: 'error',
+								title: '이전 일정은 등록이 불가능합니다.',
+								confirmButtonColor: '#3788d8'
+							})
 						}
 
 						var start = arg.startStr;
@@ -125,7 +129,11 @@
 					eventClick : function(info) { // 수정 이벤트
 						calendarSelect(info.event._def.extendedProps.MtrSchId);
 						if(info.event._def.extendedProps.chk == '1'){
-							alert("상담 신청이 완료된 일자는 삭제할 수 없습니다.");
+							Swal.fire({
+								icon: 'error',
+								title: '상담 신청이 완료된 일자는 삭제할 수 없습니다.',
+								confirmButtonColor: '#3788d8'
+							})
 							return;
 						}
 
@@ -169,7 +177,11 @@
 		})
 
 		if (cob_check.length == 0) {
-			alert('체크박스를 하나 이상 선택해주세요~')
+			Swal.fire({
+						icon: 'error',
+						title: '체크박스를 하나 이상 선택해주세요~',
+						confirmButtonColor: '#3788d8'
+					})
 			return false;
 
 		} else if (cob_check.length > 1) {
@@ -342,7 +354,7 @@
 					</div>
 					<div class="modal-body">
 						<form id="frm" action="#" method="post" enctype="application/x-www-form-urlencoded">
-							<p>정말 일정을 삭제하시겠습니까?</p>
+							<h5>정말 일정을 삭제하시겠습니까?</h5>
 							<input type="hidden" id="mtrSchId" name="mtrSchId"> <input type="hidden" id="userId" name="userId" th:value="${#authentication.name}">
 							<div class="modal-footer">
 								<button type="button" class="modal_close btn-dark" onclick="calendarDelete();">삭제</button>
