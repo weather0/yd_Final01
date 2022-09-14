@@ -28,7 +28,7 @@
 
                   	<form action="scoreInsert" method="post">
           
- <table id="letureTable" class="table align-items-center mb-0" >
+ <table id="scoreInsertTable" class="table align-items-center mb-0" >
         <thead>
             <tr>
             	<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">성명/학번</th>
@@ -58,10 +58,10 @@
         		<td th:text="|${data.userName}/${data.stuId}|"></td>
         		<td th:text="|${data.userDept}/${data.studentGrade}학년|"></td>
         		<td th:text="|${data.studentSem}학기/${data.studentAcaYn}|"></td>
-        		<td><input class="form-control jt_form_field wt500 scoreMid" type="text" th:id="scoreMid" th:name="|scoreMid${idx.index}|" /></td>
-        		<td><input class="form-control jt_form_field wt500 scoreFinal" type="text" th:id="scoreFinal" th:name="|scoreFinal${idx.index}|" /></td>
-        		<td><input class="form-control jt_form_field wt500 scoreQuiz" type="text" th:value="${data.quizRPoint}" th:id="scoreQuiz" th:name="|scoreQuiz${idx.index}|" /></td>
-        		<td><input class="form-control jt_form_field wt500 scoreAttn" type="text" th:id="scoreAttn" th:name="|scoreAttn${idx.index}|" /></td>
+        		<td><input class="form-control jt_form_field wt500 scoreMid" type="text" th:id="scoreMid" th:name="|scoreMid${idx.index}|" required/></td>
+        		<td><input class="form-control jt_form_field wt500 scoreFinal" type="text" th:id="scoreFinal" th:name="|scoreFinal${idx.index}|" required/></td>
+        		<td><input class="form-control jt_form_field wt500 scoreQuiz" type="text" th:value="${data.quizRPoint}" th:id="scoreQuiz" th:name="|scoreQuiz${idx.index}|" required/></td>
+        		<td><input class="form-control jt_form_field wt500 scoreAttn" type="text" th:id="scoreAttn" th:name="|scoreAttn${idx.index}|" required/></td>
         		<td><input class="form-control gpaGrade" th:name="|gpaGrade${idx.index}|" readonly="readonly" th:id="gpaGrade" /></td>
         		<td><input class="form-control jt_form_field wt500 gpaPoint" type="text" readonly="readonly" th:id="gpaPoint" th:name="|gpaPoint${idx.index}|" /></td>
         	</tr> 
@@ -75,7 +75,7 @@
  </div>
  </div>
 <script>
-$('#letureTable').DataTable({});
+$('#scoreInsertTable').DataTable({});
 $(".btn").on("click", submitData);
 	
 $(".scoreMid, .scoreFinal, .scoreQuiz, .scoreAttn").on("change input paste", function() {

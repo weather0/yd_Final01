@@ -123,6 +123,7 @@ public class NoticeController {
 	public String noticelist(Model model, Principal principal, NoticeVo vo) {
 		vo.setUserId(principal.getName());
 		System.out.println("!!!!!!!!!!!!!!!!!" + vo.getClassId());
+		System.out.println("!!!!!!!!!!!!!!!!!!!!!" + vo.getClassNoticeType());
 		model.addAttribute("noticeList", noticeService.noticeList(vo));
 		return "/pages/classMgr/noticeList";
 	}
