@@ -18,7 +18,7 @@ public class LectureVO {
 	private String classTitle;
 	private MultipartFile classFileSyl;
 	private String courseType;
-	private double courseCredit;
+	private int courseCredit;
 	private String courseTitle;
 	private String userName;
 	private String gpaStandardAttn;

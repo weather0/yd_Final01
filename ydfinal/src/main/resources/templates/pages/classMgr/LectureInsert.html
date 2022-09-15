@@ -45,7 +45,8 @@
 						<h6 class="text-white ps-3 m-0">강좌개설 신청</h6>
 					</div>
 				</div>
-				<form action="lectureinsert" method="post">
+				<form action="lectureinsert" method="post"
+					enctype="multipart/form-data">
 					<div class="test col-8">
 						<select class="form-select" name="courseId" id="courseId">
 							<option value="">교과목 선택</option>
@@ -116,8 +117,8 @@
 					<div class="d-grid gap-2 d-md-flex justify-content-md-end">
 						<button class="btn btn-secondary me-md-2">신청하기</button>
 					</div>
-				</form>
 			</div>
+			</form>
 		</div>
 	</div>
 	<!-- 본문 end-->

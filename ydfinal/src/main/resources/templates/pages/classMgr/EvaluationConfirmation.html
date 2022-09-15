@@ -4,7 +4,13 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layouts/layout}">
 <th:block layout:fragment="content">
-
+<style>
+	.test {
+	    width: 900px;
+    margin: auto;
+    margin-top: 50px;
+    }
+</style>
 
 
 	<script type="text/javascript"
@@ -15,7 +21,7 @@
 
 	<div class="container-fluid">
 		<div class="row justify-content-center">
-		<div class="card p-3 me-3">
+		<div class="card p-3 me-3 col-8">
 				<div class="card-header p-0 position-relative mt-n4 mb-4 z-index-2">
 			<div
 				class="bg-secondary bg-gradient-secondary shadow-secondary border-radius-lg py-3">
@@ -24,13 +30,9 @@
 					type="hidden" id="userid">
 			</div>
 
-			
+		<div class="test">
 		<div id="columnchart_material" style="margin: auto;"></div>
-	
-	</div>
-	</div>
-		</div>
-</div>
+	<div style="padding: 10px;">
 	<p>1문항: 강의계획서가 강좌의 목표,내용,성적평가 방법 등 과목의 성격을 이해하기 쉽게 구성되었다.</p>
 	<p>2문항: 강의계획서 진도에 맞게 해당 주차에 온라인 수업 콘텐츠가 게시되었다.</p>
 	<p>3문항: 강의교재나 참고자료가 수업내용을 이해하는데 적절하게 구성되었으며 다양한 학습자료가 제공되었다.</p>
@@ -39,7 +41,13 @@
 	<p>6문항: 과제의 내용 및 분량은 적절하였으며 강의 내용을 이해하는데 도움을 주었다</p>
 	<p>7문항: 이 강의를 통해 관련 지식과 전공능력(핵심역량)이 증진되었다.</p>
 	<input type="hidden" th:value="${classId}" id="classId">
+	</div>
+		</div>
 
+	</div>
+	</div>
+		</div>
+</div>
 	<script type="text/javascript">
 		google.charts.load('current', {
 			'packages' : [ 'bar' ]
@@ -50,7 +58,7 @@
 			let classId = $("#classId").val();
 			$
 					.ajax({
-						url : "http://localhost/evaluationconfirmationjson",
+						url : "/evaluationconfirmationjson",
 						dataType : "json",
 						data : {
 							classId : classId
