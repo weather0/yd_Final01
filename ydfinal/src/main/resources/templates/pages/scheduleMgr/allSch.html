@@ -60,9 +60,6 @@
             meridiem: false,
             hour12: false
           },
-//           displayEventTime: false,
-//           slotMinTime: '03:00:01',
-//           slotMaxTime: '20:59:59',
           
           // 개꿀 기능! sql문 각 칼럼 AS 쓸 필요 없이 *로 조지고 여기서 약속key명(title,start등)으로 바꾸자
           eventDataTransform: function (data) {
@@ -414,7 +411,7 @@
           showCancelButton: true,
           cancelButtonText: '취소',
           preConfirm: function () {
-            let schAllday = $('#allday').is(':checked') ? true : null; // null이든 ''이든 비워주는게 매우중요! DB에 false라고 저장하면 안됨! 풀캘린더가 제대로 인식을 못함! 
+            
             // 정규식: 1. 따옴표'' 대신 //gi로 감싼다고 생각
             //         2. 특수문자 자체를 스트링으로 적고 싶으면 \붙임. 여기선 괄호니깐 \(
             //         3. 모든 문자 찾고싶으면 걍 아스타 말고 쩜별.*
@@ -424,6 +421,17 @@
             let schTitle = $('#schT').val()
             let schType = $('#schType').val()
             
+            let schAllday;
+            if ( $('#allday').is(':checked') ) {
+              schAllday = true
+            } else if ( moment(schAllday).format('HH:mm') == '00:00' ) {
+              schAllday = true
+            } else {
+              // null이든 ''이든 비워주는게 매우중요! DB에 false라고 저장하면 안됨! 풀캘린더가 제대로 인식을 못함! 
+              schAllday = null
+            }
+              
+              
             $.ajax ({
               url: '/allSchInsert',
               type: 'POST',
