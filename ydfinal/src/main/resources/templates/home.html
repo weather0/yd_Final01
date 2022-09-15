@@ -2,20 +2,166 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/layout}">
 
 <th:block layout:fragment="content">
+	<script>
+		document
+				.addEventListener(
+						'DOMContentLoaded',
+						function() {
 
-  <!-- 상단 내비바 -->
-  <th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
+							// 초기 로딩 시
+							$.ajax({
+								url : '/allSchProc',
+								success : function(data) {
+									console.log(data);
+									allSch(data);
+								}
+							})
 
-  <!-- 본문 start -->
-  <div class="container-fluid py-4">
+							// Start: 캘린더콜백함수
+							function allSch(data) {
+								var calendarEl = document
+										.getElementById('allSch');
+								var calendar = new FullCalendar.Calendar(
+										calendarEl,
+										{
+											height : '70vh', // 화면 맞춤
+											locale : 'kr',
+											displayEventEnd : true,
+											initialView : 'dayGridMonth',
+											headerToolbar : {
+												left : 'prev,next today',
+												center : 'title',
+												right : 'dayGridMonth,listWeek'
+											},
+											editable : true,
+											selectable : true,
+											selectMirror : true,
+											navLinks : true, // 달력에서 일 글자 클릭시 day뷰로 전환
 
-    <h1>홈화면</h1>
+											eventTimeFormat : {
+												hour : '2-digit',
+												minute : '2-digit',
+												meridiem : false,
+												hour12 : false
+											// 24시간제
+											},
+											slotLabelFormat : {
+												hour : '2-digit',
+												minute : '2-digit',
+												meridiem : false,
+												hour12 : false
+											},
+											//           displayEventTime: false,
+											//           slotMinTime: '03:00:01',
+											//           slotMaxTime: '20:59:59',
 
-    <!-- 하단 푸터(본문div 안에 있어야 안 어그러짐) -->
-    <!--     <th:block th:replace="fragments/footer :: footerFragment"></th:block> -->
+											// 개꿀 기능! sql문 각 칼럼 AS 쓸 필요 없이 *로 조지고 여기서 약속key명(title,start등)으로 바꾸자
+											eventDataTransform : function(data) {
+												data.id = data.schId;
+												data.title = data.schTitle;
+												data.start = data.schStart;
+												data.end = data.schEnd;
+												data.allDay = data.schAllday;
+												switch (data.schType) {
+												case 'APPLY':
+													data.color = '#03a9f4'
+													break;
+												case 'CLASS':
+													data.color = '#4caf50'
+													break;
+												case 'EXAM':
+													data.color = '#fb8c00'
+													break;
+												case 'GENERAL':
+													data.color = '#7b809a'
+													break;
+												case 'HOLIDAY':
+													data.color = '#f44335'
+													break;
+												}
+												return data;
+											},
+											events : data, // 일정들[]
 
-  </div>
-  <!-- 본문 end-->
+											// 칸 선택(드래그포함)시 동작
+											select : function(arg) {
+
+											} // End: select
+
+										}); // End: 캘린더객체
+								console.log(calendar.getEventById('A22-153')); // 이벤트id로 일정 확인
+								console.log(calendar.getEventById('A22-193')); // 이벤트id로 일정 확인
+								//         console.log( calendar.getEvents() ); // 전체 일정 뽑기
+								calendar.render();
+
+								if ($('.fc-event-time').text() == '24:00') {
+									$('.fc-event-time').css('display', 'none');
+								}
+
+							} // End: 캘린더콜백함수
+
+						})
+	</script>
+
+	<!-- 상단 내비바 -->
+	<th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
+
+	<!-- 본문 start -->
+	<div class="container-fluid py-4">
+		<div class="row">
+			<div class="card p-3 me-3 mb-1 border border-5 col-5" style="margin-top: 3px; height: 80vh">
+				<div class="card-header p-0 position-relative mt-n4 mb-4 z-index-2">
+					<div class="bg-secondary bg-gradient-secondary shadow-secondary border-radius-lg py-3">
+						<h6 class="text-white ps-3 m-0">학사 일정</h6>
+					</div>
+				</div>
+				<div id="allSch"></div>
+			</div>
+
+			<div class="card p-3 me-3 mb-1 border border-5 col-3" style="margin-top: 3px; height: 80vh">
+				<div class="card-header p-0 position-relative mt-n4 mb-4 z-index-2">
+					<div class="bg-secondary bg-gradient-secondary shadow-secondary border-radius-lg py-3">
+						<h6 class="text-white ps-3 m-0">공지사항</h6>
+					</div>
+				</div>
+				<div>
+						<img src='https://img1.daumcdn.net/thumb/R1280x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/cqWN/image/XnpNmxETZywTbSNav2LupmhSiy0' 
+						style="object-fit: cover; object-position: center 30%; " class="img-fluid w-100">
+							<h2>군침이 싹도노도노</h2>
+					</div>
+			</div>
+
+			<div class="col-3 p-0 m-0" height="50vh" style="margin-top: 3px;">
+				<div class="card p-3 me-3 mb-3 border border-5 col-12" style="margin-top: 3px; height: 39vh">
+					<div class="card-header p-0 position-relative mt-n4 mb-4 z-index-2">
+						<div class="bg-secondary bg-gradient-secondary shadow-secondary border-radius-lg py-3">
+							<h6 class="text-white ps-3 m-0">공지사항</h6>
+						</div>
+					</div>
+					<div>
+						<img src='https://file.mk.co.kr/meet/neds/2021/11/image_readtop_2021_1095117_16377968104861904.jpg' 
+						style="object-fit: cover; object-position: center 30%; " class="img-fluid w-100">
+					
+					</div>
+				</div>
+				<div class="card p-3 me-3 mb-1 border border-5 col-12" style="margin-top: 3px; height: 39vh;">
+					<div class="card-header p-0 position-relative mt-n4 mb-4 z-index-2">
+						<div class="bg-secondary bg-gradient-secondary shadow-secondary border-radius-lg py-3">
+							<h6 class="text-white ps-3 m-0">공지사항</h6>
+						</div>
+					</div>
+					<div>
+						공지사항
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- 하단 푸터(본문div 안에 있어야 안 어그러짐) -->
+		<!--     <th:block th:replace="fragments/footer :: footerFragment"></th:block> -->
+
+	</div>
+	<!-- 본문 end-->
 
 
 </th:block>
