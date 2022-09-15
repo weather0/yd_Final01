@@ -9,22 +9,80 @@
   <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
   <!-- 상단 내비바 -->
   <th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
+    <style>
+  	#layout1 {
+  	border: 1px soild #6a7281;
+  	}
+	.th-default {
+	background: #6a7281 !important;
+	border-bottom: 1px solid #d2d6da;
+	border-top: 1px solid #d2d6da;
+	width: 120px;
+	}
+	.th-default label {
+	color: #fff;
+	text-align : center;
+	display: flex;
+	justify-content: center;
+	line-height: 43px;
+	margin-bottom: 0px !important;
+	}
+	.td-content {
+	padding: 0 20px 0 20px;
+	border-bottom: 1px solid #d2d6da;
+	border-right: 1px solid #d2d6da;
+	border-top: 1px solid #d2d6da;
+	}
+	.td-content p {
+	height: 10px;
+	}
+  </style>
   <!-- 본문 start -->
-<div class="container-fluid py-4">
-    <div class="row"> 
+  
+    <div class="container-fluid">
+ <div class="row justify-content-center">
+      <div class="card px-2 p-3 me-3">
+        <div class="card-header p-0 position-relative mt-n4 mb-4 z-index-2">
+          <div class="bg-secondary bg-gradient-secondary shadow-secondary border-radius-lg py-3">
+            <h6 class="text-white ps-3 m-0">페이지명</h6>
+          </div>
+        </div>
+
  <input  th:value="${#authentication.principal.username}" type="hidden" id="userId" />
  <input th:value="${quiz.classMemberId}" type="hidden" />
-	<h1 th:text="${quiz.userName}"></h1>
-			<h1 th:text="${quiz.quizRContent}"></h1>
-			<h1 th:text="${quiz.quizRDate}"></h1>
-			<a th:href="${'/quizAcceptdownload?quizRFile='+quiz.quizRFile}">
-			<h1 th:text="${quiz.quizROrginal}" ></h1></a>
-			<form action="quizdetailview" method="post">
-        		<td><input type="hidden" th:value="${quiz.quizRId}" th:name="quizRId"></td>
-        		<td><input type="number" th:name="quizRPoint"/>
-        		</td>
-        		<button>제출</button>
+ <table id="layout1" name="layout1" cellspacing="0" cellpadding="0" class="lec-table insert hwk-table"> 
+ <tbody>
+  		<tr style="height:43px;">
+ 			<td class="th-default"><label class="label_default">제출자명</label></td>
+ 			<td class="td-content"><p th:text="${quiz.userName}"></p></td>
+ 		</tr>
+ 		<tr style="height:43px;">
+ 			<td class="th-default"><label class="label_default">과제 내용</label></td>
+ 			<td class="td-content"><p th:text="${quiz.quizRContent}"></p></td>
+ 		</tr>
+ 		<tr style="height:43px;">
+ 			<td class="th-default"><label class="label_default">제출 날짜</label></td>
+ 			<td class="td-content"><p th:text="${quiz.quizRDate}"></p></td>
+ 		</tr>
+ 		<tr style="height:43px;">
+ 			<td class="th-default"><label class="label_default">제출 파일</label></td>
+ 			<td class="td-content">
+ 			<a th:href="${'/quizAcceptdownload?quizRFile='+quiz.quizRFile}">
+			<p th:text="${quiz.quizROrginal}" ></p></a></td>
+ 		</tr>
+ 		<tr style="height:43px;">
+ 		<td class="th-default"><label class="label_default">점수</label></td>
+		<form action="quizdetailview" method="post">
+	   		<input type="hidden" th:value="${quiz.quizRId}" th:name="quizRId">
+	   		<td class="td-content">
+	   		<input type="number" th:name="quizRPoint"/>
+	   		<button class="btn bg-gradient-secondary">제출</button>
+	   		</td>
         	</form>
+        </tr>
+        	</tbody>
+        	</table>
+ </div>
  </div>
  </div>
 </th:block>

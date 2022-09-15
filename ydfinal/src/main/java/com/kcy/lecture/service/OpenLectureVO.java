@@ -17,7 +17,7 @@ public class OpenLectureVO {
 	private String majorName;
 	private String userName;
 	private String courseType;
-	private double courseCredit;
+	private int courseCredit;
 	private String courseTitle;
 	private String userDept;
 	// 하경

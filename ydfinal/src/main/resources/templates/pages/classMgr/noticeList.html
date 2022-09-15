@@ -40,28 +40,33 @@
    	<option th:value="notice">공지</option>
    	<option th:value="noticedata">자료</option>
    </select>
-      <button type="submit" class="btn bg-gradient-primary" th:value="검색">검색</button>
+      <button type="submit" class="btn bg-gradient-secondary" th:value="검색">검색</button>
    </form>
    
    <table id="noticeTable" class="table table-striped" style="width:100%;" >
         <thead>
             <tr>
                <th>No.</th>
-               <th>전공</th>
-               <th>자료구분</th>
                <th>제목</th>
-                <th>작성자</th>
-                <th>등록일</th>
+               <th>자료구분</th>
+               <th>과목명</th>
+               <th>작성자</th>
+               <th>등록일</th>
             </tr>
         </thead>
         <tbody>
            <tr th:each="data : ${noticeList}">
               <td th:text="${data.class_notice_no}"></td>
-              <td th:text="${data.class_id}"></td>
-              <td th:text="${data.class_notice_type}"></td>
               <td>
               <a th:text="${data.class_notice_title}" th:href="@{/noticeview(classNoticeNo=${data.class_notice_no})}"></a>
               </td> 
+              <th:block th:if="${data.class_notice_type} == 'noticedata'">
+              <td th:text="자료"></td>
+              </th:block>
+              <th:block th:unless="${data.class_notice_type} == 'noticedata'">
+              <td th:text="공지"></td>
+              </th:block>
+              <td th:text="${data.course_title}"></td>
               <td th:text="${data.user_name}"></td>
               <td th:text="${data.class_notice_date}"></td>
            </tr>
