@@ -43,6 +43,7 @@ public class SendEmailService {
 		vo.setPw(pw);
 		vo.setUserEmail(email);
 		userMapper.updateUserPassword(vo);
+		userMapper.userChangePw(email);
 	}
 
 

@@ -10,8 +10,16 @@
   <!-- 상단 내비바 -->
   <th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
   <!-- 본문 start -->
-<div class="container-fluid py-4">
-    <div class="row"> 
+    <div class="container-fluid">
+ <div class="row justify-content-center">
+      <div class="card px-2 p-3 me-3">
+      
+        <!-- 각 페이지 타이틀바 -->
+        <div class="card-header p-0 position-relative mt-n4 mb-4 z-index-2">
+          <div class="bg-secondary bg-gradient-secondary shadow-secondary border-radius-lg py-3">
+            <h6 class="text-white ps-3 m-0">과제 확인 게시판</h6>
+          </div>
+        </div>
     
 <!--    <form name="searchform" autocomplete="off">
    <input th:value="${#authentication.principal.username}" type="hidden" id="userid">
@@ -43,7 +51,7 @@
         </tbody>
   <!-- 본문 end-->
    </table>
-   
+   </div>
  </div>
  </div>
  <script>

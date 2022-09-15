@@ -49,19 +49,21 @@ public class LoginController {
     	return "findPw";
     }
     
-    // 비밀번호 찾기 페이지 이동
-    @GetMapping("/changePw")
-    public String changePwPage(String userEmail, Model model) {
-    	System.out.println("!!!!!!!!!!!!!" + userEmail);
-    	map.userChangePw(userEmail);
-		model.addAttribute("userInfo", map.userChangePw(userEmail));
-    	return "true";
-    }
+//    // 비밀번호 찾기 페이지 이동
+//    @GetMapping("/changePw")
+//    public String changePwPage() {
+//    	return "changePw";
+//    }
+//    
+//    @GetMapping("/changePwCheck")
+//    @ResponseBody
+//    public UserVo changePwCheck(String userEmail) {
+//    	return map.userChangePw(userEmail);
+//    }
     
     @GetMapping("/check/findPw")
     @ResponseBody
     public UserVo checkFindPw(String userEmail, String myName) {
-    	map.findUserByUserId(userEmail);
     	System.out.println("!!!!!!!!!!!!!!!!" + myName + ", " + userEmail);
     	return map.findUserByUserId(userEmail);
     }

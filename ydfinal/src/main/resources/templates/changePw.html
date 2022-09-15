@@ -79,21 +79,22 @@
                 </div>
               </div>
               <div class="card-body">
+            
                   <div class="input-group input-group-outline my-3">
                     <label th:for="userId" class="form-label">학번</label>
-                    <input type="text" id="userId" name="userId" class="form-control" readonly="readonly" >
+                    <input type="text" id="userId" name="userId" class="form-control" th:value="${userId}" readonly="readonly" >
                   </div>
                   <div class="input-group input-group-outline mb-3">
                     <label th:for="myName" class="form-label">이름</label>
                     <input type="text" id="myName" name="myName" class="form-control" readonly="readonly" >
                   </div>
                   <div class="input-group input-group-outline mb-3">
-                    <label th:for="changePw" class="form-label">비밀번호 재설정</label>
-                    <input type="text" id="changePw" name="changePw" class="form-control" required>
+                    <label th:for="newPassword" class="form-label">비밀번호 재설정</label>
+                    <input type="text" id="newPassword" name="changePw" class="form-control" required>
                   </div>
                   <div class="input-group input-group-outline mb-3">
-                    <label th:for="changePwTwo" class="form-label">비밀번호 재설정 확인</label>
-                    <input type="text" id="changePwTwo" name="changePwTwo" class="form-control" required>
+                    <label th:for="newPasswordConfirm" class="form-label">비밀번호 재설정 확인</label>
+                    <input type="text" id="newPasswordConfirm" name="changePwTwo" class="form-control" required>
                   </div>
                   <div class="text-center">
                     <button type="submit" id="checkEmail" class="btn bg-gradient-primary w-100 my-4 mb-2">변경</button>
@@ -108,47 +109,27 @@
     </div>
   </main>
 	<script>
+
 	 $("#checkEmail").click(function () {
 	        let userEmail = $("#userEmail").val();
 	        let userName = $("#myName").val();
+	        let userPw = $("#newPassword").val();
 	        
 	        console.log(userName);
 
-	        $.ajax({
-	            url: "http://localhost/check/findPw",
-	            data: {
-	                "userEmail" : userEmail,
-	                "myName" : userName
-	            },
-	            success: function (data) {
-	            	console.log("ㅇㅇ");
-	            	
-	                    swal("발송 완료!", "입력하신 이메일로 임시비밀번호가 발송되었습니다.", "success").then((OK) => {
-
-	                            $.ajax({
-	                                url: "http://localhost/findPw/sendEmail",
-	                                data: {
-	                                    "userEmail": userEmail,
-	                                    "myName": userName
-	                                },
-	                                success: function(data) {
-	                                	console.log("우와!");
-	                                	location.href = "/changePw";
-	                                },
-	                                error: function(error) {
-	                                	alert("다시 시도해 주세요.");
-	                                	console.log(error);
-	                                }
-	                            })
-	                        
-	                     })
-	                    $('#checkMsg').html('<p style="color:darkblue"></p>'); 
-
-	            },
-	            error: function(error) {
-	            	console.log(error);
-	            }
-	        }) 
+        	$.ajax({
+        		url: "http://localhost/changePwCheck",
+        		data: {
+        			"userEmail": userEmail
+        		},
+        		success: function(data) {
+        			console.log("된다!");
+        			console.log(data);
+        		},
+        		error: function(error) {
+        			console.log("바보");
+        		}
+        	})
 	    })
 	</script>
 </body>
