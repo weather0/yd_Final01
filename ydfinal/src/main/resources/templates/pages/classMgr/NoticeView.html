@@ -1,38 +1,105 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layouts/layout}">
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/layout}">
 <th:block layout:fragment="content">
-  <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css"/>  
-  <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
-  <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
-  <!-- 상단 내비바 -->
-  <th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
-  <!-- 본문 start -->
-<div class="container-fluid py-4">
-    <div class="row"> 
-    		<h1 th:text="${noticeList.classNoticeType}"></h1>
-			<h1 th:text="${noticeList.classNoticeTitle}"></h1>
-			<h1 th:text="${noticeList.classNoticeDate}"></h1>
-			<a th:href="${'/noticedownload?classNoticeFile='+noticeList.classNoticeFile}"><h1 th:text="${noticeList.classNoticeOriginal}"></h1></a>
-  <!-- 본문 end-->
- 	</div>
- 	<th:block sec:authorize="hasRole('ROLE_PROF')">
- 	<button class="btn bg-gradient-primary">
- 	<a th:href="@{/noticemodify(classNoticeNo=${noticeList.classNoticeNo})}">
- 	수정
- 	</a>
- 	</button>
- 	</th:block>
- 	<button class="btn bg-gradient-primary backBtn">목록</button>
- </div>
- <script>
-	
-	$(".backBtn").on("click", function() {
-		window.history.back();
-	});
-	
- </script>
+	<link rel="stylesheet"
+		href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css" />
+	<script
+		src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+	<script
+		src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
+	<!-- 상단 내비바 -->
+	  <style>
+  	#layout1 {
+  	border: 1px soild #6a7281;
+  	}
+	.th-default {
+	background: #6a7281 !important;
+	border-bottom: 1px solid #d2d6da;
+	border-top: 1px solid #d2d6da;
+	width: 120px;
+	}
+	.th-default label {
+	color: #fff;
+	text-align : center;
+	display: flex;
+	justify-content: center;
+	line-height: 43px;
+	margin-bottom: 0px !important;
+	}
+	.td-content {
+	padding: 0 20px 0 20px;
+	border-bottom: 1px solid #d2d6da;
+	border-right: 1px solid #d2d6da;
+	border-top: 1px solid #d2d6da;
+	}
+	.td-content p {
+	height: 10px;
+	}
+  </style>
+	<th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
+	<!-- 본문 start -->
+	<div class="container-fluid py-4">
+		<div class="row justify-content-center">
+			<div class="card p-3 me-3">
+				<div class="card-header p-0 position-relative mt-n4 mb-4 z-index-2">
+					<div
+						class="bg-secondary bg-gradient-secondary shadow-secondary border-radius-lg py-3">
+						<h6 class="text-white ps-3 m-0">학기별 세부 내역</h6>
+					</div>
+				</div>
+				
+				<table id="layout1" name="layout1" cellspacing="0" cellpadding="0" class="lec-table insert hwk-table"> 
+				<tbody>
+				<tr>
+					<td class="th-default"><label class="label_default">제목</label></td>
+					<td class="td-content"><p th:text="${noticeList.classNoticeTitle}"></p></td>
+					<td class="th-default"><label class="label_default">분류</label></td>
+					<td class="td-content">
+					
+					  <th:block th:if="${noticeList.classNoticeType} == 'noticedata'">
+		              <p th:text="자료"></p>
+		              </th:block>
+		              <th:block th:unless="${noticeList.classNoticeType} == 'noticedata'">
+		              <p th:text="공지"></p>
+		              </th:block>
+					
+					</td>
+				</tr>
+				<tr>
+				 	<td class="th-default"><label class="label_default">내용</label></td>
+					<td colspan="3" class="td-content"><p th:text="${noticeList.classNoticeCon}"></p></td>
+				</tr>				
+				<tr>
+					<td class="th-default"><label class="label_default">등록일</label></td>
+					<td colspan="3" class="td-content"><p th:text="${noticeList.classNoticeDate}"></p></td>
+				</tr>				
+				<tr>
+					<td class="th-default"><label class="label_default">첨부파일</label></td>
+					<td colspan="3" class="td-content"><a
+					th:href="${'/noticedownload?classNoticeFile='+noticeList.classNoticeFile}"><p
+						th:text="${noticeList.classNoticeOriginal}"></p></a></td>
+				</tr>
+				<!-- 본문 end-->
+				</tbody>
+				</table>
+			<th:block sec:authorize="hasRole('ROLE_PROF')">
+				<button class="btn bg-gradient-secondary">
+					<a
+						th:href="@{/noticemodify(classNoticeNo=${noticeList.classNoticeNo})}">
+						수정 </a>
+				</button>
+			</th:block>
+			<button class="btn bg-gradient-secondary backBtn" style="width: 80px; margin-top: 10px; float: right;">목록</button>
+			</div>
+		</div>
+	</div>
+	<script>
+		$(".backBtn").on("click", function() {
+			window.history.back();
+		});
+	</script>
 </th:block>
 </html>

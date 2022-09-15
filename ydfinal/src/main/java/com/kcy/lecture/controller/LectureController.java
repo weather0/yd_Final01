@@ -165,9 +165,10 @@ public class LectureController {
 		return "pages/classMgr/LectureList";
 	}
 
+
+	// 강좌신청 승인 하면 업데이트 후 수강신청목록 테이블로 추가하는 부분
 	@PostMapping("/lectureupdate")
 	public String letureUpdate(LectureVO vo) {
-		// 강좌신청 승인 하면 업데이트 후 수강신청목록 테이블로 추가하는 부분
 		lectureService.lectureUpdate(vo);
 		return "redirect:lecturelist";
 	}
@@ -224,7 +225,7 @@ public class LectureController {
 		return scmapper.selectschedule(vo);
 		
 	}
-	
+	//강좌에 맞는 시간표를 출력
 	@GetMapping("/timeselect")
 	@ResponseBody
 	public List<TimetableVO> timeSelect( Model model, TimetableVO vo){
@@ -255,6 +256,7 @@ public class LectureController {
 	@GetMapping("/classScheduleSelect")
 	public String classScheduleSelect(Model model, Principal principal, ClassScheduleVO vo) {
 		vo.setUserId(principal.getName());
+		model.addAttribute("scheduleAllSelect", scmapper.classScheduleCk(vo));
 		model.addAttribute("scheduleSelect", scmapper.classScheduleSelect(vo));
 		return "pages/classMgr/ClassScheduleSelect";
 	}

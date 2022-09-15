@@ -18,6 +18,16 @@ public class PayVO {
 	private int b;
 	private int c;
 	private int d;
+	private Date kbs;
+	private Date kbe;
+	private Date ks1s;
+	private Date ks1e;
+	private Date ks2s;
+	private Date ks2e;
+	private Date ks3s;
+	private Date ks3e;
+	private Date ks4s;
+	private Date ks4e;
 	private String payHYn;
 	private String payHAcc;
 	private String payHType;

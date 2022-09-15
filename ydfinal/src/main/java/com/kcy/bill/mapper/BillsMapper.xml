@@ -9,16 +9,20 @@
 </select>
 
 <insert id="billsInsert" parameterType="com.kcy.bill.service.BillsVO">
-INSERT INTO k_bills 
-( bill_id, bill_year, bill_sem, bill_amount, major_id)
-VALUES ( #{billId}, #{billYear}, #{billSem}, #{billAmount}, #{majorbId})
+INSERT INTO k_bills ( bill_id, bill_year, bill_sem, bill_amount, major_id, bill_b, bill_bplus, bill_s1, bill_s2, bill_s3, bill_s4)
+SELECT #{billId}, 
+	   #{billYear}, 
+	   #{billSem}, 
+	   #{billAmount}, 
+	   #{majorbId},
+	   SUBSTRING(CONCAT('\'',(SELECT GROUP_CONCAT(sch_id separator ',') as sch FROM k_schedule WHERE (sch_title LIKE #{billYear2} AND sch_title LIKE #{hakgi} AND sch_title LIKE '%등록%')), '\''),2,7) AS b,
+	   SUBSTRING(CONCAT('\'',(SELECT GROUP_CONCAT(sch_id separator ',') as sch FROM k_schedule WHERE (sch_title LIKE #{billYear2} AND sch_title LIKE #{hakgi} AND sch_title LIKE '%등록%')), '\''),10,7) AS bplus,
+	   SUBSTRING(CONCAT('\'',(SELECT GROUP_CONCAT(sch_id separator ',') as sch FROM k_schedule WHERE (sch_title LIKE #{billYear2} AND sch_title LIKE #{hakgi} AND sch_title LIKE '%등록%')), '\''),18,7) AS s1,
+	   SUBSTRING(CONCAT('\'',(SELECT GROUP_CONCAT(sch_id separator ',') as sch FROM k_schedule WHERE (sch_title LIKE #{billYear2} AND sch_title LIKE #{hakgi} AND sch_title LIKE '%등록%')), '\''),26,7) AS s2,
+	   SUBSTRING(CONCAT('\'',(SELECT GROUP_CONCAT(sch_id separator ',') as sch FROM k_schedule WHERE (sch_title LIKE #{billYear2} AND sch_title LIKE #{hakgi} AND sch_title LIKE '%등록%')), '\''),34,7) AS s3,
+	   SUBSTRING(CONCAT('\'',(SELECT GROUP_CONCAT(sch_id separator ',') as sch FROM k_schedule WHERE (sch_title LIKE #{billYear2} AND sch_title LIKE #{hakgi} AND sch_title LIKE '%등록%')), '\''),42,7) AS s4
 </insert>
 
-<insert id="splitBillsInsert" parameterType="com.kcy.bill.service.BillsVO">
-INSERT INTO k_bills 
-( bill_id, bill_year, bill_sem, bill_amount, major_id, bill_type)
-VALUES ( #{billId}, #{billYear}, #{billSem}, #{billAmount}, #{majorbId}, #{billType})
-</insert>
 
 <select id="payStdInfo" resultType="com.kcy.bill.service.PayVO">
 	SELECT u.user_dept, 
@@ -135,29 +139,39 @@ VALUES ( #{billId}, #{billYear}, #{billSem}, #{billAmount}, #{majorbId}, #{billT
 
 <select id="billCheck" resultType="com.kcy.bill.service.PayVO">
 	SELECT b.bill_year,
-	   b.bill_sem,
-	   u.user_id,
-	   u.user_dept,
-	   u.user_name,
-	   kph.pay_h_grade,  
-	   kph.pay_h_sem,
-	   b.bill_amount,
-	   (b.bill_amount/kph.pay_h_total) AS a,
-	   (b.bill_amount/kph.pay_h_total) AS b,
-	   (b.bill_amount/kph.pay_h_total) AS c,
-	   (b.bill_amount/kph.pay_h_total) AS d,
-	   kph.pay_h_acc,
-	   kph.pay_h_type,
-	   kph.pay_id,
-	   kph.pay_h_yn,
-	   s.student_token
+		   b.bill_sem,
+		   u.user_id,
+		   u.user_dept,
+		   u.user_name,
+		   kph.pay_h_grade,  
+		   kph.pay_h_sem,
+		   b.bill_amount,
+		   (b.bill_amount/kph.pay_h_total) AS a,
+		   (b.bill_amount/kph.pay_h_total) AS b,
+		   (b.bill_amount/kph.pay_h_total) AS c,
+		   (b.bill_amount/kph.pay_h_total) AS d,	   
+		   kb.sch_start AS kbs, 
+		   kb.sch_end AS kbe,
+		   ks1.sch_start AS ks1s, 
+		   ks1.sch_end AS ks1e,	   
+		   ks2.sch_start AS ks2s, 
+		   ks2.sch_end AS ks2e,
+		   ks3.sch_start AS ks3s, 
+		   ks3.sch_end AS ks3e,
+		   ks4.sch_start AS ks4s, 
+		   ks4.sch_end AS ks4e,	   
+		   kph.pay_h_type,
+		   kph.pay_id,
+		   kph.pay_h_yn	   
 	FROM k_students s
-	JOIN k_users u
-	ON s.stu_id = u.user_id
-	JOIN k_pay_h kph
-	ON s.stu_id = kph.stu_id
-	JOIN k_bills b 
-	ON kph.bill_id = b.bill_id
+	JOIN k_users u ON s.stu_id = u.user_id
+	JOIN k_pay_h kph ON s.stu_id = kph.stu_id
+	JOIN k_bills b ON kph.bill_id = b.bill_id
+	JOIN k_schedule kb ON kb.sch_id = b.bill_b
+	JOIN k_schedule ks1 ON ks1.sch_id = b.bill_s1 
+	JOIN k_schedule ks2 ON ks2.sch_id = b.bill_s2
+	JOIN k_schedule ks3 ON ks3.sch_id = b.bill_s3
+	JOIN k_schedule ks4 ON ks4.sch_id = b.bill_s4
 	WHERE b.bill_year = #{billYear}
 	AND b.bill_sem = #{billSem} 
 	AND kph.stu_id = #{stuId}	
@@ -222,5 +236,33 @@ VALUES ( #{billId}, #{billYear}, #{billSem}, #{billAmount}, #{majorbId}, #{billT
 	UPDATE k_students
 	SET student_token = #{accessToken}
 	WHERE stu_id = #{stuId}
+</update>
+
+<insert id="firstPay" parameterType="com.kcy.bill.service.PaySVO">
+	INSERT INTO k_pay_d (pay_d_amount, pay_d_balance, pay_d_count, pay_d_bank, pay_d_day, pay_id)
+	VALUES ( #{advance}, #{balance}, 1, #{bank}, NOW(), #{payId} )
+</insert>
+
+<update id="payRemain" parameterType="com.kcy.bill.service.PaySVO">
+	UPDATE k_pay_h
+	SET pay_h_remain = CASE 
+			WHEN pay_h_remain = 4 THEN 3
+			WHEN pay_h_remain = 3 THEN 2
+			WHEN pay_h_remain = 2 THEN 1
+			WHEN pay_h_remain = 1 THEN 0
+			ELSE 0
+	END
+	WHERE pay_id = #{payId}
+</update>
+
+<update id="payYn" parameterType="com.kcy.bill.service.PaySVO">
+	UPDATE k_pay_h
+	SET pay_h_yn = CASE
+				WHEN pay_h_remain = 3 THEN 's'
+				WHEN pay_h_remain = 2 THEN 's'
+				WHEN pay_h_remain = 1 THEN 's'
+				WHEN pay_h_remain = 0 THEN 'y'
+	END
+	WHERE pay_id = #{payId}
 </update>
 </mapper>

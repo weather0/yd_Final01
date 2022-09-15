@@ -58,9 +58,7 @@
 							class="table align-items-center mb-0 table table-hover overflow-auto">
 							<thead>
 								<tr>
-									<th
-										class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
-										th:text="강좌코드"></th>
+									
 									<th
 										class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
 										th:text="전공"></th>
@@ -70,9 +68,6 @@
 									<th
 										class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
 										th:text="교과목"></th>
-									<th
-										class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
-										th:text="교과목코드"></th>
 									<th
 										class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
 										th:text="이수구분"></th>
@@ -94,17 +89,15 @@
 							</thead>
 							<tbody>
 								<tr th:each="data:${openList}">
-									<td th:text="${data.classId}"></td>
 									<td th:text="${data.majorName}"></td>
 									<td th:text="${data.userName}"></td>
 									<td th:text="${data.courseTitle}"></td>
-									<td th:text="${data.courseId}"></td>
 									<td th:text="${data.courseType}"></td>
-									<td th:text="${data.courseCredit}"></td>
+									<td th:text="|${data.courseCredit}학점|"></td>
 									<td th:text="${data.classSem}"></td>
 									<td th:text=|${data.classCk}/${data.classTo}|></td>
-									<td><a th:href="${'/download?classSyl='+data.classSyl}"
-										th:text="${data.classSylOriginal}"></a></td>
+									<td><i class="fa-solid fa-file"></i><a th:href="${'/download?classSyl='+data.classSyl}"
+										th:text="강의계획서"></a></td>
 
 									<th:block th:each="geades:${gradesCk}">
 
@@ -163,9 +156,7 @@
 							class="table align-items-center mb-0 table table-hover overflow-auto">
 							<thead>
 								<tr>
-									<th
-										class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
-										th:text="강좌코드"></th>
+									
 									<th
 										class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
 										th:text="전공"></th>
@@ -175,9 +166,7 @@
 									<th
 										class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
 										th:text="교과목"></th>
-									<th
-										class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
-										th:text="교과목코드"></th>
+									
 									<th
 										class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
 										th:text="이수구분"></th>
@@ -196,16 +185,14 @@
 							</thead>
 							<tbody>
 								<tr th:each="data:${enrolmentlist}">
-									<td th:text="${data.class_id}"></td>
 									<td th:text="${data.major_name}"></td>
 									<td th:text="${data.user_name}"></td>
 									<td th:text="${data.course_title}"></td>
-									<td th:text="${data.course_id}"></td>
 									<td th:text="${data.course_type}"></td>
-									<td th:text="${data.course_credit}"></td>
+									<td th:text="|${data.course_credit}학점|"></td>
 									<td th:text="|${data.class_sem}학기|"></td>
-									<td><a th:href="${'/download?classSyl='+data.class_syl}"
-										th:text="${data.class_syl_original}"></a></td>
+									<td><i class="fa-solid fa-file"></i><a th:href="${'/download?classSyl='+data.class_syl}"
+										th:text="강의계획서"></a></td>
 									<td><button class="btn btn btn-secondary btn-sm enbtn"
 											th:text="삭제" th:data-en_class_id="${data.class_id}"></button></td>
 								</tr>
@@ -242,7 +229,7 @@
 			let id = $("#userid").val()
 			
 			$.ajax({
-				url:"http://localhost/timeselect",
+				url:"/timeselect",
 				data:{
 					classId : insert
 				},
@@ -266,7 +253,7 @@
 						}
 						else{
 							  $.ajax({
-							url : "http://localhost/openlectureinsert",
+							url : "/openlectureinsert",
 							type : "post",
 							data : {
 								classId : insert,
@@ -274,7 +261,7 @@
 							},
 							success : function(data) {
 								toastr.success('신청완료', '성공')
-								setTimeout("location.reload()", 800);
+								setTimeout("location.reload()", 500);
 							},
 							error : function(error) {
 								toastr.error("신청실패", "경고")
@@ -291,23 +278,46 @@
 
 		}
 
+		
 		$(".enbtn").on("click", Endelete);
+		
 		function Endelete() {
 			let deletes = $(this).data("en_class_id")
-			$.ajax({
-				url : "http://localhost/enrolmentdelete",
-				data : {
-					classId : deletes
-				},
-				success : function(data) {
-					toastr.success('삭제완료', '성공')
-					setTimeout("location.reload()", 800);
-				},
-				error : function(error) {
-					toastr.error('삭제실패', '경고')
-					return false
-				}
-			})
+			Kcy.fire({
+				  title: '정말 삭제하시겠습니까?',
+				  text: "삭제하면 다시 수강신청 하셔야합니다",
+				  icon: 'warning',
+				  showCancelButton: true,
+				  confirmButtonText: '삭제',
+				  cancelButtonText: '취소'
+				}).then((result) => {
+				  if (result.isConfirmed) {
+				      $.ajax({
+							url : "/enrolmentdelete",
+							data : {
+								classId : deletes
+							},
+							success : function(data) {
+								 Kcy.fire(
+									    	'삭제완료',
+											'수강신청 과목이 삭제 되었습니다',
+											'success',
+				               )
+				               setTimeout("location.reload()", 800);
+							},
+							error : function(error) {
+								 Kcy.fire(
+									    	'삭제실패',
+											'삭제하는 도중에 오류가 발생하였습니다',
+											'error',
+				               )
+								toastr.error('삭제실패', '경고')
+								return false
+							}
+						})
+				  }
+				})
+			
 		}
 
 		$(".btn2").on("click", CreditCk);
