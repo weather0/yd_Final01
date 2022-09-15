@@ -9,6 +9,7 @@ import com.kcy.bill.mapper.BillsMapper;
 import com.kcy.bill.service.BillsService;
 import com.kcy.bill.service.BillsVO;
 import com.kcy.bill.service.MajorbVO;
+import com.kcy.bill.service.PaySVO;
 import com.kcy.bill.service.PayVO;
 
 @Service
@@ -105,6 +106,26 @@ public class BillsServiceImpl implements BillsService {
 	public void insertToken(PayVO vo) {
 		mapper.insertToken(vo);
 		
+	}
+
+
+	@Override
+	public void firstPay(PaySVO vo) {
+		mapper.firstPay(vo);
+		
+	}
+
+
+	@Override
+	public void payRemain(PaySVO vo) {
+		mapper.payRemain(vo);
+		
+	}
+
+
+	@Override
+	public void payYn(PaySVO vo) {
+		mapper.payYn(vo);
 	}
 
 }
