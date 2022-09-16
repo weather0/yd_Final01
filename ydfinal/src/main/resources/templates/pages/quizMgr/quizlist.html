@@ -11,9 +11,25 @@
   <th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
   <!-- 본문 start -->
   <!-- Button trigger modal -->
+  <style>
+      	.flex {
+  	    display: flex;
+    	flex-direction: row;
+    	justify-content: flex-start;
+    	align-items: center;
+  	}
+  	.left {
+  		width: fit-content;
+    	float: left;
+    	margin-right: 10px;
+  	}
+  	.down {
+  		margin-bottom: 0px;
+  	}
+  </style>
 <div class="container-fluid py-4">
            <div class="row justify-content-center">
-      <div class="card p-3 me-3">
+      <div class="card p-3 me-3 col-8">
       
         <!-- 각 페이지 타이틀바 -->
         <div class="card-header p-0 position-relative mt-n4 mb-4 z-index-2">
@@ -24,25 +40,31 @@
     
        <form name="searchform" autocomplete="off">
    <input th:value="${#authentication.principal.username}" type="hidden" id="userid">
-     <select class="form-control" sec:authorize="hasRole('ROLE_STU')" name="classId">
+      <div class="col-md-6 flex">
+      <div class="input-group input-group-outline my-3 left" sec:authorize="hasRole('ROLE_STU')">
+     <select class="form-control" name="classId">
 			<option>강좌 선택</option>
 		<th:block th:each="c : ${classId}">
 			<option th:text="${c.courseTitle}" th:value="${c.classId}"></option>
 		</th:block> 		
 	</select>
- 	<select class="form-control" sec:authorize="hasRole('ROLE_PROF')" name="classId">
+	</div>
+	<div class="input-group input-group-outline my-3 left" sec:authorize="hasRole('ROLE_PROF')">
+ 	<select class="form-control" name="classId">
 			<option>강좌 선택</option>
 		<th:block th:each="c : ${profClassId}">
 			<option th:text="${c.courseTitle}" th:value="${c.classId}"></option>
 		</th:block> 		
 	</select>
-		<button type="submit" class="btn bg-gradient-secondary" th:value="검색">검색</button>
+	</div>
+		<button type="submit" class="btn bg-gradient-secondary down" th:value="검색">검색</button>
+	</div>
 	</form>
     
- <table id="quizTable" class="table table-striped" style="width:100%;" >
+ <table id="quizTable" class="table" style="width:100%;" >
         <thead>
             <tr>
-            	<th>제목</th>
+            	<th style="width: 500px">제목</th>
             	<th>제출시작일</th>
             	<th>제출종료일</th>
             </tr>
@@ -63,7 +85,8 @@
  </div>
  </div>
  <script>
- 	$('#quizTable').DataTable({});
+ 	$('#quizTable').DataTable({
+ 	});
  </script>
 </th:block>
 </html>

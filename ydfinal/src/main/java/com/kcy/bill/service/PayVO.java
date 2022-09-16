@@ -54,5 +54,9 @@ public class PayVO {
 	private String token;
 	private String accessToken;	
 	private String studentToken;
+	private int payDBalance;	
+	private int payHS1;
+	private int payHS2;
+	private int payHS3;
 }
 

@@ -1,21 +1,267 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/layout}">
-
 <th:block layout:fragment="content">
+	<style>
+#first_notice {
+	table-layout: fixed;
+	width: 100%;
+	list-style: none;
+	padding-left: 0px;
+	padding: 5px 20px;
+}
 
-  <!-- 상단 내비바 -->
-  <th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
+#first_notice #first_title {
+	font-weight: bold;
+	white-space: nowrap;
+	font-size: 19px;
+	color: #000;
+}
 
-  <!-- 본문 start -->
-  <div class="container-fluid py-4">
+#first_notice #first_content {
+	overflow: hidden;
+	display: -webkit-box;
+	-webkit-line-clamp: 8;
+	-webkit-box-orient: vertical;
+	text-overflow: ellipsis;
+	word-wrap: break-word;
+	font-size: 13px;
+}
 
-    <h1>홈화면</h1>
+#first_notice #first_date {
+	font-size: 11px;
+	text-align: right;
+}
 
-    <!-- 하단 푸터(본문div 안에 있어야 안 어그러짐) -->
-    <!--     <th:block th:replace="fragments/footer :: footerFragment"></th:block> -->
+#first_notice>* {
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
 
-  </div>
-  <!-- 본문 end-->
+.p {
+	overflow: hidden;
+	display: -webkit-box;
+	-webkit-line-clamp: 1;
+	-webkit-box-orient: vertical;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	padding: 7px 0px 7px 0px;
+	vertical-align: top;
+	border-bottom: 1px solid #ccc;
+	font-size: 14px;
+}
+#more {
+text-align: right;
+font-size: 11px;
+padding: 7px 0px 7px 0px;
+vertical-align: bottom;
+}
+
+.table_list {
+	border-collapse: separate;
+	border-spacing: 1px;
+	text-align: left;
+	line-height: 1.5;
+	border-top: 1px solid #ccc;
+	margin: 20px 10px;
+}
+#first_notice:hover {
+	color : #ddd;
+	cursor : Pointer;
+}
+
+</style>
+	<script>
+		document
+				.addEventListener(
+						'DOMContentLoaded',
+						function() {
+
+							// 초기 로딩 시
+							$.ajax({
+								url : '/allSchProc',
+								success : function(data) {
+									allSch(data);
+								}
+							})
+
+							// Start: 캘린더콜백함수
+							function allSch(data) {
+								var calendarEl = document
+										.getElementById('allSch');
+								var calendar = new FullCalendar.Calendar(
+										calendarEl,
+										{
+											height : '70vh', // 화면 맞춤
+											locale : 'kr',
+											displayEventEnd : true,
+											initialView : 'dayGridMonth',
+											headerToolbar : {
+												left : 'prev,next today',
+												center : 'title',
+												right : 'dayGridMonth,listWeek'
+											},
+											editable : true,
+											selectable : true,
+											selectMirror : true,
+											navLinks : true, // 달력에서 일 글자 클릭시 day뷰로 전환
+
+											eventTimeFormat : {
+												hour : '2-digit',
+												minute : '2-digit',
+												meridiem : false,
+												hour12 : false
+											// 24시간제
+											},
+											slotLabelFormat : {
+												hour : '2-digit',
+												minute : '2-digit',
+												meridiem : false,
+												hour12 : false
+											},
+											//           displayEventTime: false,
+											//           slotMinTime: '03:00:01',
+											//           slotMaxTime: '20:59:59',
+
+											// 개꿀 기능! sql문 각 칼럼 AS 쓸 필요 없이 *로 조지고 여기서 약속key명(title,start등)으로 바꾸자
+											eventDataTransform : function(data) {
+												data.id = data.schId;
+												data.title = data.schTitle;
+												data.start = data.schStart;
+												data.end = data.schEnd;
+												data.allDay = data.schAllday;
+												switch (data.schType) {
+												case 'APPLY':
+													data.color = '#03a9f4'
+													break;
+												case 'CLASS':
+													data.color = '#4caf50'
+													break;
+												case 'EXAM':
+													data.color = '#fb8c00'
+													break;
+												case 'GENERAL':
+													data.color = '#7b809a'
+													break;
+												case 'HOLIDAY':
+													data.color = '#f44335'
+													break;
+												}
+												return data;
+											},
+											events : data, // 일정들[]
+
+											// 칸 선택(드래그포함)시 동작
+											select : function(arg) {
+
+											} // End: select
+
+										}); // End: 캘린더객체
+								console.log(calendar.getEventById('A22-153')); // 이벤트id로 일정 확인
+								console.log(calendar.getEventById('A22-193')); // 이벤트id로 일정 확인
+								//         console.log( calendar.getEvents() ); // 전체 일정 뽑기
+								calendar.render();
+
+								if ($('.fc-event-time').text() == '24:00') {
+									$('.fc-event-time').css('display', 'none');
+								}
+
+							} // End: 캘린더콜백함수
+
+							$
+									.ajax({
+										url : "/notice/noticelist",
+										type : "POST",
+										success : function(result) {
+
+											for (var i = 0; i < result.length; i++) {
+												if (i == 0) {
+													var id = result[i].notice_id;
+													$('#first_notice')
+															.on(
+																	'click',
+																	function() {
+																		location.href = "/notice/noticeview?NoticeId="
+																				+ id
+
+																	})
+													$('#first_title')
+															.text(
+																	result[i].notice_title)
+													$('#first_content')
+															.text(
+																	result[i].notice_content)
+													$('#first_date')
+															.text(
+																	result[i].notice_date)
+												} else if (i > 0 && i <= 8) {
+													let tr = $("<tr id="+result[i].notice_id+">");
+													let td = $("<td class='p'>");
+													let a = $("<a href=/notice/noticeview?NoticeId="
+															+ result[i].notice_id
+															+ ">")
+													$(a)
+															.text(
+																	result[i].notice_title);
+													$('.table_list').append(tr)
+													$(tr).append(td)
+													$(td).append(a)
+												}
+											}
+
+										},
+										error : function(result) {
+											console.log(result);
+										}
+									})
+							$('#first_notice').on('click', function() {
+								var data = $(this)[0]
+								console.log(data)
+							})
+						})
+	</script>
+
+	<!-- 상단 내비바 -->
+	<th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
+
+	<!-- 본문 start -->
+	<div class="container-fluid py-4">
+		<div class="row">
+			<div class="card p-3 me-4 mb-1 border border-5 col-8" style="margin-top: 3px; height: 80vh">
+				<div class="card-header p-0 position-relative mt-n4 mb-4 z-index-2">
+					<div class="bg-secondary bg-gradient-secondary shadow-secondary border-radius-lg py-3">
+						<h6 class="text-white ps-3 m-0">학사 일정</h6>
+					</div>
+				</div>
+				<div id="allSch"></div>
+			</div>
+
+
+			<div class="card p-3 me-4 mb-1 border border-5 col-3" style="margin-top: 3px; height: 80vh;">
+				<div class="card-header p-0 position-relative mt-n4 mb-4 z-index-2">
+					<div class="bg-secondary bg-gradient-secondary shadow-secondary border-radius-lg py-3">
+						<h6 class="text-white ps-3 m-0">공지사항</h6>
+					</div>
+				</div>
+				<div style="margin-top: 3px; height: 35vh;">
+					<ul id="first_notice">
+						<li id="first_title" class="m-2"></li>
+						<li id="first_content" class="overflow"></li>
+						<li id="first_date" class="m-1"></li>
+					</ul>
+				</div>
+				<table class="list_notice table_list col-12 m-0" style="table-layout: fixed;">
+				</table>
+	<a href="/notice/noticelist" id="more">+more</a>
+			</div>
+
+			
+		</div>
+
+		<!-- 하단 푸터(본문div 안에 있어야 안 어그러짐) -->
+		<!--     <th:block th:replace="fragments/footer :: footerFragment"></th:block> -->
+
+	</div>
+	<!-- 본문 end-->
 
 
 </th:block>

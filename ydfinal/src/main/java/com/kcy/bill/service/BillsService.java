@@ -17,7 +17,11 @@ public interface BillsService {
 	public void payChange(PayVO vo);
 	public void payChangeCancel(PayVO vo);
 	public void insertToken(PayVO vo);
+	public void payD(PaySVO vo);
 	public void firstPay(PaySVO vo);
+	public void secondPay(PaySVO vo);
+	public void thirdPay(PaySVO vo);
+	public void fourthPay(PaySVO vo);
 	public void payRemain(PaySVO vo);
 	public void payYn(PaySVO vo);
 }

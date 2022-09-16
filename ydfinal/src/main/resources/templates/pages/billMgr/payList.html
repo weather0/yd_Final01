@@ -10,14 +10,8 @@
 	margin-bottom: 20px;
 }
 </style>
-
-	<link rel="stylesheet"
-		href="https://cdn.datatables.net/v/bs5/dt-1.12.1/datatables.min.css" />
-	<script
-		src="https://cdn.datatables.net/v/bs5/dt-1.12.1/datatables.min.js"></script>
-	<!-- 상단 내비바 -->
 	<th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
-
+	
 	<!-- 본문 start -->
 	<div class="container-fluid">
 		<div class="row justify-content-center">
@@ -106,6 +100,7 @@
 									<th>납부유형</th>
 									<th>납부처</th>
 									<th>납부액</th>
+									<th>잔금</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -117,6 +112,7 @@
 									</td>
 									<td th:text="${pay.payDBank}"></td>
 									<td th:text="${pay.payDAmount}"></td>
+									<td th:text="${pay.payDBalance}"></td>
 								</tr>
 							</tbody>
 						</table>

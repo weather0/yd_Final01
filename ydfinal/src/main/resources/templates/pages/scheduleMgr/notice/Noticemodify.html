@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/layout}">
+<th:block layout:fragment="content">
+
+	<!-- 상단 내비바 -->
+	<th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
+
+	<!-- 본문 start -->
+	<h1>공지 수정 페이지</h1>
+	
+		<th:block th:if="${noticeList.NoticeUpdateDate} != null"> ㅇㅇㅇ
+		</th:block>
+
+		<div class="input-group input-group-outline my-3">
+			<input type="text" class="form-control" th:value="${noticeList.NoticeTitle}" name="NoticeTitle" id="NoticeTitle">
+		</div>
+		<div class="input-group input-group-outline my-3">
+			<textarea type="text" class="form-control" th:text="${noticeList.NoticeContent}" name="NoticeContent" id="NoticeContent"></textarea>
+		</div>
+		<button type="button" class="btn bg-gradient-secondary" onclick="modef();">수정</button>
+
+	<!-- 본문 end-->
+	<script th:inline="javascript">
+    /*<![CDATA[*/
+    	
+    	var d = new Date();
+	
+		var month = d.getMonth()+1;
+		var day = d.getDate();
+		var time = (d.getHours()<10 ? '0' : '')+d.getHours()	+":"+(d.getMinutes()<10 ? '0' : '')+ d.getMinutes()
+	
+		var output = d.getFullYear() + '-' +
+		    (month<10 ? '0' : '') + month + '-' +
+		    (day<10 ? '0' : '') + day +" "+ time;
+			
+		
+    	function modef(){
+    		var id = /*[[${noticeList.noticeId}]]*/;
+    		
+			$.ajax({
+				url : "/notice/noticeModify",
+				type: "post",
+				data : {
+					NoticeTitle : $('#NoticeTitle').val(),
+					NoticeContent : $('#NoticeContent').val(),
+					NoticeId : id,
+					NoticeUpdateDate : output,
+					
+					
+				},
+				success: function (result) {
+					console.log(result)
+					location.href='/notice/noticeview?NoticeId='+id;
+				},
+				error: function (result) {
+					
+				}
+				
+			})
+			
+		}    
+    /*]]>*/
+</script>
+	
+	</div>
+</th:block>
+</html>
