@@ -1,7 +1,75 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/layout}">
-
 <th:block layout:fragment="content">
+	<style>
+#first_notice {
+	table-layout: fixed;
+	width: 100%;
+	list-style: none;
+	padding-left: 0px;
+	padding: 5px 20px;
+}
+
+#first_notice #first_title {
+	font-weight: bold;
+	white-space: nowrap;
+	font-size: 19px;
+	color: #000;
+}
+
+#first_notice #first_content {
+	overflow: hidden;
+	display: -webkit-box;
+	-webkit-line-clamp: 8;
+	-webkit-box-orient: vertical;
+	text-overflow: ellipsis;
+	word-wrap: break-word;
+	font-size: 13px;
+}
+
+#first_notice #first_date {
+	font-size: 11px;
+	text-align: right;
+}
+
+#first_notice>* {
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.p {
+	overflow: hidden;
+	display: -webkit-box;
+	-webkit-line-clamp: 1;
+	-webkit-box-orient: vertical;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	padding: 7px 0px 7px 0px;
+	vertical-align: top;
+	border-bottom: 1px solid #ccc;
+	font-size: 14px;
+}
+#more {
+text-align: right;
+font-size: 11px;
+padding: 7px 0px 7px 0px;
+vertical-align: bottom;
+}
+
+.table_list {
+	border-collapse: separate;
+	border-spacing: 1px;
+	text-align: left;
+	line-height: 1.5;
+	border-top: 1px solid #ccc;
+	margin: 20px 10px;
+}
+#first_notice:hover {
+	color : #ddd;
+	cursor : Pointer;
+}
+
+</style>
 	<script>
 		document
 				.addEventListener(
@@ -12,7 +80,6 @@
 							$.ajax({
 								url : '/allSchProc',
 								success : function(data) {
-									console.log(data);
 									allSch(data);
 								}
 							})
@@ -100,6 +167,56 @@
 
 							} // End: 캘린더콜백함수
 
+							$
+									.ajax({
+										url : "/notice/noticelist",
+										type : "POST",
+										success : function(result) {
+
+											for (var i = 0; i < result.length; i++) {
+												if (i == 0) {
+													var id = result[i].notice_id;
+													$('#first_notice')
+															.on(
+																	'click',
+																	function() {
+																		location.href = "/notice/noticeview?NoticeId="
+																				+ id
+
+																	})
+													$('#first_title')
+															.text(
+																	result[i].notice_title)
+													$('#first_content')
+															.text(
+																	result[i].notice_content)
+													$('#first_date')
+															.text(
+																	result[i].notice_date)
+												} else if (i > 0 && i <= 8) {
+													let tr = $("<tr id="+result[i].notice_id+">");
+													let td = $("<td class='p'>");
+													let a = $("<a href=/notice/noticeview?NoticeId="
+															+ result[i].notice_id
+															+ ">")
+													$(a)
+															.text(
+																	result[i].notice_title);
+													$('.table_list').append(tr)
+													$(tr).append(td)
+													$(td).append(a)
+												}
+											}
+
+										},
+										error : function(result) {
+											console.log(result);
+										}
+									})
+							$('#first_notice').on('click', function() {
+								var data = $(this)[0]
+								console.log(data)
+							})
 						})
 	</script>
 
@@ -109,7 +226,7 @@
 	<!-- 본문 start -->
 	<div class="container-fluid py-4">
 		<div class="row">
-			<div class="card p-3 me-3 mb-1 border border-5 col-5" style="margin-top: 3px; height: 80vh">
+			<div class="card p-3 me-4 mb-1 border border-5 col-8" style="margin-top: 3px; height: 80vh">
 				<div class="card-header p-0 position-relative mt-n4 mb-4 z-index-2">
 					<div class="bg-secondary bg-gradient-secondary shadow-secondary border-radius-lg py-3">
 						<h6 class="text-white ps-3 m-0">학사 일정</h6>
@@ -118,43 +235,26 @@
 				<div id="allSch"></div>
 			</div>
 
-			<div class="card p-3 me-3 mb-1 border border-5 col-3" style="margin-top: 3px; height: 80vh">
+
+			<div class="card p-3 me-4 mb-1 border border-5 col-3" style="margin-top: 3px; height: 80vh;">
 				<div class="card-header p-0 position-relative mt-n4 mb-4 z-index-2">
 					<div class="bg-secondary bg-gradient-secondary shadow-secondary border-radius-lg py-3">
 						<h6 class="text-white ps-3 m-0">공지사항</h6>
 					</div>
 				</div>
-				<div>
-						<img src='https://img1.daumcdn.net/thumb/R1280x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/cqWN/image/XnpNmxETZywTbSNav2LupmhSiy0' 
-						style="object-fit: cover; object-position: center 30%; " class="img-fluid w-100">
-							<h2>군침이 싹도노도노</h2>
-					</div>
+				<div style="margin-top: 3px; height: 35vh;">
+					<ul id="first_notice">
+						<li id="first_title" class="m-2"></li>
+						<li id="first_content" class="overflow"></li>
+						<li id="first_date" class="m-1"></li>
+					</ul>
+				</div>
+				<table class="list_notice table_list col-12 m-0" style="table-layout: fixed;">
+				</table>
+	<a href="/notice/noticelist" id="more">+more</a>
 			</div>
 
-			<div class="col-3 p-0 m-0" height="50vh" style="margin-top: 3px;">
-				<div class="card p-3 me-3 mb-3 border border-5 col-12" style="margin-top: 3px; height: 39vh">
-					<div class="card-header p-0 position-relative mt-n4 mb-4 z-index-2">
-						<div class="bg-secondary bg-gradient-secondary shadow-secondary border-radius-lg py-3">
-							<h6 class="text-white ps-3 m-0">공지사항</h6>
-						</div>
-					</div>
-					<div>
-						<img src='https://file.mk.co.kr/meet/neds/2021/11/image_readtop_2021_1095117_16377968104861904.jpg' 
-						style="object-fit: cover; object-position: center 30%; " class="img-fluid w-100">
-					
-					</div>
-				</div>
-				<div class="card p-3 me-3 mb-1 border border-5 col-12" style="margin-top: 3px; height: 39vh;">
-					<div class="card-header p-0 position-relative mt-n4 mb-4 z-index-2">
-						<div class="bg-secondary bg-gradient-secondary shadow-secondary border-radius-lg py-3">
-							<h6 class="text-white ps-3 m-0">공지사항</h6>
-						</div>
-					</div>
-					<div>
-						공지사항
-					</div>
-				</div>
-			</div>
+			
 		</div>
 
 		<!-- 하단 푸터(본문div 안에 있어야 안 어그러짐) -->

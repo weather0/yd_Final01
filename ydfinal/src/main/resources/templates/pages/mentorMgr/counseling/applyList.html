@@ -253,7 +253,6 @@ td {
 				},
 				dataType: "json",
 				success: function (result) {
-					console.log(result)
 					$('#resultModal').modal('show');
 
 					$('#resultClone').empty();
@@ -284,7 +283,6 @@ td {
 				},
 				dataType: "json",
 				success: function (result) {
-					console.log(result.userSsn)
 					$('#infoModal').modal('show');
 					var ssn = (result.userSsn).substring(0, 2) + "년 " + (result.userSsn).substring(3, 4) + "월 " + (result.userSsn).substring(5, 6) + "일";
 					if (result.userSex == "M") { var sex = "남자" }
@@ -335,8 +333,6 @@ td {
 			$('#foo-table_wrapper').hide();
 			$('#journal-table').show();
 
-			console.log($(data).attr('id'));
-			console.log($(data).parent().parent().children('td:nth-child(2)').attr('id'));
 
 			var stuId = $(data).attr('id');
 			var count = $(data).parent().parent().children('td:nth-child(2)').attr('id');
