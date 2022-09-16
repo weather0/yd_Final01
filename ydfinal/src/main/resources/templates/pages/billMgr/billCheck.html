@@ -52,11 +52,12 @@
 								name="payCount" id="payCount" onchange="sm()">
 								<option value="">회차선택</option>
 								<option value="p1" th:selected="${payVO.payCount}=='p1'">1회차</option>
-								<option value="p2" th:selected="${payVO.payCount}=='p2'">2회차</option>
+								<option value="p2" th:selected="${payVO.payCount}=='p2'"
+									th:if="${bill.payHS1 != 0}">2회차</option>
 								<option value="p3" th:selected="${payVO.payCount}=='p3'"
-									th:if="${bill.payHType.toString().equals('s1')}">3회차</option>
+									th:if="${bill.payHType.toString().equals('s1')} AND ${bill.payHS2 != 0}">3회차</option>
 								<option value="p4" th:selected="${payVO.payCount}=='p4'"
-									th:if="${bill.payHType.toString().equals('s1')}">4회차</option>
+									th:if="${bill.payHType.toString().equals('s1')} AND ${bill.payHS3 != 0}">4회차</option>
 							</select>
 						</div>
 					</div>
@@ -82,8 +83,8 @@
 						</tr>
 						<tr hidden="">
 							<td th:text="${bill.payId}" name="payId" id="payId"></td>
-							<td th:text="${bill.studentToken}" name="token" id="token"></td>
 						</tr>
+
 						<span th:if="${bill.payHType.toString().equals('b')}">
 							<tr>
 								<td class="table-secondary">등록금 총액</td>
@@ -97,106 +98,109 @@
 							<tr>
 								<td class="table-secondary">납부기간</td>
 								<td
-									th:text="${#calendars.format(bill.kbs, 'yyyy-MM-dd HH:mm')}+' ~ '+${#calendars.format(bill.kbe, 'yyyy-MM-dd HH:mm')}"></td>
+									th:text="${#calendars.format(bill.kbs, 'yyyy-MM-dd')}+' ~ '+${#calendars.format(bill.kbe, 'yyyy-MM-dd')}"></td>
+							</tr>
+							<tr>
+								<td>
+									<button type="button" class="btn btn-secondary payB"
+										data-bs-toggle="modal" data-bs-target="#payB"
+										data-bs-whatever="NO" th:if="${bill.payHYn == n}">납부</button>
+								</td>
 							</tr>
 						</span>
-
-						<span th:if="${bill.payHType.toString().equals('s1')}">
-							<tr>
-								<td class="table-secondary">등록금 총액</td>
-								<td th:text="${bill.billAmount}" name="amount" id="amount"></td>
-								<td class="table-secondary">납부방식</td>
-								<td><span th:if="${bill.payHType.toString().equals('b')}">일괄납부</span>
-									<span th:if="${bill.payHType.toString().equals('s1')}">분할납부A</span>
-									<span th:if="${bill.payHType.toString().equals('s2')}">분할납부B</span>
-								</td>
-							</tr> <span
-							th:if="${payVO.payCount == 'p1'}">
+						
+					
+					<span th:if="${!bill.payHType.toString().equals('b')}">
+						<tr>
+						<span th:if="${payVO.payCount == 'p1'}">
+							<td class="table-secondary">등록금 총액</td>
+							<td th:text="${bill.billAmount}" name="amount" id="amount"></td>
+						</span>
+						<span th:if="${payVO.payCount == 'p2'}">
+							<td class="table-secondary">등록금 잔액</td>
+							<td th:text="${bill.payHS1}" name="amount" id="amount"></td>
+						</span>
+						<span th:if="${payVO.payCount == 'p3'}">
+							<td class="table-secondary">등록금 잔액</td>
+							<td th:text="${bill.payHS2}" name="amount" id="amount"></td>
+						</span>
+						<span th:if="${payVO.payCount == 'p4'}">
+							<td class="table-secondary">등록금 잔액</td>
+							<td th:text="${bill.payHS3}" name="amount" id="amount"></td>
+						</span>
+							<td class="table-secondary">납부방식</td>
+							<td><span th:if="${bill.payHType.toString().equals('b')}">일괄납부</span>
+								<span th:if="${bill.payHType.toString().equals('s1')}">분할납부A</span>
+								<span th:if="${bill.payHType.toString().equals('s2')}">분할납부B</span>
+							</td>
+						</tr>
+						<span th:if="${payVO.payCount == 'p1'}">
 						<tr>
 							<td class="table-secondary">1차 분납금액</td>
 							<td th:text="${bill.a}" name="first" id="first"></td>
 							<td class="table-secondary">납부기간</td>
 							<td
-								th:text="${#calendars.format(bill.ks1s, 'yyyy-MM-dd HH:mm')}+' ~ '+${#calendars.format(bill.ks1e, 'yyyy-MM-dd HH:mm')}">
+								th:text="${#calendars.format(bill.ks1s, 'yyyy-MM-dd')}+' ~ '+${#calendars.format(bill.ks1e, 'yyyy-MM-dd')}">
 							</td>
 						</tr>
 						<tr>
 							<td>
-							<button type="button" class="btn btn-secondary payFirst"
+								<button type="button" class="btn btn-secondary payFirst"
 									data-bs-toggle="modal" data-bs-target="#payFirst"
-									data-bs-whatever="NO">1차 분할 납부</button>
+									data-bs-whatever="NO" th:if="${bill.payHS1 == 0}">1차 분납</button>
 							</td>
 						</tr>
 						</span>
-						<span
-							th:if="${payVO.payCount == 'p2'}">
-						<tr>
-							<td class="table-secondary">2차 분납금액</td>
-							<td th:text="${bill.b}"></td>
-							<td class="table-secondary">납부기간</td>
-							<td
-								th:text="${#calendars.format(bill.ks2s, 'yyyy-MM-dd HH:mm')}+' ~ '+${#calendars.format(bill.ks2e, 'yyyy-MM-dd HH:mm')}">
-							</td>
-						</tr>
-						<tr>
-							<td><button class="btn btn-secondary ">2차 분납</button></td>
-						</tr>
-						</span>
-						<span
-							th:if="${payVO.payCount == 'p3'}">
-						<tr>
-							<td class="table-secondary">3차 분납금액</td>
-							<td th:text="${bill.c}"></td>
-							<td class="table-secondary">납부기간</td>
-							<td
-								th:text="${#calendars.format(bill.ks3s, 'yyyy-MM-dd HH:mm')}+' ~ '+${#calendars.format(bill.ks3e, 'yyyy-MM-dd HH:mm')}"></td>
-						</tr>
-						<tr>
-							<td><button class="btn btn-secondary ">3차 분납</button></td>
-						</tr>
-						</span>
-						<span
-							th:if="${payVO.payCount == 'p4'}">
-						<tr>
-							<td class="table-secondary">4차 분납금액</td>
-							<td th:text="${bill.d}"></td>
-							<td class="table-secondary">납부기간</td>
-							<td
-								th:text="${#calendars.format(bill.ks4s, 'yyyy-MM-dd HH:mm')}+' ~ '+${#calendars.format(bill.ks4e, 'yyyy-MM-dd HH:mm')}"></td>
-						</tr>
-						<tr>
-							<td><button class="btn btn-secondary ">4차 분납</button></td>
-						</tr>
-						</span>
-						</span>
-
-						<span th:if="${bill.payHType.toString().equals('s2')}">
+						<span th:if="${payVO.payCount == 'p2'}">
 							<tr>
-								<td class="table-secondary">등록금 총액</td>
-								<td th:text="${bill.billAmount}"></td>
-								<td class="table-secondary">납부방식</td>
-								<td><span th:if="${bill.payHType.toString().equals('b')}">일괄납부</span>
-									<span th:if="${bill.payHType.toString().equals('s1')}">분할납부A</span>
-									<span th:if="${bill.payHType.toString().equals('s2')}">분할납부B</span>
-								</td>
-							</tr>
-							<tr
-								th:if="${payVO.payCount == 'p1'}">
-								<td class="table-secondary">1차 분납금액</td>
-								<td th:text="${bill.a}">></td>
+								<td class="table-secondary">2차 분납금액</td>
+								<td th:text="${bill.b}" name="split" id="split"></td>
 								<td class="table-secondary">납부기간</td>
 								<td
-									th:text="${#calendars.format(bill.ks1s, 'yyyy-MM-dd')}+' ~ '+${#calendars.format(bill.ks1e, 'yyyy-MM-dd')}"></td>
+									th:text="${#calendars.format(bill.ks2s, 'yyyy-MM-dd')}+' ~ '+${#calendars.format(bill.ks2e, 'yyyy-MM-dd')}">
+								</td>
 							</tr>
-							<tr
-								th:if="${payVO.payCount == 'p2'}">
-								<td class="table-secondary">2차 분납금액</td>
-								<td th:text="${bill.b}">></td>
+							<tr>
+								<td>
+									<button type="button" class="btn btn-secondary paySplit"
+										data-bs-toggle="modal" data-bs-target="#paySplit"
+										data-bs-whatever="NO" th:if="${bill.payHS2 == 0} AND ${bill.payHS1 != 0}">2차 분납</button>
+								</td>
+							</tr>
+						</span>
+						<span th:if="${payVO.payCount == 'p3'}">
+							<tr>
+								<td class="table-secondary">3차 분납금액</td>
+								<td th:text="${bill.c}" name="split" id="split"></td>
 								<td class="table-secondary">납부기간</td>
 								<td
 									th:text="${#calendars.format(bill.ks3s, 'yyyy-MM-dd')}+' ~ '+${#calendars.format(bill.ks3e, 'yyyy-MM-dd')}"></td>
 							</tr>
+							<tr>
+								<td>
+									<button type="button" class="btn btn-secondary paySplit"
+										data-bs-toggle="modal" data-bs-target="#paySplit"
+										data-bs-whatever="NO" th:if="${bill.payHS3 == 0} AND ${bill.payHS2 != 0}">3차 분납</button>
+								</td>
+							</tr>
 						</span>
+						<span th:if="${payVO.payCount == 'p4'}">
+						<tr>
+							<td class="table-secondary">4차 분납금액</td>
+							<td th:text="${bill.d}" name="split" id="split"></td>
+							<td class="table-secondary">납부기간</td>
+							<td
+								th:text="${#calendars.format(bill.ks4s, 'yyyy-MM-dd')}+' ~ '+${#calendars.format(bill.ks4e, 'yyyy-MM-dd')}"></td>
+						</tr>
+						<tr>
+							<td>
+								<button type="button" class="btn btn-secondary paySplit"
+									data-bs-toggle="modal" data-bs-target="#paySplit"
+									data-bs-whatever="NO" th:if="${bill.payHYn == 's'} AND ${bill.payHS3 != 0}">4차 분납</button>
+							</td>
+						</tr>
+						</span>
+					</span>
 					</table>
 
 					<span th:if="${bill.payHType.toString().equals('b')}">
@@ -209,14 +213,14 @@
 						</div>
 					</span>
 
-					<span th:if="${!bill.payHType.toString().equals('b')}">
+					<span th:if="${!bill.payHType.toString().equals('b')} AND ${bill.payHYn.toString().equals('n')}">
 						<div class="col-md-3">
 							<div class="input-group input-group-outline my-3">
 								<button class="btn btn-secondary cancel">분할 납부 취소</button>
 							</div>
 						</div>
 					</span>
-					
+
 					<div class="modal fade" id="change" tabindex="-1"
 						aria-labelledby="changeLabel" aria-hidden="true">
 						<div class="modal-dialog">
@@ -245,37 +249,98 @@
 							</div>
 						</div>
 					</div>
+					
+					<div class="modal fade" id="payB" tabindex="-1"
+						aria-labelledby="payBLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="payBLabel">등록금 일괄 납부</h5>
+									<button type="button" class="btn-close" data-bs-dismiss="modal"
+										aria-label="Close"></button>
+								</div>
+								<div class="modal-body">																		
+									<form action="pay">
+										<div class="row">											
+											<div class="col-md-5">
+												<select required class="form-control" name="bank" id="bank">
+													<option value="">입금처를 선택해주세요</option>
+													<option value="농협">농협</option>
+													<option value="KB">KB</option>
+												</select>
+											</div>
+										</div>
+									</form>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-primary pay">납부</button>
+									<button type="button" class="btn btn-secondary"
+										data-bs-dismiss="modal">닫기</button>
+								</div>
+							</div>
+						</div>
+					</div>
 
 					<div class="modal fade" id="payFirst" tabindex="-1"
 						aria-labelledby="payFirstLabel" aria-hidden="true">
 						<div class="modal-dialog">
 							<div class="modal-content">
 								<div class="modal-header">
-									<h5 class="modal-title" id="payFirstLabel">납부 방식 선택</h5>
+									<h5 class="modal-title" id="payFirstLabel">등록금 분할 납부</h5>
 									<button type="button" class="btn-close" data-bs-dismiss="modal"
 										aria-label="Close"></button>
 								</div>
 								<div class="modal-body">
-									<p style="color: red;">첫 분납금 납부시 선납금을 넣을 수 있습니다</p>
+									<p style="color: red;">첫 분납금 납부시 선납금을 넣을 수 있습니다.</p>									
 									<form action="payFirst">
-									<div class="row">
-										<div class="col-md-6">
-											<div class="input-group input-group-outline my-3">
-												<input type="number" class="form-control" name="s1"
-													id="s1" required placeholder="금액">
-											</div>										
-										</div>										
-										<div class="col-md-3">
-											<select class="form-control" name="bank" id="bank">
-												<option value="농협">농협</option>
-												<option value="KB">KB</option>
-											</select>
-										</div>										
-									</div>
+										<div class="row">
+											<div class="col-md-4">
+												<div class="input-group input-group-outline my-3">
+													<input type="number" class="form-control" name="s1" id="s1"
+														required placeholder="선납금액">
+												</div>
+											</div>
+											<div class="col-md-5">
+												<select class="form-control" name="bank1" id="bank1">
+													<option value="">입금처를 선택해주세요</option>
+													<option value="농협">농협</option>
+													<option value="KB">KB</option>
+												</select>
+											</div>
+										</div>
 									</form>
 								</div>
 								<div class="modal-footer">
-									<button type="button" class="btn btn-primary pay">납부</button>
+									<button type="button" class="btn btn-primary pay1">납부</button>
+									<button type="button" class="btn btn-secondary"
+										data-bs-dismiss="modal">닫기</button>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="modal fade" id="paySplit" tabindex="-1"
+						aria-labelledby="paySplitLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="paySplitLabel">등록금 분할 납부</h5>
+									<button type="button" class="btn-close" data-bs-dismiss="modal"
+										aria-label="Close"></button>
+								</div>
+								<div class="modal-body">									
+									<form action="paySplit">
+											<div>
+												<select class="form-control" name="bank2" id="bank2" required>
+													<option value="">입금처를 선택해주세요</option>
+													<option value="농">농협</option>
+													<option value="KB">KB</option>
+												</select>
+											</div>
+									</form>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-primary pay2">납부</button>
 									<button type="button" class="btn btn-secondary"
 										data-bs-dismiss="modal">닫기</button>
 								</div>
@@ -291,7 +356,7 @@
 		let date = new Date();
 		let year = document.getElementById("billYear");
 		year.value = date.getFullYear();
-
+			
 		$(".change").on("click", function() {
 			var id = document.getElementById("payId").innerHTML;
 			$(".on").on("click", function() {
@@ -317,68 +382,115 @@
 						}
 					}
 				});
-			});
-		});
-
-		$(".payFirst").on("click", function() {
-			var id = document.getElementById("payId").innerHTML
-			var amount = document.getElementById("amount").innerHTML;
-			var first = document.getElementById("first").innerHTML;
-			$(".pay").on("click", function() {
-				var money = document.getElementById("s1").value;
-				var bank = document.getElementById("bank").value;
-				var advance = parseInt(first) + parseInt(money);
-				var balance = parseInt(amount) - parseInt(advance);
-				console.log(id);
-				console.log(advance);
-				console.log(balance);
-				console.log(bank);
-	 			$.ajax({
-	 				type : "POST",
-	 				url : "/firstPay",
-	 				data : {
-	 					payId : id,
-	 					amount : amount,
-	 					balance : balance,
-	 					advance : advance,
-						bank : bank,
-					},
-	 				success : function(result) {
-	 					if (result == "1") {
-	 						alert("1차 분할 납부 완료")
-	 						document.location.href = document.location.href;
-	 					}
-	 				}
-	 			});
 			});
 		});
 		
-		$(".change").on("click", function() {
+		$(".payB").on("click", function() {	
 			var id = document.getElementById("payId").innerHTML;
-			$(".on").on("click", function() {
-				var select = document.getElementById("payHType").value;
-				if (select == 's1') {
-					var count = 4
-				} else {
-					var count = 2
-				}
+			var amount = document.getElementById("amt").innerHTML;
+			$(".pay").on("click", function() {				
+				var bank = document.getElementById("bank").value;
+				var balance = parseInt(0);	
 				$.ajax({
 					type : "POST",
-					url : "/payChange",
+					url : "/pay",
 					data : {
 						payId : id,
-						payHType : select,
-						payHTotal : count,
-						payHRemain : count
+						amount : amount,
+						balance : balance,
+						bank : bank,
 					},
 					success : function(result) {
 						if (result == "1") {
-							alert("분할 납부 신청")
-							document.location.href = document.location.href;
+							alert("등록금 납부 완료")
+							location.href = "payList"
 						}
 					}
 				});
 			});
+		});
+
+		$(".payFirst").on("click", function() {		
+			var id = document.getElementById("payId").innerHTML;
+			var amount = document.getElementById("amount").innerHTML;
+			var first = document.getElementById("first").innerHTML;			
+			$(".pay1").on("click", function() {
+				var money = document.getElementById("s1").value;
+				var advance = parseInt(first) + parseInt(money);
+				var balance = parseInt(amount) - parseInt(advance);
+				var bank = $("#bank1").val();
+				$.ajax({
+					type : "POST",
+					url : "/firstPay",
+					data : {
+						payId : id,
+						balance : balance,
+						amount : advance,
+						bank : bank
+					},
+					success : function(result) {
+						if (result == "1") {
+							alert("분할 납부 완료")
+							location.href = "payList"
+						}
+					}
+				});
+			});
+		});
+
+		$(".paySplit").on("click", function() {
+			var id = document.getElementById("payId").innerHTML;
+			var p = document.getElementById("payCount").value;
+			var amount = document.getElementById("amount").innerHTML;
+			var split = document.getElementById("split").innerHTML;	
+			var balance = parseInt(amount) - parseInt(split)
+			if (p == 'p2') {
+				var url = "/secondPay"
+			} else if (p == 'p3') {
+				var url = "/thirdPay"
+			} else {
+				var url = "/fourthPay"
+			}
+				$(".pay2").on("click", function() {				
+				var bank = document.getElementById("bank2").value;				
+					$.ajax({
+						type : "POST",
+						url : url,
+						data : {
+							payId : id,
+							balance : balance,
+							amount : split,
+							bank : bank
+						},
+						success : function(result) {
+							if (result == "1") {
+								alert("분할 납부 완료")
+								location.href = "payList"
+								}
+							}
+						});
+					});
+				});
+
+		$(".cancel").on("click", function() {
+			var id = document.getElementById("payId").innerHTML;
+			if (confirm('분할납부를 취소하고 일괄납부로 전환합니다')) {
+				$.ajax({
+					type : "post",
+					url : "/payChangeCancel",
+					data : {
+						payId : id
+					},
+					success : function(result) {
+						if (result == "1") {
+							alert("일괄납부로 전환했습니다")
+							document.location.href = document.location.href;
+						}
+					}
+				});
+			} else {
+				return false;
+			}
 		});
 
 		function sm() {

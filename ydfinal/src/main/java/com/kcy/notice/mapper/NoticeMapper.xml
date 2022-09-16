@@ -40,17 +40,15 @@
 			cn.class_notice_title, 
 			cn.class_notice_date,
             cn.class_notice_con,
-            
+
             cs.course_title,
 
 			c.class_id, 
 			c.prof_id,
 
 			u.user_id, 
-			u.user_name,
-
-            m.major_id, 
-            m.major_name
+			u.user_name
+            
 		FROM
 			k_class_notice as cn
 		JOIN
@@ -62,25 +60,11 @@
 		ON
 			c.prof_id = u.user_id
         JOIN
-            k_major as m
-        ON
-            m.major_name = u.user_dept
-        JOIN
             k_course as cs
         ON
             cs.course_id = c.course_id
         where
-        	u.user_id = #{userId}
-		<choose>
-			<when test="classId != null || classId != '' || classId != 'null'">
-				and
-					c.class_id = #{classId}
-			</when>
-			<when test="classNoticeType != null || classNoticeType != '' || classNoticeType != 'null'">
-				and
-					cn.class_notice_type = #{classNoticeType}
-			</when>
-		</choose>
+                c.class_id = #{classId};
 	</select>
 	
 	<update id="noticeModify">

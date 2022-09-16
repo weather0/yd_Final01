@@ -20,7 +20,7 @@
   
 <div class="container-fluid">
    <div class="row justify-content-center">
-      <div class="card p-3 me-3 col-10">
+      <div class="card p-3 me-3 mt-5 col-10">
         <!-- 각 페이지 타이틀바 -->
         <div class="card-header p-0 position-relative mt-n4 mb-4 z-index-2">
           <div class="bg-secondary bg-gradient-secondary shadow-secondary border-radius-lg py-3">
@@ -54,7 +54,7 @@
         	<input type="hidden" th:value="${ck.class_member_id}" id="cmid">
         <input  th:value="${#authentication.principal.username}" type="hidden" id="userid">
         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-        <button class="btn btn btn-secondary me-md-2" id="btn"  th:text="제출하기"></button>
+        <button class="btn btn btn-secondary me-md-2 mt-3" id="btn"  th:text="제출하기"></button>
         </div>
         </div>
       </div>
@@ -86,20 +86,37 @@
 				let cid = $(".cid").val()
 				let cmid = $("#cmid").val()
 				
-			$.ajax({
-				url:"/evaluationinsert",
-				type:"post",
-				data:{
-					evaluation0,evaluation1 ,evaluation2,evaluation3,evaluation4,evaluation5,evaluation6,
-				    classId: cid,
-				    classMemberId:cmid
-				},
-				success:function(data){
-					toastr.success("제출완료","성공")
-				setTimeout("location.href= '/profevaluationlist'",1000);
-				}
-			})
-			
+				
+				Kcy.fire({
+					  title: '제출하시겠습니까?',
+					  text: "제출시 재평가는 불가능합니다",
+					  icon: 'warning',
+					  showCancelButton: true,
+					  confirmButtonText: '제출',
+					  cancelButtonText: '취소'
+					}).then((result) => {
+					  if (result.isConfirmed) {
+							$.ajax({
+								url:"/evaluationinsert",
+								type:"post",
+								data:{
+									evaluation0,evaluation1 ,evaluation2,evaluation3,evaluation4,evaluation5,evaluation6,
+								    classId: cid,
+								    classMemberId:cmid
+								},
+								success:function(data){
+								    Kcy.fire(
+								      '제출완료',
+								      '평가해주셔서 감사합니다',
+								      'success'
+								    )
+								setTimeout("location.href= '/profevaluationlist'",1000);
+								}
+							})
+						  
+						
+					  }
+					})
 			}
 		}
 		

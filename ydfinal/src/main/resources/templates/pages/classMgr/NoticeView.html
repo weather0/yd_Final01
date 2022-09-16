@@ -70,7 +70,7 @@
 				</tr>
 				<tr>
 				 	<td class="th-default"><label class="label_default">내용</label></td>
-					<td colspan="3" class="td-content"><p th:text="${noticeList.classNoticeCon}"></p></td>
+					<td colspan="3" class="td-content"><p th:utext="${noticeList.classNoticeCon}"></p></td>
 				</tr>				
 				<tr>
 					<td class="th-default"><label class="label_default">등록일</label></td>
@@ -86,9 +86,8 @@
 				</tbody>
 				</table>
 			<th:block sec:authorize="hasRole('ROLE_PROF')">
-				<button class="btn bg-gradient-secondary">
-					<a
-						th:href="@{/noticemodify(classNoticeNo=${noticeList.classNoticeNo})}">
+				<button style="width: 80px;" class="btn bg-gradient-secondary">
+					<a th:href="@{/noticemodify(classNoticeNo=${noticeList.classNoticeNo})}">
 						수정 </a>
 				</button>
 			</th:block>

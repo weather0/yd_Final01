@@ -24,7 +24,7 @@
 					<div class="input-group input-group-outline my-3">
 						<label class="form-label"></label> <input type="text"
 							minlength="9" class="form-control On" name="billId" id="billId"
-							readonly="readonly" placeholder="년도/학기/학과를 선택해주세요" >
+							readonly="readonly" placeholder="년도/학기/학과를 선택해주세요">
 					</div>
 					<div class="row">
 						<div class="col-md-4">
@@ -40,14 +40,14 @@
 							</div>
 						</div>
 						<div class="col-md-4">
-							<div class="input-group input-group-outline my-3">
-								<label class="form-label"></label> <select class="form-control"
-									name="majorbId" id="majorbId" required>
-									<option value="">학과선택</option>
+							<div class="input-group input-group-outline my-3 form-floating">
+								<select class="form-select"
+									name="majorbId" id="majorbId" required>									
 									<th:block th:each="mjr : ${majorb}">
 										<option th:text="${mjr.majorName}" th:value="${mjr.majorId}"></option>
 									</th:block>
 								</select>
+								<label for="floatingSelect">학과를 선택해주세요</label>
 							</div>
 						</div>
 					</div>

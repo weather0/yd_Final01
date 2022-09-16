@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/layout}">
+<th:block layout:fragment="content">
+	<style>
+.pagination .active .page-link {
+	background-color: #7b809a;
+	border-color: #7b809a;
+}
+
+.page-link:focus {
+	box-shadow: 0 0 0 0.2rem rgb(123 128 154/ 25%);
+}
+</style>
+
+
+	<!-- 상단 내비바 -->
+	<th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
+	<!-- 본문 start -->
+
+	<div class="container-fluid">
+		<div class="row justify-content-center">
+			<div class="card p-3 me-3 mt-5 col-10">
+
+				<!-- 각 페이지 타이틀바 -->
+				<div class="card-header p-0 position-relative mt-n4 mb-4 z-index-1">
+					<div
+						class="bg-secondary bg-gradient-secondary shadow-secondary border-radius-lg py-3">
+						<h6 class="text-white ps-3 m-0">만족도 평가 강좌 리스트</h6>
+
+					</div>
+				</div>
+
+				<table id="evaluationTable" class="table align-items-center mb-0">
+
+					<thead>
+						<tr>
+							<th
+								class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">교과목</th>
+							<th
+								class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">학기</th>
+							<th
+								class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">평가명</th>
+							<th
+								class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">평가결과
+								보러가기</th>
+						</tr>
+					</thead>
+
+					<tbody>
+						<tr th:each="data:${evalList}">
+							<td th:text="${data.course_title}">
+							<td th:text="|${data.class_sem}학기|">
+							<td th:text="|${data.course_title}수업에 ${data.user_name}교수 평가지|">
+							<td><a class="btn btn btn-secondary btn-sm" th:text="결과보기"
+								th:href="@{/evaluationconfirmation/(classId=${data.class_id})}"></a></td>
+						</tr>
+					</tbody>
+					<!-- 본문 end-->
+				</table>
+			</div>
+		</div>
+	</div>
+	<script>
+		$('#evaluationTable').DataTable({
+		     language: {
+		            lengthMenu: "페이지 당: _MENU_",
+		            search: "검색:",
+		            searchPlaceholder: "키워드를 입력하세요",
+		            zeroRecords: "검색결과가 없습니다",
+		            info: "_START_ - _END_ (전체: _MAX_건)",
+		            infoFiltered: "(검색결과: _TOTAL_건)",
+		            infoEmpty: "",
+		            paginate: {
+		              previous: "<",
+		              next: ">",
+		            }
+		          }
+
+			
+		});
+	</script>
+</th:block>
+</html>

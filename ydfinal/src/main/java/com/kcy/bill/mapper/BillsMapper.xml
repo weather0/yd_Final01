@@ -47,7 +47,8 @@ SELECT #{billId},
 	SELECT kph.pay_h_type, 
 		   kph.pay_h_remain, 
 		   kpd.pay_d_amount, 
-		   kpd.pay_d_bank, 
+		   kpd.pay_d_bank,
+		   kpd.pay_d_balance,
 		   kpd.pay_d_day 
 	FROM k_pay_h kph
 	LEFT JOIN k_pay_d kpd
@@ -138,7 +139,7 @@ SELECT #{billId},
 </insert>
 
 <select id="billCheck" resultType="com.kcy.bill.service.PayVO">
-	SELECT b.bill_year,
+	SELECT DISTINCT b.bill_year,
 		   b.bill_sem,
 		   u.user_id,
 		   u.user_dept,
@@ -147,9 +148,9 @@ SELECT #{billId},
 		   kph.pay_h_sem,
 		   b.bill_amount,
 		   (b.bill_amount/kph.pay_h_total) AS a,
-		   (b.bill_amount/kph.pay_h_total) AS b,
-		   (b.bill_amount/kph.pay_h_total) AS c,
-		   (b.bill_amount/kph.pay_h_total) AS d,	   
+		   ROUND ((kph.pay_h_s1/(kph.pay_h_total-1)), -3) AS b,
+	  	   ROUND ((kph.pay_h_s2/(kph.pay_h_total-2)), -3) AS c,
+	       kph.pay_h_s3 AS d,	   
 		   kb.sch_start AS kbs, 
 		   kb.sch_end AS kbe,
 		   ks1.sch_start AS ks1s, 
@@ -162,10 +163,14 @@ SELECT #{billId},
 		   ks4.sch_end AS ks4e,	   
 		   kph.pay_h_type,
 		   kph.pay_id,
-		   kph.pay_h_yn	   
+		   kph.pay_h_yn,
+		   kph.pay_h_s1,
+		   kph.pay_h_s2,
+		   kph.pay_h_s3  
 	FROM k_students s
 	JOIN k_users u ON s.stu_id = u.user_id
 	JOIN k_pay_h kph ON s.stu_id = kph.stu_id
+	LEFT JOIN k_pay_d kpd ON kph.pay_id = kpd.pay_id 
 	JOIN k_bills b ON kph.bill_id = b.bill_id
 	JOIN k_schedule kb ON kb.sch_id = b.bill_b
 	JOIN k_schedule ks1 ON ks1.sch_id = b.bill_s1 
@@ -226,9 +231,9 @@ SELECT #{billId},
 
 <update id="payChangeCancel" parameterType="com.kcy.bill.service.PayVO">	
 	UPDATE k_pay_h 
-	SET pay_h_type = #{payHType},
-	pay_h_total = #{payHTotal},
-	pay_h_remain = #{payHRemain}
+	SET pay_h_type = 'b',
+	pay_h_total = 1,
+	pay_h_remain = 1
 	WHERE pay_id = #{payId}
 </update>
 
@@ -238,10 +243,28 @@ SELECT #{billId},
 	WHERE stu_id = #{stuId}
 </update>
 
-<insert id="firstPay" parameterType="com.kcy.bill.service.PaySVO">
-	INSERT INTO k_pay_d (pay_d_amount, pay_d_balance, pay_d_count, pay_d_bank, pay_d_day, pay_id)
-	VALUES ( #{advance}, #{balance}, 1, #{bank}, NOW(), #{payId} )
+<insert id="payD" parameterType="com.kcy.bill.service.PaySVO">
+	INSERT INTO k_pay_d (pay_d_amount, pay_d_balance, pay_d_bank, pay_d_day, pay_id)
+	VALUES ( #{amount}, #{balance}, #{bank}, NOW(), #{payId} )
 </insert>
+
+<update id="firstPay" parameterType="com.kcy.bill.service.PaySVO">
+	UPDATE k_pay_h
+	SET pay_h_s1 = #{balance}			
+	WHERE pay_id = #{payId}
+</update>
+
+<update id="secondPay" parameterType="com.kcy.bill.service.PaySVO">
+	UPDATE k_pay_h
+	SET pay_h_s2 = #{balance}			
+	WHERE pay_id = #{payId}
+</update>
+
+<update id="thirdPay" parameterType="com.kcy.bill.service.PaySVO">
+	UPDATE k_pay_h
+	SET pay_h_s3 = #{balance}			
+	WHERE pay_id = #{payId}
+</update>
 
 <update id="payRemain" parameterType="com.kcy.bill.service.PaySVO">
 	UPDATE k_pay_h

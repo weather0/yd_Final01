@@ -128,4 +128,31 @@ public class BillsServiceImpl implements BillsService {
 		mapper.payYn(vo);
 	}
 
+
+	@Override
+	public void secondPay(PaySVO vo) {
+		mapper.secondPay(vo);
+		
+	}
+
+
+	@Override
+	public void thirdPay(PaySVO vo) {
+		mapper.thirdPay(vo);
+		
+	}
+
+
+	@Override
+	public void fourthPay(PaySVO vo) {
+		mapper.fourthPay(vo);
+		
+	}
+
+
+	@Override
+	public void payD(PaySVO vo) {
+		mapper.payD(vo);
+		
+	}
 }

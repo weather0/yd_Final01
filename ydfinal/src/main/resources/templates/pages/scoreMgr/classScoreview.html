@@ -9,10 +9,27 @@
   <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
   <!-- 상단 내비바 -->
   <th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
+  
+  <style>
+  	.col-md-6 {
+  	    display: flex;
+    	flex-direction: row;
+    	justify-content: flex-start;
+    	align-items: center;
+  	}
+  	.left {
+  		width: fit-content;
+    	float: left;
+    	margin-right: 10px;
+  	}
+  	.down {
+  		margin-bottom: 0px;
+  	}
+  </style>
   <!-- 본문 start -->
 <div class="container-fluid py-4">
               <div class="row justify-content-center">
-      <div class="card p-3 me-3">
+      <div class="card p-3 me-3 col-8">
       
         <!-- 각 페이지 타이틀바 -->
         <div class="card-header p-0 position-relative mt-n4 mb-4 z-index-2">
@@ -22,16 +39,22 @@
         </div>
     <form name="searchform">
      <input th:value="${#authentication.principal.username}" type="hidden" id="userid">
-        <label id="classYear">년도</label>
-        <input type="number" th:id="classYear" th:name="classYear" value="2022">
-        <label id="classSem">학기</label>
-        <select name="classSem">
+     <div class="col-md-6">
+     	<div class="input-group input-group-outline my-3 left">
+        <label class="form-label" id="classYear"></label>
+        <input type="number" th:id="classYear" th:name="classYear" value="2022" class="form-control">
+       	</div>
+       	<div class="input-group input-group-outline my-3 left">
+        <label class="form-label" id="classSem"></label>
+        <select name="classSem" class="form-control">
      			<option th:id="classSem" th:value="1">1학기</option>
      			<option th:id="classSem" th:value="2">2학기</option>
      	</select>
-     	<button type="submit" class="btn bg-gradient-secondary">검색</button>
+     	</div>
+     	<button type="submit" class="btn bg-gradient-secondary down">검색</button>
+     </div>
     </form>
-	<table id="noticeTable" class="table table-striped" style="width:100%;" >
+	<table id="noticeTable" class="table" style="width:100%;" >
         <thead>
             <tr>
             	<th>교과목</th>

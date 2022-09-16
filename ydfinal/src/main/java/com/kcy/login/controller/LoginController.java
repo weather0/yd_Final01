@@ -6,6 +6,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.kcy.login.mapper.MailDto;
@@ -26,11 +27,15 @@ public class LoginController {
     
 	// 로그인
     @GetMapping("/login")
-    public String login(){
-        return "login";
+    public String login(@RequestParam(value = "error", required = false) String error, @RequestParam(value = "exception", required = false) String exception, Model model){
+        
+    	model.addAttribute("error", error);
+    	model.addAttribute("exception", exception);
+    	
+    	return "login";
     }
     // 로그인 실패
-    @GetMapping("/denied")
+     @GetMapping("/denied")
     public String denied(UserVo vo) {
     	return "denied";
     }
@@ -49,17 +54,17 @@ public class LoginController {
     	return "findPw";
     }
     
-//    // 비밀번호 찾기 페이지 이동
-//    @GetMapping("/changePw")
-//    public String changePwPage() {
-//    	return "changePw";
-//    }
-//    
-//    @GetMapping("/changePwCheck")
-//    @ResponseBody
-//    public UserVo changePwCheck(String userEmail) {
-//    	return map.userChangePw(userEmail);
-//    }
+    // 비밀번호 찾기 페이지 이동
+    @GetMapping("/changePw")
+    public String changePwPage() {
+    	return "changePw";
+    }
+    
+    @GetMapping("/changePwCheck")
+    @ResponseBody
+    public UserVo changePwCheck(String userEmail) {
+    	return map.userChangePw(userEmail);
+    }
     
     @GetMapping("/check/findPw")
     @ResponseBody

@@ -70,7 +70,7 @@ public class EvaluationController {
 	@GetMapping("/evaluationconfirmation")
 	public String profEvaluationConfirmation(@RequestParam(value = "classId")String classId,Model model,EvaluationVO vo) {
 		model.addAttribute("classId",classId);
-		return "pages/classMgr/EvaluationConfirmation";
+		return "pages/classMgr/prof/EvaluationConfirmation";
 	}
 	
 	//교수가 평가 결과 항목을 보는 페이지
@@ -79,7 +79,7 @@ public class EvaluationController {
 	public String profEvaluationConfirmationList(Model model,EvaluationVO vo, Principal principal) {
 		vo.setUserId(principal.getName());
 		model.addAttribute("evalList",evaluationService.evaluationConfirmationList(vo));
-		return "pages/classMgr/EvaluationConfirmationList";
+		return "pages/classMgr/prof/EvaluationConfirmationList";
 	}
 	
 	

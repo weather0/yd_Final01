@@ -36,7 +36,7 @@ public class StudentInChargeController {
 	public String studentInChargeList(Model model, Principal principal, StudentInChargeVO vo ) {
 		vo.setUserId(principal.getName());
 		model.addAttribute("stulist",service.studentSelectList(vo));
-		return "pages/classMgr/StudentInChargeList";
+		return "pages/classMgr/prof/StudentInChargeList";
 	}
 	
 	//강좌에 맞는 학생을 확인하는 페이지
@@ -44,7 +44,7 @@ public class StudentInChargeController {
 	public String studentSelect(Model model, Principal principal, StudentInChargeVO vo ) {
 		vo.setUserId(principal.getName());
 		model.addAttribute("stulist",service.studentSelect(vo));
-		return "pages/classMgr/StudentInChargeList";
+		return "pages/classMgr/prof/StudentInChargeList";
 	}
 
 }
