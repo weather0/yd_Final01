@@ -33,7 +33,7 @@
 
 	<div class="container-fluid">
 		<div class="row justify-content-center">
-			<div class="card p-3 me-3">
+			<div class="card p-3 me-3 mt-5 col-10" >
 
 				<!-- 각 페이지 타이틀바 -->
 				<div class="card-header p-0 position-relative mt-n4 mb-4 z-index-2">
@@ -45,7 +45,7 @@
 					</div>
 				</div>
 
-				<table id="attendanceTable" class="table align-items-center mb-0 ">
+				<table id="attendanceTable" class="table align-items-center mb-0">
 					<thead>
 						<tr>
 							<th
@@ -65,13 +65,18 @@
 
 						</tr>
 					</thead>
-					<tbody>
+					<tbody >
 						<tr th:each="list,idx:${list}">
 							<td th:text="${list.user_name}"></td>
 							<td th:text="${list.stu_id}" th:data-stu_id="${list.stu_id}"
 								class="test"></td>
 							<td th:text="${list.user_dept}"></td>
-							<td th:text="${list.user_sex}"></td>
+							<th:block th:if="${list.user_sex} == 'M'">
+							<td th:text="남성"></td>
+							</th:block>
+							<th:block th:if="${list.user_sex} == 'F'">
+							<td th:text="여성"></td>
+							</th:block>
 							<td><input type="radio" th:name="|attendance${idx.index}|"
 								th:value="1" checked /></td>
 							<td><input type="radio" th:name="|attendance${idx.index}|"
@@ -83,7 +88,7 @@
 					</tbody>
 					<!-- 본문 end-->
 				</table>
-				<div class="d-grid gap-2 d-md-flex justify-content-md-end">
+				<div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3">
 					<button id="attendanceInsert" th:text="입력"
 						class="btn btn btn-secondary me-md-2"></button>
 					<a class="btn btn btn-secondary me-md-2 movebtn" th:text="돌아가기"

@@ -112,7 +112,7 @@ public class LectureController {
 	@GetMapping("/lectureinsert")
 	public String letureInsertPage(LectureVO vo) {
 
-		return "pages/classMgr/LectureInsert";
+		return "pages/classMgr/prof/LectureInsert";
 	}
 
 	// 실제 강좌신청이 처리되는 부분
@@ -162,7 +162,7 @@ public class LectureController {
 	@GetMapping("/lecturelist")
 	public String letureList(Model model, ClassScheduleVO vo) {
 		model.addAttribute("ltrList", lectureService.lectureList(null));
-		return "pages/classMgr/LectureList";
+		return "pages/classMgr/admin/LectureList";
 	}
 
 

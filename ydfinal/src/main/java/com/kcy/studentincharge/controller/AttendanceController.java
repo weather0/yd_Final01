@@ -42,7 +42,7 @@ public class AttendanceController {
 	@GetMapping("/attendanceSelect")
 	public String attendanceSelect() {
 	
-		return "pages/classMgr/AttendanceSelect";
+		return "pages/classMgr/prof/AttendanceSelect";
 	}
 	
 	@GetMapping("/attendancelist")
@@ -53,7 +53,7 @@ public class AttendanceController {
 			model.addAttribute("list",service.attendanceList(vo));
 			
 			
-		return "pages/classMgr/AttendanceList";
+		return "pages/classMgr/prof/AttendanceList";
 	}
 	
 	
