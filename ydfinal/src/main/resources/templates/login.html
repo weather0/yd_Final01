@@ -44,7 +44,14 @@
       opacity:1;
     }
   }
-  
+  .alert {
+  	color: #FA7070;
+  	font-size: 12px;
+  	font-weight: 700;
+  }
+  .my-4 {
+  	margin-top: 0px !important;
+  }
 </style>
 
 <body>
@@ -76,6 +83,9 @@
                       <span class="ms-2 fw-bold">아이디 저장</span>
                     </label>
                   </div>
+                  <span th:if="${param.error}">
+                  		<p id="valid" th:text="${exception}" class="alert"></p>
+                  </span>
                   <div class="text-center">
                     <button type="submit" class="btn bg-gradient-dark w-100 my-4 mb-2">로그인</button>
                   </div>

@@ -9,7 +9,16 @@
   <th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
 
   <!-- 본문 start -->
-      <h1>교수 강의자료 및 공지 수정 페이지</h1>
+  <div class="container-fluid py-4">
+       <div class="row justify-content-center">
+      <div class="card p-3 me-3 col-8">
+      
+        <!-- 각 페이지 타이틀바 -->
+        <div class="card-header p-0 position-relative mt-n4 mb-4 z-index-2">
+          <div class="bg-secondary bg-gradient-secondary shadow-secondary border-radius-lg py-3">
+            <h6 class="text-white ps-3 m-0">공지 및 자료 수정</h6>
+          </div>
+        </div>
  		
  	<form action="noticeModify" method="post" enctype="multipart/form-data">
  	<input type="hidden" th:value="${noticeList.classNoticeNo}" />
@@ -17,7 +26,7 @@
  	<div class="input-group input-group-static mb-4">
  	
  	<select class="form-control" name="classId">
-			<option>강좌 선택123</option>
+			<option>강좌 선택</option>
 		<th:block th:each="c : ${profClassId}">
 			<option th:text="${c.courseTitle}" th:value="${c.classId}"></option>
 		</th:block> 		
@@ -35,8 +44,42 @@
     </div>	
     
      <div class="input-group input-group-outline my-3">
-      <textarea type="text" class="form-control" th:text="${noticeList.classNoticeCon}" name="classNoticeCon"></textarea>
-    </div>	
+      <textarea type="text" id="summernote" class="form-control" th:utext="${noticeList.classNoticeCon}" name="classNoticeCon"></textarea>
+    </div>
+
+        <script>
+      $('#summernote').summernote({
+          // 에디터 높이
+          height: 150,
+          // 에디터 한글 설정
+          lang: "ko-KR",
+          // 에디터에 커서 이동 (input창의 autofocus라고 생각)
+          focus : true,
+          toolbar: [
+              // 글꼴 설정
+              ['fontname', ['fontname']],
+              // 글자 크기 설정
+              ['fontsize', ['fontsize']],
+              // 굵기, 기울임꼴, 밑줄,취소 선, 서식지우기
+              ['style', ['bold', 'italic', 'underline','strikethrough', 'clear']],
+              // 글자색
+              ['color', ['forecolor','color']],
+              // 표만들기
+              ['table', ['table']],
+              // 글머리 기호, 번호매기기, 문단정렬
+              ['para', ['ul', 'ol', 'paragraph']],
+              // 줄간격
+              ['height', ['height']],
+              // 코드보기, 확대해서보기, 도움말
+              ['view', ['codeview','fullscreen', 'help']]
+          ],
+          // 추가한 글꼴
+          fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New','맑은 고딕','궁서','굴림체','굴림','돋음체','바탕체'],
+          // 추가한 폰트사이즈
+          fontSizes: ['8','9','10','11','12','14','16','18','20','22','24','28','30','36','50','72']
+
+      });
+    </script>
       
     <div class="input-group input-group-outline my-3">
       <a th:href="${'/noticedownload?classNoticeFile='+noticeList.classNoticeFile}"><label th:id="quizRFile" th:text="${noticeList.classNoticeOriginal}" class="form-label"></label></a>
@@ -49,7 +92,8 @@
 </form>
     
   <!-- 본문 end-->
-
+</div>
+</div>
 </div>
 </th:block>
 </html>

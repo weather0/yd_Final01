@@ -31,6 +31,10 @@
 			margin: 0;
 			border-bottom: none;
 		}
+		.btn {
+			padding: 12px;
+			font-size: 12px;
+		}
 	</style>
 </head>
 <body class="bg-gray-200">
@@ -43,10 +47,10 @@
         <div class="row">
           <div class="col-lg-4 col-md-8 col-12 mx-auto">
             <div class="card z-index-0 fadeIn3 fadeInBottom">
-              <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-                <div class="bg-gradient-primary shadow-primary border-radius-lg py-3 pe-1">
-                  <h4 class="text-white font-weight-bolder text-center mt-2 mb-0">예담직업전문학교</h4>
-                </div>
+            
+              <div class="card-body">
+              <div class="text-center mt-2 mb-4" style="color: #191919; padding-top: 20px;">
+                <span class="fs-3 fw-bold">비밀번호 찾기</span>
               </div>
               <div class="card-body">
                   <div class="input-group input-group-outline my-3">
@@ -58,10 +62,9 @@
                     <input type="text" id="myName" name="myName" class="form-control" required>
                   </div>
                   <div class="text-center">
-                    <button type="submit" id="checkEmail" class="btn bg-gradient-primary w-100 my-4 mb-2">인증번호 전송</button>
+                    <button type="submit" id="checkEmail" class="btn bg-gradient-dark w-100 my-4 mb-2">인증번호 전송</button>
+                    <button type="button" class="btn bg-gradient-dark w-100 my-4 mb-2" onClick="history.back()">돌아가기</button>
                   </div>        
-                 <hr>
-                    <div class="text-center small mt-2" id="checkMsg" style="color: red"></div>
               </div>
             </div>
           </div>
@@ -73,31 +76,64 @@
 	 $("#checkEmail").click(function () {
 	        let userEmail = $("#userEmail").val();
 	        let userName = $("#myName").val();
+	        var start_time = new Date().getTime();
 	        
 	        console.log(userName);
-				
+	
 	        // 비밀번호 ajax
-	        $.ajax({
+	         $.ajax({
 	            url: "http://localhost/check/findPw",
 	            data: {
 	                "userEmail" : userEmail,
 	                "myName" : userName
 	            },
+	            beforeSend: function(xhr, opts) {
+	            	if(userEmail == '' || userName == '') {
+	            		Swal.fire("빠진 항목이 없는지 확인해 주세요.", "", "warning");
+	            		xhr.abort();
+	            	}
+	            },
 	            success: function (data) {
-                				Swal.fire("발송 완료!", "입력하신 이메일로 임시 비밀번호가 발송되었습니다.", "success");
 	                    		// 이메일 전송 ajax
-	                            $.ajax({
-	                                url: "http://localhost/findPw/sendEmail",
-	                                data: {
-	                                    "userEmail": userEmail,
-	                                    "myName": userName
-	                                },
-	                                success: function(data) {
-	                                	location.href = "/login";
-	                                },
-	                                error: function(error) {
-	                                	Swal.fire("오류 발생", "다시 입력해 주세요.", "error");
-	                                }
+                           $.ajax({
+                               url: "http://localhost/findPw/sendEmail",
+                               data: {
+                                   "userEmail": userEmail,
+                                   "myName": userName
+                               },
+                               beforeSend: function() {
+                            	   
+                            	   let timerInterval
+                            	   Swal.fire({
+                            	     title: '메일 전송 중',
+                            	     timer: 12000,
+                            	     didOpen: () => {
+                            	       Swal.showLoading()
+                            	     },
+                            	     willClose: () => {
+                            	       clearInterval(timerInterval)
+                            	     }
+                            	   }).then((result) => {
+                            	     /* Read more about handling dismissals below */
+                            	     if (result.dismiss === Swal.DismissReason.timer) {
+                            	       console.log('I was closed by the timer')
+                            	     }
+                            	   })
+                            	   
+                            	   $('html').css("cursor","wait"); 
+                               },
+                               complete: function() {
+                            	   $('html').css("cursor","auto"); 
+                            	   Swal.fire("전송 완료", "다시 로그인해 주세요.", "success");
+                            	   setTimeout(function() {location.href = "/login"}, 1000);
+                               },
+	                           success: function(data) {
+			               		   console.log(data);
+	                           },
+                               error: function(error) {
+                               	Swal.fire("오류 발생", "다시 입력해 주세요.", "error");
+                               	location.reload();
+                               }
 	                         //   })
 	                        
 	                     })
@@ -106,9 +142,25 @@
 	            },
 	            error: function(error) {
 	            	 Swal.fire("오류 발생", "다시 입력해 주세요.", "error");
+                 	 location.reload();
 	            }
-	        }) 
+	        })  
 	    })
-	</script>
+	   
+	    function clean_time(time) {
+	    	txt = '초';
+	    	result = time / 1000;
+	    	if(result >= 60) {
+	    		result = result / 60;
+	    		txt = '분';
+	    	}
+	    	result = parseInt(result);
+	    	return result + txt;
+	    }
+	    
+	 
+    $('#checkMsg').html('<p style="color:darkblue"></p>'); 
+    
+    </script>
 </body>
 </html>
