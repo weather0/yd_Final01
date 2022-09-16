@@ -39,44 +39,49 @@
 					<div>
 						<form action="matchingChangeOrder" method="post">
 							<div class="row">
-								<div class="form-floating col-md-3">
-									<div class="input-group input-group-outline my-3">									
+								<div class="col-md-3">
+									<div class="input-group input-group-outline my-3">
+									 	<label for="floatingInput"></label>								
 										<input th:value="${matchingName.userName}" type="text"
-											id="userName" readonly="readonly">
+											id="userName" class="form-control" readonly="readonly">										
 									</div>
 								</div>
 								<div class="col-md-3">
 									<div class="input-group input-group-outline my-3">
+									<label class="form-label"></label>
 										<input th:value="${matchingName.stuId}" type="text"
-											name="stuId" id="stuId" readonly="readonly">
+											name="stuId" id="stuId" class="form-control" readonly="readonly">									
 									</div>
 								</div>
 								<div class="col-md-3">
 									<div class="input-group input-group-outline my-3">
+									<label class="form-label"></label>
 										<input th:value="${matchingName.profname}" type="text"
-											id="profname" readonly="readonly">
+											id="profname" class="form-control" readonly="readonly">									
 									</div>
 								</div>
 								<div class="col-md-3">
 									<div class="input-group input-group-outline my-3">
+									<label class="form-label"></label>
 										<input th:value="${matchingName.studentProf}" type="text"
-											name="profId" id="profId" readonly="readonly">
+											name="profId" id="profId" class="form-control" readonly="readonly">
+									
 									</div>
+								</div>							
+								<div class="input-group input-group-outline my-3">
+									<label for="floatingTextarea"></label>
+									<textarea class="form-control" name="matchingChangeReason"
+										id="matchingChangeReason"
+										placeholder="지도교수 변경사유를 입력해주세요(미입력 불이익이 있을 수도 있습니다)"></textarea>
 								</div>
-							</div>
-							<div class="input-group input-group-outline my-3">
-								<!-- 	      <label class="form-label">지도교수 변경사유</label> -->
-								<textarea class="form-control" name="matchingChangeReason"
-									id="matchingChangeReason"
-									placeholder="지도교수 변경사유를 입력해주세요(미입력 불이익이 있을 수도 있습니다)"></textarea>
-							</div>
-
-							<div class="input-group input-group-outline my-3">
-								<!-- 	      <label class="form-label">지도교수 지정</label> -->
-								<input type="text" class="form-control" name="matchingWant"
-									id="matchingWant"
-									placeholder="변경을 원하는 지도교수를 선택해주세요. 미 선택시 무작위로 선별됩니다"
-									readonly="readonly">
+	
+								<div class="input-group input-group-outline my-3">
+									<label class="form-label"></label>
+									<input type="text" class="form-control" name="matchingWant"
+										id="matchingWant"
+										placeholder="변경을 원하는 지도교수를 선택해주세요. 미 선택시 무작위로 선별됩니다"
+										readonly="readonly">
+								</div>
 							</div>
 
 							<div id="changeProgress">
