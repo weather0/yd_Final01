@@ -51,6 +51,12 @@
 							</div>
 						</div>
 					</div>
+					<div class="col-md-4" style="display: none">
+							<div class="input-group input-group-outline my-3">
+								<input type="text" class="form-control"
+									name="hakgi" id="hakgi" required placeholder="학기">
+							</div>
+						</div>			
 					<div class="input-group input-group-outline my-3">
 						<label class="form-label">청구액</label> <input type="number"
 							class="form-control" name="billAmount" min="0" required>
@@ -72,11 +78,15 @@
 		year.value = date.getFullYear();
 
 		let code = document.getElementById('billId')
+		var hakgi = document.getElementById('hakgi')
+		
 
 		$(".On").on("click", function() {
 			let sem = document.getElementById('billSem').value
 			let major = document.getElementById('majorbId').value
 			code.value = year.value + sem + major
+			hakgi.value = "%"+ sem + "학기%"
+			console.log(hakgi.value)
 		})
 	</script>
 

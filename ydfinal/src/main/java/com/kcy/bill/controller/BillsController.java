@@ -21,11 +21,11 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kcy.bill.service.AccountListVO;
 import com.kcy.bill.service.BillsService;
 import com.kcy.bill.service.BillsVO;
 import com.kcy.bill.service.MajorbVO;
 import com.kcy.bill.service.OpenBank;
+import com.kcy.bill.service.PaySVO;
 import com.kcy.bill.service.PayVO;
 
 
@@ -53,7 +53,8 @@ public class BillsController {
 	//등록금 고지서 등록
 	@RequestMapping(value = "/billsInsert", method = RequestMethod.POST)
 	public String BillsInsert(BillsVO vo, PayVO pvo, Model model, RedirectAttributes redirectAttributes) {
-		try {
+		try {			
+			vo.setBillYear2("%"+vo.getBillYear()+"%");
 		service.billsInsert(vo);
 		} catch(DuplicateKeyException e) {
 			redirectAttributes.addFlashAttribute("message", "중복되는 청구코드가 존재합니다");			
@@ -122,6 +123,16 @@ public class BillsController {
 	@ResponseBody
 	public String payChangeCancel(PayVO vo) {
 		service.payChangeCancel(vo);
+		return "1";
+	}
+	
+	//1차 분납금 납부
+	@PostMapping("/firstPay")
+	@ResponseBody
+	public String firstPay(PaySVO vo) {
+		service.firstPay(vo);
+		service.payRemain(vo);
+		service.payYn(vo);
 		return "1";
 	}
 	
