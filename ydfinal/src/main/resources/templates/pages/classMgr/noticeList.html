@@ -10,6 +10,15 @@
   <!-- 상단 내비바 -->
   <th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
   <style>
+.pagination .active .page-link {
+	background-color: #7b809a;
+	border-color: #7b809a;
+}
+
+.page-link:focus {
+	box-shadow: 0 0 0 0.2rem rgb(123 128 154/ 25%);
+}
+
   
       	.flex {
   	    display: flex;
@@ -104,7 +113,21 @@
  </div>
  </div>
  <script>
-       $('#noticeTable').DataTable({});
+       $('#noticeTable').DataTable({
+    	   language : {
+				lengthMenu : "페이지 당: _MENU_",
+				search : "검색:",
+				searchPlaceholder : "키워드를 입력하세요",
+				zeroRecords : "검색결과가 없습니다",
+				info : "_START_ - _END_ (전체: _MAX_건)",
+				infoFiltered : "(검색결과: _TOTAL_건)",
+				infoEmpty : "",
+				paginate : {
+					previous : "<",
+	              next: ">",
+				}
+			}
+       });
  </script>
 </th:block>
 </html>

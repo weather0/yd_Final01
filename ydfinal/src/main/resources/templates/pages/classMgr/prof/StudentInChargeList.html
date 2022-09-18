@@ -37,18 +37,20 @@
 						<i class="fa-solid fa-magnifying-glass" style="line-height: 40px;"></i>
 							<select class="form-control mb-3 w-3"
 								name="classId" id="classId">
-								<option th:text="강좌선택"></option>
+								<option th:text="강좌선택" th:value="1"></option>
 								<th:block th:each="classId : ${classId}">
 									<option th:text="${classId.courseTitle}"
 										th:value="${classId.classId}"></option>
 								</th:block>
 							</select>
+							
 							<button class="btn btn-outline-secondary" type="submit"
 								id="button-addon2">검색</button>
 						</div>
 					</form>
 					
 				</div>
+				<div class="overflow-scroll">
 				<table id="studentInCharge" class="table align-items-center table-hover">
 					<thead>
 						<tr>
@@ -89,6 +91,7 @@
 					</tbody>
 					<!-- 본문 end-->
 				</table>
+				</div>
 			</div>
 		</div>
 	</div>
