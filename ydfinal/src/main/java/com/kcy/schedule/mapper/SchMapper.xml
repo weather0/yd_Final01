@@ -30,8 +30,39 @@
     #{schManager},
     #{schType},
     IF(#{schAllday} = '',NULL,#{schAllday}),
-    null
+    #{schUuid}
   )
 </insert>
+
+
+
+<!-- 학사 일정 수정 (행정) -->
+<update id="allSchUpdate" parameterType="map">
+  update k_schedule
+     set sch_id = CONCAT (
+            SUBSTR(#{schType},1,1), 
+            SUBSTR(YEAR(#{schStart}),3,2), 
+            '-', (
+              select NVL2(sch_id, MAX(SUBSTR(sch_id,5)) + 1, '100')
+                from k_schedule ks
+                 where sch_type != 'SEMESTER'
+                   and YEAR(sch_start) = YEAR(#{schStart})
+              )
+            ),
+         sch_start = STR_TO_DATE(#{schStart},'%Y-%m-%d %H:%i'),
+         sch_end = STR_TO_DATE(#{schEnd},'%Y-%m-%d %H:%i'),
+         sch_title = #{schTitle},
+         sch_manager = #{schManager},
+         sch_type = #{schType},
+         sch_allday = IF(#{schAllday} = '',NULL,#{schAllday})
+         
+   where sch_uuid = #{schUuid}
+</update>
+
+<!-- 학사 일정 삭제 (행정) -->
+<delete id="allSchDelete">
+  delete from k_schedule
+  where sch_uuid = #{schUuid}
+</delete>
 
 </mapper>

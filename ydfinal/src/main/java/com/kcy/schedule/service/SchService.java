@@ -8,5 +8,9 @@ public interface SchService {
     public List<Map<?, ?>> allSchProc();
     // 학사 일정 등록 (행정)
     public void allSchInsert(Map<?, ?> map);
+    // 학사 일정 수정 (행정)
+    public void allSchUpdate(Map<?, ?> map);
+    // 학사 일정 삭제 (행정)
+    public void allSchDelete(String uuid);
 
 }

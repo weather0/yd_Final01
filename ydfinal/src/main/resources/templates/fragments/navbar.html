@@ -4,24 +4,39 @@
 <th:block th:fragment="navbarFragment">
 
 <style>
+
+  /* 퀵메뉴 */
+  #qm div {
+    display: inline-block;
+  }
   #qm a:hover {
-    color: black;
-    background-color: lightgray;
+    color: white;
     border-radius: 0.375rem;
+    background-image: linear-gradient(195deg, #747b8a 0%, #495361 100%);
+    box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(210, 210, 210, 0.4) !important;
 /*     transition: 0.3s; */
   }
-
-     
-  .bgNav {
+  
+  
+  #navbarBlur {
     width: 100%;
-    height: 70px;
-    position: absolute;
-    top: 0px;
+    /* sticky핵꿀 옵션! 일반적으로 내비바를 fixed로 고정시키려면
+      아래 바디부분의 상단을 내비높이만큼 고정px로 마진을 줘야하는데
+      그러면 반응형 환경에서 어그러지게 된다. 
+      sticky는 평소엔 relative처럼 있다가 스크롤 내릴때만 고정됨. 
+      스마트하게 내비바 고정시키는 가장 간단하고 확실한 옵션임!(단 z-index주의!) */
+    position: sticky; 
     left: 0px;
-    background-color: white;
-    z-index: -999;
+    top: 0px;
+    /* 배경이미지 흐리게 하는 방법 1: linear-gradient옵션 / 방법2: before,after 등 가상요소 활용 */
+    background-image: 
+      linear-gradient(rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.92)),
+      url('/aa/logo/KCYtext.svg');
+/*     background-repeat: no-repeat; */
     box-shadow: 0px 0px 2px 3px lightgrey;
+    z-index: 50;
   }
+  
 
 </style>
 
@@ -48,27 +63,24 @@ $(function(){
   })
 })
 </script>
-  <div class="bgNav"></div>
   
   <!-- Navbar -->
-  <nav class="navbar navbar-main navbar-expand-lg mx-1 mt-3 mb-4 shadow-none border-radius-xl" id="navbarBlur" navbar-scroll="true">
+  <nav class="navbar navbar-main navbar-expand-lg py-4 mb-2 shadow-none border-radius-xl" id="navbarBlur" navbar-scroll="true">
     <div class="container-fluid">
     
-      <nav id="qm">
-        <ul class="navbar-nav align-items-center">
-          <li>
-            <h6 class="my-0 me-2">퀵메뉴 <i class="fa-solid fa-square-caret-right"></i></h6>
-          </li>
-          <li>
-              <a class="fw-bold" id="qm1"></a>
-          </li>
-          <li>
-              <a class="fw-bold" id="qm2"></a>
-          </li>
-          <li>
-              <a class="fw-bold" id="qm3"></a>
-          </li>
-        </ul>
+      <div id="qm">
+        <div>
+          <h6 class="my-0 me-2">퀵메뉴 <i class="fa-solid fa-square-caret-right"></i></h6>
+        </div>
+        <div>
+          <a class="fw-bold" id="qm1"></a>
+        </div>
+        <div>
+          <a class="fw-bold" id="qm2"></a>
+        </div>
+        <div>
+          <a class="fw-bold" id="qm3"></a>
+        </div>
         <script th:inline="javascript">
           let myId = [[${#authentication.name}]];
           let qm1 = Cookies.get(myId + '-qm1');
@@ -92,7 +104,7 @@ $(function(){
             $('#qm3').addClass('p-2');
           }
         </script>
-      </nav>
+      </div>
     
     
       <div class="collapse navbar-collapse" id="navbar">
@@ -136,7 +148,5 @@ $(function(){
     </div>
   </nav>
   <!-- End Navbar -->
-  
-
   </th:block>
 </html>

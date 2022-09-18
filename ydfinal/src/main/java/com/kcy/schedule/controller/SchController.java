@@ -36,5 +36,21 @@ public class SchController {
     public void allSchInsert(@RequestParam Map<?, ?> map) {
         service.allSchInsert(map);
     };
+    
+    // 학사 일정 수정 (행정)
+    @ResponseBody
+    @RequestMapping("/allSchUpdate")
+    public void allSchUpdate(@RequestParam Map<?, ?> map) {
+        service.allSchUpdate(map);
+    };
+    
+    // 학사 일정 삭제 (행정)
+    @ResponseBody
+    @RequestMapping("/allSchDelete")
+    public void allSchDelete(String schUuid) {
+        System.out.println(schUuid);
+        service.allSchDelete(schUuid);
+    };
+    
 
 }

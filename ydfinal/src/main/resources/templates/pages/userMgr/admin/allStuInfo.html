@@ -384,7 +384,9 @@
                 <th class="text-center" id="th0">
                   <span>학번</span>
                   <input style="width: 80px" type="text"  onfocus="this.select()" placeholder="학번">
-                  <!-- 아이콘 호버 시 커짐효과로 인해 주변 요소들의 크기,위치 등이 영향 안 받으려면 div로 감싸고 너비지정 해줘야 함-->
+                  <!-- 방법1: 요소 사이즈로 조절 → 주변 요소들의 크기,위치 등이 영향받음(안 받으려면 div로 감싸고 너비지정 해줘야 함)-->
+                  <!-- 방법2: transform:scale()로 확대 → 주변 레이아웃 영향 안받고 지만 확대됨 -->
+                  <!--  *마찬가지로 border속성과 outline속성 간 관계도 비슷함 -->
                   <div class="d-inline-block" style="width: 20px"> 
                     <i class="fa-solid fa-magnifying-glass"></i>
                   </div>

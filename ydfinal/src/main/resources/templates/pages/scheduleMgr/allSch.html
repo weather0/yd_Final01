@@ -2,7 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml" 
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
-      layout:decorate="~{layouts/layout}">
+      layout:decorate="~{layouts/layout}"
+      xmlns:sec="http://www.thymeleaf.org" >
 
 <th:block layout:fragment="content">
 
@@ -14,13 +15,38 @@
     #closeModal:hover { 
       font-size: larger;
     }
-
+    
+    /* 토,일요일 */
+    .fc-day-sat {
+      background-color: lightcyan;
+    }
+    .fc-day-sun {
+      background-color: lavenderblush;
+    }
+    /* 날짜 레이블 */
+    .fc a[data-navlink]:hover {
+      font-weight: bold;
+      text-decoration: none;
+      color: #344767;
+    }
+    /* 이벤트 호버 */
+    .fc-daygrid-event-harness a:hover {
+      outline: 3px solid black !important;
+      z-index: 999;
+    }
+    /* 일자 선택 칸 테두리 */
+    .fc-highlight {
+      outline: 2px solid black !important;
+    }
+    
   </style>
   
-  <script>
+  <script th:inline="javascript">
     document.addEventListener('DOMContentLoaded', function() {
-
-
+      
+      // 사용자권한 변수
+      let role = [[${#authentication.authorities[0].authority}]];
+      
       // 두 날짜 차이 구하기 함수 (매개값으로 날짜형식같이 생긴 스트링값이면 인식함)
       const getDateDiff = (d1, d2) => {
         const date1 = new Date(d1);
@@ -31,25 +57,14 @@
         return diffDate / (1000 * 60 * 60 * 24);
       }
       
-      
-      // datetimepicker 생성 함수
-      function makeDTP () {
-        jQuery.datetimepicker.setLocale('kr');
-        $('#schS').datetimepicker({
-          format: 'Y-m-d (D) H:i',
-          step: 30,
-          defaultTime:'00:00',
-          closeOnTimeSelect: false,
-          validateOnBlur: false, // 이거 false해줘야 인풋창 바깥 눌렀을때 초기화(=현재시각) 안 됨. 또한 위치주의!! 이 옵션은 맨 밑에 가야 함
-        });
-        $('#schE').datetimepicker({
-          format: 'Y-m-d (D) H:i',
-          step: 30,
-          defaultTime:'00:00',
-          closeOnTimeSelect: false,
-          validateOnBlur: false
+      // uuid 생성 함수
+      function uuidv4() {
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+          var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+          return v.toString(16);
         });
       }
+      let uuid;
       
       // 이벤트 색상 정의
       function eventColor (item) {
@@ -67,8 +82,84 @@
         }
       }
       
+      // datetimepicker 당일의 선택 가능 시작 제한
+      let limitDTP = function (sd) {
+        // sd(선택한 일시)의 연월일이 현재시각의 연월일과 같을 경우
+        if( moment(sd).format('YYYY-MM-DD') == moment().format('YYYY-MM-DD') ) {
+          this.setOptions({
+            minTime: 0,
+          });
+        } else {
+          this.setOptions({
+            minTime: '00:00',
+          });
+        }
+//      onSelectDate: function (sd) {
+//      console.log(sd.getTime());
+//      console.log(moment(moment().format('YYYY-MM-DD')).toDate().getTime()); // .toDate(): moment날짜타입을 JS날짜타입으로 변환
+//      console.log(new Date(moment(moment().format('YYYY-MM-DD'))).getTime()); // └new Date()로 감싸주는 것과 동일
+//      console.log(sd.getTime() == new Date(moment(moment().format('YYYY-MM-DD'))).getTime());
+//      // JS날짜는 등호연산자(==)로 직접비교하면 값이 똑같아도 무조건 false임.
+//      // getTime(), getDay() 등으로 변환하고 비교해야 true 나옴
+      }
       
-      // 초기 로딩 시
+      // datetimepicker 생성 함수
+      function makeDTP () {
+        jQuery.datetimepicker.setLocale('kr');
+        $('#schS, #schE').datetimepicker({
+          format: 'Y-m-d (D) H:i',
+          minDate: 0, // today
+          onShow: limitDTP, // 피커 열릴 때 동작
+          onChangeDateTime: limitDTP, // 날짜 바뀔 때 동작
+          step: 30,
+          defaultTime: '00:00',
+//           closeOnTimeSelect: false,
+          validateOnBlur: false, // 이거 false해줘야 인풋창 바깥 눌렀을때 초기화(=현재시각) 안 됨. 또한 위치주의!! 이 옵션은 맨 밑에 가야 함
+        });
+      }
+      
+      
+//    $('#btn-showSchInsert').on('click', function(){
+//    // $('#allday').removeAttr('disabled'); // *모든 버그의 원흉!! 이걸 안 적어줘서 애먼 그 아래 input에 계속 자동 focus되는 개같은 논리버그가.. 
+//    // →9.15. 자유도도 늘릴 겸 락 기능 자체를 안하기로 함(위에 풀캘린터 스크립트에서도 관련 코드 다 뺌) 뭐만하면 계속 논리버그터져서
+//      makeDTP (); // DT피커 생성
+//    })
+   
+      // 모달 열릴 때
+      $('#modal-sch').on('show.bs.modal', function(){
+        // 행정처일 경우만 DT피커 생성
+        if (role == 'ROLE_ADMIN'){
+          makeDTP ();
+        }
+      });
+      
+      // 모달 닫을 때 폼 초기화
+      $('#modal-sch').on('hidden.bs.modal', function(){
+        $(this).find('form')[0].reset();
+        $('#schE').removeAttr('disabled');
+        
+        // is-filled: 인풋창 애니메이션 상태 OFF (다시 모달 켰을 때 input들 모양 바로잡기)
+        $('#schS').parent().removeClass('is-filled'); 
+        $('#schE').parent().removeClass('is-filled');
+        $('#schT').parent().removeClass('is-filled');
+        $('#schM').parent().removeClass('is-filled');
+        $('#schType').removeAttr('style');
+        
+        // DT피커 소멸
+        $('#schS').datetimepicker('destroy');
+        $('#schE').datetimepicker('destroy');
+        
+        // 버튼 ON/OFF
+        $('#btn-schInsert').removeClass('d-none') // 등록버튼 ON
+        $('#btn-schUpdate').addClass('d-none') // 수정버튼 OFF
+        $('#btn-schDelete').addClass('d-none') // 삭제버튼 OFF
+      })
+      
+      
+      
+      
+///////////////////////////////////////////////////////////////////////////////////////////////
+      // 초기 로딩 시 바로 캘린더 호출
       $.ajax ({
         url: '/allSchProc',
         success: function (data) {
@@ -77,11 +168,15 @@
         }
       })
       
-      
       // Start: 캘린더콜백함수
       function allSch (data) {
         var calendarEl = document.getElementById('allSch');
         var calendar = new FullCalendar.Calendar(calendarEl, {
+          
+          
+//////////////////////////////////////////////////////////////////////////////////////
+          // 1. 캘린더 view 세팅
+          
           height: 'auto', // 화면 맞춤
           locale: 'kr',
           displayEventEnd: true,
@@ -91,19 +186,24 @@
             newBtn: {
               text: '일정등록',
               click: function() {
-                $('#modal-schInsert').modal('show');
+                $('#modal-sch').modal('show');
               }
             }
           },
-          
           headerToolbar: {
             left: 'prev,next today',
             center: 'title',
             right: 'newBtn dayGridMonth,timeGridWeek,timeGridDay,listWeek'
           },
-          editable: true,
-          selectable: true,
-          selectMirror: true,
+//           viewDidMount: function () { // 렌더된 후 요소 조작
+            // 일정등록 버튼 권한 부여
+//             let newBtn = $('.fc-newBtn-button');
+//             if (role != 'ROLE_ADMIN'){
+              // 여기서 조작하면 약간 찌꺼기 남는 버그가 경우가 종종있음(렌더링 시간차 버그?) 
+              // 밑에 캘린더 렌더링 이후에 remove()로 지우는게 더 효과적
+//             }
+//           },
+
           navLinks: true, // 달력에서 일 글자 클릭시 day뷰로 전환
           
           eventTimeFormat: {
@@ -119,9 +219,13 @@
             hour12: false
           },
           
-          // 개꿀 기능! sql문 각 칼럼 AS 쓸 필요 없이 *로 조지고 여기서 약속key명(title,start등)으로 바꾸자
+//////////////////////////////////////////////////////////////////////////////////////
+          // 2. 데이터 Parsing
+          
+          // 개꿀 기능! sql문 각 칼럼 AS 쓸 필요 없이 *로 조지고 여기서 약속key명(title,start등)으로 매칭해주자
+          // (매칭 안해준 속성들이라도 이벤트.extendedProps 하위에 들어감)
           eventDataTransform: function (data) {
-            data.id = data.schId;
+            data.id = data.schUuid;
             data.title = data.schTitle;
             data.start = data.schStart;
             data.end = data.schEnd;
@@ -131,69 +235,92 @@
           },
           events: data, // 일정들[]
           
+          // 이벤트 꾸미기
+          eventContent: function(arg) {
+            let startHm = moment(arg.event.start).format('HH:mm') 
+            return {
+              html: `
+                <span class="me-1 fw-bold text-decoration-underline">${ startHm == '00:00' ? '' : startHm }</span> 
+                <span>${ arg.event.title }</span>`
+            }
+          },
+          
+          
+//////////////////////////////////////////////////////////////////////////////////////
+          // 3. 칸 선택
+          
+          editable: true,
+          selectable: true, // 권한별 제한은 저기 밑에 캘린더 객체render 이후에 조작
+          // 일자 선택 범위 제한
+          selectAllow: function (info) {
+            if(info.start > moment().add(-1,'d')){
+              return true;
+            }
+          },
+          
           // Start: select(칸 선택 시)
           select: function (arg) {
+            // 지난 일자 선택시 처리 (→selectAllow로 대체함)
+//             if (arg.start < new Date() ) {
+//               Kcy.fire({
+//                 icon: 'error',
+//                 title: '지난 일정은 등록이 불가능합니다',
+//                 html: '<h5>당일 일정은 [일정등록]버튼으로 등록해주세요</h6>',
+//               })
+
+            // 정상 일자 선택 시
+            console.log(arg); // 선택액션만으로 여러값들이 자동 생성된다 확인해보자
             
-            // 지난 일자 선택시 처리
-            var today = new Date();
-            const year = today.getFullYear();
-            const month = today.getMonth() + 1;
-            const date = today.getDate();
+            // uuid 생성
+            uuid = uuidv4();
             
-            var clickDate = new Date(arg.startStr);
-            var now = new Date(`${year}-${month >= 10 ? month : '0' + month}-${date >= 10 ? date : '0' + date}`)
+            // 풀캘린더의 요상한 select방식(예: 달력상으로 23일까지 선택하면 24일00시를 end로 잡음)을 직관적으로 처리해보자!
+            let fmStart = moment(arg.start).format('YYYY-MM-DD (dd)');
+            let fmTimeS = moment(arg.start).format('HH:mm');
+            let fmEnd = moment(arg.end).format('YYYY-MM-DD (dd)');
+            let fmTimeE = moment(arg.end).format('HH:mm');
+            let fmEndPrev = moment(arg.end).add(-1,'d').format('YYYY-MM-DD (dd)');
             
-            if (clickDate < now) {
-              Kcy.fire({
-                icon: 'error',
-                html: '<h5>지난 일정은 등록이 불가능합니다</h5>',
-              })
-              
-            ///////// Start: else(정상 일자 선택 시) //////////////////////////////////////
-            } else {
-              console.log(arg); // 선택액션만으로 여러값들이 자동 생성된다 확인해보자
-              
-              // 풀캘린더의 요상한 select방식(예: 달력상으로 23일까지 선택하면 24일00시를 end로 잡음)을 직관적으로 처리해보자!
-              let fmStart = moment(arg.start).format('YYYY-MM-DD (dd) '); // 띄어쓰기줘야 종일스위치 껐다 켰을 때 제대로 표시됨
-              let fmTimeS = moment(arg.start).format('HH:mm');
-              let fmEnd = moment(arg.end).format('YYYY-MM-DD (dd)');
-              let fmTimeE = moment(arg.end).format('HH:mm');
-              let fmEndPrev = moment(arg.end).add(-1,'d').format('YYYY-MM-DD (dd)');
-              
-              // dur은 쉽게말해 달력에서 선택한 칸 수가 된다
-              let dur = getDateDiff(arg.endStr, arg.startStr);
-              console.log(dur)
-              
-              // 폼에 정보 넣기 ↓
-              // 모든 경우에 공통적으로 일단 삽입
-              $('#schS').val(fmStart + fmTimeS);
-              $('#schE').val(fmEnd + ' ' + fmTimeE);
-              
-              // 시작시간이 00:00이고, 기간이 만24시간이면
-              if (fmTimeS == '00:00' && dur == 1) {
-                $('#allday').click(); // prop(체크,true)하는 거보다 이렇게 직접 클릭 트리거를 줘야 밑에서 정의한 체크박스 관련 코드들이 연쇄적으로 적용된다!
-              // 시작시간이 00:00이고, 일단위로 2일 이상 선택 시
-              } else if (fmTimeS == '00:00' && Number.isInteger(dur) && dur > 1) {
-                $('#schS').val(fmStart);
-                $('#schE').val(fmEndPrev);
-              }
-              
-              // is-filled: 인풋창 애니메이션 상태 ON (해야 이뿌게 나옴)
-              $('#schS').parent().addClass('is-filled');
-              $('#schE').parent().addClass('is-filled');
-              
-              // 모달 켜기
-              $('#modal-schInsert').modal('show');
-              
-            } // End: else(정상 일자 선택 시)
+            // dur은 쉽게말해 달력에서 선택한 칸 수가 된다
+            let dur = getDateDiff(arg.endStr, arg.startStr);
+            console.log(dur)
+            
+            // 폼에 정보 넣기 ↓
+            // 모든 경우에 공통적으로 일단 삽입
+            $('#schS').val(fmStart + ' ' + fmTimeS);
+            $('#schE').val(fmEnd + ' ' + fmTimeE);
+            
+            // 시작시간이 00:00이고, 기간이 만24시간이면
+            if (fmTimeS == '00:00' && dur == 1) {
+              $('#allday').click(); // prop(체크,true)하는 거보다 이렇게 직접 클릭 트리거를 줘야 밑에서 정의한 체크박스 관련 코드들이 연쇄적으로 적용된다!
+            // 시작시간이 00:00이고, 일단위로 2일 이상 선택 시
+            } else if (fmTimeS == '00:00' && Number.isInteger(dur) && dur > 1) {
+              $('#schS').val(fmStart);
+              $('#schE').val(fmEndPrev);
+            }
+            
+            // is-filled: 인풋창 애니메이션 상태 ON (해야 이뿌게 나옴)
+            $('#schS').parent().addClass('is-filled');
+            $('#schE').parent().addClass('is-filled');
+            
+            // 모달 켜기
+            $('#modal-sch').modal('show');
+            
           }, // End: select(칸 선택 시)
           
           
           
+//////////////////////////////////////////////////////////////////////////////////////
+          // 4. 이벤트 선택
           
-          ///////// Start: eventClick(이벤트 선택 시) //////////////////////////////////////
+          // Start: eventClick(이벤트 선택 시)
           eventClick : function (arg) {
-            let fmStart = moment(arg.event.start).format('YYYY-MM-DD (dd) '); // 띄어쓰기줘야 종일스위치 껐다 켰을 때 제대로 표시됨
+            
+            // uuid 세팅
+            uuid = arg.event.id;
+            console.log('선택한이벤트의uuid: ' + uuid);
+            
+            let fmStart = moment(arg.event.start).format('YYYY-MM-DD (dd)');
             let fmTimeS = moment(arg.event.start).format('HH:mm');
             let fmEnd = moment(arg.event.end).format('YYYY-MM-DD (dd)');
             let fmTimeE = moment(arg.event.end).format('HH:mm');
@@ -203,7 +330,7 @@
             console.log(dur)
             // 폼에 정보 넣기 ↓
             // 모든 경우에 공통적으로 일단 삽입
-            $('#schS').val(fmStart + fmTimeS);
+            $('#schS').val(fmStart + ' ' + fmTimeS);
             $('#schE').val(fmEnd + ' ' + fmTimeE);
             $('#schT').val(arg.event.title)
             $('#schM').val(arg.event.extendedProps.schManager)
@@ -229,15 +356,27 @@
             });
             $('#btn-schInsert').addClass('d-none') // 등록버튼 OFF
             $('#btn-schUpdate').removeClass('d-none') // 수정버튼 ON
+            $('#btn-schDelete').removeClass('d-none') // 삭제버튼 ON
             // 모달 켜기
-            $('#modal-schInsert').modal('show');
+            $('#modal-sch').modal('show');
             
-          } // End: eventClick(이벤트 선택 시)
+          }, // End: eventClick(이벤트 선택 시)
           
           
-          
-          
-          
+//////////////////////////////////////////////////////////////////////////////////////
+
+          // Start: eventDrop(이벤트 드래그 시)
+          eventDrop : function (info) {
+            
+//             let ebar = $(info.el).find('.fc-event-main');
+//             console.log(ebar);
+//             $(info.el).find('.fc-event-main .fa-wrench').removeClass('d-none')
+//             ebar.prepend('<i class="fa-solid fa-wrench"></i>')
+          },
+
+
+//////////////////////////////////////////////////////////////////////////////////////
+
         }); // End: 캘린더객체
 //         console.log( calendar.getEventById('A22-153') ); // 이벤트id로 일정 확인
 //         console.log( calendar.getEvents() ); // 전체 일정 뽑기
@@ -245,59 +384,56 @@
         // 캘린더 그리기!
         calendar.render();
         
+        // 사용자 권한 제한
+        if (role != 'ROLE_ADMIN') {
+          calendar.setOption('selectable', false)
+          calendar.setOption('editable', false)
+          $('.fc-newBtn-button').remove();
+          $('form input').prop('readonly', true)
+          $('form select').prop('disabled', true)
+          // checkbox 체크박스 checked disabled 속성으로 논리적으로 제한하려니깐 너무 버그 많고 복잡해짐
+          // 아예 투명 덮개를 씌워서 클릭 못하게 막자
+          $('#allday').before(`<div style="
+            position: absolute;
+//             border: 1px solid black;	
+            left: 0px;
+            width: 100%; 
+            height: 70px;
+            z-index: 999;
+          "></div>`)
+        };
+        
+        
+        
+      
         
         
         
         
         
-        
-        
-        // 수동 등록하기 버튼 클릭시
-//         $('#btn-showSchInsert').on('click', function(){
-//         // $('#allday').removeAttr('disabled'); // *모든 버그의 원흉!! 이걸 안 적어줘서 애먼 그 아래 input에 계속 자동 focus되는 개같은 논리버그가.. 
-//         // →9.15. 자유도도 늘릴 겸 락 기능 자체를 안하기로 함(위에 풀캘린터 스크립트에서도 관련 코드 다 뺌) 뭐만하면 계속 논리버그터져서
-//           makeDTP (); // DT피커 생성
-//         })
-        
-        // 모달 열릴 때
-        $('#modal-schInsert').on('show.bs.modal', function(){
-          makeDTP (); // DT피커 생성
-        });
-        
-        // 모달 닫을 때 폼 초기화
-        $('#modal-schInsert').on('hide.bs.modal', function(){
-          $(this).find('form')[0].reset();
-          
-          // 종일스위치 켠 상태에서 모달 끄면 속성 상태 그대로 남아서 다시 모달 열 때 버그 생기니까, 스위치 끌 때와 똑같이 수동 처리해주자 
-//           $('#schS').datetimepicker({timepicker:true, format: 'Y-m-d (D) H:i'});
-          $('#schE').removeAttr('disabled');
-          
-          // is-filled: 인풋창 애니메이션 상태 OFF (다시 모달 켰을 때 input들 모양에 영향)
-          $('#schS').parent().removeClass('is-filled'); 
-          $('#schE').parent().removeClass('is-filled');
-          $('#schT').parent().removeClass('is-filled');
-          $('#schM').parent().removeClass('is-filled');
-          $('#schType').removeAttr('style');
-          
-         // DT피커 소멸
-          $('#schS').datetimepicker('destroy');
-          $('#schE').datetimepicker('destroy');
-        })
-        
-        
-        
-        
-        ///////////////////////////////////////////////////////////////////////////
-        let ajaxdata;
-        let fcData;
+//////////////////////////////////////////////////////////////////////////////////////
+////////// 데이터 쓰기 파트 //////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////
         
         // Start: 함수(데이터준비)
-        function btnPrepare () {
-          if ($('#schS').val() == '' || $('#schS').val() == null) {
-            event.preventDefault(); // submit이벤트버블링 차단
+        function prepareData () {
+          
+          // 삭제는 여기에서 바로 실행
+          if (cmd == 'delete') {
+            deleteProc();
+          
+          // 본격 데이터 준비
+          } else if ($('#schS').val() == '' || $('#schS').val() == null) {
+            event.preventDefault(); // submit이벤트버블링 차단 → 9.17. 그냥 type을 button으로 변경함(어차피 form action으로 안 날림)
             Kcy.fire({
               icon: 'error',
               html: '<h5>시작일시는 필수입니다</h5>',
+            })
+          } else if (cmd == 'insert' && moment($('#schS').val()) < moment() ) {
+            event.preventDefault();
+            Kcy.fire({
+              icon: 'error',
+              html: '<h5>시작일시는 현재 이후여야 합니다</h5><br><h6>(당일은 종일을 선택할 수 없습니다)</h6>',
             })
           } else if ( getDateDiff($('#schE').val(), $('#schS').val()) <= 0 ) {
             event.preventDefault();
@@ -350,9 +486,11 @@
             let inputAllday = $('#allday').is(':checked') ? true : null
              
             let dur = getDateDiff(inputEnd, inputStart);
-            console.log(inputStart)
             console.log(inputEnd)
+            console.log(inputStart)
             console.log(dur)
+              
+              
               // 종일스위치 ON일 경우
             if (inputAllday) {
               dur = 1;
@@ -370,24 +508,37 @@
             
             
             // DB로 보낼 데이터 정의
-            ajaxdata = {
+            let ajaxdata = {
               schStart : inputStart,
               schEnd : inputEnd,
               schManager : inputManager,
               schType : inputType,
               schTitle : inputTitle,
-              schAllday : inputAllday
+              schAllday : inputAllday,
+              schUuid : uuid
             }
             
-            // 캘린더에 추가할 데이터 정의
-            fcData = {
+            // 캘린더에 반영할 데이터 정의
+            let fcData = {
+              id: uuid,
               start: moment(inputStart).format('YYYY-MM-DD HH:mm'),
               end: inputEnd ? moment(inputEnd).format('YYYY-MM-DD HH:mm') : null,
               title: inputTitle,
               allDay: inputAllday,
-              color: fcColor
+              color: fcColor,
+              schManager: inputManager,
+              schType: inputType,
             };
             console.log(fcData)
+            
+            // 기능 실행 함수로 연결 (삭제는 input 빈상태로도 가능해야 하므로 저~기 맨 위에 위치)
+            switch (cmd) {
+              case 'insert' : insertProc(ajaxdata,fcData);
+                break;
+              case 'update' : updateProc(ajaxdata,fcData);
+                break;
+            }
+            
             
           } // End: else(폼 작성 정상 완료 시 진행)
         } // End: 함수(데이터준비)
@@ -395,29 +546,33 @@
         
         
         
-        
+//////////////////////////////////////////////////////////////////////////////////////
+
         // Start: 함수(등록실행)
-        function btnReg (ajaxdata, fcData){
+        function insertProc (ajaxdata,fcData){
           Kcy.fire({
             title: '등록하시겠습니까?',
-//             html: "<h5>등록하시겠습니까?</h5>",
             icon: 'warning',
             confirmButtonText: '등록',
             showCancelButton: true,
             cancelButtonText: '취소',
             preConfirm: function () {
               
-              // DB에 추가
-              $.ajax ({
+              // DB에 반영
+              return $.ajax ({ // return을 붙여줘야 응답실패시 .then으로 넘어가지 않고 현 알럿에서 오류 보여줌!
                 url: '/allSchInsert',
                 type: 'POST',
                 data: ajaxdata,
                 success: () => {
-                // 캘린더에 추가 (새로고침하여 ajax에서 불러들인 모양과 똑같은지 반드시 검증하자!)
-                calendar.addEvent(fcData);
-//                   window.location.href='allAcaInfo' 
+                // 캘린더에 반영 (새로고침하여 ajax에서 불러들인 모양과 똑같은지 반드시 검증하자!)
+                  calendar.addEvent(fcData);
                 },
-                error: (e) => { console.log(e) }
+                error: (e) => { 
+                  console.log(e);
+                  Kcy.showValidationMessage(
+                      `요청실패: ${e.status} ${e.responseJSON.error} `
+                  )
+                }
               })
               
             },
@@ -434,12 +589,117 @@
         
         
         
+//////////////////////////////////////////////////////////////////////////////////////
+
+        // Start: 함수(수정실행)
+        function updateProc (ajaxdata,fcData){
+          Kcy.fire({
+            title: '수정하시겠습니까?',
+            icon: 'warning',
+            confirmButtonText: '수정',
+            showCancelButton: true,
+            cancelButtonText: '취소',
+            preConfirm: function () {
+              
+              // DB에 반영
+              return $.ajax ({
+                url: '/allSchUpdate',
+                type: 'POST',
+                data: ajaxdata,
+                success: () => {
+                // 캘린더에 반영
+                  var event = calendar.getEventById(uuid);
+                  console.log(event);
+                  event.setDates(fcData.start, fcData.end, {'allDay': fcData.allDay});
+                  event.setProp('title', fcData.title);
+                  event.setProp('color', eventColor(fcData.schType));
+                  event.setExtendedProp('schManager', fcData.schManager)
+                  event.setExtendedProp('schType', fcData.schType)
+                },
+                error: (e) => { 
+                  console.log(e);
+                  Kcy.showValidationMessage(
+                      `요청실패: ${e.status} ${e.responseJSON.error} `
+                  )
+                }
+              })
+              
+            },
+          }).then((result) => {
+            if (result.isConfirmed) {
+              Kcy.fire(
+                '수정완료!',
+                '',
+                'success'
+              )
+            }
+          })
+        } // End: 함수(수정실행)
+        
+        
+        
+//////////////////////////////////////////////////////////////////////////////////////
+
+        // Start: 함수(삭제실행)
+        function deleteProc (){
+          Kcy.fire({
+            title: '삭제하시겠습니까?',
+            icon: 'warning',
+            confirmButtonText: '삭제',
+            showCancelButton: true,
+            cancelButtonText: '취소',
+            preConfirm: function () {
+              // DB에 반영
+              return $.ajax ({
+                url: '/allSchDelete',
+                type: 'POST',
+                data: 'schUuid=' + uuid,
+                success: () => {
+                // 캘린더에 반영
+                  var event = calendar.getEventById(uuid);
+                  console.log(event);
+                  event.remove();
+                },
+                error: (e) => { 
+                  console.log(e);
+                  Kcy.showValidationMessage(
+                      `요청실패: ${e.status} ${e.responseJSON.error} `
+                  )
+                }
+              })
+              
+            },
+            allowOutsideClick: () => !Swal.isLoading()
+          }).then((result) => {
+            if (result.isConfirmed) {
+              Kcy.fire(
+                '삭제완료!',
+                '',
+                'success'
+              )
+            }
+          })
+        } // End: 함수(삭제실행)
+        
+        
+//////////////////////////////////////////////////////////////////////////////////////
+        
+        let cmd;
         // 일정등록>등록 버튼 클릭시
         $('#btn-schInsert').on('click', function(){
-          btnPrepare ();
-          btnReg(ajaxdata, fcData);
+          cmd = 'insert';
+          prepareData();
         })
-        
+        // 이벤트클릭>수정 버튼 클릭시
+        $('#btn-schUpdate').on('click', function(){
+          cmd = 'update';
+          prepareData();
+        })
+        // 이벤트클릭>삭제 버튼 클릭시
+        $('#btn-schDelete').on('click', function(){
+          cmd = 'delete';
+          prepareData();
+        })
         
         
         
@@ -481,9 +741,9 @@
       
       
       <!-- Start modal -->
-<!--       <button type="button" class="btn btn-block btn-light mb-3" id="btn-showSchInsert" data-bs-toggle="modal" data-bs-target="#modal-schInsert">Form</button> -->
+<!--       <button type="button" class="btn btn-block btn-light mb-3" id="btn-showSchInsert" data-bs-toggle="modal" data-bs-target="#modal-sch">Form</button> -->
       
-      <div class="modal fade" id="modal-schInsert" tabindex="-1" role="dialog" aria-labelledby="modal-schInsert" aria-hidden="true">
+      <div class="modal fade" id="modal-sch" tabindex="-1" role="dialog" aria-labelledby="modal-sch" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-sm" role="document"> <!-- modal-sm: 가로 크기 조절 -->
           <div class="modal-content">
             <div class="modal-body p-0">
@@ -496,10 +756,10 @@
                   <script>
                     // 모달닫기 꼽표(x)
                     $('#closeModal').on('click', function(){
-                      $('#modal-schInsert').modal('hide');
+                      $('#modal-sch').modal('hide');
                     })
                   </script>
-                  <h5>일정 등록</h5>
+                  <h5 th:text=" ${#authentication.authorities[0].authority} == 'ROLE_ADMIN' ? '일정 등록' : '일정 상세' ">일정 등록</h5>
                 </div>
                 
                 <div class="card-body pt-0">
@@ -508,7 +768,7 @@
                     <div class="form-check form-switch d-flex align-items-center">
                       <input class="form-check-input my-2" type="checkbox" id="allday">
                       <label class="form-check-label mb-0 ms-3 fw-bold" for="allday" 
-                             data-bs-toggle="tooltip" title="하루 단위 일정에만 지정 가능">종일
+                             data-bs-toggle="tooltip" th:title="  ${#authentication.authorities[0].authority} == 'ROLE_ADMIN' ? '하루 단위 일정에만 지정 가능' : '종일 여부' ">종일
                       </label>
                     </div>
                     <div class="input-group input-group-outline my-3">
@@ -520,17 +780,22 @@
                       <input type="text" class="form-control fw-bold" id="schE" readonly />
                     </div>
                     
-                    <script>
-                      // '종일'스위치 토글할 때
+                    <script th:inline="javascript">
+                      // 종일스위치 토글할 때
                       $('#allday').on('change', function() {
+                        let role = [[${#authentication.authorities[0].authority}]];
                         if( $(this).is(':checked') ) {
-                          $('#schS').val($('#schS').val().substring(0,15)); // 기존 input 값 시,분 날리고
-                          $('#schS').datetimepicker({timepicker:false, format: 'Y-m-d (D)'}); // 시간피커와 양식도 날리기
+                          $('#schS').val($('#schS').val().substring(0,14)); // 기존 input 값 시,분 날리고
+                          if (role == 'ROLE_ADMIN'){ // 권한 제한
+                            $('#schS').datetimepicker({timepicker:false, format: 'Y-m-d (D)'}); // 시간피커와 양식도 날리기
+                          }
                           $('#schE').val(null); // 종료 input 날리고 
                           $('#schE').prop('disabled', true); // 비활성화
                         } else {
-                          $('#schS').val($('#schS').val().substring(0,15) + '00:00');
-                          $('#schS').datetimepicker({timepicker:true, format: 'Y-m-d (D) H:i'});
+                          $('#schS').val($('#schS').val().substring(0,14));
+                          if (role == 'ROLE_ADMIN'){ // 권한 제한
+                            $('#schS').datetimepicker({timepicker:true, format: 'Y-m-d (D) H:i'});
+                          }
                           $('#schE').removeAttr('disabled');
                         }
                       })
@@ -565,11 +830,13 @@
                       })
                     </script>
                     
-                    <div class="text-center">
-                      <button type="submit" class="btn btn-round bg-gradient-info btn-lg w-100 mt-4 mb-0 fs-5"
+                    <div class="text-center" sec:authorize="hasRole('ROLE_ADMIN')">
+                      <button type="button" class="btn btn-round bg-gradient-info btn-lg w-100 mt-4 mb-0 fs-5"
                               id="btn-schInsert">등록</button>
-                      <button type="submit" class="d-none btn btn-round bg-gradient-warning btn-lg w-100 mt-4 mb-0 fs-5"
+                      <button type="button" class="d-none btn btn-round bg-gradient-success btn-lg w-60 mt-4 mb-0 fs-5"
                               id="btn-schUpdate">수정</button>
+                      <button type="button" class="d-none btn btn-round bg-gradient-danger btn-lg w-36 mt-4 mb-0 fs-5"
+                              id="btn-schDelete">삭제</button>
                     </div>
                     
                   </form>

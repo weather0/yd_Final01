@@ -23,4 +23,14 @@ public class SchServiceImpl implements SchService {
         mapper.allSchInsert(map);
     }
 
+    @Override
+    public void allSchUpdate(Map<?, ?> map) {
+        mapper.allSchUpdate(map);
+    }
+
+    @Override
+    public void allSchDelete(String uuid) {
+        mapper.allSchDelete(uuid);
+    }
+
 }

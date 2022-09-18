@@ -7,9 +7,9 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-icon.png">
-  <link rel="icon" type="image/png" href="/img/favicon.png">
-  <title>KCY학사관리</title>
+  <!-- 타이틀 아이콘 -->
+  <link rel="shortcut icon" type="image/x-icon" href="/aa/logo/KCYico.png">
+  <title>KCY Univ.</title>
   <!--     Fonts and icons     -->
   <link rel="stylesheet" type="text/css"
     href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900|Roboto+Slab:400,700" />
@@ -27,7 +27,7 @@
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
   <!-- CSS Files -->
   <link id="pagestyle" href="/css/material-dashboard.css?v=3.0.0" rel="stylesheet" />
-  <!-- js-cookie -->
+  <!-- js-cookie 쿠키 쉽게 사용하게 해줌 -->
   <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.js"></script>
   <!-- DataTables -->
   <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/jszip-2.5.0/dt-1.12.1/b-2.2.3/b-colvis-2.2.3/b-html5-2.2.3/b-print-2.2.3/datatables.min.css"/>
@@ -40,12 +40,13 @@
   <!-- jquery.datetimepicker -->
   <link href='/css/jquery.datetimepicker.css' rel='stylesheet' />
   <script type="text/javascript" src='/js/jquery.datetimepicker.full.min.js'></script>
+  <!-- Moment.js 날짜 관련 끝판왕 -->
+  <script type="text/javascript" src='/js/moment-with-locales.min.js'></script>
+  <script>moment.locale('ko')</script>
   <!-- 쏘스윗알럿 -->
   <link href='https://cdn.jsdelivr.net/npm/sweetalert2@11.4.33/dist/sweetalert2.css' rel='stylesheet' />
   <script type="text/javascript" src='https://cdn.jsdelivr.net/npm/sweetalert2@11.4.33/dist/sweetalert2.all.min.js'></script>
-  <!-- Moment.js 자바스크립트 날짜 포매팅 -->
-  <script type="text/javascript" src='/js/moment-with-locales.min.js'></script>
-  <script>moment.locale('ko')</script>
+  
   <!-- summernote 황하경 -->
 <!--   <script type="text/javascript" src="/js/summernote/summernote-lite.js"></script>
   <script type="text/javascript" src="/js/summernote/lang/summernote-ko-KR.js"></script>
@@ -55,6 +56,7 @@
   <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
     
   <style>
+    /* 사이드 바 세로크기 제한 해제 */
     #sidenav-collapse-main{
       height: calc(100% - 90px);
     }
@@ -101,7 +103,7 @@
       }
   </script>
   <!-- Github buttons -->
-  <script async defer src="https://buttons.github.io/buttons.js"></script>
+<!--   <script async defer src="https://buttons.github.io/buttons.js"></script> -->
   <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
   <script src="/js/material-dashboard.min.js?v=3.0.0"></script>
   
