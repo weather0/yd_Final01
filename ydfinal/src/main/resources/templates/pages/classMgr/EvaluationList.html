@@ -20,7 +20,7 @@
   
 <div class="container-fluid">
    <div class="row justify-content-center">
-      <div class="card p-3 me-3 mt-5 col-10">
+      <div class="card p-3 me-3 mt-5">
         <!-- 각 페이지 타이틀바 -->
         <div class="card-header p-0 position-relative mt-n4 mb-4 z-index-2">
           <div class="bg-secondary bg-gradient-secondary shadow-secondary border-radius-lg py-3">
@@ -28,6 +28,7 @@
               <input  th:value="${#authentication.principal.username}" type="hidden" id="userid">
           </div>
         </div>
+        <div class="overflow-scroll">
               <table class="table align-items-center mb-0 " style="text-align: center;">
         <thead>
             <tr>
@@ -50,6 +51,7 @@
         	</tr>
         </tbody>
         </table>
+        </div>
         <input type="hidden" th:value="${classId}" class="cid">
         	<input type="hidden" th:value="${ck.class_member_id}" id="cmid">
         <input  th:value="${#authentication.principal.username}" type="hidden" id="userid">
