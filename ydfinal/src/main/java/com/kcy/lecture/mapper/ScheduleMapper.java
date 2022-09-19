@@ -32,5 +32,9 @@ public interface ScheduleMapper {
 	//강의시간표 확인을 위한 기준
 	public List<ClassScheduleVO> classScheduleCk(ClassScheduleVO vo);
 	
+	//강좌에 맞는 강의시간표를 보여주는 부분
+    public List<ClassScheduleVO> classFindSchedule(ClassScheduleVO vo);	
+    
+    
 }
 

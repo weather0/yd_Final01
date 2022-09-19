@@ -144,7 +144,7 @@
             $('#billMgr').addClass('show')
           }
         </script>
-        <div class="navbar-nav" sec:authorize="hasAnyRole('ROLE_STU','ROLE_ADMIN')">
+        <div class="navbar-nav">
           <div class="nav-item" sec:authorize="hasRole('ROLE_STU')">
             <a class="nav-link text-white py-1" href="/payList">수납 전체 이력</a>
           </div>
@@ -269,7 +269,7 @@
 
 
 
-      <li class="nav-item">
+      <li class="nav-item" sec:authorize="hasAnyRole('ROLE_STU','ROLE_ADMIN')">
         <a class="nav-link text-white btn btn-secondary" data-bs-toggle="collapse" href="#jidoMgr">
           <span class="nav-link-text ms-1">
             <i class="fa-solid fa-people-arrows me-2" style="width: 20px;"></i>지도교수 관리
@@ -290,16 +290,16 @@
           }
         </script>
         <div class="navbar-nav">
-          <div class="nav-item">
+          <div class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">
             <a class="nav-link text-white py-1" href="/matchingStd">지도 교수 매칭</a>
           </div>
-          <div class="nav-item">
+          <div class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">
             <a class="nav-link text-white py-1" href="/matchingList">매칭 이력 관리</a>
           </div>
           <div class="nav-item" sec:authorize="hasRole('ROLE_STU')">
             <a class="nav-link text-white py-1" href="/matchingChange">지도교수 변경 신청</a>
           </div>
-          <div class="nav-item">
+          <div class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">
             <a class="nav-link text-white py-1" href="/matchingChangeList">지도교수 변경 신청자 확인</a>
           </div>
         </div>
@@ -386,16 +386,15 @@
           </div>
         </div>
         <div class="navbar-nav">
-          <div class="nav-item" sec:authorize="isAuthenticated()">
+          <div class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">
             <a class="nav-link text-white py-1" href="/notice/noticeinsert">학사 공지 등록</a>
           </div>
         </div>
       </div>
 
 
-
-
-
+      <hr class="horizontal light mt-3 mb-2">
+      
       <li class="nav-item" sec:authorize="isAnonymous()">
         <a class="nav-link text-white " th:classappend="${active} == 'click_login' ? 'active bg-gradient-primary'" href="/login">
           <span class="nav-link-text ms-1">Sign In</span>
@@ -412,6 +411,7 @@
         </a>
       </li>
     </ul>
+    
   </div>
   
 

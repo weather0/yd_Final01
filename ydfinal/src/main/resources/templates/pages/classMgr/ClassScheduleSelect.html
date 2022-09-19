@@ -12,35 +12,35 @@
 
 	<div class="container-fluid">
 		<div class="row justify-content-center">
-			<div class="card p-3 me-3 col-11">
+			<div class="card p-3 me-3 col-10">
 
 				<!-- 각 페이지 타이틀바 -->
 				<div class="card-header p-0 position-relative mt-n4 mb-4 z-index-2">
 					<div
 						class="bg-secondary bg-gradient-secondary shadow-secondary border-radius-lg py-3">
-						<h6 class="text-white ps-3 m-0">페이지명</h6>
+						<h6 class="text-white ps-3 m-0">강의시간표</h6>
 					</div>
 				</div>
 				<section id="timetable">
 					<div class="container">
 						<ol class="timetable">
 
-							<li></li>
-							<li><h3>1교시</h3><span class="class-time">09:00~09:50</span> </li>
+							<li style="border: 1px solid black;"></li>
+							<li style="border: 1px solid black;"><h3>1교시</h3><span class="class-time">09:00~09:50</span> </li>
 
-							<li><h3>2교시</h3><span class="class-time">10:00~10:50</span> </li>
+							<li style="border: 1px solid black;"><h3>2교시</h3><span class="class-time">10:00~10:50</span> </li>
 
-							<li><h3>3교시</h3><span class="class-time">11:00~11:50</span> </li>
+							<li style="border: 1px solid black;"><h3>3교시</h3><span class="class-time">11:00~11:50</span> </li>
 
-							<li><h3>4교시</h3><span class="class-time">12:00~12:50</span> </li>
+							<li style="border: 1px solid black;"><h3>4교시</h3><span class="class-time">12:00~12:50</span> </li>
 
-							<li><h3>5교시</h3><span class="class-time">14:00~14:50</span> </li>
+							<li style="border: 1px solid black;"><h3>5교시</h3><span class="class-time">14:00~14:50</span> </li>
 
-							<li><h3>6교시</h3><span class="class-time">15:00~15:50</span> </li>
+							<li style="border: 1px solid black;"><h3>6교시</h3><span class="class-time">15:00~15:50</span> </li>
 
-							<li><h3>7교시</h3><span class="class-time">16:00~16:50</span> </li>
+							<li style="border: 1px solid black;"><h3>7교시</h3><span class="class-time">16:00~16:50</span> </li>
 
-							<li><h3>8교시</h3><span class="class-time">17:00~17:50</span> </li>
+							<li style="border: 1px solid black;"><h3>8교시</h3><span class="class-time">17:00~17:50</span> </li>
 
 							<li id="Monday" class="day-title"><h2>월요일</h2></li>
 
@@ -143,7 +143,7 @@
 		</div>
 	</div>
 	<script  th:inline="javascript">
-	
+		
 	[# th:each="list:${scheduleSelect}"]
 	if([[${list.class_timetable_id}]] == 'T1000'){
 		var test1 = `
@@ -444,8 +444,8 @@ if([[${list.class_timetable_id}]] == 'T1039'){
 		<span>강의실:[(${list.room_building})] [(${list.room_no})]호</span>`
 	$("#test40").append(test1)
 }
+
 [/] 
-	 	
 		
 </script>
 
