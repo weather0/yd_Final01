@@ -45,13 +45,13 @@
 				join k_rooms kr             on kr.room_id = kct.room_id 
 				
 				where kcm.stu_id = #{userId}
-				order by kct2.class_timetable_code;
+				order by kct2.class_timetable_code
 			
 		
 		</select>
 			
 			<select id="classScheduleCk" resultType="com.kcy.lecture.service.ClassScheduleVO">
-				SELECT *  FROM k_class_timetable;
+				SELECT *  FROM k_class_timetable
 			</select>
 		
 
@@ -61,5 +61,16 @@
 			WHERE class_id = #{classId}
 	
 	</update>
+	
+	<select id="classFindSchedule" resultType="com.kcy.lecture.service.ClassScheduleVO">
+	
+				SELECT t.schedule_title, kct.class_timetable_name,kct.class_timetable_id,kct2.class_id,t.class_timetable_days 
+				from k_class_time kct2 
+				join k_class_timetable kct on kct2.class_timetable_id  = kct.class_timetable_id 
+				join k_class_schedule_t t on kct.class_timetable_days  = t.class_timetable_days 
+				order by class_id,class_timetable_id
+	
+	</select>
+
 
 </mapper>

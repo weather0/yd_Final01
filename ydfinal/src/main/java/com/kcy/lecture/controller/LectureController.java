@@ -188,6 +188,8 @@ public class LectureController {
 		model.addAttribute("gradesCk", enrolmentService.gradesCheck(vo));
 		model.addAttribute("myMajor",mapper.myMajor(vo1));
 		model.addAttribute("classMemberTimeCk",tmapper.classMembertimeselect(vo2));
+		model.addAttribute("classScheduleCk",scmapper.classFindSchedule(null));
+		
 		return "pages/classMgr/OpenLectureList";
 	}
 	
@@ -198,6 +200,7 @@ public class LectureController {
 		model.addAttribute("openList",lectureService.majorSelect(vo));
 		model.addAttribute("gradesCk", enrolmentService.gradesCheck(vo1));
 		model.addAttribute("myMajor",mapper.myMajor(vo));
+		model.addAttribute("classScheduleCk",scmapper.classFindSchedule(null));
 		return "pages/classMgr/OpenLectureList"; 
 	}
 
