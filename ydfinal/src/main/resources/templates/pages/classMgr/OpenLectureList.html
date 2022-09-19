@@ -108,7 +108,6 @@
 									<td th:text=|${data.classCk}/${data.classTo}|></td>
 									
 									<td>
-										<p id="test"></p>
 										
 									<ul style="list-style:none;" th:each="schCk:${classScheduleCk}" th:if="${data.classId} == ${schCk.classId}">
 										<li>
@@ -217,9 +216,12 @@
 									<td th:text="|${data.course_credit}학점|"></td>
 									<td th:text="|${data.class_sem}학기|"></td>
 									<td>
-									<th:block th:each="schCk:${classScheduleCk}" th:if="${data.class_id} == ${schCk.classId}">
+									<ul style="list-style:none;" th:each="schCk:${classScheduleCk}" th:if="${data.class_id} == ${schCk.classId}">
+										<li>
+										<span th:text="${schCk.scheduleTitle}"></span>
 										<span th:text="${schCk.classTimetableName}"></span>
-									</th:block>
+										</li>
+									</ul>
 									</td>
 									<td><i class="fa-solid fa-file"></i><a th:href="${'/download?classSyl='+data.class_syl}"
 										th:text="강의계획서"></a></td>

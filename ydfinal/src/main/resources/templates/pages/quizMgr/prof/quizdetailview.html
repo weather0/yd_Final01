@@ -1,91 +1,107 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layouts/layout}">
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/layout}">
 <th:block layout:fragment="content">
-  <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css"/>  
-  <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
-  <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
-  <!-- 상단 내비바 -->
-  <th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
-    <style>
-  	#layout1 {
-  	border: 1px soild #6a7281;
-  	}
-	.th-default {
+	<link rel="stylesheet"
+		href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css" />
+	<script
+		src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+	<script
+		src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
+	<!-- 상단 내비바 -->
+	<th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
+	<style>
+#layout1 {
+	border: 1px soild #6a7281;
+}
+
+.th-default {
 	background: #6a7281 !important;
 	border-bottom: 1px solid #d2d6da;
 	border-top: 1px solid #d2d6da;
 	width: 120px;
-	}
-	.th-default label {
+}
+
+.th-default label {
 	color: #fff;
-	text-align : center;
+	text-align: center;
 	display: flex;
 	justify-content: center;
 	line-height: 43px;
 	margin-bottom: 0px !important;
-	}
-	.td-content {
+}
+
+.td-content {
 	padding: 0 20px 0 20px;
 	border-bottom: 1px solid #d2d6da;
 	border-right: 1px solid #d2d6da;
 	border-top: 1px solid #d2d6da;
-	}
-	.td-content p {
-	height: 10px;
-	}
-  </style>
-  <!-- 본문 start -->
-  
-    <div class="container-fluid">
- <div class="row justify-content-center">
-      <div class="card px-2 p-3 me-3 col-8">
-        <div class="card-header p-0 position-relative mt-n4 mb-4 z-index-2">
-          <div class="bg-secondary bg-gradient-secondary shadow-secondary border-radius-lg py-3">
-            <h6 class="text-white ps-3 m-0">페이지명</h6>
-          </div>
-        </div>
+}
 
- <input  th:value="${#authentication.principal.username}" type="hidden" id="userId" />
- <input th:value="${quiz.classMemberId}" type="hidden" />
- <table id="layout1" name="layout1" cellspacing="0" cellpadding="0" class="lec-table insert hwk-table"> 
- <tbody>
-  		<tr style="height:43px;">
- 			<td class="th-default"><label class="label_default">제출자명</label></td>
- 			<td class="td-content"><p th:text="${quiz.userName}"></p></td>
- 		</tr>
- 		<tr style="height:43px;">
- 			<td class="th-default"><label class="label_default">과제 내용</label></td>
- 			<td class="td-content"><p th:text="${quiz.quizRContent}"></p></td>
- 		</tr>
- 		<tr style="height:43px;">
- 			<td class="th-default"><label class="label_default">제출 날짜</label></td>
- 			<td class="td-content"><p th:text="${quiz.quizRDate}"></p></td>
- 		</tr>
- 		<tr style="height:43px;">
- 			<td class="th-default"><label class="label_default">제출 파일</label></td>
- 			<td class="td-content">
- 			<a th:href="${'/quizAcceptdownload?quizRFile='+quiz.quizRFile}">
-			<p th:text="${quiz.quizROrginal}" ></p></a></td>
- 		</tr>
- 		<tr style="height:43px;">
- 		<td class="th-default"><label class="label_default">점수</label></td>
-		<form action="quizdetailview" method="post">
-	   		<input type="hidden" th:value="${quiz.quizRId}" th:name="quizRId">
-	   		<td class="td-content">
-	   		<input type="number" th:name="quizRPoint"/>
-	   		<button class="btn bg-gradient-secondary" style="margin-bottom: 0px;">제출</button>
-	   		</td>
-        	</form>
-        </tr>
-        	</tbody>
-        	</table>
- </div>
- </div>
- </div>
- 
- <script></script>
+.td-content p {
+	height: 10px;
+}
+</style>
+	<!-- 본문 start -->
+
+	<div class="container-fluid">
+		<div class="row justify-content-center">
+			<div class="card px-2 p-3 me-3 col-8">
+				<div class="card-header p-0 position-relative mt-n4 mb-4 z-index-2">
+					<div
+						class="bg-secondary bg-gradient-secondary shadow-secondary border-radius-lg py-3">
+						<h6 class="text-white ps-3 m-0">페이지명</h6>
+					</div>
+				</div>
+
+				<input th:value="${#authentication.principal.username}"
+					type="hidden" id="userId" /> <input
+					th:value="${quiz.classMemberId}" type="hidden" />
+				<table id="layout1" name="layout1" cellspacing="0" cellpadding="0"
+					class="lec-table insert hwk-table">
+					<tbody>
+						<tr style="height: 43px;">
+							<td class="th-default"><label class="label_default">제출자명</label></td>
+							<td class="td-content"><p th:text="${quiz.userName}"></p></td>
+						</tr>
+						<tr style="height: 43px;">
+							<td class="th-default"><label class="label_default">과제
+									내용</label></td>
+							<td class="td-content"><p th:text="${quiz.quizRContent}"></p></td>
+						</tr>
+						<tr style="height: 43px;">
+							<td class="th-default"><label class="label_default">제출
+									날짜</label></td>
+							<td class="td-content"><p
+									th:text="${#dates.format(quiz.quizRDate, 'yyyy-MM-dd')}"></p></td>
+						</tr>
+						<tr style="height: 43px;">
+							<td class="th-default"><label class="label_default">제출
+									파일</label></td>
+							<td class="td-content"><a
+								th:href="${'/quizAcceptdownload?quizRFile='+quiz.quizRFile}">
+									<p th:text="${quiz.quizROrginal}"></p>
+							</a></td>
+						</tr>
+						<tr style="height: 43px;">
+							<td class="th-default"><label class="label_default">점수</label></td>
+							<form action="quizdetailview" method="post">
+								<input type="hidden" th:value="${quiz.quizRId}"
+									th:name="quizRId">
+								<td class="td-content"><input type="number"
+									th:name="quizRPoint" />
+									<button class="btn bg-gradient-secondary"
+										style="margin-bottom: 0px;">제출</button></td>
+							</form>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+
+	<script></script>
 </th:block>
-</html> 
+</html>

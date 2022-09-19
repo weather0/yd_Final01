@@ -54,11 +54,25 @@ public class LoginController {
     	return "findPw";
     }
     
-    // 비밀번호 찾기 페이지 이동
+    // 비밀번호 변경 페이지 이동
     @GetMapping("/changePw")
-    public String changePwPage() {
-    	return "changePw";
+    public UserVo changePwPage(@Param("userEmail") String userEmail, @Param("myName") String myName, UserVo vo, Model model, @Param("newPw") String newPw) {
+    	vo.setMyName(myName);
+    	vo.setUserEmail(userEmail);
+    	model.addAttribute("info", myName);
+    	System.out.println("!!!!!!!!!!!!!!!!" + myName + ",,,??? " + userEmail);
+		return vo;
+    	 
     }
+    
+    
+    // 비밀번호 변경 프로그램
+    @GetMapping("/changePw/proc")
+    @ResponseBody
+    public void changePwPageProc(@Param("userEmail") String userEmail) {
+    	map.userChangePw(userEmail);
+    }
+    
     
     @GetMapping("/changePwCheck")
     @ResponseBody
@@ -69,7 +83,6 @@ public class LoginController {
     @GetMapping("/check/findPw")
     @ResponseBody
     public UserVo checkFindPw(String userEmail, String myName) {
-    	System.out.println("!!!!!!!!!!!!!!!!" + myName + ", " + userEmail);
     	return map.findUserByUserId(userEmail);
     }
     

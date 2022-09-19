@@ -45,6 +45,15 @@ public class SendEmailService {
 		userMapper.updateUserPassword(vo);
 		userMapper.userChangePw(email);
 	}
+	
+	private void userUpdate(String newPw, String userEmail) {
+		String nPw = password.encode(newPw);
+		String email = userMapper.findUserByUserId(userEmail).getUserEmail();
+		UserVo vo = new UserVo();
+		vo.setPw(nPw);
+		vo.setUserEmail(email);
+		userMapper.changePwUpdate(vo);
+	}
 
 
 	private String getTempPassword() {
