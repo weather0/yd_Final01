@@ -8,6 +8,15 @@ group = 'com.kcy'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 
+sourceSets {
+    main {
+        resources {
+            srcDir "src/main/java"
+        }
+    }
+}
+
+
 configurations {
 	compileOnly {
 		extendsFrom annotationProcessor
