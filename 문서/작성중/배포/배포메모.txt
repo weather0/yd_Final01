@@ -1,3 +1,32 @@
+1. gradle 빌드하기
+https://kitty-geno.tistory.com/109
+// 프로젝트\build\libs 위치에 ydfinal-0.0.1-SNAPSHOT.jar 파일 생성됨
+// 그 위치에서 cmd로 실행해보자(이클립스 없이도 단독 run)
+java -jar ydfinal-0.0.1-SNAPSHOT.jar
+// 종료
+명령창 아무데나 찍고 Ctrl+C
+
+
+2. 젠킨스 (D:\ci에 설치)
+D:\ci\jenkins.xml 열어서 수정
+<env name="JENKINS_HOME" value="D:\ci\jenkins_home"/>
+
+윈도우서비스 - jenkins 다시시작
+
+localhost:800 처음 접속하면 key요구함→
+D:\ci\jenkins_home\secrets\initialAdminPassword 확인
+최초가입: 계정명,암호,이름 무시하고 밑에 skip as admin
+권장플러그인 설치
+
+C:\ProgramData\Jenkins\.jenkins\config.xml 열어서 수정 // 로그인기능 끄기
+<useSecurity>false</useSecurity>
+
+윈도우서비스 - jenkins 다시시작
+
+
+
+
+
 도커 이미지 생성 
 docker run -dp 8080:80 weather0/test_kcy // 호스트의 8080 포트를 내부 컨테이너의 80번 포트와 바인딩
 
@@ -8,13 +37,7 @@ docker run -dp 8080:80 weather0/test_kcy // 호스트의 8080 포트를 내부 �
 
 
 
-jenkins.xml 열고
-<env name="JENKINS_HOME" value="d:/ci/jenkins_home"/>
 
-계정명,암호,이름=admin (skip as admin)
-
-localhost:800 처음 접속하면 암호요구함
-C:\ProgramData\Jenkins\.jenkins\secrets에 있음
 
 
 
