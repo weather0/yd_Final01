@@ -232,8 +232,9 @@
 									success : function(data) {
 										Kcy.fire(
 												'승인을 완료했습니다',
-												'success')
-										location.reload();
+												'success'
+												)
+												setTimeout("location.reload()", 800);
 										}
 								  })
 							    
@@ -287,9 +288,13 @@
 					toastr.error("학점:" + courseCredit+"점 입니다", "경고 학점에 맞게 선택하시오")
 					return false;
 				}
+				else if(classTimetableId.length < courseCredit){
+					toastr.error("학점:" + courseCredit+"점 입니다", "경고 학점에 맞게 선택하시오")
+					return false;
+				}
 
 				else if (classTimetableId.length > 1
-						&& classTimetableId.length <= courseCredit) {
+						&& classTimetableId.length == courseCredit) {
 					var testList = new Array();
 					for (var i = 0; i < classTimetableId.length; i++) {
 
