@@ -1,30 +1,81 @@
-1. gradle 빌드하기
+/////////////////////////////////////////////////////////////////////////////
+// gradle 빌드하기
+
+// 방법1: 이클립스
 https://kitty-geno.tistory.com/109
-// 프로젝트\build\libs 위치에 ydfinal-0.0.1-SNAPSHOT.jar 파일 생성됨
-// 그 위치에서 cmd로 실행해보자(이클립스 없이도 단독 run)
+→ 프로젝트\build\libs 위치에 ydfinal-0.0.1-SNAPSHOT.jar 파일 생성됨. 
+
+// 방법2: cmd
+ydfinal\ 위치에서
+gradlew build
+
+// ydfinal\build\libs 위치에서 cmd로 실행해보자(이클립스 없이도 단독 run)
 java -jar ydfinal-0.0.1-SNAPSHOT.jar
 // 종료
 명령창 아무데나 찍고 Ctrl+C
 
 
-2. 젠킨스 (D:\ci에 설치)
+/////////////////////////////////////////////////////////////////////////////
+// 젠킨스 
+
+// 윈도우버전 설치 (D:\ci에 설치)
 D:\ci\jenkins.xml 열어서 수정
 <env name="JENKINS_HOME" value="D:\ci\jenkins_home"/>
+ // 윈도우서비스 - jenkins 다시시작
 
-윈도우서비스 - jenkins 다시시작
-
-localhost:800 처음 접속하면 key요구함→
+// localhost:800 처음 접속하면 key요구함→
 D:\ci\jenkins_home\secrets\initialAdminPassword 확인
 최초가입: 계정명,암호,이름 무시하고 밑에 skip as admin
 권장플러그인 설치
 
-C:\ProgramData\Jenkins\.jenkins\config.xml 열어서 수정 // 로그인기능 끄기
+// 로그인기능 끄기
+D:\ci\jenkins_home\config.xml 열어서 수정 
 <useSecurity>false</useSecurity>
+ // 윈도우서비스 - jenkins 다시시작
 
-윈도우서비스 - jenkins 다시시작
+// Global Tool Configuration 세팅(캡처 참고)
+그래들은 그냥 Install automatically하자
+
+// Dashboard > Jenkins 관리 > Plugin Manager
+설치가능탭 검색해서 설치: Publish Over SSH
+젠킨스 재시작
+
+// Dashboard > Jenkins 관리 > Configure System
+kcykey.pem내용 복붙 (캡쳐참고)
+Hostname: 탄력적ip
+username: ec2-user // 주의!! 다른거 입력하면 fail남 
+
+
+// 새로운 item - Freestyle프로젝트('git빌드프로젝트')하나 만들기
+
+// Dashboard > git빌드프로젝트 > 구성Configuration(캡처참고)
+소스코드관리 - Git선택하고 자기 주소 넣기
+Build Steps - Invoke Gradle script
+  그래들 버전: myGradle(쫌전에 만든거)
+  고급-Build File: ydfinal/build.gradle (깃 경로 주의!)
+
+// 거의 최하단 Add build step - Execute Windows batch command 커맨드 입력
+docker build -t test_kcy .
+docker tag test_kcy weather0/test_kcy // 로컬 이미지 'test_kcy' 내용을 복사해서 weather0/test_kcy(도커원격repo)라는 명으로 새 이미지를 로컬에 복사생성하는 명령
+docker push weather0/test_kcy
+@echo end of batch
+
+  // 일단 이 시점에서 테스트로 한번 지금 빌드 해보자
+  "지금 빌드" 실행:
+  D:\ci\jenkins_home\workspace\git빌드프로젝트
+  → 여기에 git clone 됨. 그러나 아마 빌드는 failure 날 것이다. test_kcy가 없기 때문에.
+    프로젝트폴더로 들어가서 gradlew build로 일단 수동빌드를 해주자(맨 위 참고)
+    그리고 다시 젠킨스에서 "지금 빌드"를 실행하면 SUCCESS뜸
+    (혹시나 fail 뜨면 docker desktop 프로그램 켜자.)
 
 
 
+
+
+
+거의 최하단 Send build artifacts over SSH > Exec command
+docker pull weather0/test_kcy
+docker run -dp 8080:80 weather0/test_kcy
 
 
 도커 이미지 생성 
@@ -41,40 +92,109 @@ docker run -dp 8080:80 weather0/test_kcy // 호스트의 8080 포트를 내부 �
 
 
 
-Global Tool Configuration 세팅(캡처 참고)
+
+/////////////////////////////////////////////////////////////////////////////
+// 아마존 AWS EC2
+
+// 써드파티 SSH클라이언트로 접속할 경우
+// ec2 인스턴스에 연결 - SSH클라이언트 탭 참고
+chmod 400 kcykey.pem
+ssh -i "kcykey.pem" ec2-user@ec2-3-34-95-242.ap-northeast-2.compute.amazonaws.com
+
+// 아니면 걍 aws 거 사이트 거기서 시발 주황색 버튼 눌르면 됨 시발 위에꺼 무시
+// 블로그새끼들 시발 SSH클라이언트 접속할 경우라고 시발 명시좀 하지 시발것
+// 하 난 또 주황색버튼 눌러서 이미 접속한 그 창에서 저거 치고 있었네
+// 당연히 거기엔 kcykey.pem이 없지 가상머신이니깐
+
+
+// 패키지 업데이트
+$ sudo yum update -y
+
+// docker 설치
+$ sudo amazon-linux-extras install docker
+또는
+$ sudo yum -y upgrade
+$ sudo yum -y install docker
+
+  // 정상설치 확인
+  $ docker --version
+  또는
+  $ docker -v
+
+// 실행
+$ sudo systemctl restart docker
+또는
+$ sudo service docker start
+
+  // 정상설치 확인
+  $ docker ps
+  // 다음이 뜨면 잘 된 것
+  CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+  // 또는 서비스 실행으로 확인
+  $ systemctl status docker.service // →active(running) 상태면 정상실행중
+
+// Docker 그룹에 sudo 추가
+// (인스턴스 접속 후 도커 바로 제어할 수 있도록
+// = ec2-user를 사용하지 않고도 도커 명령을 실행할 수 있도록
+// = sudo 안치고 docker명령어 입력가능하게 라고 좀 쉽게 말해주지 하..)
+$ sudo usermod -aG docker ec2-user
+$ sudo usermod -a -G docker jenkins // 젠킨스도 해주자
+  // 권한 확인
+  $ docker ps
+  // 실행중 도커서비스 확인
+  $ docker info
+
+// 테스트 실행
+$ docker run hello-world
 
 
 
 
 
-Dashboard > Jenkins 관리 > Plugin Manager
-설치가능한거 검색해서 설치: Publish Over SSH
-
-Dashboard > Jenkins 관리 > Configure System
-.pem내용 복붙 (캡쳐참고)
 
 
 
-새로운 item - 프로젝트하나 만들고 캡처참고
-Dashboard > git빌드프로젝트 > Configuration
-
-거의 최하단 Add build step - Execute Windows batch command에 커맨드 적기.
-docker build -t test_kcy .
-docker tag test_kcy weather0/test_kcy // 로컬 이미지 'test_kcy' 내용을 복사해서 weather/test_kcy(도커원격repo)라는 명으로 새 이미지를 로컬에 복사생성하는 명령(첨에 weather0/test_kcy로 만들었으면 상관없음)
-docker push weather0/test_kcy
-@echo end of batch
-
-거의 최하단 Send build artifacts over SSH > Exec command
-docker pull weather0/test_kcy
-docker run -dp 8080:80 weather0/test_kcy
 
 
-"지금 빌드" 실행:
-C:\ProgramData\Jenkins\.jenkins\workspace\git빌드프로젝트
-에 git clone 됨.
-빌드 폴더는
-C:\ProgramData\Jenkins\.jenkins\workspace\git빌드프로젝트\ydfinal\.gradle
-에 빌드 됨
+// 도커compose 설치
+$ sudo curl -L https://github.com/docker/compose/releases/download/1.25.0-rc2/docker-compose-`uname -s`-`uname -m` -o/usr/local/bin/docker-compose
+  // 실행 권한 추가
+  $ sudo chmod +x /usr/local/bin/docker-compose
+  // 설치 확인
+  $ docker-compose -v
+
+// 도커-machine 설치
+  // 리눅스인 경우
+  $ base=https://github.com/docker/machine/releases/download/v0.16.0 &&
+curl -L $base/docker-machine-$(uname -s)-$(uname -m) >/tmp/docker-machine &&
+sudo install /tmp/docker-machine /usr/local/bin/docker-machine
+  // 설치 확인
+  $ docker-machine -v
+
+
+
+
+
+// 도커 허브에서 이미지 받기
+$ docker pull {Docker hub id}/{Docker hub repository name}
+  // 이미지 확인
+  $ docker images
+
+// AWS EC2에서 인바운드 규칙 설정!(중요!)
+AWS EC2 > 네트워크 및 보안 > 보안 그룹 > 보안 그룹 생성 (포트주의!)
+EC2 인스턴스 우클릭 > 보안 > 보안 그룹 변경해서 지정.
+
+// 이미지→컨테이너화
+docker run -d -p 8080:8080 {docker hub id}/{docker buh repository name}:latest
+  // 컨테이너 확인
+  $ docker ps
+
+
+
+
+
+
+
 
 
 
