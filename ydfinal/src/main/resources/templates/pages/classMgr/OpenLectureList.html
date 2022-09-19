@@ -89,6 +89,9 @@
 										th:text="|현재신청인원/정원|"></th>
 									<th
 										class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+										th:text="시간표"></th>	
+									<th
+										class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
 										th:text="강의계획서"></th>
 									<th
 										class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"></th>
@@ -103,6 +106,18 @@
 									<td th:text="|${data.courseCredit}학점|"></td>
 									<td th:text="${data.classSem}"></td>
 									<td th:text=|${data.classCk}/${data.classTo}|></td>
+									
+									<td>
+										<p id="test"></p>
+										
+									<ul style="list-style:none;" th:each="schCk:${classScheduleCk}" th:if="${data.classId} == ${schCk.classId}">
+										<li>
+										<span th:text="${schCk.scheduleTitle}"></span>
+										<span th:text="${schCk.classTimetableName}"></span>
+										</li>
+									</ul>
+									</td>
+									
 									<td><i class="fa-solid fa-file"></i><a th:href="${'/download?classSyl='+data.classSyl}"
 										th:text="강의계획서"></a></td>
 
@@ -151,10 +166,10 @@
 
 		<div class="row justify-content-center">
 			<div class="card p-3 me-3 mt-5 col-10">
-				<div class="card-header position-relative mt-n4 mb-4 z-index-2">
+				<div class="card-header p-0 position-relative mt-n4 mb-4 z-index-2">
 					<div
 						class="bg-secondary bg-gradient-secondary shadow-secondary border-radius-lg py-3">
-						<h6 class="text-white ps-3">수강신청완료</h6>
+						<h6 class="text-white ps-3 m-0">수강신청 완료</h6>
 					</div>
 				</div>
 				<div class="card-body">
@@ -185,6 +200,9 @@
 										th:text="학기"></th>
 									<th
 										class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+										th:text="시간표"></th>
+									<th
+										class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
 										th:text="강의계획서"></th>
 									<th
 										class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"></th>
@@ -198,6 +216,11 @@
 									<td th:text="${data.course_type}"></td>
 									<td th:text="|${data.course_credit}학점|"></td>
 									<td th:text="|${data.class_sem}학기|"></td>
+									<td>
+									<th:block th:each="schCk:${classScheduleCk}" th:if="${data.class_id} == ${schCk.classId}">
+										<span th:text="${schCk.classTimetableName}"></span>
+									</th:block>
+									</td>
 									<td><i class="fa-solid fa-file"></i><a th:href="${'/download?classSyl='+data.class_syl}"
 										th:text="강의계획서"></a></td>
 									<td><button class="btn btn btn-secondary btn-sm enbtn"
@@ -215,6 +238,7 @@
 	<th:block th:replace="fragments/footer :: footerFragment"></th:block>
 
 	<script th:inline="javascript">
+	
 	
 	
 

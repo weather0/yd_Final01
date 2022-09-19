@@ -63,14 +63,15 @@ table.type09 td {
 						<h6 class="text-white ps-3 m-0">학사 공지 게시판</h6>
 					</div>
 				</div>
+				
 
 				<table id="noticeTable" class="table table-striped table-hover type09" style="width: 100%;">
 					<thead>
 						<tr>
 							<th style="text-align: center;" class="w-5">번호</th>
-							<th class="w-65">제목</th>
+							<th class="w-70">제목</th>
 							<th class="w-10">조회수</th>
-							<th  class="w-20">등록일</th>
+							<th class="w-15" style="text-align: center;">등록일</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -78,9 +79,17 @@ table.type09 td {
 							<td style="text-align: center;" th:text="${data.notice_id}"></td>
 							<td th:text="${#strings.abbreviate(data.notice_title,30)}"></td>
 							<td style="text-align: center;" th:text="${data.notice_hit}"></td>
-
-							<td th:if="${data.notice_update_date == null}" th:text="${data.notice_date}"></td>
-							<td th:if="${data.notice_update_date != null}" th:text="${data.notice_update_date}"></td>
+							
+					<th:block th:if="${data.notice_update_date == null}">
+							<td style="text-align: center;" th:if="${#calendars.format(#calendars.createNow(), 'yyyy-MM-dd')} == ${#strings.substring(data.notice_date,0, 10)}" th:text="${#strings.substring(data.notice_date,11, 16)}"></td>
+							<td style="text-align: center;" th:if="${#calendars.format(#calendars.createNow(), 'yyyy-MM-dd')} != ${#strings.substring(data.notice_date,0, 10)}" th:text="${#strings.substring(data.notice_date,0, 10)}"></td>
+					</th:block>
+					<th:block th:if="${data.notice_update_date != null}">
+							<td style="text-align: center;" th:if="${#calendars.format(#calendars.createNow(), 'yyyy-MM-dd')} == ${#strings.substring(data.notice_update_date,0, 10)}" th:text="${#strings.substring(data.notice_update_date,11, 16)}+' (수정)'"></td>
+							<td style="text-align: center;" th:if="${#calendars.format(#calendars.createNow(), 'yyyy-MM-dd')} != ${#strings.substring(data.notice_update_date,0, 10)}" th:text="${#strings.substring(data.notice_update_date,0, 10)}+' (수정)'"></td>
+					</th:block>
+					
+					
 						</tr>
 					</tbody>
 					<!-- 본문 end-->
@@ -91,6 +100,13 @@ table.type09 td {
 	</div>
 	<script th:inline="javascript">
     /*<![CDATA[*/
+		$('tbody tr').on('click',function(){
+			var thisg = $(($(this)[0]).children[0])[0];
+			var num = $(thisg).text()
+	
+			
+			location.href ="/notice/noticeview?NoticeId="+num;
+		})
 		$('#noticeTable').DataTable({
 			info : false,
 			"language" : {
@@ -112,15 +128,7 @@ table.type09 td {
 	        order : [0],
 	        lengthChange: false
 		});
-	
 		
-		$('tbody tr').on('click',function(){
-			var thisg = $(($(this)[0]).children[0])[0];
-			var num = $(thisg).text()
-	
-			
-			location.href ="/notice/noticeview?NoticeId="+num;
-		})
 		  /*]]>*/
 	</script>
 </th:block>

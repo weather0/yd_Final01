@@ -222,9 +222,7 @@
 							  cancelButtonText:"취소"
 							}).then((result) => {
 							  if (result.isConfirmed) {
-								  Kcy.fire(
-									'승인을 완료했습니다',
-									'success',
+								  
 								   $.ajax({
 									 url : "/lectureupdate",
 									 type : "post",
@@ -232,9 +230,13 @@
 										 classId : classId
 										    },
 									success : function(data) {
+										Kcy.fire(
+												'승인을 완료했습니다',
+												'success')
+										location.reload();
 										}
 								  })
-							    )
+							    
 							  }
 							})
 			           }
