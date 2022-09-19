@@ -6,13 +6,20 @@
 
 <th:block layout:fragment="content">
 
+<style>
+.border-5 {
+	padding-left: 0px;
+	padding-right: 0px;
+}
+</style>
+
 	<!-- 상단 내비바 -->
 	<th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
 
 	<!-- 본문 start -->
 	<div class="container-fluid">
 		<div class="row justify-content-center">
-			<div class="card p-3 me-3">
+			<div class="card p-3 me-3 col-10 border border-5">
 				<div class="card-header p-0 position-relative mt-n4 mb-4 z-index-2">
 					<div
 						class="bg-secondary bg-gradient-secondary shadow-secondary border-radius-lg py-3">
@@ -43,8 +50,7 @@
 						</div>
 				</form>
 
-				<th:block th:each="bill:${billCheck}">
-					<h5>상세</h5>
+				<th:block th:each="bill:${billCheck}">					
 					<div class="col-md-2"
 						th:if="${!bill.payHType.toString().equals('b')}">
 						<div class="input-group input-group-outline my-3">
@@ -61,7 +67,8 @@
 							</select>
 						</div>
 					</div>
-
+					
+				<div class="table-responsive border-radius-lg border border-5">
 					<table class="table text-center mb-0" id="payList">
 						<tr>
 							<td class="table-secondary">년도</td>
@@ -100,15 +107,7 @@
 								<td
 									th:text="${#calendars.format(bill.kbs, 'yyyy-MM-dd')}+' ~ '+${#calendars.format(bill.kbe, 'yyyy-MM-dd')}"></td>
 							</tr>
-							<tr>
-								<td>
-									<button type="button" class="btn btn-secondary payB"
-										data-bs-toggle="modal" data-bs-target="#payB"
-										data-bs-whatever="NO" th:if="${bill.payHYn == n}">납부</button>
-								</td>
-							</tr>
-						</span>
-						
+						</span>	
 					
 					<span th:if="${!bill.payHType.toString().equals('b')}">
 						<tr>
@@ -142,14 +141,7 @@
 							<td
 								th:text="${#calendars.format(bill.ks1s, 'yyyy-MM-dd')}+' ~ '+${#calendars.format(bill.ks1e, 'yyyy-MM-dd')}">
 							</td>
-						</tr>
-						<tr>
-							<td>
-								<button type="button" class="btn btn-secondary payFirst"
-									data-bs-toggle="modal" data-bs-target="#payFirst"
-									data-bs-whatever="NO" th:if="${bill.payHS1 == 0}">1차 분납</button>
-							</td>
-						</tr>
+						</tr>						
 						</span>
 						<span th:if="${payVO.payCount == 'p2'}">
 							<tr>
@@ -160,13 +152,6 @@
 									th:text="${#calendars.format(bill.ks2s, 'yyyy-MM-dd')}+' ~ '+${#calendars.format(bill.ks2e, 'yyyy-MM-dd')}">
 								</td>
 							</tr>
-							<tr>
-								<td>
-									<button type="button" class="btn btn-secondary paySplit"
-										data-bs-toggle="modal" data-bs-target="#paySplit"
-										data-bs-whatever="NO" th:if="${bill.payHS2 == 0} AND ${bill.payHS1 != 0}">2차 분납</button>
-								</td>
-							</tr>
 						</span>
 						<span th:if="${payVO.payCount == 'p3'}">
 							<tr>
@@ -175,14 +160,7 @@
 								<td class="table-secondary">납부기간</td>
 								<td
 									th:text="${#calendars.format(bill.ks3s, 'yyyy-MM-dd')}+' ~ '+${#calendars.format(bill.ks3e, 'yyyy-MM-dd')}"></td>
-							</tr>
-							<tr>
-								<td>
-									<button type="button" class="btn btn-secondary paySplit"
-										data-bs-toggle="modal" data-bs-target="#paySplit"
-										data-bs-whatever="NO" th:if="${bill.payHS3 == 0} AND ${bill.payHS2 != 0}">3차 분납</button>
-								</td>
-							</tr>
+							</tr>							
 						</span>
 						<span th:if="${payVO.payCount == 'p4'}">
 						<tr>
@@ -191,36 +169,59 @@
 							<td class="table-secondary">납부기간</td>
 							<td
 								th:text="${#calendars.format(bill.ks4s, 'yyyy-MM-dd')}+' ~ '+${#calendars.format(bill.ks4e, 'yyyy-MM-dd')}"></td>
-						</tr>
-						<tr>
-							<td>
-								<button type="button" class="btn btn-secondary paySplit"
-									data-bs-toggle="modal" data-bs-target="#paySplit"
-									data-bs-whatever="NO" th:if="${bill.payHYn == 's'} AND ${bill.payHS3 != 0}">4차 분납</button>
-							</td>
-						</tr>
+						</tr>						
 						</span>
 					</span>
 					</table>
-
-					<span th:if="${bill.payHType.toString().equals('b')}">
-						<div class="col-md-3">
-							<div class="input-group input-group-outline my-3">
-								<button type="button" class="btn btn-secondary change"
-									data-bs-toggle="modal" data-bs-target="#change"
-									data-bs-whatever="NO">분할 납부 신청</button>
+				</div>
+				
+					
+				<div style="display: flex;">
+					<div class="col-md-3" th:if="${bill.payHType.toString().equals('b')} AND ${bill.payHYn.toString().equals('n')}">
+						<div class="input-group input-group-outline my-3">
+							<button type="button" class="btn btn-secondary payB"
+							data-bs-toggle="modal" data-bs-target="#payB"
+							data-bs-whatever="NO">등록금 납부</button>
+						</div>
+					</div>					
+					<div class="col-md-3" th:if="${!bill.payHType.toString().equals('b')} AND ${payVO.payCount != ''}">
+						<div class="input-group input-group-outline my-3">
+							<div th:if="${payVO.payCount == 'p1'}">
+								<button type="button" class="btn btn-secondary payFirst"
+											data-bs-toggle="modal" data-bs-target="#payFirst"
+											data-bs-whatever="NO" th:if="${bill.payHS1 == 0}">1차 분납</button>
+							</div>
+							<div th:if="${payVO.payCount == 'p2'}">
+								<button type="button" class="btn btn-secondary payFirst"
+											data-bs-toggle="modal" data-bs-target="#payFirst"
+											data-bs-whatever="NO" th:if="${bill.payHS2 == 0} AND ${bill.payHS1 != 0}">2차 분납</button>
+							</div>
+							<div th:if="${payVO.payCount == 'p3'}">
+								<button type="button" class="btn btn-secondary payFirst"
+											data-bs-toggle="modal" data-bs-target="#payFirst"
+											data-bs-whatever="NO" th:if="${bill.payHS3 == 0} AND ${bill.payHS2 != 0}">3차 분납</button>
+							</div>
+							<div th:if="${payVO.payCount == 'p4'}">
+								<button type="button" class="btn btn-secondary payFirst"
+											data-bs-toggle="modal" data-bs-target="#payFirst"
+											data-bs-whatever="NO" th:if="${bill.payHYn == 's'} AND ${bill.payHS3 != 0}">4차 분납</button>
 							</div>
 						</div>
-					</span>
-
-					<span th:if="${!bill.payHType.toString().equals('b')} AND ${bill.payHYn.toString().equals('n')}">
-						<div class="col-md-3">
-							<div class="input-group input-group-outline my-3">
-								<button class="btn btn-secondary cancel">분할 납부 취소</button>
-							</div>
+					</div>					
+					<div class="col-md-3" th:if="${bill.payHType.toString().equals('b')} AND ${bill.payHYn.toString().equals('n')}">
+						<div class="input-group input-group-outline my-3">
+							<button type="button" class="btn btn-secondary change"
+								data-bs-toggle="modal" data-bs-target="#change"	data-bs-whatever="NO"
+								>분할 납부 신청</button>
 						</div>
-					</span>
-
+					</div>					
+					<div class="col-md-3" th:if="${!bill.payHType.toString().equals('b')} AND ${bill.payHYn.toString().equals('n')}">
+						<div class="input-group input-group-outline my-3">
+							<button class="btn btn-secondary cancel">분할 납부 취소</button>
+						</div>
+					</div>
+				</div>
+					
 					<div class="modal fade" id="change" tabindex="-1"
 						aria-labelledby="changeLabel" aria-hidden="true">
 						<div class="modal-dialog">
@@ -354,8 +355,16 @@
 
 	<script>
 		let date = new Date();
-		let year = document.getElementById("billYear");
-		year.value = date.getFullYear();
+		let query = window.location.search;
+		let param = new URLSearchParams(query);
+		let year = document.getElementById('billYear');		
+		let id = param.get('billYear')		
+		year.value = id;			
+		if (id == null) {
+			year.value = date.getFullYear();	
+		} else {			
+			year.value = id;
+		}
 			
 		$(".change").on("click", function() {
 			var id = document.getElementById("payId").innerHTML;

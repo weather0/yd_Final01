@@ -13,59 +13,59 @@
 	<div class="container-fluid">
       <div class="row justify-content-center">
 		<div class="card p-3 me-3">
-				<div class="card-header p-0 position-relative mt-n4 mb-4 z-index-2">
-					<div
-						class="bg-secondary bg-gradient-secondary shadow-secondary border-radius-lg py-3">
-						<h6 class="text-white ps-3 m-0">등록금 고지서 등록</h6>
+		  <div class="card-header p-0 position-relative mt-n4 mb-4 z-index-2">
+			<div
+				class="bg-secondary bg-gradient-secondary shadow-secondary border-radius-lg py-3">
+				<h6 class="text-white ps-3 m-0">등록금 고지서 등록</h6>
+			</div>
+		  </div>
+			<form action="billsInsert" method="post">
+				<div class="input-group input-group-outline my-3">
+					<label class="form-label"></label> <input type="text"
+						minlength="9" class="form-control On" name="billId" id="billId"
+						readonly="readonly" placeholder="년도/학기/학과를 선택해주세요">
+				</div>
+				<div class="row">
+					<div class="col-md-4">
+						<div class="input-group input-group-outline my-3">
+							<input type="number" class="form-control" name="billYear"
+								id="billYear" required placeholder="년도">
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="input-group input-group-outline my-3">
+								<input type="number" class="form-control" min="1" max="2"
+							name="billSem" id="billSem" required placeholder="학기">
+							</div>
+					</div>
+					<div class="col-md-4">
+						<div class="input-group input-group-outline my-3 form-floating">
+							<select class="form-select"
+								name="majorbId" id="majorbId" required>									
+								<th:block th:each="mjr : ${majorb}">
+									<option th:text="${mjr.majorName}" th:value="${mjr.majorId}"></option>
+								</th:block>
+							</select>
+							<label for="floatingSelect">학과를 선택해주세요</label>
+						</div>
 					</div>
 				</div>
-
-				<form action="billsInsert" method="post">
-					<div class="input-group input-group-outline my-3">
-						<label class="form-label"></label> <input type="text"
-							minlength="9" class="form-control On" name="billId" id="billId"
-							readonly="readonly" placeholder="년도/학기/학과를 선택해주세요">
-					</div>
-					<div class="row">
-						<div class="col-md-4">
-							<div class="input-group input-group-outline my-3">
-								<input type="number" class="form-control" name="billYear"
-									id="billYear" required placeholder="년도">
-							</div>
-						</div>
-						<div class="col-md-4">
-							<div class="input-group input-group-outline my-3">
-								<input type="number" class="form-control" min="1" max="2"
-									name="billSem" id="billSem" required placeholder="학기">
-							</div>
-						</div>
-						<div class="col-md-4">
-							<div class="input-group input-group-outline my-3 form-floating">
-								<select class="form-select"
-									name="majorbId" id="majorbId" required>									
-									<th:block th:each="mjr : ${majorb}">
-										<option th:text="${mjr.majorName}" th:value="${mjr.majorId}"></option>
-									</th:block>
-								</select>
-								<label for="floatingSelect">학과를 선택해주세요</label>
-							</div>
-						</div>
-					</div>
-					<div class="col-md-4" style="display: none">
-							<div class="input-group input-group-outline my-3">
-								<input type="text" class="form-control"
+				<div class="col-md-4" style="display: none">
+						<div class="input-group input-group-outline my-3">
+							<input type="text" class="form-control"
 									name="hakgi" id="hakgi" required placeholder="학기">
-							</div>
-						</div>			
-					<div class="input-group input-group-outline my-3">
-						<label class="form-label">청구액</label> <input type="number"
-							class="form-control" name="billAmount" min="0" required>
-					</div>
-					<button class="btn btn-secondary">고지서 등록</button>
-				</form>
-			</div>
+						</div>
+					</div>			
+				<div class="input-group input-group-outline my-3">
+					<label class="form-label">청구액</label> <input type="number"
+						class="form-control" name="billAmount" min="0" required>
+				</div>
+				<button class="btn btn-secondary">고지서 등록</button>
+			</form>
 		</div>
-	</div>
+	  </div>
+	</di>
+	
 	<script>
 		var msg = '[[${message}]]'
 

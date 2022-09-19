@@ -5,17 +5,18 @@
 	layout:decorate="~{layouts/layout}">
 
 <th:block layout:fragment="content">
-	<style>
-.card {
-	margin-bottom: 20px;
-}
+<style>
+	.card {
+		margin-bottom: 20px;
+	}
+
 </style>
 	<th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
 	
 	<!-- 본문 start -->
 	<div class="container-fluid">
 		<div class="row justify-content-center">
-			<div class="card p-3 me-3">
+			<div class="card p-3 me-3 col-8 border border-5">
 				<div class="card-header p-0 position-relative mt-n4 mb-4 z-index-2">
 					<div
 						class="bg-secondary bg-gradient-secondary shadow-secondary border-radius-lg py-3">
@@ -34,8 +35,8 @@
 							<div class="input-group input-group-outline my-3">
 								<label class="form-label"></label> <select class="form-control"
 									name="billSem" id="billSem">
-									<option value="1">1학기</option>
-									<option value="2">2학기</option>
+									<option value="1" th:selected="${payVO.billSem}=='1'">1학기</option>
+									<option value="2" th:selected="${payVO.billSem}=='2'">2학기</option>
 								</select>
 							</div>
 						</div>
@@ -47,9 +48,8 @@
 					</div>
 				</form>
 
-				<th:block th:each="payStd:${payStdInfo}">
-					<div class="row justify-content-center">
-						<div class="table-responsive">
+				<th:block th:each="payStd:${payStdInfo}">											
+						<div class="table-responsive border-radius-lg border border-5">
 							<table class="table text-center mb-0" id="payList">
 								<tr>
 									<td class="table-secondary">학년</td>
@@ -76,16 +76,13 @@
 									</td>
 								</tr>
 							</table>
-						</div>
-					</div>
+						</div>										
 				</th:block>
 			</div>
-		</div>
-		
-	
-		<div class="container-fluid py-4">
+		</div>		
+			
 			<div class="row justify-content-center">
-				<div class="card" id="ListInfo">
+				<div class="card p-3 me-3 col-8 border border-5" id="ListInfo">
 					<div class="card-header p-0 position-relative mt-n4 mb-4 z-index-2">
 						<div
 							class="bg-secondary bg-gradient-secondary shadow-secondary border-radius-lg py-3">
@@ -93,7 +90,7 @@
 						</div>
 					</div>
 					<div class="table-responsive">
-						<table class="table align-items-center mb-0">
+						<table class="table text-center mb-0">
 							<thead>
 								<tr>
 									<th>납부일자</th>
@@ -125,8 +122,16 @@
 
 	<script>
 		let date = new Date();
-		let year = document.getElementById('billYear');
-		year.value = date.getFullYear();
+		let query = window.location.search;
+		let param = new URLSearchParams(query);
+		let year = document.getElementById('billYear');		
+		let id = param.get('billYear')		
+		year.value = id;			
+		if (id == null) {
+			year.value = date.getFullYear();	
+		} else {			
+			year.value = id;
+		}
 	</script>
 	<!-- 본문 end-->
 </th:block>
