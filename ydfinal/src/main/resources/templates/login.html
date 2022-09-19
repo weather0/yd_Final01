@@ -297,10 +297,23 @@
                                complete: function() {
                             	   $('html').css("cursor","auto"); 
                             	   Swal.fire("전송 완료", "다시 로그인해 주세요.", "success");
-                            	   setTimeout(function() {location.href = "/login"}, 1000);
+                            	   setTimeout(function() {location.href = "/changePw"}, 1000);
                                },
 	                           success: function(data) {
-			               		   console.log(data);
+	                        	   $.ajax({
+		                        		 url:"/changePw/proc",
+		                        		 dataType: 'json',
+		                        		 data: {
+		                        			 "myName": userName,
+		                        			 "userEmail": userEmail
+		                        		 },
+		                        		 success: function(data) {
+		                        			 console.log(data);
+		                        		 },
+		                        		 error: function(error) {
+		                        			 console.log(error);
+		                        		 }
+		                        	   })
 	                           },
                                error: function(error) {
                                	Swal.fire("오류 발생", "다시 입력해 주세요.", "error");

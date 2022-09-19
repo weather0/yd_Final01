@@ -59,4 +59,13 @@
 			where
 				user_email = #{userEmail}
 	</select>
+	
+	<update id="changePwUpdate" parameterType="com.kcy.login.service.UserVo">
+		UPDATE
+				k_users
+		SET
+				user_pw = #{newPw}
+		WHERE
+				user_email = #{userEmail}
+	</update>
 </mapper>

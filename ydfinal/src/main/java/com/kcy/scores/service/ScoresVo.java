@@ -34,6 +34,10 @@ public class ScoresVo {
 	private int creditLib;
 	private Double creditAcquire;
 	
+	// k_attendance
+	private String attnType;
+	private int attnCtn;
+	
 	// join
 	private String courseTitle;
 	private String courseType;
