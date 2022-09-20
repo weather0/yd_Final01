@@ -195,15 +195,21 @@
             center: 'title',
             right: 'newBtn dayGridMonth,timeGridWeek,timeGridDay,listWeek'
           },
-//           viewDidMount: function () { // 렌더된 후 요소 조작
+          viewDidMount: function () { // 렌더된 후 요소 조작
             // 일정등록 버튼 권한 부여
-//             let newBtn = $('.fc-newBtn-button');
-//             if (role != 'ROLE_ADMIN'){
-              // 여기서 조작하면 약간 찌꺼기 남는 버그가 경우가 종종있음(렌더링 시간차 버그?) 
-              // 밑에 캘린더 렌더링 이후에 remove()로 지우는게 더 효과적
-//             }
-//           },
-
+            let newBtn = $('.fc-newBtn-button');
+            if (role != 'ROLE_ADMIN'){
+              // 9.21.최종결정. display=none이 100% 가장 효과적이다. 
+              // +보험으로 밑에 remove()까지 넣고 확인사살을 한다(버그는 존재하지만). 
+              // 혹시나 학생,교수 이용자가 브라우저에서 개발자도구를 켜서 요소들을 볼 줄 알고, 
+              // 때마침 아래 remove()가 버그로 인해 요소삭제가 안되었는데, 
+              // 때마침 굳이 일정등록을 찾아 display none을 해제시켜서 일정버튼을 누른다한들, 
+              // 2차 보험으로 모든 인풋이 readonly처리가 되어있다 걱정말자. 사실상 이게 최선이다. 이정도만 해도 충분하다.
+              // (풀캘 커스텀버튼은 유명무실한 반쪽짜리 커스텀 버튼인 거 같다. 자유도가 너무 없이 빡빡하다. 스택오버플로우등에도 원성이 자자하다.)
+              newBtn.css('display','none'); 
+              newBtn.remove(); // 알수없는 버그존재. month-week-day-list 뷰들을 왔다갔다 하다보면 랜덤 패턴으로 remove()가 안 먹는 상황이 있음. 말그대로 특정 패턴 유추가 불가한 쌩랜덤임(아마 풀캘 스크립트상 뷰 뿌리는 코드와 이거랑 아주 미세한 시간차 버그인 듯?). 그래도 보험으로 일단은 걸어놓는다.
+            }
+          },
           navLinks: true, // 달력에서 일 글자 클릭시 day뷰로 전환
           
           eventTimeFormat: {
@@ -237,11 +243,16 @@
           
           // 이벤트 꾸미기
           eventContent: function(arg) {
-            let startHm = moment(arg.event.start).format('HH:mm') 
+            // 이벤트막대 밖으로 타이틀이 삐져나오는 거 방지(이거 꼭 해줘야 빈칸이랑 이벤이랑 확실히 구분됨)
+            $('.fc-event-main').css('overflow','hidden'); 
+            
+            let startHm = moment(arg.event.start).format('HH:mm')
             return {
+              // 24:00표시 없애기
               html: `
                 <span class="me-1 fw-bold text-decoration-underline">${ startHm == '00:00' ? '' : startHm }</span> 
-                <span>${ arg.event.title }</span>`
+                <span>${ arg.event.title }</span>
+              `
             }
           },
           
@@ -388,7 +399,7 @@
         if (role != 'ROLE_ADMIN') {
           calendar.setOption('selectable', false)
           calendar.setOption('editable', false)
-          $('.fc-newBtn-button').remove();
+//           $('.fc-newBtn-button').remove(); // 9.21.예외발견. 초기로딩시 월달력(month뷰)에서만 먹히고, 다른뷰(week,day등)에서는 안먹힘!! 그래서 저기 위에 객체 내부에서 viewDidMount로 처리하기로 함.
           $('form input').prop('readonly', true)
           $('form select').prop('disabled', true)
           // checkbox 체크박스 checked disabled 속성으로 논리적으로 제한하려니깐 너무 버그 많고 복잡해짐
@@ -724,7 +735,9 @@
 <!--         </div> -->
 <!--       </div> -->
     
-      <div class="card p-3 me-3 mb-1 w-80 border border-5" style="margin-top: 3px;">
+    
+      <!-- class="w-80"(또는 width: 80vw)으로 창크기에 상관없이 항상 좌우 여백이 존재하게 되므로, max-width로 지정하는게 더 예쁨. 반응형에도 더 잘 맞고(모바일용) -->
+      <div class="card p-3 me-3 mb-1 border border-5" style="margin-top: 3px; max-width: 1000px;">
       
         <div class="card-header p-0 position-relative mt-n4 mb-4 z-index-2">
           <div class="bg-secondary bg-gradient-secondary shadow-secondary border-radius-lg py-3">

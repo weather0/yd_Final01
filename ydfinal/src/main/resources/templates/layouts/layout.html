@@ -61,16 +61,15 @@
       height: calc(100% - 120px);
     }
     
-    #div-main {
-      width: 100%;
+    #watermark {
+      width: 200%;
       height: 100%;
       position: fixed; 
-      left: 0; 
-      top: 0; 
+      left: -400px; 
       /* 배경이미지 흐리게 하는 방법 1: linear-gradient옵션 / 방법2: before,after 등 가상요소 활용 */
       background-image: 
-        linear-gradient(rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.92)),
-        url('/aa/logo/KCYwolf.png');
+        linear-gradient(rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.95)),
+        url('/aa/logo/KCYwolf.svg');
 /*       background-repeat: no-repeat;  */
       z-index: -999;
     }
@@ -81,7 +80,7 @@
 </head>
 
 <body class="g-sidenav-show  bg-gray-200">
-  <div id="div-main"></div>
+  <div id="watermark"></div>
 
   <!-- 좌측사이드바 -->
   <aside
