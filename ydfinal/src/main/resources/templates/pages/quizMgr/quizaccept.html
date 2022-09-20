@@ -1,153 +1,185 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layouts/layout}">
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/layout}">
 <th:block layout:fragment="content">
-  <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css"/>  
-  <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-  <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
-  <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
-  <!-- 상단 내비바 -->
-  <th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
-  <style>
-  	#layout1 {
-  	border: 1px soild #6a7281;
-  	}
-	.th-default {
-	background: #6a7281 !important;
-	border-bottom: 1px solid #d2d6da;
-	border-top: 1px solid #d2d6da;
-	width: 120px;
-	}
-	.th-default label {
-	color: #fff;
-	text-align : center;
-	display: flex;
-	justify-content: center;
-	line-height: 43px;
-	margin-bottom: 0px !important;
-	}
-	.td-content {
-	padding: 0 20px 0 20px;
-	border-bottom: 1px solid #d2d6da;
-	border-right: 1px solid #d2d6da;
-	border-top: 1px solid #d2d6da;
-	}
-	.td-content p {
-	height: 10px;
-	}
-  </style>
-  <!-- 본문 start -->
-<!-- 상단 내비바 -->
-<th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
-  <!-- 본문 start -->
-  <div class="container-fluid">
-   <div class="row justify-content-center">
-		<div class="card p-3 me-3 col-8">
-      
-        <!-- 각 페이지 타이틀바 -->
-        <div class="card-header p-0 position-relative mt-n4 mb-4 z-index-2">
-          <div class="bg-secondary bg-gradient-secondary shadow-secondary border-radius-lg py-3">
-            <h6 class="text-white ps-3 m-0">과제 제출</h6>
-          </div>
-        </div>
-    <div class="row" style="padding: 15px"> 
-    	<input th:value="${#authentication.principal.username}" type="hidden" id="userId" />
-    	<table id="layout1" name="layout1" cellspacing="0" cellpadding="0" class="lec-table insert hwk-table">  
-    	<tbody>
-    		<tr style="height:43px;">
-    		<td id="layout1_1_3" class="th-default">
-            <label class="label_default">제출기한</label>
-            </td>
-            <td class="td-content">		
-				<p id="startDay" th:text="|${quizlist.quizDOpenday}~${quizlist.quizDCloseday}"></p>
-			</td>
-            </tr>
-            <tr style="height:43px;">
-            <td id="layout1_1_3" class="th-default">
-            <label class="label_default">제목</label>
-            </td>
-            <td class="td-content"><p th:text="${quizlist.quizHTitle}"></p></td>
-            </tr>
-            <tr style="height:130px;">
-           	<td id="layout1_1_3" class="th-default">
-            <label class="label_default">내용</label>
-            </td>
-            <td class="td-content"><p th:utext="${quizlist.quizHContent}"></p></td>
-            </tr>
-            <tr style="height:130px;">
-            <td id="layout1_1_3" class="th-default">
-            <label class="label_default">첨부파일</label>
-            </td>
-            <td class="td-content"><a th:href="${'/quizdownload?quizHFile='+quizlist.quizHFile}">
-				<p th:text="${quizlist.quizHOriginal}"></p>
-			</a>
-			</td>
-			</tr>  
-		</tbody>
-		</table>
-  <!-- 본문 end-->
- </div>
+	<link rel="stylesheet"
+		href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css" />
+	<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+	<script
+		src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+	<script
+		src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
+	<!-- 상단 내비바 -->
+	<style>
+#layout1 {
+	border: 1px soild #6a7281;
+}
 
- <th:block th:if="${quizaccept} != null">
-  <form action="quizModify" method="post" enctype="multipart/form-data">
-  		<input type="hidden" id="classId" name="classId" th:value="${quizaccept.classId}"/>
-		<input type="hidden" id="quizDId" name="quizDId" th:value="${quizaccept.quizDId}"/>
-		<input type="hidden" id="quizRId" name="quizRId" th:value="${quizaccept.quizRId}"/>
-		 	<div class="input-group input-group-outline my-3">
-		      <textarea type="text" id="contents" class="form-control" th:text="${quizaccept.quizRContent}" name="quizRContent"></textarea>
-		    </div>	
-		    <div class="input-group input-group-outline my-3">
-		      <a th:href="${'/quizAcceptdownload?quizRFile='+quizaccept.quizRFile}"><label th:id="quizRFile" th:text="${quizaccept.quizROrginal}" class="form-label"></label></a>
-		      <input type="file" class="form-control" multiple="multiple" th:name="classQuizFileSyl">
-		      <input type="hidden" th:id="quizROrginal" class="form-control" multiple="multiple" th:value="${quizaccept.quizROrginal}"  th:name="quizROrginal">
-		    </div>
-		    <button class="btn bg-gradient-secondary hidBtn">수정</button>
-		    <button class="btn bg-gradient-secondary">목록</button>
-</form>
-</th:block>
- 	
- <th:block th:if="${quizaccept} == null ">
- <form action="quizAccept" method="post" enctype="multipart/form-data">
-		<input type="hidden" id="classId" name="classId" th:value="${quizlist.classId}"/>
-		<input type="hidden" id="quizDId" name="quizDId" th:value="${quizlist.quizDId}"/>
-		<input type="hidden" id="quizRId" name="quizRId" th:value="${quizlist.quizRId}"/>
-		   <div class="input-group input-group-outline my-3">
-		     <label class="form-label"></label> 
-		     <textarea type="text" id="contents" class="form-control" th:name="quizRContent"></textarea>
-		   </div>	
-		   <div class="input-group input-group-outline my-3">
-		     <label class="form-label"></label>
-		     <input type="file" class="form-control" multiple="multiple" th:name="classQuizFileSyl">
-		     <input type="hidden" class="form-control" multiple="multiple" th:name="quizROriginal">
-		   </div>
-    	   <button class="btn bg-gradient-secondary hidBtn">제출</button>
-    	   <button class="btn bg-gradient-secondary backBtn">목록</button>
- </form>
- </th:block>
-    
-  <!-- 본문 end-->
- </div>
-</div>
-</div>
+table td p {
+	white-space: pre-line;
+}
+
+table {
+	
+}
+
+pre {
+	word-break: break-all;
+	white-space: pre-line;
+}
+
+table.type09 {
+	border-collapse: collapse;
+	text-align: left;
+	line-height: 1.5;
+}
+
+table.type09 thead th {
+	padding: 10px;
+	font-weight: bold;
+	vertical-align: top;
+	color: #369;
+	border-bottom: 3px solid #036;
+}
+
+table.type09 tbody th {
+	padding: 10px;
+	font-weight: bold;
+	vertical-align: top;
+	border-bottom: 1px solid #ccc;
+	background: #f3f6f7;
+}
+
+table.type09 td {
+	padding: 10px;
+	vertical-align: top;
+	border-bottom: 1px solid #ccc;
+}
+</style>
+	<!-- 본문 start -->
+	<!-- 상단 내비바 -->
+	<th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
+	<!-- 본문 start -->
+	<div class="container-fluid">
+		<div class="row justify-content-center">
+			<div class="card p-3 me-3 col-8">
+
+				<!-- 각 페이지 타이틀바 -->
+				<div class="card-header p-0 position-relative mt-n4 mb-4 z-index-2">
+					<div
+						class="bg-secondary bg-gradient-secondary shadow-secondary border-radius-lg py-3">
+						<h6 class="text-white ps-3 m-0">과제 제출</h6>
+					</div>
+				</div>
+				<div class="row" style="padding: 15px">
+					<input th:value="${#authentication.principal.username}"
+						type="hidden" id="userId" />
+					<table class="type09">
+						<tbody>
+							<tr>
+								<th id="layout1_1_3" class="th-default"><label
+									class="label_default">제출기한</label></td>
+								<td class="td-content">
+									<p id="startDay"
+										th:text="|${quizlist.quizDOpenday}~${quizlist.quizDCloseday}"></p>
+								</td>
+							</tr>
+							<tr>
+								<th id="layout1_1_3" class="th-default"><label
+									class="label_default">제목</label></td>
+								<td class="td-content"><p th:text="${quizlist.quizHTitle}"></p></td>
+							</tr>
+							<tr>
+								<th id="layout1_1_3" class="th-default"><label
+									class="label_default">내용</label></td>
+								<td class="td-content"><p
+										th:utext="${quizlist.quizHContent}"></p></td>
+							</tr>
+							<tr>
+								<th id="layout1_1_3" class="th-default"><label
+									class="label_default">첨부파일</label></td>
+								<td class="td-content"><a
+									th:href="${'/quizdownload?quizHFile='+quizlist.quizHFile}">
+										<p th:text="${quizlist.quizHOriginal}"></p>
+								</a></td>
+							</tr>
+						</tbody>
+					</table>
+					<!-- 본문 end-->
+				</div>
+
+				<th:block th:if="${quizaccept} != null">
+					<form action="quizModify" method="post"
+						enctype="multipart/form-data">
+						<input type="hidden" id="classId" name="classId"
+							th:value="${quizaccept.classId}" /> <input type="hidden"
+							id="quizDId" name="quizDId" th:value="${quizaccept.quizDId}" /> <input
+							type="hidden" id="quizRId" name="quizRId"
+							th:value="${quizaccept.quizRId}" />
+						<div class="input-group input-group-outline my-3">
+							<textarea type="text" id="contents" class="form-control"
+								th:text="${quizaccept.quizRContent}" name="quizRContent"></textarea>
+						</div>
+						<div class="input-group input-group-outline my-3">
+							<a
+								th:href="${'/quizAcceptdownload?quizRFile='+quizaccept.quizRFile}"><label
+								th:id="quizRFile" th:text="${quizaccept.quizROrginal}"
+								class="form-label"></label></a> <input type="file"
+								class="form-control" multiple="multiple"
+								th:name="classQuizFileSyl"> <input type="hidden"
+								th:id="quizROrginal" class="form-control" multiple="multiple"
+								th:value="${quizaccept.quizROrginal}" th:name="quizROrginal">
+						</div>
+						<button class="btn bg-gradient-secondary hidBtn">수정</button>
+						<button class="btn bg-gradient-secondary">목록</button>
+					</form>
+				</th:block>
+
+				<th:block th:if="${quizaccept} == null ">
+					<form action="quizAccept" method="post"
+						enctype="multipart/form-data">
+						<input type="hidden" id="classId" name="classId"
+							th:value="${quizlist.classId}" /> <input type="hidden"
+							id="quizDId" name="quizDId" th:value="${quizlist.quizDId}" /> <input
+							type="hidden" id="quizRId" name="quizRId"
+							th:value="${quizlist.quizRId}" />
+						<div class="input-group input-group-outline my-3">
+							<label class="form-label"></label>
+							<textarea type="text" id="contents" class="form-control"
+								th:name="quizRContent"></textarea>
+						</div>
+						<div class="input-group input-group-outline my-3">
+							<label class="form-label"></label> <input type="file"
+								class="form-control" multiple="multiple"
+								th:name="classQuizFileSyl"> <input type="hidden"
+								class="form-control" multiple="multiple" th:name="quizROriginal">
+						</div>
+						<button class="btn bg-gradient-secondary hidBtn">제출</button>
+						<button class="btn bg-gradient-secondary backBtn">목록</button>
+					</form>
+				</th:block>
+
+				<!-- 본문 end-->
+			</div>
+		</div>
+	</div>
 	<script>
-
 		var endDay = $("#closeDay").text();
 		var now = new Date();
 		var end = new Date($("#closeDay").text());
 		var start = new Date($("#startDay").text());
 
-		if(now > end) {
+		if (now > end) {
 			$(".hidBtn").hide();
 		}
-		
+
 		$(".backBtn").on("click", function() {
 			window.history.back();
 		});
-		
 	</script>
- 
+
 </th:block>
 
 

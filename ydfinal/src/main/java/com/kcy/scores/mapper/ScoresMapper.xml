@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kcy.scores.mapper.ScoresMapper">
+
+	<!-- 성적 인원 수 체크 -->
 	<select id="lectureList" resultType="com.kcy.scores.service.ScoresVo">
 		SELECT 
 		        c.class_id,
@@ -20,6 +22,7 @@
                 c.class_ck > 0
 	</select>
 	
+	<!-- 성적 입력 체크 -->
 	<select id="scoresMemberList" resultType="com.kcy.scores.service.ScoresVo">
 			select 
 			        st.stu_id, 
@@ -31,10 +34,12 @@
 			        cm.class_member_id,
 			        cm.class_id,
 			        
-			        r.quiz_r_point,
+			         ( ( sum(r.quiz_r_point) / count(r.quiz_r_id) ) * TRUNCATE((gs.gpa_standard_quiz / 100), 2))  as quizRPoint,
 			        
 			        u.user_name,
-			        u.user_dept
+			        u.user_dept,
+			        
+			        gs.gpa_standard_quiz
 			FROM
 			        k_students as st
 			JOIN
@@ -49,10 +54,17 @@
                     k_quiz_r as r
             ON
                     r.class_member_id = cm.class_member_id
+            JOIN
+                    k_gpa_standard as gs
+            ON
+                    gs.class_id = cm.class_id
 			WHERE
 			        cm.class_id = #{classId}
+			GROUP BY
+					st.stu_id
 	</select>
 	
+	<!-- 성적 등록 -->
 	<insert id="scoresInsert">
 		<selectKey order="BEFORE" keyProperty="scoreId" resultType="String">
 		 SELECT CONCAT("Score", NEXTVAL(score_seq))
@@ -80,6 +92,8 @@
 		)
 	</insert>
 	
+	
+	<!-- 성적 등급 입력 -->
 	<insert id="gpaPointInsert">
 		INSERT INTO
 			k_gpa
@@ -98,6 +112,7 @@
 		)
 	</insert>
 	
+	<!-- 학생 성적 확인 -->
 	<select id="stuScoreList" resultType="com.kcy.scores.service.ScoresVo">
 		SELECT
 		    u.user_name,
@@ -145,6 +160,7 @@
     		st.stu_id = #{userId}
 	</select>
 	
+	<!-- 학생 학기별 성적 조회 -->
 	<select id="classScoreList" resultType="com.kcy.scores.service.ScoresVo">
 		SELECT
 		    co.course_title,
@@ -183,7 +199,7 @@
 		WHERE
     		cm.stu_id = #{userId}
     	<choose>
-			<when test="classSem != null || classYear != null">
+			<when test="classSem != 0 || classYear != 0">
 				AND
 					c.class_sem = #{classSem}
 				AND
@@ -192,6 +208,7 @@
 		</choose>
 	</select>
 	
+	<!-- 성적 ctn -->
 	<select id="scoresCtn" resultType="com.kcy.scores.service.ScoresVo">
 		SELECT 
 			   COUNT(*) as stuCtn 
@@ -205,6 +222,7 @@
                kcm.class_id = #{classId} 
 	</select>
 	
+	<!-- 성적 배율 -->
 	<select id="standardSelect" resultType="com.kcy.scores.service.ScoresVo">
 		SELECT
 				TRUNCATE((gpa_standard_attn / 100), 2) as gpa_standard_attn, 
@@ -215,6 +233,18 @@
 				k_gpa_standard
 		WHERE
 				class_id = #{classId}
+	</select>
+	
+	<!-- 출결 상태 체크 -->
+	<select id="AttnCtn" resultType="com.kcy.scores.service.ScoresVo">
+		SELECT 
+			count(attn_type) as attnCtn, 
+			attn_type, 
+			stu_id 
+		FROM 
+			k_attendance 
+		GROUP BY
+			attn_type
 	</select>
 	
 </mapper>

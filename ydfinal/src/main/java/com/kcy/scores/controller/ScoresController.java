@@ -45,6 +45,7 @@ public class ScoresController {
 		model.addAttribute("memberlist", map.scoresMemberList(vo));
 		model.addAttribute("count", map.scoresCtn(vo));
 		model.addAttribute("standard", map.standardSelect(vo));
+		model.addAttribute("attnCtn", map.AttnCtn(vo));
 		return "pages/scoreMgr/prof/scoreInsert";
 	}
 	

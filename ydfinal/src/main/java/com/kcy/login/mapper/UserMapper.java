@@ -12,4 +12,5 @@ public interface UserMapper {
 	public boolean userEmailCheck(String userEmail, String userName);
 	public UserVo findUserByUserId(String userEmail);
 	public UserVo userChangePw(String userEmail);
+	public UserVo changePwUpdate(UserVo vo);
 	}
