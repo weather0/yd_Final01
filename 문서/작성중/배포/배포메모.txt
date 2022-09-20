@@ -75,7 +75,8 @@ docker push weather0/test_kcy
 
 거의 최하단 Send build artifacts over SSH > Exec command
 docker pull weather0/test_kcy
-docker run -dp 8080:80 weather0/test_kcy
+docker rm -f $(docker ps -aq)
+docker run -dp 8080:80 weather0/test_kcy // 내로컬 localhost:80 프로젝트 → ec2(최종사용자접속) x.x.x.x:8080
 
 
 도커 이미지 생성 
@@ -146,6 +147,26 @@ $ sudo usermod -a -G docker jenkins // 젠킨스도 해주자
 
 // 테스트 실행
 $ docker run hello-world
+
+
+
+
+
+// 보안그룹 인바운드 규칙추가
+// 포트범위:8080(위에 도커 설정한 것과 일치). 80으로 했어도 여기서 규칙 추가해줘야 함
+// 소스: 일단 내 작업컴(네트워크환경)에서만 접속하고 싶으면 "내IP"선택. 일반적으로는 공개니깐 Anywhere-IPv4(0.0.0.0) 선택하면 됨.
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

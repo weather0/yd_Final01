@@ -27,7 +27,7 @@ public class NoNoiceController {
 	// 공지 등록
 	@GetMapping("/notice/noticeinsert")
 	public String NoticeInsertPage() {
-		return "/pages/scheduleMgr/notice/NoticeInsert";
+		return "/pages/scheduleMgr/notice/noticeInsert";
 	}
 	
 	// 공지 등록 프로그램
@@ -42,7 +42,7 @@ public class NoNoiceController {
 	@GetMapping("/notice/noticemodify")
 	public String NoticeModifyPage(Model model, String NoticeId) {
 		model.addAttribute("noticeList", noticeService.noticeView(NoticeId));
-		return "/pages/scheduleMgr/notice/Noticemodify";
+		return "/pages/scheduleMgr/notice/noticemodify";
 	}
 	
 	// 공지 수정 프로그램
@@ -80,7 +80,7 @@ public class NoNoiceController {
 	public String noticeview(String NoticeId, Model model) {
 		NoNoticeVo vo = noticeService.noticeView(NoticeId);
 		model.addAttribute("noticeList", vo);
-		return "/pages/scheduleMgr/notice/NoticeView";
+		return "/pages/scheduleMgr/notice/noticeView";
 	}
 	
 }
