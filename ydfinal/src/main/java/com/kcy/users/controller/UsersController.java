@@ -167,7 +167,7 @@ public class UsersController {
             String fileName = map.get("id") + "_" + ran + "_" + acaFile.getOriginalFilename();
             
             // 파일 저장
-            File saveFile = new File("D:/kcytest", fileName);
+            File saveFile = new File("/aa/", fileName);
             acaFile.transferTo(saveFile);
             
             // map에 추가하고 서비스로 넘김
@@ -184,7 +184,7 @@ public class UsersController {
     @RequestMapping("/stuAcaDelete")
     public String stuAcaDelete(String acaId, String acaFile) {
         // 첨부파일 삭제
-        File file = new File("D:/kcytest", acaFile);
+        File file = new File("/aa/", acaFile);
         System.out.println(file);
         file.delete();
         
@@ -213,7 +213,7 @@ public class UsersController {
 //            System.out.println(encodedFileName);
             System.out.println(acaFile);
             
-            String path = "D:/kcytest/" + acaFile;
+            String path = "/aa/" + acaFile;
             System.out.println(path);
             
             File file = new File(path);

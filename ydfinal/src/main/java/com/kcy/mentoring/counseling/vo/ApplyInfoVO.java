@@ -21,7 +21,6 @@ public class ApplyInfoVO {
 	private String studentAcaYn;
 	private String studentProf;
 	
-	private String profField;
 	private String profEdu;
 	private String profCareer;
 	private String profPaper;

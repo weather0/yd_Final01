@@ -110,7 +110,6 @@
          u.user_phone, if(u.user_sex = 'f','여','남') user_sex, 
          u.user_email, u.user_nation,
          p.prof_lab,
-         p.prof_field,
          p.prof_edu,
          p.prof_career,
          p.prof_paper,
