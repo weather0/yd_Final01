@@ -169,7 +169,7 @@ vertical-align: bottom;
 
 							$
 									.ajax({
-										url : "/notice/noticelist",
+										url : "/notice/noticeList",
 										type : "POST",
 										success : function(result) {
 
@@ -180,7 +180,7 @@ vertical-align: bottom;
 															.on(
 																	'click',
 																	function() {
-																		location.href = "/notice/noticeview?NoticeId="
+																		location.href = "/notice/noticeView?NoticeId="
 																				+ id
 
 																	})
@@ -196,7 +196,7 @@ vertical-align: bottom;
 												} else if (i > 0 && i <= 8) {
 													let tr = $("<tr id="+result[i].notice_id+">");
 													let td = $("<td class='p'>");
-													let a = $("<a href=/notice/noticeview?NoticeId="
+													let a = $("<a href=/notice/noticeView?NoticeId="
 															+ result[i].notice_id
 															+ ">")
 													$(a)
