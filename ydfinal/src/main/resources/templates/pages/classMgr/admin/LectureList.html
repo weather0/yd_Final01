@@ -53,6 +53,8 @@
 							<th
 								class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">교번</th>
 							<th
+								class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">학년</th>
+							<th
 								class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">학점</th>
 							<th
 								class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">정원</th>
@@ -72,10 +74,11 @@
 					<tbody>
 
 						<tr th:each="data : ${ltrList}" th:if="${data.classYn} != 'y'">
-							<td th:text="${data.classTitle}"></td>
+							<td th:text="${data.classTitle}" style="font-weight: bolder;"></td>
 							<td th:text="${data.courseTitle}"></td>
 							<td th:text="${data.userName}"></td>
 							<td th:text="${data.profId}"></td>
+							<td th:text="|${data.courseGrade}학년|"></td>
 							<td th:text="|${data.courseCredit}학점|"></td>
 							<td th:text="|${data.classTo}명|"></td>
 							<td th:text="|${data.classSem}학기|"></td>
@@ -95,10 +98,10 @@
 							</th:block>
 							<th:block th:if="${data.classYn} != 't'">
 								<td><button type="button"
-										class="btn btn btn-secondary btn-sm" data-bs-toggle="modal"
+										class="btn btn-info btn-sm" data-bs-toggle="modal"
 										data-bs-target="#schedule"
 										th:data-schedule_class_id="${data.classId}"
-										th:data-test="${data.courseCredit}">시간표/강의실</button></td>
+										th:data-grades="${data.courseCredit}">시간표/강의실</button></td>
 
 							</th:block>
 							
@@ -107,19 +110,17 @@
 										class="btn btn btn-secondary btn-sm" data-bs-toggle="modal"
 										data-bs-target="#schedule"
 										th:data-schedule_class_id="${data.classId}"
-										th:data-test="${data.courseCredit}" disabled="disabled">시간표/강의실</button></td>
+										th:data-grades="${data.courseCredit}" disabled="disabled">시간표/강의실</button></td>
 							</th:block>
 							
 							<th:block th:if="${data.classYn} == 't'">
 								<td><button type="button"
-										class="btn btn btn-secondary btn-sm btn1" th:text="승인"
+										class="btn btn-danger btn-sm approval" th:text="승인"
 										th:data-class_id="${data.classId}"></button></td>
 							</th:block>
 							
 							<th:block th:unless="${data.classYn} == 't'">
-								<td><button type="button"
-										class="btn btn btn-secondary btn-sm btn1" th:text="승인"
-										th:data-class_id="${data.classId}" disabled="disabled"></button></td>
+								<td><button class="btn btn-secondary btn-sm" th:text="승인" disabled="disabled"></button></td>
 							</th:block>
 							
 						</tr>
@@ -146,9 +147,9 @@
 						</div>
 						<div class="modal-body">
 							<th:block th:each="schedule :${schedule}">
-								<button class="btn btn btn-secondary btn-sm test"
+								<button class="btn btn-secondary days"
 									th:text="${schedule.scheduleTitle}"
-									th:data-test_ck="${schedule.classTimetableDays}"></button>
+									th:data-schedule_ck="${schedule.classTimetableDays}"></button>
 							</th:block>
 							<div class="col-5">
 								<div class="input-group input-group-static mb-4">
@@ -162,7 +163,8 @@
 									</select>
 								</div>
 							</div>
-							<div class="modal-body form-check" id="test"></div>
+							<!-- 요일을 누르면 시간표가 출력 되는 부분 -->
+							<div class="modal-body form-check p-0" id="check_the_timetable"></div>
 							
 							<div class="modal-footer">
 								<button type="button" class="btn btn btn-secondary btn-sm"
@@ -200,13 +202,13 @@
 				$('#schedule').on('show.bs.modal', function(event) {
 					classId = $(event.relatedTarget).data('schedule_class_id');
 					console.log(classId);
-					courseCredit = $(event.relatedTarget).data('test');
+					courseCredit = $(event.relatedTarget).data('grades');
 					console.log(courseCredit)
 				});
 			});
 
-			$(".test").on("click", schedule);
-			$(".btn1").on("click", letureApproval);
+			$(".days").on("click", schedule);
+			$(".approval").on("click", letureApproval);
 			$("#scheduleInsert").on("click", scheduleInsert)
 
 						
@@ -244,9 +246,13 @@
 			
 
 			function schedule() {
-				let ctd = $(this).data("test_ck")
+				let ctd = $(this).data("schedule_ck")
 				console.log(ctd)
-
+				
+				var idx = $(this).index()
+				$(".days").removeClass("btn-info")
+				$(".days").eq(idx).addClass("btn-info")
+				
 						$.ajax({
 							url : "/schedulelist",
 							data : {
@@ -254,11 +260,11 @@
 							},
 							dataType : "json",
 							success : function(data) {
-								
-								$('#test').empty();
+								//기준이 되는 시간표를 JSON타입으로 받아와서 반복문을 이용하여 만들어주고 append하여 버튼을 누를시에 시간표가 나오게 하는 부분
+								$('#check_the_timetable').empty();
 								for (var i = 0; i < 8; i++) {
-									let sch = `<lable class="custom-control-label"><input class="form-check-input" type="checkbox" value="${data[i].classTimetableId}" name="checktest" id="test`+i+`" style="margin-right: 10px;">${data[i].classTimetableName}${data[i].classTimetableStart}~${data[i].classTimetableEnd}</lable><br>`
-									$("#test").append(sch)
+									let sch = `<lable class="custom-control-label"><input class="form-check-input" type="checkbox" value="${data[i].classTimetableId}" name="timeselect" id="test`+i+`" style="margin-right: 10px;">${data[i].classTimetableName}${data[i].classTimetableStart}~${data[i].classTimetableEnd}</lable><br>`
+									$("#check_the_timetable").append(sch)
 								}
 
 							}
@@ -267,12 +273,11 @@
 
 			function scheduleInsert() {
 				let roomId = $(".roomId").val();
-				console.log(test);
 				console.log(classId);
 				console.log(roomId);
 
 				let classTimetableId = [];
-				$("input[name='checktest']:checked").each(function(i) {
+				$("input[name='timeselect']:checked").each(function(i) {
 					classTimetableId.push($(this).val());
 				})
 				console.log(classTimetableId);
@@ -293,6 +298,7 @@
 					return false;
 				}
 
+				//학점이랑 내가 선택한 시간표랑 비교 하여 같으면 JSON타입으로 만들어서 INSERT로 넘겨서 추가하는 부분이다
 				else if (classTimetableId.length > 1
 						&& classTimetableId.length == courseCredit) {
 					var testList = new Array();

@@ -87,9 +87,9 @@ public class QuizServiceImpl implements QuizService {
 	}
 
 	@Override
-	public void scoreQuizInsert(QuizVo vo) {
-		map.scoreQuizInsert(vo);
-		
+	public List<QuizVo> getClassId(QuizVo vo) {
+		return map.getClassId(vo);
 	}
+
 
 }

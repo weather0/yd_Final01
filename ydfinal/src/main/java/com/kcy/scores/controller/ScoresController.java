@@ -19,6 +19,7 @@ import com.kcy.scores.serviceImpl.ScoresServiceImpl;
 
 import lombok.RequiredArgsConstructor;
 
+// 220910
 @Controller
 @RequiredArgsConstructor
 public class ScoresController {
@@ -30,7 +31,7 @@ public class ScoresController {
 	ScoresServiceImpl Impl;
 	
 	
-	// 援먯닔 媛뺤쥖 �넻�빐�꽌 �꽦�쟻 �럹�씠吏� �씠�룞
+	// 성적 학생 리스트
 	@GetMapping("/scorelecturelist")
 	public String scoreLectureList(Model model, ScoresVo vo, Principal principal) {
 		vo.setUserId(principal.getName());
@@ -38,7 +39,7 @@ public class ScoresController {
 		return "pages/scoreMgr/prof/scoreLectureList";
 	}
 	
-	// �꽦�쟻 �엯�젰 �럹�씠吏�
+	// 성적 입력
 	@GetMapping("/scoreinsert")
 	public String scoreInsertPage(@RequestParam String classId, Model model, ScoresVo vo, Principal principal) {
 		model.addAttribute("memberlist", classId);
@@ -49,7 +50,7 @@ public class ScoresController {
 		return "pages/scoreMgr/prof/scoreInsert";
 	}
 	
-	// �꽦�쟻 �엯�젰 �럹�씠吏� Proc
+	// 성적 입력 proc
 	@ResponseBody
 	@PostMapping("/scoreinsert")
 	public String scoreInsert(ScoresVo vo, @RequestBody List<ScoresVo> list) {
@@ -57,7 +58,7 @@ public class ScoresController {
 		return "true";
 	}
 	
-	// �닔媛� �꽦�쟻 �쟾泥� �늻怨�
+	// 전체 성적 조회(학생)
 	@GetMapping("/scoreview")
 	public String scoreView(ScoresVo vo, Model model, Principal principal) {
 		vo.setUserId(principal.getName());
@@ -65,7 +66,7 @@ public class ScoresController {
 		return "pages/scoreMgr/scoreview";
 	}
 	
-	// �븰湲곕퀎 �꽦�쟻 議고쉶 �럹�씠吏�
+	// 학기별 세부 성적 조회(학생)
 	@GetMapping("/classScore")
 	public String classScore(ScoresVo vo, Model model, Principal principal) {
 		vo.setUserId(principal.getName());

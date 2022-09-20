@@ -6,6 +6,8 @@
 
 <th:block layout:fragment="content">
 
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
 <style>
 .card {
 	margin-bottom: 30px;
@@ -35,7 +37,7 @@
 						<h6 class="text-white ps-3 m-0">지도교수 변경 신청</h6>
 					</div>
 				</div>
-					<form action="matchingChangeOrder" method="post" onsubmit="return confirm('변경신청을 하시겠습니까?');">
+					<form action="matchingChangeOrder" method="post" onsubmit="return confirm('변경 신청 하시겠습니까?'); jbSubmit()">
 						<div class="row">
 							<div class="col-md-3">
 								<div class="input-group input-group-outline my-3">
@@ -87,17 +89,28 @@
 							<th:block th:each="cp:${changeProgress}">
 								<table class="table text-center mb-0">
 									<tr>
+										<td class="table-secondary">희망 지도 교수</td>
+										<td>
+											<span th:if="${cp.matchingWant == ''}">미지정</span>
+											<span th:if="${cp.matchingWant != ''}" th:text="${cp.userName}"></span>										
+										</td>
+										<td class="table-secondary">담당 학과</td>		
+										<td>
+											<span th:if="${cp.userDept == ''}">미지정</span>
+											<span th:if="${cp.userDept != ''}" th:text="${cp.userDept}"></span>
+										</td>								
+									</tr>
+									<tr>
 										<td class="table-secondary">진행 상황</td>
-										<td th:text></td>
-										<td class="table-secondary">진행 상황</td>
-										<td><span
-											th:if="${cp.matchingChangeYn.toString().equals('0')}">진행중</span>
-											<span th:if="${cp.matchingChangeYn.toString().equals('1')}">승인</span>
-											<span th:if="${cp.matchingChangeYn.toString().equals('2')}">거부</span>
+										<td colspan="3"><span
+											th:if="${cp.matchingChangeYn.toString().equals('0')}">매칭 변경 검토중</span>
+											<span th:if="${cp.matchingChangeYn.toString().equals('1')}">매칭 승인</span>
+											<span th:if="${cp.matchingChangeYn.toString().equals('2')}">매칭 거부</span>
 										</td>
 									</tr>
 									<tr th:if="${cp.matchingChangeYn.toString().equals('2')}">
-										<td th:text="${cp.matchingChangeReject}"></td>
+										<td class="table-secondary">거부 사유</td>
+										<td colspan="3" th:text="${cp.matchingChangeReject}"></td>
 									</tr>
 								</table>
 							</th:block>
@@ -185,8 +198,8 @@
 
 			let prof = document.getElementById('matchingWant')
 			prof.value = ($(".profactive").find("td:first").text())
-		}			
-
+		}
+			
 		$(".cancel").on("click", function() {
 			var id = document.getElementById("stuId").value;
 			console.log(id)
@@ -198,8 +211,13 @@
 				},
 				success : function(result) {
 					if (result == "1") {
-						alert("매칭 변경 신청 취소")
-						document.location.href = document.location.href;
+						swal({
+						    title: "변경 취소!",
+						    text: "지도교수 변경을 취소하였습니다.",
+						    icon: "error"
+						}).then(function() {
+							document.location.href = document.location.href;
+						});
 					}
 				}
 			});

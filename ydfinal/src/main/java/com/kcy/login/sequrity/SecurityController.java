@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 // 하경 220831
+// principal에 저장된 유저 정보 사용
 @Controller
 public class SecurityController {
 	@GetMapping("/username")

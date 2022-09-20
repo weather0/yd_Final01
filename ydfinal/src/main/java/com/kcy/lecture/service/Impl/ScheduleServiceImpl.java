@@ -29,7 +29,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 		mapper.scheduleInsert(vo);
 	}
 
-
+	//행정처에서 시간표를 클릭하여 여러개를 한번에 추가하는 부분
 	@Override
 	public void scheduleAllInsert(List<ClassScheduleVO> list) {
 		  for(ClassScheduleVO vo : list ) {

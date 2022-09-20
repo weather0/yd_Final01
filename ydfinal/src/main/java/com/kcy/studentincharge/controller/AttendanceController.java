@@ -38,13 +38,14 @@ public class AttendanceController {
 	}
 	
 	
-	
+	//교수가 갖고 있는 강좌를 보여주는 부분
 	@GetMapping("/attendanceSelect")
 	public String attendanceSelect() {
 	
 		return "pages/classMgr/prof/AttendanceSelect";
 	}
 	
+	//자신이 갖고 있는 강좌에 학생들을 보여주는 부분
 	@GetMapping("/attendancelist")
 	public String attendanceList(@RequestParam(value = "classId")String classId, AttendanceVO vo, Model model, Principal principal) {
 		
@@ -56,7 +57,7 @@ public class AttendanceController {
 		return "pages/classMgr/prof/AttendanceList";
 	}
 	
-	
+	//출결을 추가하는 부분
 	@PostMapping("/attendanceInsert")
 	@ResponseBody
 	public String attendanceInsert(@RequestBody List<AttendanceVO>list) {

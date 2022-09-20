@@ -59,7 +59,8 @@
 			kcr.class_title , 
 			kcr.class_id,
 		    kc.course_title,
-			kcr.course_id, 
+			kcr.course_id,
+			kc.course_grade,
 			ku.user_name,
 			kcr.prof_id, 
 			kc.course_credit, 
@@ -108,11 +109,12 @@
 			       j.major_name, 
 			       u.user_name, 
 			       co.course_title, 
-			       c.course_id, 
+			       c.course_id,
+			       co.course_grade, 
 			       co.course_type, 
 			       co.course_credit, 
-			       CONCAT(c.class_sem,'학기') as classSem,
-			       c.class_to, 
+			       c.class_sem,
+			       c.class_to,
 			       c.class_ck, 
 			       c.class_syl,
 			       c.class_syl_original
@@ -157,6 +159,13 @@
 		
 			   SELECT user_dept  FROM  k_users 
     		   WHERE user_id = #{userId};
+		</select>
+		
+		<select id="myGrade" resultType="com.kcy.lecture.service.OpenLectureVO">
+		
+			SELECT student_grade  from k_students ks 
+			WHERE stu_id =#{userId};
+		
 		</select>
 	
 </mapper>

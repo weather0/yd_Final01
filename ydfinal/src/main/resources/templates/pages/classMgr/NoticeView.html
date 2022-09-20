@@ -112,13 +112,11 @@ table.type09 td {
 							<!-- 본문 end-->
 						</tbody>
 					</table>
-					<th:block sec:authorize="hasRole('ROLE_PROF')">
-						<button style="width: 80px;" class="btn bg-gradient-secondary">
+						<button style="width: 80px;" class="btn bg-gradient-secondary" sec:authorize="hasRole('ROLE_PROF')">
 							<a
 								th:href="@{/noticemodify(classNoticeNo=${noticeList.classNoticeNo})}">
 								수정 </a>
 						</button>
-					</th:block>
 					<button class="btn bg-gradient-secondary backBtn"
 						style="width: 80px; margin-top: 10px; float: right;">목록</button>
 				</div>
