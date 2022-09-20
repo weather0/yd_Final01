@@ -25,7 +25,7 @@ public class NoNoiceController {
 	
 	
 	// 공지 등록
-	@GetMapping("/notice/noticeinsert")
+	@GetMapping("/notice/noticeInsert")
 	public String NoticeInsertPage() {
 		return "/pages/scheduleMgr/notice/noticeInsert";
 	}
@@ -46,7 +46,7 @@ public class NoNoiceController {
 	}
 	
 	// 공지 수정 프로그램
-	@PostMapping("/notice/noticeModify")
+	@PostMapping("/notice/noticemodify")
 	@ResponseBody 
 	public String NoticeModify(NoNoticeVo vo){
 		noticeService.noticeModify(vo);
@@ -62,21 +62,21 @@ public class NoNoiceController {
 	}
 	
 	// 공지 목록
-	@GetMapping("/notice/noticelist")
+	@GetMapping("/notice/noticeList")
 	public String noticelist(Model model) {
 		model.addAttribute("noticeList", noticeService.noticeList());
 		return "/pages/scheduleMgr/notice/noticeList";
 	}
 	
 	// 공지 목록2
-	@PostMapping("/notice/noticelist")
+	@PostMapping("/notice/noticeList")
 	@ResponseBody 
 	public List<NoNoticeVo> noticelist2() {
 		return noticeService.noticeList();
 	}
 	
 	// 공지 상세 보기
-	@GetMapping("/notice/noticeview")
+	@GetMapping("/notice/noticeView")
 	public String noticeview(String NoticeId, Model model) {
 		NoNoticeVo vo = noticeService.noticeView(NoticeId);
 		model.addAttribute("noticeList", vo);

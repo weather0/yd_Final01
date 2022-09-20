@@ -97,7 +97,7 @@ table.type09 td {
 	</div>
 	<script>
 		$(".backBtn").on("click", function() {
-			window.history.back();
+			location.href="/notice/noticeList";
 		});
 		
 		
@@ -143,7 +143,7 @@ table.type09 td {
 						},
 						success: function (result) {
 							console.log(result)
-							location.href="/notice/noticelist";
+							location.href="/notice/noticeList";
 						},
 						error: function (result) {
 						}

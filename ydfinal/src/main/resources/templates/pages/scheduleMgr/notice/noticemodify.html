@@ -55,7 +55,7 @@
     		var id = /*[[${noticeList.noticeId}]]*/;
     		
 			$.ajax({
-				url : "/notice/noticeModify",
+				url : "/notice/noticemodify",
 				type: "post",
 				data : {
 					NoticeTitle : $('#NoticeTitle').val(),
@@ -67,7 +67,7 @@
 				},
 				success: function (result) {
 					console.log(result)
-					location.href='/notice/noticeview?NoticeId='+id;
+					location.href='/notice/noticeView?NoticeId='+id;
 				},
 				error: function (result) {
 					
