@@ -1,96 +1,18 @@
 /////////////////////////////////////////////////////////////////////////////
-// gradle 빌드하기
+// gradle 빌드하기(굳이 안해줘도 됨. 젠킨스로 자동화할거니깐)
 
 // 방법1: 이클립스
 https://kitty-geno.tistory.com/109
-→ 프로젝트\build\libs 위치에 ydfinal-0.0.1-SNAPSHOT.jar 파일 생성됨. 
+→ 프로젝트\build폴더 생성되고 하위\libs 위치에 ydfinal-0.0.1-SNAPSHOT.jar 파일 생성됨. 
 
 // 방법2: cmd
 ydfinal\ 위치에서
 gradlew build
 
-// ydfinal\build\libs 위치에서 cmd로 실행해보자(이클립스 없이도 단독 run)
+// ydfinal\build\libs 위치에서 cmd로 실행해보자(이클립스 없이도 단독 run 가능함)
 java -jar ydfinal-0.0.1-SNAPSHOT.jar
 // 종료
 명령창 아무데나 찍고 Ctrl+C
-
-
-/////////////////////////////////////////////////////////////////////////////
-// 젠킨스 
-
-// 윈도우버전 설치 (D:\ci에 설치)
-D:\ci\jenkins.xml 열어서 수정
-<env name="JENKINS_HOME" value="D:\ci\jenkins_home"/>
- // 윈도우서비스 - jenkins 다시시작
-
-// localhost:800 처음 접속하면 key요구함→
-D:\ci\jenkins_home\secrets\initialAdminPassword 확인
-최초가입: 계정명,암호,이름 무시하고 밑에 skip as admin
-권장플러그인 설치
-
-// 로그인기능 끄기
-D:\ci\jenkins_home\config.xml 열어서 수정 
-<useSecurity>false</useSecurity>
- // 윈도우서비스 - jenkins 다시시작
-
-// Global Tool Configuration 세팅(캡처 참고)
-그래들은 그냥 Install automatically하자
-
-// Dashboard > Jenkins 관리 > Plugin Manager
-설치가능탭 검색해서 설치: Publish Over SSH
-젠킨스 재시작
-
-// Dashboard > Jenkins 관리 > Configure System
-kcykey.pem내용 복붙 (캡쳐참고)
-Hostname: 탄력적ip
-username: ec2-user // 주의!! 다른거 입력하면 fail남 
-
-
-// 새로운 item - Freestyle프로젝트('git빌드프로젝트')하나 만들기
-
-// Dashboard > git빌드프로젝트 > 구성Configuration(캡처참고)
-소스코드관리 - Git선택하고 자기 주소 넣기
-Build Steps - Invoke Gradle script
-  그래들 버전: myGradle(쫌전에 만든거)
-  고급-Build File: ydfinal/build.gradle (깃 경로 주의!)
-
-// 거의 최하단 Add build step - Execute Windows batch command 커맨드 입력
-docker build -t test_kcy .
-docker tag test_kcy weather0/test_kcy // 로컬 이미지 'test_kcy' 내용을 복사해서 weather0/test_kcy(도커원격repo)라는 명으로 새 이미지를 로컬에 복사생성하는 명령
-docker push weather0/test_kcy
-@echo end of batch
-
-  // 일단 이 시점에서 테스트로 한번 지금 빌드 해보자
-  "지금 빌드" 실행:
-  D:\ci\jenkins_home\workspace\git빌드프로젝트
-  → 여기에 git clone 됨. 그러나 아마 빌드는 failure 날 것이다. test_kcy가 없기 때문에.
-    프로젝트폴더로 들어가서 gradlew build로 일단 수동빌드를 해주자(맨 위 참고)
-    그리고 다시 젠킨스에서 "지금 빌드"를 실행하면 SUCCESS뜸
-    (혹시나 fail 뜨면 docker desktop 프로그램 켜자.)
-
-
-
-
-
-
-거의 최하단 Send build artifacts over SSH > Exec command
-docker pull weather0/test_kcy
-docker rm -f $(docker ps -aq)
-docker run -dp 8080:80 weather0/test_kcy // 내로컬 localhost:80 프로젝트 → ec2(최종사용자접속) x.x.x.x:8080
-
-
-도커 이미지 생성 
-docker run -dp 8080:80 weather0/test_kcy // 호스트의 8080 포트를 내부 컨테이너의 80번 포트와 바인딩
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -148,10 +70,6 @@ $ sudo usermod -a -G docker jenkins // 젠킨스도 해주자
 // 테스트 실행
 $ docker run hello-world
 
-
-
-
-
 // 보안그룹 인바운드 규칙추가
 // 포트범위:8080(위에 도커 설정한 것과 일치). 80으로 했어도 여기서 규칙 추가해줘야 함
 // 소스: 일단 내 작업컴(네트워크환경)에서만 접속하고 싶으면 "내IP"선택. 일반적으로는 공개니깐 Anywhere-IPv4(0.0.0.0) 선택하면 됨.
@@ -159,6 +77,100 @@ $ docker run hello-world
 
 
 
+/////////////////////////////////////////////////////////////////////////////
+// 젠킨스 
+
+// 윈도우버전 설치 (D:\ci에 설치)
+D:\ci\jenkins.xml 열어서 수정
+<env name="JENKINS_HOME" value="D:\ci\jenkins_home"/>
+ // 윈도우서비스 - jenkins 다시시작
+
+// localhost:800 처음 접속하면 key요구함→
+D:\ci\jenkins_home\secrets\initialAdminPassword 확인
+최초가입: 계정명,암호,이름 무시하고 밑에 skip as admin
+권장플러그인 설치
+
+// 로그인기능 끄기
+D:\ci\jenkins_home\config.xml 열어서 수정 
+<useSecurity>false</useSecurity>
+ // 윈도우서비스 - jenkins 다시시작
+
+// Global Tool Configuration 세팅(캡처 참고)
+그래들은 그냥 Install automatically하자
+
+// Dashboard > Jenkins 관리 > Plugin Manager
+설치가능탭 검색해서 설치: Publish Over SSH
+젠킨스 재시작
+
+// Dashboard > Jenkins 관리 > 시스템관리(Configure System)
+Usage Statistics: 체크해제
+
+Publish over SSH
+  kcykey.pem내용 복붙 (캡쳐참고)
+  Hostname: 탄력적ip
+  username: ec2-user // 주의!! 다른거 입력하면 fail남 
+
+
+// 새로운 item - Freestyle프로젝트('git빌드프로젝트')하나 만들기
+
+// Dashboard > git빌드프로젝트 > 구성Configuration(캡처참고)
+1.소스코드관리 - Git선택하고 자기 주소 넣기
+
+2.Build Steps
+  -Invoke Gradle script
+    그래들 버전: myGradle(쫌전에 만든거)
+    고급-Build File: ydfinal/build.gradle (깃 경로 주의!)
+
+  - Execute Windows batch command
+    (방식1: 직접 타이핑)
+docker build -t test_kcy . // 깃에서 땡겨온 프로젝트를 빌드해서 test_kcy라는 이미지 생성
+docker tag test_kcy weather0/test_kcy // 로컬 이미지 'test_kcy' 내용을 복사해서 weather0/test_kcy(도커원격repo명)라는 명으로 새 이미지를 복사생성하는 명령
+docker push weather0/test_kcy // 도커허브에 푸시(근데 이부분 오류남ㅜ이창호쌤도 해결 못함)
+@echo end of batch
+    (방식2: 배치파일 만들어서 경로적기)
+D:\ci\docker_bat.bat
+
+  배치파일 내용
+  cd ydfinal
+  docker login -u 도커아디 -p 도커비번
+  docker build -t test_kcy .
+  docker tag test_kcy weather0/test_kcy
+  docker push weather0/test_kcy
+  @echo end of batch
+
+  배치파일 위치
+  D:\ci
+
+3.빌드 후 조치
+  Send build artifacts over SSH
+    SSH Server: mySSH
+  Transfers
+    Remote directory: /home
+    Exec command: 
+      docker pull weather0/test_kcy
+      docker rm -f $(docker ps -aq)
+      docker run -dp 8080:80 weather0/test_kcy // 도커이미지 생성: 내로컬 localhost:80 프로젝트 → ec2(최종사용자접속) x.x.x.x:8080 
+      // (그냥 80:80이 젤 낫다. 브라우저가 80은 기본값이라 생략해도 인정하기 때문에)
+
+
+
+// 일단 이 시점에서 테스트로 한번 지금 빌드 해보자
+  "지금 빌드" 실행:
+    (혹시나 fail 뜨면 docker desktop 프로그램 켜자.)
+
+
+/////////////////////////////////////////////////////////////////////////////
+// 푸티PuTTy
+
+// SSH EC2접속하기(블로그 참고)
+
+// ECS서버(아마존리눅스2, 아마존우분투등)에서 로그 찍기
+docker ps -a // 여기서 실행중인 컨테이너 ID확인
+docker logs 컨테이너ID // 예. 91512c2846e3
+
+// 로컬에서 잘되는데 서버띄운 사이트에서 특정페이지 안들어가지는 경우!
+(새싹코더 https://jg-han.tistory.com/100)
+컨트롤러에서 return "/pages~~ 여기서 슬래시/빼고 바로 "pages~ 해야 서버 500오류 안 남
 
 
 
@@ -170,12 +182,8 @@ $ docker run hello-world
 
 
 
-
-
-
-
-
-
+//////////////////////////////////////////////////////////////////////////////////
+굳이 안해도 됨
 
 // 도커compose 설치
 $ sudo curl -L https://github.com/docker/compose/releases/download/1.25.0-rc2/docker-compose-`uname -s`-`uname -m` -o/usr/local/bin/docker-compose
