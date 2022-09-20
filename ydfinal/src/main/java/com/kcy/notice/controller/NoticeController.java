@@ -64,7 +64,7 @@ public class NoticeController {
 	// 공지 등록
 	@GetMapping("/noticeinsert")
 	public String NoticeInsertPage() {
-		return "/pages/classMgr/prof/NoticeInsert";
+		return "pages/classMgr/prof/NoticeInsert";
 	}
 	
 	// 공지 등록 프로그램
@@ -93,7 +93,7 @@ public class NoticeController {
 	@GetMapping("/noticemodify")
 	public String NoticeModifyPage(Model model, NoticeVo vo, @RequestParam final int classNoticeNo) {
 		model.addAttribute("noticeList", noticeService.noticeView(classNoticeNo));
-		return "/pages/classMgr/prof/Noticemodify";
+		return "pages/classMgr/prof/Noticemodify";
 	}
 	
 	// 공지 수정 프로그램
@@ -125,7 +125,7 @@ public class NoticeController {
 		System.out.println("!!!!!!!!!!!!!!!!!" + vo.getClassId());
 		System.out.println("!!!!!!!!!!!!!!!!!!!!!" + vo.getClassNoticeType());
 		model.addAttribute("noticeList", noticeService.noticeList(vo));
-		return "/pages/classMgr/noticeList";
+		return "pages/classMgr/noticeList";
 	}
 	
 	// 공지 상세 보기
@@ -133,7 +133,7 @@ public class NoticeController {
 	public String noticeview(@RequestParam final int classNoticeNo, Model model) {
 		NoticeVo vo = noticeService.noticeView(classNoticeNo);
 		model.addAttribute("noticeList", vo);
-		return "/pages/classMgr/NoticeView";
+		return "pages/classMgr/NoticeView";
 	}
 	
 	// 파일 다운로드
