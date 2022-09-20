@@ -127,7 +127,6 @@ public class UsersController {
     
     
     
-    
     // 본인 학적 조회 (학생)
     @RequestMapping("/stuInfo")
     public String stuInfo(Model model, Principal principal) {
