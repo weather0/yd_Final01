@@ -163,6 +163,7 @@ D:\ci\docker_bat.bat
 // 푸티PuTTy
 
 // SSH EC2접속하기(블로그 참고)
+login as: ec2-user
 
 // ECS서버(아마존리눅스2, 아마존우분투등)에서 로그 찍기
 docker ps -a // 여기서 실행중인 컨테이너 ID확인
