@@ -6,6 +6,8 @@
 
 <th:block layout:fragment="content">
 
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
 <style>
 .border-5 {
 	padding-left: 0px;
@@ -386,8 +388,13 @@
 					},
 					success : function(result) {
 						if (result == "1") {
-							alert("분할 납부 신청")
-							document.location.href = document.location.href;
+							swal({
+							    title: "변경 완료!",
+							    text: "납부 방식을 분할 납부로 전환하였습니다.",
+							    icon: "success"
+							}).then(function() {
+								document.location.href = document.location.href;
+							});
 						}
 					}
 				});
@@ -411,8 +418,13 @@
 					},
 					success : function(result) {
 						if (result == "1") {
-							alert("등록금 납부 완료")
-							location.href = "payList"
+							swal({
+							    title: "납부 완료!",
+							    text: "등록금 납부를 완료하였습니다.",
+							    icon: "success"
+							}).then(function() {
+								location.href = "payList"
+							});							
 						}
 					}
 				});
@@ -439,8 +451,13 @@
 					},
 					success : function(result) {
 						if (result == "1") {
-							alert("분할 납부 완료")
-							location.href = "payList"
+							swal({
+							    title: "납부 완료!",
+							    text: "등록금 분할 납부를 완료하였습니다.",
+							    icon: "success"
+							}).then(function() {
+								location.href = "payList"
+							});	
 						}
 					}
 				});
@@ -473,8 +490,13 @@
 						},
 						success : function(result) {
 							if (result == "1") {
-								alert("분할 납부 완료")
-								location.href = "payList"
+								swal({
+								    title: "납부 완료!",
+								    text: "등록금 분할 납부를 완료하였습니다.",
+								    icon: "success"
+								}).then(function() {
+									location.href = "payList"
+								});	
 								}
 							}
 						});
@@ -492,8 +514,14 @@
 					},
 					success : function(result) {
 						if (result == "1") {
-							alert("일괄납부로 전환했습니다")
-							document.location.href = document.location.href;
+							swal({
+							    title: "전환 완료!",
+							    text: "등록금 일괄 납부로 전환하였습니다.",
+							    icon: "success"
+							}).then(function() {
+								document.location.href = document.location.href;
+							});	
+						  }
 						}
 					}
 				});

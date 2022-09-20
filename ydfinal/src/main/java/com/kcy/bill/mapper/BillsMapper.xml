@@ -5,7 +5,6 @@
 <select id="majorbList" resultType="com.kcy.bill.service.MajorbVO">
 	SELECT major_id, major_name 
 	FROM k_major
-	WHERE major_closeday IS NULL; 
 </select>
 
 <insert id="billsInsert" parameterType="com.kcy.bill.service.BillsVO">
@@ -213,12 +212,6 @@ SELECT #{billId},
 	UPDATE k_bills 
  	SET bill_amount = #{billAmount}
  	WHERE bill_id = #{billId}
-</update>
-
-<update id="payUpdate" parameterType="com.kcy.bill.service.PayVO">
-	UPDATE k_pay_h 
-	SET pay_h_bal = #{billAmount}
-	WHERE bill_id = #{billId}
 </update>
 
 <update id="payChange" parameterType="com.kcy.bill.service.PayVO">	

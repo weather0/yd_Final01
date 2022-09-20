@@ -189,8 +189,7 @@ public class BillsController {
 	@PostMapping("/billsUpdate")
 	@ResponseBody
 	public String billUpdate(BillsVO vo, PayVO pvo) {
-		service.billUpdate(vo);
-		service.payUpdate(pvo);
+		service.billUpdate(vo);		
 		return "1";
 	}	
 	

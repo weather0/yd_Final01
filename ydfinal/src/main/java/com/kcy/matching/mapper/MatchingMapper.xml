@@ -4,8 +4,7 @@
 
 <select id="majorbList" resultType="com.kcy.bill.service.MajorbVO">
 	SELECT major_id, major_name 
-	FROM k_major
-	WHERE major_closeday IS NULL; 
+	FROM k_major 
 </select>
 
 <select id="matchingList" resultType="com.kcy.matching.service.MatchingListVO">
@@ -48,6 +47,7 @@
 	<where>
 	and user_type = 'ROLE_STU'
 	and s.student_prof IS NULL
+	and s.student_aca_yn = '재학'
 		<if test="stdDept != null and stdDept != ''">
 			and u.user_dept = #{stdDept}
 		</if>			
@@ -121,15 +121,23 @@
 		ON c.stu_id = s.stu_id 
 		JOIN k_users ku
 		ON ku.user_id = s.student_prof  
-		JOIN k_users ku2 
+		LEFT JOIN k_users ku2 
 		ON ku2.user_id = c.matching_want
 		WHERE c.matching_change_yn = '0'		
 </select>
 
 <select id="changeProgress" resultType="com.kcy.matching.service.MatchingChangeVO">
-		SELECT * 
-		FROM k_matching_change 
-		WHERE stu_id = #{stuId}
+	SELECT km.stu_id, 
+	   km.matching_change_yn, 
+	   km.matching_change_date, 
+	   km.matching_change_reject, 
+	   km.matching_want, 
+	   ku.user_name, 
+	   ku.user_dept 
+	FROM k_matching_change km
+	LEFT JOIN k_users ku 
+	ON ku.user_id = km.matching_want 
+	WHERE stu_id = #{stuId}
 </select>
 
 <select id="matchingName" resultType="com.kcy.matching.service.MatchingStdVO">
