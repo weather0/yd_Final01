@@ -61,11 +61,27 @@
       height: calc(100% - 120px);
     }
     
+    #div-main {
+      width: 100%;
+      height: 100%;
+      position: fixed; 
+      left: 0; 
+      top: 0; 
+      /* 배경이미지 흐리게 하는 방법 1: linear-gradient옵션 / 방법2: before,after 등 가상요소 활용 */
+      background-image: 
+        linear-gradient(rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.92)),
+        url('/aa/logo/KCYwolf.png');
+/*       background-repeat: no-repeat;  */
+      z-index: -999;
+    }
+    
+    
   </style>
 
 </head>
 
 <body class="g-sidenav-show  bg-gray-200">
+  <div id="div-main"></div>
 
   <!-- 좌측사이드바 -->
   <aside
@@ -75,7 +91,7 @@
   </aside>
 
   <!-- 본문 -->
-  <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
+  <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg">
     <th:block layout:fragment="content"></th:block>
   </main>
 
