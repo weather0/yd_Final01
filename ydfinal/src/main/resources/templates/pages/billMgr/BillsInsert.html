@@ -6,6 +6,8 @@
 
 <th:block layout:fragment="content">
 
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
 	<!-- 상단 내비바 -->
 	<th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
 
@@ -93,8 +95,6 @@
 			let major = document.getElementById('majorbId').value
 			code.value = year.value + sem + major
 			hakgi.value = "%"+ sem + "학기%"
-			console.log(hakgi.value)
-			console.log(code.value)
 		})
 	</script>
 

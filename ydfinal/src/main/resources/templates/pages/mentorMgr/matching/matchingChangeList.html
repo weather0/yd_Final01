@@ -5,6 +5,9 @@
 	layout:decorate="~{layouts/layout}">
 
 <th:block layout:fragment="content">
+
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
 	<style>
  #allProfInfos_filter input {
       border: 1px solid #d2d6da;
@@ -31,7 +34,7 @@
       text-align: center;
     }
 </style>
-
+		
 	<!-- 상단 내비바 -->
 	<th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
 
@@ -59,7 +62,8 @@
 							<th>학적상태</th>
 							<th style="display: none">지도교수교번</th>
 							<th>현재 지도교수</th>
-							<th>변경 사유</th>
+							<th>변경 사유(클릭시 상세)</th>
+							<th style="display: none;">변경 사유2</th>
 							<th style="display: none">지정 지도교수 교번</th>
 							<th>지도교수 지정</th>
 							<th>승인여부</th>
@@ -74,7 +78,8 @@
 							<td th:text="${std.studentAcaYn}"></td>
 							<td th:text="${std.profId}" style="display: none"></td>
 							<td th:text="${std.prof}"></td>
-							<td th:text="${std.matchingChangeReason}"></td>
+							<td th:text="${#strings.abbreviate(#strings.substring(std.matchingChangeReason,0,std.matchingChangeReason.length()),20)}" id="detail"></td>
+							<td th:text="${std.matchingChangeReason}" style="display: none" id="read"></td>							
 							<td th:text="${std.wantprofId}" style="display: none"></td>
 							<td th:text="${std.wantprof}"></td>
 							<td>
@@ -132,9 +137,14 @@
 				infoEmpty : "",
 				paginate : {
 					previous : "<",
-              next: ">",
+              next: ">",             
 				}
 			}
+		});
+		
+		$("#detail").on("click", function() {
+			var read = document.getElementById('read').innerHTML;
+			swal(read);
 		});
 		
 		$(".OK").on("click", function() {
@@ -151,8 +161,13 @@
 				},
 				success : function(result) {
 					if (result == "1") {
-						alert("변경 승인")
-						location.href = "matchingChangeList"
+						swal({
+						    title: "매칭 승인!",
+						    text: "지도교수 변경을 승인하였습니다.",
+						    icon: "success"
+						}).then(function() {
+							document.location.href = document.location.href;
+						});
 					}
 				}
 			})
@@ -171,8 +186,13 @@
 					},
 					success : function(result) {
 						if (result == "1") {
-							alert("변경 신청 거부")
-							location.href = "matchingChangeList"
+							swal({
+							    title: "변경 거부!",
+							    text: "지도교수 변경을 거부하였습니다.",
+							    icon: "error"
+							}).then(function() {
+								document.location.href = document.location.href;
+							});
 						}
 					}
 
