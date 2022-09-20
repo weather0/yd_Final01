@@ -43,24 +43,15 @@
 	<select id="userChangePw" resultType="com.kcy.login.service.UserVo">
 		select 
 			   user_id, 
-			   user_type, 
-               user_name my_name, 
-               user_ssn, 
-               user_sex, 
-               user_dept, 
-               user_addr, 
-               user_phone, 
-               user_email, 
-               user_pw, 
-               user_nation, 
-               user_pic
+               user_email,
+               user_name as my_name
 			from
 				k_users
 			where
 				user_email = #{userEmail}
 	</select>
 	
-	<update id="changePwUpdate" parameterType="com.kcy.login.service.UserVo">
+	<update id="changePwUpdate">
 		UPDATE
 				k_users
 		SET

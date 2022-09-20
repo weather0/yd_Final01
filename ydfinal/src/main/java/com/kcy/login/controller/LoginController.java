@@ -2,10 +2,11 @@ package com.kcy.login.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
-import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -20,10 +21,13 @@ import lombok.RequiredArgsConstructor;
 @Controller
 @RequiredArgsConstructor
 public class LoginController {
+	
 	private final UserService userService;
 	private final SendEmailService sendEmailService;
 	@Autowired
 	UserMapper map;
+	@Autowired
+	BCryptPasswordEncoder password;
     
 	// 로그인
     @GetMapping("/login")
@@ -34,19 +38,6 @@ public class LoginController {
     	
     	return "login";
     }
-    // 로그인 실패
-     @GetMapping("/denied")
-    public String denied(UserVo vo) {
-    	return "denied";
-    }
-    // 로그인 성공
-    @GetMapping("/access")
-    public String userAccess(Model model, Authentication authentication) {
-        //Authentication 객체를 통해 유저 정보를 가져올 수 있다.
-        UserVo userVo = (UserVo) authentication.getPrincipal();  //userDetail 객체를 가져옴
-        model.addAttribute("info", userVo.getUserId() +"의 "+ userVo.getUsername()+ "님 " + userVo.getUserType() + "권한");      //유저 아이디
-        return "";
-    }
     
     // 비밀번호 찾기 페이지 이동
     @GetMapping("/findPw")
@@ -56,68 +47,36 @@ public class LoginController {
     
     // 비밀번호 변경 페이지 이동
     @GetMapping("/changePw")
-    public UserVo changePwPage(@Param("userEmail") String userEmail, @Param("myName") String myName, UserVo vo, Model model, @Param("newPw") String newPw) {
-    	vo.setMyName(myName);
-    	vo.setUserEmail(userEmail);
-    	model.addAttribute("info", myName);
-    	System.out.println("!!!!!!!!!!!!!!!!" + myName + ",,,??? " + userEmail);
-		return vo;
-    	 
+    public void changePwPage(UserVo vo, Model model, @Param("userEmail") String userEmail) {
+    	model.addAttribute("info", map.userChangePw(userEmail));
+    	System.out.println("userEmail" + "!!!!!!" + userEmail);
     }
-    
     
     // 비밀번호 변경 프로그램
-    @GetMapping("/changePw/proc")
+    @GetMapping("/changePw/proc")  
     @ResponseBody
-    public void changePwPageProc(@Param("userEmail") String userEmail) {
-    	map.userChangePw(userEmail);
+    public void changePwPageProc(@Param("userEmail") String userEmail, @Param("newPw") String newPw) {
+    	UserVo vo = new UserVo();
+    	System.out.println(newPw);
+    	String nPw = password.encode(newPw);
+    	vo.setNewPw(nPw);
+    	vo.setUserEmail(userEmail);
+    	map.changePwUpdate(vo);
     }
     
-    
-    @GetMapping("/changePwCheck")
-    @ResponseBody
-    public UserVo changePwCheck(String userEmail) {
-    	return map.userChangePw(userEmail);
-    }
-    
+    // 비밀번호 이메일 전송 proc
     @GetMapping("/check/findPw")
     @ResponseBody
     public UserVo checkFindPw(String userEmail, String myName) {
     	return map.findUserByUserId(userEmail);
     }
     
-//    // 비밀번호 찾기
-//    @GetMapping("/check/findPw")
-//    public @ResponseBody Map<String, Boolean> userfindPw(String userEmail, String userName) {
-//		Map<String, Boolean> json = new HashMap<>();
-//		boolean pwFindCheck = userService.userEmailCheck(userEmail, userName);
-//		System.out.println(pwFindCheck);
-//		json.put("check", pwFindCheck);
-//		return json;
-//
-//    }
-    
-    // 비밀번호 이메일
+    // 비밀번호 이메일 발송 proc
     @GetMapping("/findPw/sendEmail")
     @ResponseBody 
     public void sendEmail(@Param("userEmail") String userEmail, @Param("myName") String myName, @Param("pw") String pw) {
     	MailDto dto = sendEmailService.createMailAndChangePassword(userEmail, myName);
-    	System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!~~" + userEmail + ", " + myName);
     	sendEmailService.mailSend(dto);
     }
-    
-    // 행정
-    
-    // 학생
-    @GetMapping("/userMgr/stu")
-    public String stu() {
-    	return "pages/userMgr/stu/stu";
-    }
-    
-    // 교수
-	@GetMapping("/userMgr/prof")
-	public String prof() {
-		return "pages/userMgr/prof/prof";
-	}
-    
+
 }

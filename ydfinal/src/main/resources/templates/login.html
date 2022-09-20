@@ -2,194 +2,225 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <!-- 타이틀 아이콘 -->
-  <link rel="shortcut icon" type="image/x-icon" href="/aa/logo/KCYico.png">
-  <title>KCY Univ.</title>
-  <!--     Fonts and icons     -->
-  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900|Roboto+Slab:400,700" />
-  <!-- Nucleo Icons -->
-  <link href="/css/nucleo-icons.css" rel="stylesheet" />
-  <link href="/css/nucleo-svg.css" rel="stylesheet" />
-  <!-- Material Icons -->
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
-  <!-- CSS Files -->
-  <link id="pagestyle" href="/css/material-dashboard.css?v=3.0.0" rel="stylesheet" />
-  <script
-    src="https://code.jquery.com/jquery-3.6.1.min.js"
-    integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ="
-    crossorigin="anonymous"></script>
-  <!-- js-cookie -->
-  <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.js"></script>
-  <!-- Font Awesome Icons: 킷코드소유자: 곽ㅈㅇ(03e20543ce) -->
-  <script src="https://kit.fontawesome.com/03e20543ce.js" crossorigin="anonymous"></script>
-  <!-- 쏘스윗알럿 -->
-  <link href='https://cdn.jsdelivr.net/npm/sweetalert2@11.4.33/dist/sweetalert2.css' rel='stylesheet' />
-  <script type="text/javascript" src='https://cdn.jsdelivr.net/npm/sweetalert2@11.4.33/dist/sweetalert2.all.min.js'></script>
+<meta charset="utf-8" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<!-- 타이틀 아이콘 -->
+<link rel="shortcut icon" type="image/x-icon" href="/aa/logo/KCYico.png">
+<title>KCY Univ.</title>
+<!--     Fonts and icons     -->
+<link rel="stylesheet" type="text/css"
+	href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900|Roboto+Slab:400,700" />
+<!-- Nucleo Icons -->
+<link href="/css/nucleo-icons.css" rel="stylesheet" />
+<link href="/css/nucleo-svg.css" rel="stylesheet" />
+<!-- Material Icons -->
+<link
+	href="https://fonts.googleapis.com/icon?family=Material+Icons+Round"
+	rel="stylesheet">
+<!-- CSS Files -->
+<link id="pagestyle" href="/css/material-dashboard.css?v=3.0.0"
+	rel="stylesheet" />
+<script src="https://code.jquery.com/jquery-3.6.1.min.js"
+	integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ="
+	crossorigin="anonymous"></script>
+<!-- js-cookie -->
+<script
+	src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.js"></script>
+<!-- Font Awesome Icons: 킷코드소유자: 곽ㅈㅇ(03e20543ce) -->
+<script src="https://kit.fontawesome.com/03e20543ce.js"
+	crossorigin="anonymous"></script>
+<!-- 쏘스윗알럿 -->
+<link
+	href='https://cdn.jsdelivr.net/npm/sweetalert2@11.4.33/dist/sweetalert2.css'
+	rel='stylesheet' />
+<script type="text/javascript"
+	src='https://cdn.jsdelivr.net/npm/sweetalert2@11.4.33/dist/sweetalert2.all.min.js'></script>
 </head>
 
 <style>
-  /* fadein,fadeInDown 애니메이션 정의 */
-  @keyframes fadein {
-    0% {
-      opacity:0;
-    }
-    100% {
-      opacity:1;
-    }
-  }
-  
-  @keyframes fadeInDown {
-    0% {
-        opacity: 0;
-        transform: translate3d(0, -30%, 0);
-    }
-    to {
-        opacity: 1;
-        transform: translateZ(0);
-    }
-  }
-  
-  /* 전체화면 fade in */
-  body {
-    background: black;
-    animation: fadein 1s;
-  }
-  /* 로그인창 fade in + 내려오기 */
-  .card {
-    position: relative;
-    animation: fadeInDown 1s;
-  }
-  
-  /* 비디오 배경 마스킹 */
-  video {
-    -webkit-mask-image: linear-gradient(black 50%, transparent);
-    mask-image: linear-gradient(black 50%, transparent);
-  }
-  
-  /* 로그인 버튼 */
-  .bg-gradient-dark {
-    background-image: linear-gradient(195deg, #42424a 0%, #0a2351 100%);
-  }
-  
-  /* 비번찾기 버튼 */
-  #goFind { 
-    cursor: pointer /* 커서 모양 손가락 */
-  }
-  
-  /* 푸터로고 */
-  #KCYfooter {
-    position: absolute;
-    bottom: 0px;
-  }
-  
-  .alert {
-  	color: #FA7070;
-  	font-size: 12px;
-  	font-weight: 700;
-  }
-  .my-4 {
-  	margin-top: 0px !important;
-  }
+/* fadein,fadeInDown 애니메이션 정의 */
+@
+keyframes fadein { 0% {
+	opacity: 0;
+}
+
+100
+%
+{
+opacity
+:
+1;
+}
+}
+@
+keyframes fadeInDown { 0% {
+	opacity: 0;
+	transform: translate3d(0, -30%, 0);
+}
+
+to {
+	opacity: 1;
+	transform: translateZ(0);
+}
+
+}
+
+/* 전체화면 fade in */
+body {
+	background: black;
+	animation: fadein 1s;
+}
+/* 로그인창 fade in + 내려오기 */
+.card {
+	position: relative;
+	animation: fadeInDown 1s;
+}
+
+/* 비디오 배경 마스킹 */
+video {
+	-webkit-mask-image: linear-gradient(black 50%, transparent);
+	mask-image: linear-gradient(black 50%, transparent);
+}
+
+/* 로그인 버튼 */
+.bg-gradient-dark {
+	background-image: linear-gradient(195deg, #42424a 0%, #0a2351 100%);
+}
+
+/* 비번찾기 버튼 */
+#goFind {
+	cursor: pointer /* 커서 모양 손가락 */
+}
+
+/* 푸터로고 */
+#KCYfooter {
+	position: absolute;
+	bottom: 0px;
+}
+
+.alert {
+	color: #FA7070;
+	font-size: 12px;
+	font-weight: 700;
+}
+
+.my-4 {
+	margin-top: 0px !important;
+}
 </style>
 
 <body>
-  <main class="main-content  mt-0">
-  
-  
-<!--     <div class="page-header align-items-start min-vh-100" style="background-image: url('https://images.unsplash.com/photo-1497294815431-9365093b7331?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1950&q=80');"> -->
-    <div class="page-header align-items-center min-vh-100">
-<!--       <span class="mask bg-gradient-dark opacity-6"></span> -->
-      <video muted autoplay playsinline loop width="100%">
-        <source src="/aa/video/homeClip-sm.mkv" type="video/mp4">
-        <strong>Your browser does not support the video tag.</strong>
-      </video>
-      
-      <div class="container my-auto">
-        <div class="row">
-          <div class="col-lg-4 col-md-8 col-12 mx-auto">
+	<main class="main-content  mt-0">
 
-<!--             <div class="text-center mt-2 mb-4" style="color: #0a2351"> -->
-<!--               <img class="img-fluid w-75" src='/aa/logo/KCYlogo.svg' alt='KCYlogo' > -->
-<!--             </div> -->
-            
-            <div class="card z-index-0 fadeIn3 fadeInBottom" id="loginWin">
-              <div class="card-body">
-                <div class="text-center mt-2 mb-4" style="color: #0a2351">
-                  <img class="img-fluid" src='/aa/logo/KCYlogo.png' alt='KCYlogo' >
-<!--                   <i class="fa-solid fa-building-columns me-2" style="font-size: 50px"></i> -->
-<!--                   <span class="fs-3 fw-bold">KCY학사관리</span> -->
-                </div>
-                <form th:action="@{/login_proc}" method="post" class="text-start">
-                  <div class="input-group input-group-outline my-3">
-                    <label th:for="username" class="form-label">ID</label>
-                    <input type="text" class="form-control" id="username" name="username">
-                  </div>
-                  <div class="input-group input-group-outline mb-3">
-                    <label th:for="password" class="form-label">Password</label>
-                    <input type="password" class="form-control" name="password">
-                  </div>
-                  <div class="form-check form-switch d-flex align-items-center mb-3">
-                    <input class="form-check-input" type="checkbox" id="cb_saveId">
-                    <label class="form-check-label mb-0 ms-2" for="cb_saveId">
-                      <span class="ms-2 fw-bold">아이디 저장</span>
-                    </label>
-                  </div>
-                  <span th:if="${param.error}">
-                  		<p id="valid" th:text="${exception}" class="alert"></p>
-                  </span>
-                  <div class="text-center">
-                    <button type="submit" class="btn bg-gradient-dark w-100 my-4 mb-2">로그인</button>
-                  </div>
-                  <div class="mt-4 text-sm text-center">
-                  <!-- 둘다 inline-block으로 해야 공간넉넉할땐 inline(나란히), 좁을땐 block(줄바꿈)으로 반응형으로 전환됨 -->
-                    <div class="d-inline-block">비밀번호를 잊어버리셨나요?</div>
-                    <div class="d-inline-block text-secondary font-weight-bold" id="goFind">비밀번호 찾기</div>
-                  </div>
-                </form>
-              </div>
-            </div>
 
-            <div class="card z-index-0 fadeIn3 fadeInBottom d-none" id="findWin">
-              <div class="card-body">
-                <div class="text-center mt-2 mb-4" style="color: #0a2351; padding-top: 20px;">
-                  <span class="fs-2 fw-bold">비밀번호 찾기</span>
-                </div>
-                <div class="card-body">
-                  <div class="input-group input-group-outline my-3">
-                    <label th:for="userEmail" class="form-label">이메일</label>
-                    <input type="text" id="userEmail" name="userEmail" class="form-control" required>
-                  </div>
-                  <div class="input-group input-group-outline mb-3">
-                    <label th:for="myName" class="form-label">이름</label>
-                    <input type="text" id="myName" name="myName" class="form-control" required>
-                  </div>
-                  <div class="text-center">
-                    <button type="submit" id="checkEmail" class="btn bg-gradient-dark w-100 my-4 mb-2">인증번호 전송</button>
-                    <button type="button" class="btn bg-gradient-dark w-100 my-4 mb-2" id="goLogin">돌아가기</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-          </div> <!-- col -->
-          
-        </div> <!-- row -->
-      </div> <!-- container -->
-      
-      <div id="KCYfooter">
-        <img class="w-90" src='/aa/logo/KCYtextW.svg' alt='KCYtextW' >
-      </div>
-      
-    </div> <!-- page-header -->
-  </main>
-  <!--   Core JS Files   -->
-  <script src="/js/core/popper.min.js"></script>
-  <script src="/js/core/bootstrap.min.js"></script>
-  <script src="/js/plugins/perfect-scrollbar.min.js"></script>
-  <script src="/js/plugins/smooth-scrollbar.min.js"></script>
-  <script>
+		<!--     <div class="page-header align-items-start min-vh-100" style="background-image: url('https://images.unsplash.com/photo-1497294815431-9365093b7331?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1950&q=80');"> -->
+		<div class="page-header align-items-center min-vh-100">
+			<!--       <span class="mask bg-gradient-dark opacity-6"></span> -->
+			<video muted autoplay playsinline loop width="100%">
+				<source src="/aa/video/homeClip-sm.mkv" type="video/mp4">
+				<strong>Your browser does not support the video tag.</strong>
+			</video>
+
+			<div class="container my-auto">
+				<div class="row">
+					<div class="col-lg-4 col-md-8 col-12 mx-auto">
+
+						<!--             <div class="text-center mt-2 mb-4" style="color: #0a2351"> -->
+						<!--               <img class="img-fluid w-75" src='/aa/logo/KCYlogo.svg' alt='KCYlogo' > -->
+						<!--             </div> -->
+
+						<div class="card z-index-0 fadeIn3 fadeInBottom" id="loginWin">
+							<div class="card-body">
+								<div class="text-center mt-2 mb-4" style="color: #0a2351">
+									<img class="img-fluid" src='/aa/logo/KCYlogo.png' alt='KCYlogo'>
+									<!--                   <i class="fa-solid fa-building-columns me-2" style="font-size: 50px"></i> -->
+									<!--                   <span class="fs-3 fw-bold">KCY학사관리</span> -->
+								</div>
+								<form th:action="@{/login_proc}" method="post"
+									class="text-start">
+									<div class="input-group input-group-outline my-3">
+										<label th:for="username" class="form-label">ID</label> <input
+											type="text" class="form-control" id="username"
+											name="username">
+									</div>
+									<div class="input-group input-group-outline mb-3">
+										<label th:for="password" class="form-label">Password</label> <input
+											type="password" class="form-control" name="password">
+									</div>
+									<div
+										class="form-check form-switch d-flex align-items-center mb-3">
+										<input class="form-check-input" type="checkbox" id="cb_saveId">
+										<label class="form-check-label mb-0 ms-2" for="cb_saveId">
+											<span class="ms-2 fw-bold">아이디 저장</span>
+										</label>
+									</div>
+									<span th:if="${param.error}">
+										<p id="valid" th:text="${exception}" class="alert"></p>
+									</span>
+									<div class="text-center">
+										<button type="submit"
+											class="btn bg-gradient-dark w-100 my-4 mb-2">로그인</button>
+									</div>
+									<div class="mt-4 text-sm text-center">
+										<!-- 둘다 inline-block으로 해야 공간넉넉할땐 inline(나란히), 좁을땐 block(줄바꿈)으로 반응형으로 전환됨 -->
+										<div class="d-inline-block">비밀번호를 잊어버리셨나요?</div>
+										<div class="d-inline-block text-secondary font-weight-bold"
+											id="goFind">비밀번호 찾기</div>
+									</div>
+								</form>
+							</div>
+						</div>
+
+						<div class="card z-index-0 fadeIn3 fadeInBottom d-none"
+							id="findWin">
+							<div class="card-body">
+								<div class="text-center mt-2 mb-4"
+									style="color: #0a2351; padding-top: 20px;">
+									<span class="fs-2 fw-bold">비밀번호 찾기</span>
+								</div>
+								<div class="card-body">
+									<div class="input-group input-group-outline my-3">
+										<label th:for="userEmail" class="form-label">이메일</label> <input
+											type="text" id="userEmail" name="userEmail"
+											class="form-control" required>
+									</div>
+									<div class="input-group input-group-outline mb-3">
+										<label th:for="myName" class="form-label">이름</label> <input
+											type="text" id="myName" name="myName" class="form-control"
+											required>
+									</div>
+									<div class="text-center">
+										<button type="submit" id="checkEmail"
+											class="btn bg-gradient-dark w-100 my-4 mb-2">임시 이메일 전송</button>
+										<button type="button"
+											class="btn bg-gradient-dark w-100 my-4 mb-2" id="goLogin">돌아가기</button>
+									</div>
+								</div>
+							</div>
+						</div>
+
+					</div>
+					<!-- col -->
+
+				</div>
+				<!-- row -->
+			</div>
+			<!-- container -->
+
+			<div id="KCYfooter">
+				<img class="w-90" src='/aa/logo/KCYtextW.svg' alt='KCYtextW'>
+			</div>
+
+		</div>
+		<!-- page-header -->
+	</main>
+	<!--   Core JS Files   -->
+	<script src="/js/core/popper.min.js"></script>
+	<script src="/js/core/bootstrap.min.js"></script>
+	<script src="/js/plugins/perfect-scrollbar.min.js"></script>
+	<script src="/js/plugins/smooth-scrollbar.min.js"></script>
+	<script>
     var win = navigator.platform.indexOf('Win') > -1;
     if (win && document.querySelector('#sidenav-scrollbar')) {
       var options = {
@@ -198,12 +229,12 @@
       Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
     }
   </script>
-  <!-- Github buttons -->
-  <script async defer src="https://buttons.github.io/buttons.js"></script>
-  <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
-  <script src="/js/material-dashboard.min.js?v=3.0.0"></script>
+	<!-- Github buttons -->
+	<script async defer src="https://buttons.github.io/buttons.js"></script>
+	<!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
+	<script src="/js/material-dashboard.min.js?v=3.0.0"></script>
 
-  <script type="text/javascript">
+	<script type="text/javascript">
     // 아이디 저장
     $("#username").val(Cookies.get('key'));
     if ($("#username").val() != "") {
@@ -254,7 +285,7 @@
 	
 	        // 비밀번호 ajax
 	         $.ajax({
-	            url: "http://localhost/check/findPw",
+	            url: "/check/findPw",
 	            data: {
 	                "userEmail" : userEmail,
 	                "myName" : userName
@@ -268,7 +299,7 @@
 	            success: function (data) {
 	                    		// 이메일 전송 ajax
                            $.ajax({
-                               url: "http://localhost/findPw/sendEmail",
+                               url: "/findPw/sendEmail",
                                data: {
                                    "userEmail": userEmail,
                                    "myName": userName
@@ -286,7 +317,6 @@
                             	       clearInterval(timerInterval)
                             	     }
                             	   }).then((result) => {
-                            	     /* Read more about handling dismissals below */
                             	     if (result.dismiss === Swal.DismissReason.timer) {
                             	       console.log('I was closed by the timer')
                             	     }
@@ -297,33 +327,18 @@
                                complete: function() {
                             	   $('html').css("cursor","auto"); 
                             	   Swal.fire("전송 완료", "다시 로그인해 주세요.", "success");
-                            	   setTimeout(function() {location.href = "/changePw"}, 1000);
                                },
 	                           success: function(data) {
-	                        	   $.ajax({
-		                        		 url:"/changePw/proc",
-		                        		 dataType: 'json',
-		                        		 data: {
-		                        			 "myName": userName,
-		                        			 "userEmail": userEmail
-		                        		 },
-		                        		 success: function(data) {
-		                        			 console.log(data);
-		                        		 },
-		                        		 error: function(error) {
-		                        			 console.log(error);
-		                        		 }
-		                        	   })
+                              	   setTimeout(function() {
+                              		   location.href = "/login"
+                              		   }, 1000);
 	                           },
                                error: function(error) {
                                	Swal.fire("오류 발생", "다시 입력해 주세요.", "error");
                                	location.reload();
                                }
-	                         //   })
 	                        
 	                     })
-	                    $('#checkMsg').html('<p style="color:darkblue"></p>'); 
-
 	            },
 	            error: function(error) {
 	            	 Swal.fire("오류 발생", "다시 입력해 주세요.", "error");
@@ -331,21 +346,6 @@
 	            }
 	        })  
 	    })
-	   
-	    function clean_time(time) {
-	    	txt = '초';
-	    	result = time / 1000;
-	    	if(result >= 60) {
-	    		result = result / 60;
-	    		txt = '분';
-	    	}
-	    	result = parseInt(result);
-	    	return result + txt;
-	    }
-	    
-	 
-    $('#checkMsg').html('<p style="color:darkblue"></p>'); 
-    
     
   </script>
 

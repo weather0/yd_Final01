@@ -1,11 +1,15 @@
 package com.kcy.login.mapper;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMessage.RecipientType;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
 
 import com.kcy.login.service.UserVo;
 
@@ -37,24 +41,11 @@ public class SendEmailService {
 	private void updatePassword(String str, String userEmail) {
 		String pw = password.encode(str);
 		String email = userMapper.findUserByUserId(userEmail).getUserEmail();
-		System.out.println(email);
-		System.out.println(pw);
 		UserVo vo = new UserVo();
 		vo.setPw(pw);
 		vo.setUserEmail(email);
 		userMapper.updateUserPassword(vo);
-		userMapper.userChangePw(email);
 	}
-	
-	private void userUpdate(String newPw, String userEmail) {
-		String nPw = password.encode(newPw);
-		String email = userMapper.findUserByUserId(userEmail).getUserEmail();
-		UserVo vo = new UserVo();
-		vo.setPw(nPw);
-		vo.setUserEmail(email);
-		userMapper.changePwUpdate(vo);
-	}
-
 
 	private String getTempPassword() {
 		char[] charSet = new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F',
@@ -73,12 +64,28 @@ public class SendEmailService {
 	
 	public void mailSend(MailDto mailDto) {
         System.out.println("이멜 전송 완료!");
-        SimpleMailMessage message = new SimpleMailMessage();
+        MimeMessage message = ms.createMimeMessage();  
         
-        message.setTo(mailDto.getAddress());
-        message.setFrom(SendEmailService.FROM_ADDRESS);
-        message.setSubject(mailDto.getTitle());
-        message.setText(mailDto.getMessage());
+        String htmlStr = mailDto.getMessage() + "<br><a href=" + "http://localhost/changePw?userEmail=" + mailDto.getAddress() + ">비밀번호 변경하러 가기</a>";
+        
+//        message.setTo(mailDto.getAddress());
+//        message.setFrom(SendEmailService.FROM_ADDRESS);
+//        message.setSubject(mailDto.getTitle());
+//        message.setText(htmlStr);
+        try {
+        	
+			message.addRecipient(RecipientType.TO, new InternetAddress(mailDto.getAddress()));
+			message.setFrom(SendEmailService.FROM_ADDRESS);
+	        message.setSubject(mailDto.getTitle());
+	        message.setText(htmlStr, "UTF-8", "html");
+	        
+		} catch (AddressException e) {
+			e.printStackTrace();
+			return;
+		} catch (MessagingException e) {
+			e.printStackTrace();
+			return;
+		}
         
         System.out.println(message);
         ms.send(message);
