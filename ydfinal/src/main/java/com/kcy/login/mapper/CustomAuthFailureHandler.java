@@ -15,14 +15,14 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
 
+// 황하경 220916 로그인 오류 처리
+// httpservletrequet에 회원 로그인 정보를 담아 처리
 @Component
 public class CustomAuthFailureHandler extends SimpleUrlAuthenticationFailureHandler {
 	@Override
 	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
 				AuthenticationException exception ) throws IOException, ServletException  {
 		String errorMessage;
-		
-		
 		
 		if(exception instanceof BadCredentialsException) {
 			errorMessage = "아이디 또는 비밀번호가 맞지 않습니다. 다시 확인해 주세요.";

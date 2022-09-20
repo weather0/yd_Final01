@@ -24,7 +24,8 @@ public interface LectureMapper {
     public List<OpenLectureVO> 	majorSelect(OpenLectureVO vo);
     //자기 전공 데이터
     public OpenLectureVO myMajor(OpenLectureVO vo);
-    
+    //자기 학년 체크
+    public OpenLectureVO myGrade(OpenLectureVO vo);
     
     
     

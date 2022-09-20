@@ -19,18 +19,15 @@ public class NoticeServiceImpl implements NoticeService {
 	@Override
 	public void noticeInsert(NoticeVo vo) {
 		map.noticeInsert(vo);
-		
 	}
 
 	@Override
 	public List<NoticeVo> noticeList(NoticeVo vo) {
-		// TODO Auto-generated method stub
 		return map.noticeList(vo);
 	}
 
 	@Override
 	public NoticeVo noticeView(int classNoticeNo) {
-		// TODO Auto-generated method stub
 		return map.noticeView(classNoticeNo);
 	}
 
@@ -41,13 +38,11 @@ public class NoticeServiceImpl implements NoticeService {
 
 	@Override
 	public List<NoticeVo> getClassId(NoticeVo vo) {
-		// TODO Auto-generated method stub
 		return map.getClassId(vo);
 	}
 
 	@Override
 	public List<QuizVo> getClassIdProf(QuizVo vo) {
-		// TODO Auto-generated method stub
 		return map.getClassIdProf(vo);
 	}
 

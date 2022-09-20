@@ -21,7 +21,8 @@ public class EvaluationServiceImpl implements EvaluationService {
 	public List<EvaluationVO> evaluationQuestion(String classId) {
 		return mapper.evaluationQuestion(classId);
 	}
-
+	
+	//교직원 평가를 하면 문항 수에 맞게 평가한 결과를 추가 처리해주는 부분
 	@Override
 	public void evaluationResultInsert(Map<String,String> map) {
 		EvaluationVO vo = new EvaluationVO();
@@ -48,6 +49,7 @@ public class EvaluationServiceImpl implements EvaluationService {
 		return mapper.classMemberIdSelect(vo);
 	}
 
+	//문항수에 맞게 교직원 평가한 결과를 뽑아 오는 부분
 	@Override
 	public HashMap<String, Object> evaluationConfirmation(EvaluationVO vo) {
 		HashMap<String, Object> check = new HashMap<String, Object>();

@@ -1,10 +1,11 @@
-package com.kcy.login.mapper;
+package com.kcy.login.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
 
+//220828 황하경
 @Component
 public class MailService {
 	@Autowired

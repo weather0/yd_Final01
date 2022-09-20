@@ -189,7 +189,7 @@ public class LectureController {
 		model.addAttribute("myMajor",mapper.myMajor(vo1));
 		model.addAttribute("classMemberTimeCk",tmapper.classMembertimeselect(vo2));
 		model.addAttribute("classScheduleCk",scmapper.classFindSchedule(null));
-		
+		model.addAttribute("mygrade",mapper.myGrade(vo1));
 		return "pages/classMgr/OpenLectureList";
 	}
 	
@@ -249,6 +249,7 @@ public class LectureController {
 		scheduleservice.scheduleAllInsert(list);
 		return "true";
 	}
+	//행정처에서 시간표를 넣었는지 확인하는 부분
 	@PostMapping("/lectureCheck")
 	@ResponseBody
 	public String lectureCheck(LectureVO vo) {

@@ -1,8 +1,10 @@
-package com.kcy.login.mapper;
+package com.kcy.login.service;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+// 220828 황하경
+// 임시 비밀번호 mailVo
 @Data
 @NoArgsConstructor
 public class MailDto {

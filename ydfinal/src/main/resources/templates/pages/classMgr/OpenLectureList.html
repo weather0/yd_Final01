@@ -83,6 +83,9 @@
 										th:text="학점"></th>
 									<th
 										class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+										th:text="학년"></th>	
+									<th
+										class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
 										th:text="학기"></th>
 									<th
 										class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
@@ -104,7 +107,8 @@
 									<td th:text="${data.courseTitle}"></td>
 									<td th:text="${data.courseType}"></td>
 									<td th:text="|${data.courseCredit}학점|"></td>
-									<td th:text="${data.classSem}"></td>
+									<td th:text="|${data.courseGrade}학년|"></td>
+									<td th:text="|${data.classSem}학기|"></td>
 									<td th:text=|${data.classCk}/${data.classTo}|></td>
 									
 									<td>
@@ -129,13 +133,12 @@
 
 												<th:block th:if="${data.classCk} < ${data.classTo}">
 													<td><button class="btn btn btn-secondary btn-sm btn1"
-															th:text="신청" th:data-class_id="${data.classId}"></button></td>
+															th:text="신청" th:data-class_id="${data.classId}" th:data-grade_test="${data.courseGrade}"></button></td>
 												</th:block>
 
 												<th:block th:if="${data.classCk} >= ${data.classTo}">
-													<td><button class="btn btn btn-secondary btn-sm btn1"
-															th:text="인원완료" disabled='disabled'
-															th:data-class_id="${data.classId}"></button></td>
+													<td><button class="btn btn btn-secondary btn-sm "
+															th:text="인원완료" disabled='disabled'></button></td>
 												</th:block>
 											</th:block>
 
@@ -258,9 +261,12 @@
 		$(".btn1").on("click", insert);
 	 
 		function insert() {
-			let insert = $(this).data("class_id")
-			let id = $("#userid").val()
-			
+			var insert = $(this).data("class_id")
+			var id = $("#userid").val()
+			var test = $(this).data("grade_test")
+			var test1 = [[${mygrade.studentGrade}]]
+			console.log(test)
+			console.log(test1)
 			$.ajax({
 				url:"/timeselect",
 				data:{
@@ -280,9 +286,14 @@
 							if(classTime.indexOf(time)>=0){
 								timeCk = true;
 							}
-						}) 
+						})
+						
+						
 						if(timeCk){
 							toastr.error("중복된 시간표 선택", "경고")
+						}
+						else if(test != test1 ){
+							toastr.error("학년에 맞게 선택하세요", "경고")
 						}
 						else{
 							  $.ajax({
@@ -313,7 +324,7 @@
 
 		
 		$(".enbtn").on("click", Endelete);
-		
+		//수강신청한 강좌를 삭제하는 부분
 		function Endelete() {
 			let deletes = $(this).data("en_class_id")
 			Kcy.fire({
@@ -358,7 +369,7 @@
 		function CreditCk() {
 			toastr.error("18학점을 초과", "경고")
 		}
-
+		
 		$(".btn3").on("click", majorCk);
 
 		function majorCk() {

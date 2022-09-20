@@ -27,6 +27,7 @@ public class EnrolmentServiceImpl implements EnrolmentService {
 		return mapper.enrolmentList(vo);
 	}
 
+	//수강신청한 인원을 추가하고 수강신청 완료 테이블로 추가하는 부분
 	@Override
 	@Transactional
 	public void enrolmentInsert(EnrolmentVO vo) {
@@ -34,6 +35,7 @@ public class EnrolmentServiceImpl implements EnrolmentService {
 		mapper.enrolmentInsert(vo);
 	}
 
+	//수강신청한 인원을 빼고 강좌를 삭제하는 부분
 	@Override
 	@Transactional
 	public void enrolmentDelete(EnrolmentVO vo) {

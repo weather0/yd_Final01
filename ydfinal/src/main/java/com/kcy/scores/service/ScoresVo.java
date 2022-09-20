@@ -2,6 +2,7 @@ package com.kcy.scores.service;
 
 import lombok.Data;
 
+//220910 황하경
 @Data
 public class ScoresVo {
 	// 공통

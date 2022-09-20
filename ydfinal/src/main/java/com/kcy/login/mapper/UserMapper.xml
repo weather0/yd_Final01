@@ -22,6 +22,7 @@
          WHERE USER_ID= #{userId}
 	</select>
 	
+	<!-- 사용자 정보 -->
 	<select id="findUserByUserId" resultType="com.kcy.login.service.UserVo" parameterType="string">
 		SELECT
 				*
@@ -31,6 +32,7 @@
 				user_email = #{userEmail}
 	</select>
 	 
+	<!-- 사용자 임시 비밀번호 -->
 	<update id="updateUserPassword" parameterType="com.kcy.login.service.UserVo">
 		UPDATE
 				k_users
@@ -40,6 +42,7 @@
 				user_email = #{userEmail}
 	</update>
 	
+	<!-- 사용자 비밀번호 재설정을 위한 사용자 정보 검색 -->
 	<select id="userChangePw" resultType="com.kcy.login.service.UserVo">
 		select 
 			   user_id, 
@@ -51,6 +54,7 @@
 				user_email = #{userEmail}
 	</select>
 	
+	<!-- 사용자가 입력한 재설정한 비밀번호를 업데이트 -->
 	<update id="changePwUpdate">
 		UPDATE
 				k_users
