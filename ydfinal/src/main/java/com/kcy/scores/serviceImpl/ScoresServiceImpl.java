@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import com.kcy.scores.mapper.ScoresMapper;
 import com.kcy.scores.service.ScoresService;
 import com.kcy.scores.service.ScoresVo;
-
+//220910 황하경
 @Service
 public class ScoresServiceImpl implements ScoresService {
 

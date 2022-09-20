@@ -1,4 +1,4 @@
-package com.kcy.login.mapper;
+package com.kcy.login.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -7,7 +7,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.kcy.login.service.UserVo;
+import com.kcy.login.mapper.UserMapper;
 
 import lombok.RequiredArgsConstructor;
 // 황하경 220831

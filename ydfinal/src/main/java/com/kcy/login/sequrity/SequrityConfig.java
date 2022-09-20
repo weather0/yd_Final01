@@ -12,7 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 
-import com.kcy.login.mapper.UserServiceImpl;
+import com.kcy.login.service.UserServiceImpl;
 
 import lombok.RequiredArgsConstructor;
 
@@ -80,7 +80,7 @@ public class SequrityConfig extends WebSecurityConfigurerAdapter {
                         "/room/enter/{roomId}"
                         ).hasAnyRole("STU","PROF")
 			.and().exceptionHandling().accessDeniedPage("/")
-			//
+
 			
 			//.anyRequest()
 			//.authenticated()
@@ -89,7 +89,7 @@ public class SequrityConfig extends WebSecurityConfigurerAdapter {
 			.loginPage("/login")
 			.loginProcessingUrl("/login_proc")
 			.defaultSuccessUrl("/")
-//			.failureUrl("/denied")
+			//.failureUrl("/denied")
 			.failureHandler(customFailureHandler)
 			.usernameParameter("username")
 			.passwordParameter("password")

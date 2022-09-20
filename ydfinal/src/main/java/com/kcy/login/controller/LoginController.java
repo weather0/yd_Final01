@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.kcy.login.mapper.MailDto;
-import com.kcy.login.mapper.SendEmailService;
 import com.kcy.login.mapper.UserMapper;
-import com.kcy.login.mapper.UserService;
+import com.kcy.login.service.MailDto;
+import com.kcy.login.service.SendEmailService;
+import com.kcy.login.service.UserService;
 import com.kcy.login.service.UserVo;
 
 import lombok.RequiredArgsConstructor;
@@ -22,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class LoginController {
 	
+	// 
 	private final UserService userService;
 	private final SendEmailService sendEmailService;
 	@Autowired
