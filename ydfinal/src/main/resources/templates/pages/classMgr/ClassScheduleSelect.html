@@ -145,6 +145,7 @@
 	<script  th:inline="javascript">
 		
 	[# th:each="list:${scheduleSelect}"]
+	
 	if([[${list.class_timetable_id}]] == 'T1000'){
 		var test1 = `
 			<span class="class-title">[(${list.course_title})]수업</span>
