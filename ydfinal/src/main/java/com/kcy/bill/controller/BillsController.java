@@ -40,7 +40,7 @@ public class BillsController {
 	//등록금 고지 페이지 이동
 	@GetMapping("/billsInsert")
 	public String BillsInsertPage(BillsVO vo) {
-		return "pages/billMgr/billsInsert";
+		return "pages/billMgr/BillsInsert";
 	}
 	
 	//등록금 고지서 등록
