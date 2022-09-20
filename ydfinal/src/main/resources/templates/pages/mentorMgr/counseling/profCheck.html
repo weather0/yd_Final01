@@ -14,65 +14,63 @@
 	<body>
 		<div class="container-fluid" th:object="${myInfo}">
 			<div class="row justify-content-center">
-				<div class="card py-3 col-11">
-					<div class="px-2 pb-4">
-						<div class="bg-secondary bg-gradient-secondary shadow-secondary border-radius-lg py-3">
-							<h6 class="text-white ps-3 m-0">담당 교수 정보</h6>
-						</div>
-					</div>
 
-					<div class="col-lg-3 col-sm-3 mb-4">
-						<div class="card ratio ratio-1x1">
-							<img th:src="@{ '../aa/userImg/'+ ${vo.userPic} }" class="img-fluid border-radius-lg shadow border border-5" th:alt="${vo.userPic}" style="object-fit: cover; object-position: center 30%;">
-						</div>
-					</div>
-
-					<div class="col-lg-7 col-sm-9 mb-4 ">
-						<div class="card">
-
-							<div class="table-responsive border-radius-lg border border-5">
-								<table class="table align-items-center text-center mb-0 fw-bold" style="height: 40vh" id="myTable">
-									<tr>
-										<td class="table-secondary">성명</td>
-										<td th:text="${vo.userName}"></td>
-										<td class="table-secondary">성별</td>
-										<td th:if="${vo.userSex} == 'M'">남</td>
-										<td th:if="${vo.userSex} == 'F'">여</td>
-									</tr>
-									<tr>
-										<td class="table-secondary">전공</td>
-										<td>[[${vo.userDept}]]</td>
-										<td class="table-secondary">직무</td>
-										<td>[[${vo.profCareer}]]</td>
-
-									</tr>
-									<tr>
-										<td class="table-secondary">연구실</td>
-										<td>[[${vo.profLab}]]</td>
-										<td class="table-secondary">연락처</td>
-										<td>[[${vo.userPhone}]]</td>
-									</tr>
-									<tr>
-										<td class="table-secondary">이메일</td>
-										<td colspan="3">[[${vo.userEmail}]]</td>
-									</tr>
-
-
-								</table>
-							</div>
-
-
-						</div>
-						<!-- card -->
-
-						<div>[[${vo.profField}]]</div>
-						<div>[[${vo.profEdu}]]</div>
-						<div>[[${vo.profCareer}]]</div>
-						<div>[[${vo.profPaper}]]</div>
+				<div class="px-2 pb-4">
+					<div class="bg-secondary bg-gradient-secondary shadow-secondary border-radius-lg py-3">
+						<h6 class="text-white ps-3 m-0">담당 교수 정보</h6>
 					</div>
 				</div>
 
+				<div class="col-lg-3 col-sm-3 mb-4">
+					<div class="card ratio ratio-1x1">
+						<img th:src="@{ '../aa/userImg/'+ ${vo.userPic} }" class="img-fluid border-radius-lg shadow border border-5" th:alt="${vo.userPic}" style="object-fit: cover; object-position: center 30%;">
+					</div>
+				</div>
+
+				<div class="col-lg-7 col-sm-9 mb-4 ">
+					<div class="card">
+
+						<div class="table-responsive border-radius-lg border border-5">
+							<table class="table align-items-center text-center mb-0 fw-bold" style="height: 40vh" id="myTable">
+								<tr>
+									<td class="table-secondary">성명</td>
+									<td th:text="${vo.userName}"></td>
+									<td class="table-secondary">성별</td>
+									<td th:if="${vo.userSex} == 'M'">남</td>
+									<td th:if="${vo.userSex} == 'F'">여</td>
+								</tr>
+								<tr>
+									<td class="table-secondary">전공</td>
+									<td>[[${vo.userDept}]]</td>
+									<td class="table-secondary">직무</td>
+									<td>[[${vo.profCareer}]]</td>
+
+								</tr>
+								<tr>
+									<td class="table-secondary">연구실</td>
+									<td>[[${vo.profLab}]]</td>
+									<td class="table-secondary">연락처</td>
+									<td>[[${vo.userPhone}]]</td>
+								</tr>
+								<tr>
+									<td class="table-secondary">이메일</td>
+									<td colspan="3">[[${vo.userEmail}]]</td>
+								</tr>
+
+
+							</table>
+						</div>
+
+
+					</div>
+					<!-- card -->
+
+				</div>
+				<div>[[${vo.profEdu}]]</div>
+				<div>[[${vo.profCareer}]]</div>
+				<div>[[${vo.profPaper}]]</div>
 			</div>
+
 		</div>
 	</body>
 </th:block>

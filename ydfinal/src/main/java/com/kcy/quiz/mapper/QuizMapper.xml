@@ -146,6 +146,7 @@
        		class_id = #{classId}
 	</insert>
 	
+	<!-- 과제 제출 세부 내역(교수) -->
 	<select id="quizAcceptDetail" resultType="com.kcy.quiz.service.QuizVo">
 		SELECT
                 r.quiz_r_content,
@@ -273,6 +274,7 @@
                 r.quiz_r_date, 
                 r.quiz_r_id,
                 r.quiz_r_file,
+                r.quiz_r_point,
                 
                 h.quiz_h_seq, 
                 h.quiz_h_file,

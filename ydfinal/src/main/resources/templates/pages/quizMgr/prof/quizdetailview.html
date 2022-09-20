@@ -85,6 +85,7 @@
 									<p th:text="${quiz.quizROrginal}"></p>
 							</a></td>
 						</tr>
+						<th:block th:if="${quiz.quizRPoint} == null">
 						<tr style="height: 43px;">
 							<td class="th-default"><label class="label_default">점수</label></td>
 							<form action="quizdetailview" method="post">
@@ -96,6 +97,16 @@
 										style="margin-bottom: 0px;">제출</button></td>
 							</form>
 						</tr>
+						</th:block>
+						<th:block th:unless="${quiz.quizRPoint} == null">
+							<tr style="height: 43px;">
+							<td class="th-default"><label class="label_default">점수</label></td>
+								<input type="hidden" th:value="${quiz.quizRId}"
+									th:name="quizRId">
+								<td class="td-content"><input type="number"
+									th:name="quizRPoint" th:value="${quiz.quizRPoint}" readonly="readonly"/></td>
+						</tr>
+						</th:block>
 					</tbody>
 				</table>
 			</div>

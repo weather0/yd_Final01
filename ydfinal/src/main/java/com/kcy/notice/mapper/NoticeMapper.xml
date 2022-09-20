@@ -65,6 +65,7 @@
             cs.course_id = c.course_id
 	</select>
 	
+	<!-- 공지 수정 -->
 	<update id="noticeModify">
 		UPDATE
 			k_class_notice
