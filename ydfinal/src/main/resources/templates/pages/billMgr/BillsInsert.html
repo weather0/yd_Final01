@@ -12,17 +12,17 @@
 	<!-- 본문 start -->
 	<div class="container-fluid">
       <div class="row justify-content-center">
-		<div class="card p-3 me-3">
+		<div class="card p-3 me-3 col-8 border border-5">
 		  <div class="card-header p-0 position-relative mt-n4 mb-4 z-index-2">
 			<div
 				class="bg-secondary bg-gradient-secondary shadow-secondary border-radius-lg py-3">
 				<h6 class="text-white ps-3 m-0">등록금 고지서 등록</h6>
 			</div>
 		  </div>
-			<form action="billsInsert" method="post">
-				<div class="input-group input-group-outline my-3">
+			<form action="billsInsert" method="post" onsubmit="return confirm('등록하시겠습니까?');">
+				<div class="input-group input-group-outline my-3" hidden="">
 					<label class="form-label"></label> <input type="text"
-						minlength="9" class="form-control On" name="billId" id="billId"
+						minlength="9" class="form-control" name="billId" id="billId"
 						readonly="readonly" placeholder="년도/학기/학과를 선택해주세요">
 				</div>
 				<div class="row">
@@ -39,14 +39,13 @@
 							</div>
 					</div>
 					<div class="col-md-4">
-						<div class="input-group input-group-outline my-3 form-floating">
-							<select class="form-select"
-								name="majorbId" id="majorbId" required>									
+						<div class="input-group input-group-outline my-3">
+							<select class="form-control" name="majorbId" id="majorbId" required>	
+							<option value="" disabled selected>학과를 선택해주세요</option>	
 								<th:block th:each="mjr : ${majorb}">
 									<option th:text="${mjr.majorName}" th:value="${mjr.majorId}"></option>
 								</th:block>
-							</select>
-							<label for="floatingSelect">학과를 선택해주세요</label>
+							</select>							
 						</div>
 					</div>
 				</div>
@@ -60,7 +59,7 @@
 					<label class="form-label">청구액</label> <input type="number"
 						class="form-control" name="billAmount" min="0" required>
 				</div>
-				<button class="btn btn-secondary">고지서 등록</button>
+					<button class="btn btn-secondary On" style="width: 100%; margin: 0 auto;">등록금 고지서 등록</button>
 			</form>
 		</div>
 	  </div>
@@ -74,8 +73,16 @@
 		}
 	
 		let date = new Date();
-		let year = document.getElementById('billYear');
-		year.value = date.getFullYear();
+		let query = window.location.search;
+		let param = new URLSearchParams(query);
+		let year = document.getElementById('billYear');		
+		let id = param.get('billYear')		
+		year.value = id;			
+		if (id == null) {
+			year.value = date.getFullYear();	
+		} else {			
+			year.value = id;
+		}
 
 		let code = document.getElementById('billId')
 		var hakgi = document.getElementById('hakgi')
@@ -87,6 +94,7 @@
 			code.value = year.value + sem + major
 			hakgi.value = "%"+ sem + "학기%"
 			console.log(hakgi.value)
+			console.log(code.value)
 		})
 	</script>
 
