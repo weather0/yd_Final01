@@ -21,7 +21,7 @@
 	<!-- 본문 start -->
 	<div class="container-fluid">
       <div class="row justify-content-center">
-		<div class="card p-3 me-3">
+		<div class="card p-3 me-3 border border-5">
 
 				<!-- 각 페이지 타이틀바 -->
 				<div class="card-header p-0 position-relative mt-n4 mb-4 z-index-2">
@@ -55,7 +55,8 @@
 									name="userDept" id="userDept">
 									<option value="">학과선택</option>
 									<th:block th:each="mjr : ${majorb}">
-										<option th:text="${mjr.majorName}" th:value="${mjr.majorName}"></option>
+										<option th:text="${mjr.majorName}" th:value="${mjr.majorName}"
+										th:selected="${mjr.majorName eq param?.userDept?.toString()}"></option>
 									</th:block>
 								</select>
 							</div>
@@ -127,9 +128,17 @@
 
 	<script>
 		let date = new Date();
-		let year = document.getElementById('billYear');
-		year.value = date.getFullYear();
-
+		let query = window.location.search;
+		let param = new URLSearchParams(query);
+		let year = document.getElementById('billYear');		
+		let id = param.get('billYear')		
+		year.value = id;			
+		if (id == null) {
+			year.value = date.getFullYear();	
+		} else {			
+			year.value = id;
+		};
+		
 		$("#payCheckInfo").DataTable({
 			language : {
 				lengthMenu : "페이지 당: _MENU_",

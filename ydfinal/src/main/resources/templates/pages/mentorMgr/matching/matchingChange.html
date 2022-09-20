@@ -35,7 +35,7 @@
 						<h6 class="text-white ps-3 m-0">지도교수 변경 신청</h6>
 					</div>
 				</div>
-					<form action="matchingChangeOrder" method="post">
+					<form action="matchingChangeOrder" method="post" onsubmit="return confirm('변경신청을 하시겠습니까?');">
 						<div class="row">
 							<div class="col-md-3">
 								<div class="input-group input-group-outline my-3">
@@ -55,7 +55,7 @@
 							</div>
 							<div class="col-md-3">
 								<div class="input-group input-group-outline my-3">
-									<label for="floatingInputValue">지도교수	
+									<label for="floatingInputValue">현재 지도교수	
 									<input th:value="${matchingName.profname}" type="text"
 										id="profname" class="form-control" readonly="readonly">
 									</label>									
@@ -70,22 +70,25 @@
 								</div>
 							</div>	
 						</div>
+						<div>
 							<div class="input-group input-group-outline">
 								<textarea class="form-control" aria-label="With textarea" name="matchingChangeReason"
 									id="matchingChangeReason"
-									placeholder="지도교수 변경사유를 입력해주세요(미입력 불이익이 있을 수도 있습니다)"></textarea>
+									placeholder="지도교수 변경사유를 입력해주세요(미입력 승인이 거부 될 수 있습니다)"></textarea>
 							</div>
-									<div class="input-group input-group-outline my-3">									
+							<div class="input-group input-group-outline my-3">									
 								<input type="text" class="form-control" name="matchingWant"
 									id="matchingWant"
 									placeholder="변경을 원하는 지도교수를 선택해주세요. 미 선택시 무작위로 선별됩니다"
 									readonly="readonly">
-							</div>					
-					
+							</div>										
+						</div>
 							<div id="changeProgress" class="table-responsive border-radius-lg border border-5" style="margin-bottom: 10px;">
 							<th:block th:each="cp:${changeProgress}">
 								<table class="table text-center mb-0">
 									<tr>
+										<td class="table-secondary">진행 상황</td>
+										<td th:text></td>
 										<td class="table-secondary">진행 상황</td>
 										<td><span
 											th:if="${cp.matchingChangeYn.toString().equals('0')}">진행중</span>
@@ -182,8 +185,7 @@
 
 			let prof = document.getElementById('matchingWant')
 			prof.value = ($(".profactive").find("td:first").text())
-
-		}
+		}			
 
 		$(".cancel").on("click", function() {
 			var id = document.getElementById("stuId").value;
