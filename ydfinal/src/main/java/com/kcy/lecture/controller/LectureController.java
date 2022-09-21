@@ -194,15 +194,19 @@ public class LectureController {
 	}
 	
 	// 수강신청시 자신에 전공에 맞는 강좌만 보여주는 페이지
-	@GetMapping("/openlectureSelect")
-	public String openlectureSelect(Model model,OpenLectureVO vo, EnrolmentVO vo1) {
-		model.addAttribute("enrolmentlist", enrolmentService.enrolmentList(vo1));
-		model.addAttribute("openList",lectureService.majorSelect(vo));
-		model.addAttribute("gradesCk", enrolmentService.gradesCheck(vo1));
-		model.addAttribute("myMajor",mapper.myMajor(vo));
-		model.addAttribute("classScheduleCk",scmapper.classFindSchedule(null));
-		return "pages/classMgr/OpenLectureList"; 
+	/*
+	 * @GetMapping("/openlectureSelect") public String openlectureSelect(Model
+	 * model,OpenLectureVO vo, EnrolmentVO vo1, TimetableVO vo2) {
+	 * model.addAttribute("enrolmentlist", enrolmentService.enrolmentList(vo1));
+	 * model.addAttribute("openList",lectureService.majorSelect(vo));
+	 * model.addAttribute("gradesCk", enrolmentService.gradesCheck(vo1));
+	 * model.addAttribute("myMajor",mapper.myMajor(vo));
+	 * model.addAttribute("classScheduleCk",scmapper.classFindSchedule(null));
+	 * model.addAttribute("classMemberTimeCk",tmapper.classMembertimeselect(vo2));
+	 * model.addAttribute("mygrade",mapper.myGrade(vo)); return
+	 * "pages/classMgr/OpenLectureList";
 	}
+	 */
 
 	// 수강신청페이지에서 수강신청완료 테이블로 데이터 추가하는 부분
 	@PostMapping("/openlectureinsert")

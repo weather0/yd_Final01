@@ -5,6 +5,10 @@
 	layout:decorate="~{layouts/layout}">
 
 <th:block layout:fragment="content">
+	<style>
+
+	
+	</style>
 <link href="../css/classScheduleCheck.css" rel="stylesheet">
 	<!-- 상단 내비바 -->
 	<th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
@@ -23,119 +27,38 @@
 				</div>
 				<section id="timetable">
 					<div class="container">
+						<ol class="test">
+							<li ></li>
+							<li><h2 class="class-days-title">월요일</h2></li>
+							<li><h2 class="class-days-title">화요일</h2></li>
+							<li><h2 class="class-days-title">수요일</h2></li>
+							<li><h2 class="class-days-title">목요일</h2></li>
+							<li><h2 class="class-days-title">금요일</h2></li>
+						</ol>
 						<ol class="timetable">
+							<li><h3 class="class-days-title">1교시</h3><span class="class-time">09:00~09:50</span> </li>
 
-							<li style="border: 1px solid black;"></li>
-							<li style="border: 1px solid black;"><h3>1교시</h3><span class="class-time">09:00~09:50</span> </li>
+							<li><h3 class="class-days-title">2교시</h3><span class="class-time">10:00~10:50</span> </li>
 
-							<li style="border: 1px solid black;"><h3>2교시</h3><span class="class-time">10:00~10:50</span> </li>
+							<li><h3 class="class-days-title">3교시</h3><span class="class-time">11:00~11:50</span> </li>
 
-							<li style="border: 1px solid black;"><h3>3교시</h3><span class="class-time">11:00~11:50</span> </li>
+							<li><h3 class="class-days-title">4교시</h3><span class="class-time">12:00~12:50</span> </li>
 
-							<li style="border: 1px solid black;"><h3>4교시</h3><span class="class-time">12:00~12:50</span> </li>
+							<li><h3 class="class-days-title">5교시</h3><span class="class-time">14:00~14:50</span> </li>
 
-							<li style="border: 1px solid black;"><h3>5교시</h3><span class="class-time">14:00~14:50</span> </li>
+							<li><h3>6교시</h3><span class="class-time">15:00~15:50</span> </li>
 
-							<li style="border: 1px solid black;"><h3>6교시</h3><span class="class-time">15:00~15:50</span> </li>
+							<li><h3>7교시</h3><span class="class-time">16:00~16:50</span> </li>
 
-							<li style="border: 1px solid black;"><h3>7교시</h3><span class="class-time">16:00~16:50</span> </li>
+							<li><h3>8교시</h3><span class="class-time">17:00~17:50</span> </li>
+							
+								<th:block th:each="list,index: ${scheduleAllSelect}">
+							<li th:classappend="${index.index<10}?'T100'+${index.index}:'T10'+${index.index}" class="danceclass blue p-2">
 
-							<li style="border: 1px solid black;"><h3>8교시</h3><span class="class-time">17:00~17:50</span> </li>
+								</li>
+								</th:block>
 
-							<li id="Monday" class="day-title"><h2>월요일</h2></li>
-
-
-							<li  class="danceclass blue" id="test1"></li>
-
-							<li  class="danceclass blue-light" id="test2"></li>
-
-							<li class="danceclass blue" id="test3"></li>
-
-							<li class="danceclass blue-light" id="test4"></li>
-
-							<li class="danceclass blue" id="test5"></li>
-
-							<li class="blue-light" id="test6"></li>
-
-							<li class="danceclass blue" id="test7"></li>
-
-							<li class="danceclass blue-light" id="test8"></li>
-
-
-							<li id="Tuesday" class="day-title"><h2>화요일</h2></li>
-
-							<li class="danceclass blue" id="test9"></li>
-
-
-							<li class="danceclass blue-light" id="test10"></li>
-
-							<li class="danceclass blue" id="test11"></li>
-
-							<li class="danceclass blue-light " id="test12"></li>
-
-							<li class="danceclass blue" id="test13"></li>
-
-							<li class="danceclass blue-light" id="test14"></li>
-
-							<li class="danceclass blue" id="test15"></li>
-
-							<li class="danceclass blue-light" id="test16"></li>
-
-							<li id="Wednesday" class="day-title"><h2>수요일</h2></li>
-
-							<li class="danceclass blue" id="test17"></li>
-
-							<li class="danceclass blue-light" id="test18"></li>
-
-							<li class="danceclass blue" id="test19"></li>
-
-							<li class="danceclass blue-light" id="test20"></li>
-
-							<li class="danceclass blue" id="test21"></li>
-
-							<li class="danceclass blue-light" id="test22"></li>
-
-							<li class="danceclass blue" id="test23"></li>
-
-							<li class="danceclass blue-light" id="test24"></li>
-
-
-							<li id="Thursday" class="day-title"><h2>목요일</h2></li>
-
-							<li class="danceclass blue" id="test25"></li>
-
-							<li class="danceclass blue-light " id="test26"></li>
-
-							<li class="danceclass blue" id="test27"></li>
-
-							<li class="danceclass blue-light " id="test28"></li>
-
-							<li class="danceclass blue" id="test29"></li>
-
-							<li class="danceclass blue-light " id="test30"></li>
-
-							<li class="danceclass blue" id="test31"></li>
-
-							<li class="danceclass blue-light " id="test32"></li>
-
-
-							<li id="Friday" class="day-title"><h2>금요일</h2></li>
-
-							<li class="danceclass blue" id="test33"></li>
-
-							<li class="danceclass blue-light " id="test34"></li>
-
-							<li class="danceclass blue" id="test35"></li>
-
-							<li class="danceclass blue-light " id="test36"></li>
-
-							<li class="danceclass blue" id="test37"></li>
-
-							<li class="danceclass blue-light" id="test38"></li>
-
-							<li class="danceclass blue" id="test39"></li>
-
-							<li class="danceclass blue-light" id="test40"></li>
+						
 						</ol>
 					</div>
 				</section>
@@ -145,308 +68,16 @@
 	<script  th:inline="javascript">
 		
 	[# th:each="list:${scheduleSelect}"]
-	
-	if([[${list.class_timetable_id}]] == 'T1000'){
+	 console.log([[${list.class_timetable_id}]])
 		var test1 = `
 			<span class="class-title">[(${list.course_title})]수업</span>
+			<span class="class-teacher">강의실:[(${list.room_building})] [(${list.room_no})]호</span>
 			<span class="class-teacher">교수:[(${list.user_name})]</span>
-			<span>강의실:[(${list.room_building})] [(${list.room_no})]호</span>`
-			$("#test1").append(test1)
-	}
-
-if([[${list.class_timetable_id}]] == 'T1001'){
-	var test1 = `
-		<span class="class-title">[(${list.course_title})]수업</span>
-		<span class="class-teacher">교수:[(${list.user_name})]</span>
-		<span>강의실:[(${list.room_building})] [(${list.room_no})]호</span>`
-	$("#test2").append(test1)
-}
-
-if([[${list.class_timetable_id}]] == 'T1002'){
-	var test1 = `
-		<span class="class-title">[(${list.course_title})]수업</span>
-		<span class="class-teacher">교수:[(${list.user_name})]</span>
-		<span>강의실:[(${list.room_building})] [(${list.room_no})]호</span>`
-	$("#test3").append(test1)
-}
-if([[${list.class_timetable_id}]] == 'T1003'){
-	var test1 = `
-		<span class="class-title">[(${list.course_title})]수업</span>
-		<span class="class-teacher">교수:[(${list.user_name})]</span>
-		<span>강의실:[(${list.room_building})] [(${list.room_no})]호</span>`
-	$("#test4").append(test1)
-}
-if([[${list.class_timetable_id}]] == 'T1004'){
-	var test1 = `
-		<span class="class-title">[(${list.course_title})]수업</span>
-		<span class="class-teacher">교수:[(${list.user_name})]</span>
-		<span>강의실:[(${list.room_building})] [(${list.room_no})]호</span>`
-	$("#test5").append(test1)
-}
-if([[${list.class_timetable_id}]] == 'T1005'){
-	var test1 = `
-		<span class="class-title">[(${list.course_title})]수업</span>
-		<span class="class-teacher">교수:[(${list.user_name})]</span>
-		<span>강의실:[(${list.room_building})] [(${list.room_no})]호</span>`
-	$("#test6").append(test1)
-}
-if([[${list.class_timetable_id}]] == 'T1006'){
-	var test1 = `
-		<span class="class-title">[(${list.course_title})]수업</span>
-		<span class="class-teacher">교수:[(${list.user_name})]</span>
-		<span>강의실:[(${list.room_building})] [(${list.room_no})]호</span>`
-	$("#test7").append(test1)
-}
-if([[${list.class_timetable_id}]] == 'T1007'){
-	var test1 = `
-		<span class="class-title">[(${list.course_title})]수업</span>
-		<span class="class-teacher">교수:[(${list.user_name})]</span>
-		<span>강의실:[(${list.room_building})] [(${list.room_no})]호</span>`
-	$("#test8").append(test1)
-}
-if([[${list.class_timetable_id}]] == 'T1008'){
-	var test1 = `
-		<span class="class-title">[(${list.course_title})]수업</span>
-		<span class="class-teacher">교수:[(${list.user_name})]</span>
-		<span>강의실:[(${list.room_building})] [(${list.room_no})]호</span>`
-	$("#test9").append(test1)
-}
-if([[${list.class_timetable_id}]] == 'T1009'){
-	var test1 = `
-		<span class="class-title">[(${list.course_title})]수업</span>
-		<span class="class-teacher">교수:[(${list.user_name})]</span>
-		<span>강의실:[(${list.room_building})] [(${list.room_no})]호</span>`
-	$("#test10").append(test1)
-}
-if([[${list.class_timetable_id}]] == 'T1010'){
-	var test1 = `
-		<span class="class-title">[(${list.course_title})]수업</span>
-		<span class="class-teacher">교수:[(${list.user_name})]</span>
-		<span>강의실:[(${list.room_building})] [(${list.room_no})]호</span>`
-	$("#test11").append(test1)
-}
-
-if([[${list.class_timetable_id}]] == 'T1011'){
-	var test1 = `
-		<span class="class-title">[(${list.course_title})]수업</span>
-		<span class="class-teacher">교수:[(${list.user_name})]</span>
-		<span>강의실:[(${list.room_building})] [(${list.room_no})]호</span>`
-	$("#test12").append(test1)
-}
-
-if([[${list.class_timetable_id}]] == 'T1012'){
-	var test1 = `
-		<span class="class-title">[(${list.course_title})]수업</span>
-		<span class="class-teacher">교수:[(${list.user_name})]</span>
-		<span>강의실:[(${list.room_building})] [(${list.room_no})]호</span>`
-	$("#test13").append(test1)
-}
-
-if([[${list.class_timetable_id}]] == 'T1013'){
-	var test1 = `
-		<span class="class-title">[(${list.course_title})]수업</span>
-		<span class="class-teacher">교수:[(${list.user_name})]</span>
-		<span>강의실:[(${list.room_building})] [(${list.room_no})]호</span>`
-	$("#test14").append(test1)
-}
-
-if([[${list.class_timetable_id}]] == 'T1014'){
-	var test1 = `
-		<span class="class-title">[(${list.course_title})]수업</span>
-		<span class="class-teacher">교수:[(${list.user_name})]</span>
-		<span>강의실:[(${list.room_building})] [(${list.room_no})]호</span>`
-	$("#test15").append(test1)
-}
-
-if([[${list.class_timetable_id}]] == 'T1015'){
-	var test1 = `
-		<span class="class-title">[(${list.course_title})]수업</span>
-		<span class="class-teacher">교수:[(${list.user_name})]</span>
-		<span>강의실:[(${list.room_building})] [(${list.room_no})]호</span>`
-	$("#test16").append(test1)
-}
-
-if([[${list.class_timetable_id}]] == 'T1016'){
-	var test1 = `
-		<span class="class-title">[(${list.course_title})]수업</span>
-		<span class="class-teacher">교수:[(${list.user_name})]</span>
-		<span>강의실:[(${list.room_building})] [(${list.room_no})]호</span>`
-	$("#test17").append(test1)
-}
-
-if([[${list.class_timetable_id}]] == 'T1017'){
-	var test1 = `
-		<span class="class-title">[(${list.course_title})]수업</span>
-		<span class="class-teacher">교수:[(${list.user_name})]</span>
-		<span>강의실:[(${list.room_building})] [(${list.room_no})]호</span>`
-	$("#test18").append(test1)
-}
-
-if([[${list.class_timetable_id}]] == 'T1018'){
-	var test1 = `
-		<span class="class-title">[(${list.course_title})]수업</span>
-		<span class="class-teacher">교수:[(${list.user_name})]</span>
-		<span>강의실:[(${list.room_building})] [(${list.room_no})]호</span>`
-	$("#test19").append(test1)
-}
-
-if([[${list.class_timetable_id}]] == 'T1019'){
-	var test1 = `
-		<span class="class-title">[(${list.course_title})]수업</span>
-		<span class="class-teacher">교수:[(${list.user_name})]</span>
-		<span>강의실:[(${list.room_building})] [(${list.room_no})]호</span>`
-	$("#test20").append(test1)
-}
-
-if([[${list.class_timetable_id}]] == 'T1020'){
-	var test1 = `
-		<span class="class-title">[(${list.course_title})]수업</span>
-		<span class="class-teacher">교수:[(${list.user_name})]</span>
-		<span>강의실:[(${list.room_building})] [(${list.room_no})]호</span>`
-	$("#test21").append(test1)
-}
-
-if([[${list.class_timetable_id}]] == 'T1021'){
-	var test1 = `
-		<span class="class-title">[(${list.course_title})]수업</span>
-		<span class="class-teacher">교수:[(${list.user_name})]</span>
-		<span>강의실:[(${list.room_building})] [(${list.room_no})]호</span>`
-	$("#test22").append(test1)
-}
-
-if([[${list.class_timetable_id}]] == 'T1022'){
-	var test1 = `
-		<span class="class-title">[(${list.course_title})]수업</span>
-		<span class="class-teacher">교수:[(${list.user_name})]</span>
-		<span>강의실:[(${list.room_building})] [(${list.room_no})]호</span>`
-	$("#test23").append(test1)
-}
-
-if([[${list.class_timetable_id}]] == 'T1023'){
-	var test1 = `
-		<span class="class-title">[(${list.course_title})]수업</span>
-		<span class="class-teacher">교수:[(${list.user_name})]</span>
-		<span>강의실:[(${list.room_building})] [(${list.room_no})]호</span>`
-	$("#test24").append(test1)
-}
-
-if([[${list.class_timetable_id}]] == 'T1024'){
-	var test1 = `
-		<span class="class-title">[(${list.course_title})]수업</span>
-		<span class="class-teacher">교수:[(${list.user_name})]</span>
-		<span>강의실:[(${list.room_building})] [(${list.room_no})]호</span>`
-	$("#test25").append(test1)
-}
-
-if([[${list.class_timetable_id}]] == 'T1025'){
-	var test1 = `
-		<span class="class-title">[(${list.course_title})]수업</span>
-		<span class="class-teacher">교수:[(${list.user_name})]</span>
-		<span>강의실:[(${list.room_building})] [(${list.room_no})]호</span>`
-	$("#test26").append(test1)
-}
-
-if([[${list.class_timetable_id}]] == 'T1026'){
-	var test1 = `
-		<span class="class-title">[(${list.course_title})]수업</span>
-		<span class="class-teacher">교수:[(${list.user_name})]</span>
-		<span>강의실:[(${list.room_building})] [(${list.room_no})]호</span>`
-	$("#test27").append(test1)
-}
-
-if([[${list.class_timetable_id}]] == 'T1027'){
-	var test1 = `
-		<span class="class-title">[(${list.course_title})]수업</span>
-		<span class="class-teacher">교수:[(${list.user_name})]</span>
-		<span>강의실:[(${list.room_building})] [(${list.room_no})]호</span>`
-	$("#test28").append(test1)
-}
-if([[${list.class_timetable_id}]] == 'T1028'){
-	var test1 = `
-		<span class="class-title">[(${list.course_title})]수업</span>
-		<span class="class-teacher">교수:[(${list.user_name})]</span>
-		<span>강의실:[(${list.room_building})] [(${list.room_no})]호</span>`
-	$("#test29").append(test1)
-}
-if([[${list.class_timetable_id}]] == 'T1029'){
-	var test1 = `
-		<span class="class-title">[(${list.course_title})]수업</span>
-		<span class="class-teacher">교수:[(${list.user_name})]</span>
-		<span>강의실:[(${list.room_building})] [(${list.room_no})]호</span>`
-	$("#test30").append(test1)
-}
-if([[${list.class_timetable_id}]] == 'T1030'){
-	var test1 = `
-		<span class="class-title">[(${list.course_title})]수업</span>
-		<span class="class-teacher">교수:[(${list.user_name})]</span>
-		<span>강의실:[(${list.room_building})] [(${list.room_no})]호</span>`
-	$("#test31").append(test1)
-}
-if([[${list.class_timetable_id}]] == 'T1031'){
-	var test1 = `
-		<span class="class-title">[(${list.course_title})]수업</span>
-		<span class="class-teacher">교수:[(${list.user_name})]</span>
-		<span>강의실:[(${list.room_building})] [(${list.room_no})]호</span>`
-	$("#test32").append(test1)
-}
-if([[${list.class_timetable_id}]] == 'T1032'){
-	var test1 = `
-		<span class="class-title">[(${list.course_title})]수업</span>
-		<span class="class-teacher">교수:[(${list.user_name})]</span>
-		<span>강의실:[(${list.room_building})] [(${list.room_no})]호</span>`
-	$("#test33").append(test1)
-}
-if([[${list.class_timetable_id}]] == 'T1033'){
-	var test1 = `
-		<span class="class-title">[(${list.course_title})]수업</span>
-		<span class="class-teacher">교수:[(${list.user_name})]</span>
-		<span>강의실:[(${list.room_building})] [(${list.room_no})]호</span>`
-	$("#test34").append(test1)
-}
-if([[${list.class_timetable_id}]] == 'T1034'){
-	var test1 = `
-		<span class="class-title">[(${list.course_title})]수업</span>
-		<span class="class-teacher">교수:[(${list.user_name})]</span>
-		<span>강의실:[(${list.room_building})] [(${list.room_no})]호</span>`
-	$("#test35").append(test1)
-}
-if([[${list.class_timetable_id}]] == 'T1035'){
-	var test1 = `
-		<span class="class-title">[(${list.course_title})]수업</span>
-		<span class="class-teacher">교수:[(${list.user_name})]</span>
-		<span>강의실:[(${list.room_building})] [(${list.room_no})]호</span>`
-	$("#test36").append(test1)
-}
-if([[${list.class_timetable_id}]] == 'T1036'){
-	var test1 = `
-		<span class="class-title">[(${list.course_title})]수업</span>
-		<span class="class-teacher">교수:[(${list.user_name})]</span>
-		<span>강의실:[(${list.room_building})] [(${list.room_no})]호</span>`
-	$("#test37").append(test1)
-}
-if([[${list.class_timetable_id}]] == 'T1037'){
-	var test1 = `
-		<span class="class-title">[(${list.course_title})]수업</span>
-		<span class="class-teacher">교수:[(${list.user_name})]</span>
-		<span>강의실:[(${list.room_building})] [(${list.room_no})]호</span>`
-	$("#test38").append(test1)
-}
-if([[${list.class_timetable_id}]] == 'T1038'){
-	var test1 = `
-		<span class="class-title">[(${list.course_title})]수업</span>
-		<span class="class-teacher">교수:[(${list.user_name})]</span>
-		<span>강의실:[(${list.room_building})] [(${list.room_no})]호</span>`
-	$("#test39").append(test1)
-}
-if([[${list.class_timetable_id}]] == 'T1039'){
-	var test1 = `
-		<span class="class-title">[(${list.course_title})]수업</span>
-		<span class="class-teacher">교수:[(${list.user_name})]</span>
-		<span>강의실:[(${list.room_building})] [(${list.room_no})]호</span>`
-	$("#test40").append(test1)
-}
-
-[/] 
+			`
+			$('.'+[[${list.class_timetable_id}]]).append(test1)
+			$('.'+[[${list.class_timetable_id}]]).addClass("danceclass blue-light")
+	[/] 
+	
 		
 </script>
 

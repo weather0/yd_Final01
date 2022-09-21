@@ -25,7 +25,7 @@ public class LectureVO {
 	private String gpaStandardQuiz;
 	private String gpaStandardMid;
 	private String gpaStandardFinal;
-	private int courseGrade;
+	private String courseGrade;
 	
 	
 	// 하경
