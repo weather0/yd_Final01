@@ -77,7 +77,6 @@ public class LectureController {
 	@Autowired
 	EnrolmentService enrolmentService;
 
-	@Value("${spring.servlet.multipart.location}")
 	String filePath;
 
 	Logger logger = LoggerFactory.getLogger(LectureController.class);
@@ -131,7 +130,7 @@ public class LectureController {
 					classFileSyl.getContentType());
 			String fileName = dto.getUuid() + "_" + dto.getFileName();
 			String oriFileName = classFileSyl.getOriginalFilename();
-			File newFileName = new File(fileName);
+			File newFileName = new File("/aa/", fileName);
 			classFileSyl.transferTo(newFileName);
 			vo.setClassSylOriginal(oriFileName);
 			vo.setClassSyl(fileName);
@@ -147,8 +146,8 @@ public class LectureController {
 	public ResponseEntity<Resource> download(@ModelAttribute LectureVO dto) throws IOException {
 
 		System.out.println("ㅎㅇ");
-
-		Path path = Paths.get(filePath + "/" + dto.getClassSyl());
+		System.out.println("!!!!!!!!!!" + dto.getClassSyl());
+		Path path = Paths.get("/aa/" + dto.getClassSyl());
 		String contentType = Files.probeContentType(path);
 		HttpHeaders headers = new HttpHeaders();
 
