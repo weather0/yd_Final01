@@ -6,15 +6,31 @@
 
 <th:block layout:fragment="content">
 	<style>
+@import url('https://fonts.googleapis.com/css2?family=Alice&family=Black+Ops+One&family=Lilita+One&family=Nanum+Gothic+Coding&display=swap');	
 .input-group.input-group-static .form-control, .input-group.input-group-static .form-control:focus
 	{
 	background-image: linear-gradient(0deg, #4d5665 2px, rgba(156, 39, 176, 0)
 		0), linear-gradient(0deg, #d2d2d2 1px, rgba(209, 209, 209, 0) 0);
 }
-.test{
+
+.test {
 	display: flex;
-	justify-content: center;
 }
+
+.selectBox {
+	display: flex;
+}
+
+.mainTopBox {
+	display: flex;
+	justify-content: space-between;
+	flex-direction: row-reverse;
+}
+.table.align-items-center th {
+    text-align: center;
+}
+
+
 </style>
 	<!-- 토스터 -->
 	<link rel="stylesheet"
@@ -40,41 +56,58 @@
 					</div>
 				</div>
 				<div class="card-body">
-					<form action="openlectureSelect">
-						<div class="input-group  input-group-static" id="test">
-						<i class="fa-solid fa-magnifying-glass" style="line-height: 40px;"></i>
-							<select class="majorCk form-control mb-3 w-40" name="majorName">
-								<option>전공선택</option>
-								<th:block th:each="major:${major}">
-									<option th:text="${major.majorName}"
-										th:value="${major.majorName}"></option>
-								</th:block>
-							</select> <input th:value="${#authentication.principal.username}"
-								type="hidden" id="userid" name="userId">
-							<button th:text="검색" class="btn btn-outline-secondary"></button>
+					<div class="mainTopBox">
+						<form action="openlecturelist">
+							<div class="selectBox">
+								<div style="margin-right: 5px;">
+										<select
+										class="majorCk form-select" name="majorName">
+										<option value="">전공선택</option>
+										<th:block th:each="major:${major}">
+											<option th:text="${major.majorName}"
+												th:value="${major.majorName}"></option>
+										</th:block>
+									</select>
+								</div>
+								<div style="margin-right: 5px;">
+								
+										<select class="form-select" name="courseGrade">
+										<option value="">학년선택</option>
+										<option value="1">1학년</option>
+										<option value="2">2학년</option>
+										<option value="3">3학년</option>
+										<option value="4">4학년</option>
+									</select>
+								</div>
+								<input th:value="${#authentication.principal.username}"
+									type="hidden" id="userid" name="userId">
+								<div>
+									<button th:text="검색" class="btn btn btn-secondary"></button>
+								</div>
+							</div>
+						</form>
+						<div class="test">
+							<th:block th:each="geades:${gradesCk}">
+								<h4 style="font-family: 'Nanum Gothic Coding', monospace;" th:text="|나의 총 학점:${geades.courseCredit}점/|" />
+								<h4 style="font-family: 'Nanum Gothic Coding', monospace;" th:text="|선택가능 학점:${18 - geades.courseCredit}점|" />
+							</th:block>
 						</div>
-					</form>
-					<div class="test">
-					<th:block th:each="geades:${gradesCk}">
-						<h4 th:text="|나의 총 학점:${geades.courseCredit}점/|" />
-						<h4 th:text="|선택가능 학점:${18 - geades.courseCredit}점|" />
-					</th:block>
 					</div>
-					<div class="table-responsive p-0 overflow-auto" style="height: 500px">
-						<table
-							class="table align-items-center table table-hover" >
+					<div class="table-responsive p-0 overflow-auto"
+						style="height: 500px">
+						<table class="table align-items-center table table-hover">
 							<thead>
 								<tr>
-									
+
 									<th
 										class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
 										th:text="전공"></th>
 									<th
 										class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
-										th:text="교수"></th>
+										th:text="교과목"></th>
 									<th
 										class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
-										th:text="교과목"></th>
+										th:text="교수"></th>
 									<th
 										class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
 										th:text="이수구분"></th>
@@ -83,7 +116,7 @@
 										th:text="학점"></th>
 									<th
 										class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
-										th:text="학년"></th>	
+										th:text="학년"></th>
 									<th
 										class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
 										th:text="학기"></th>
@@ -92,7 +125,7 @@
 										th:text="|현재신청인원/정원|"></th>
 									<th
 										class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
-										th:text="시간표"></th>	
+										th:text="시간표"></th>
 									<th
 										class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
 										th:text="강의계획서"></th>
@@ -100,28 +133,28 @@
 										class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"></th>
 								</tr>
 							</thead>
-							<tbody>
+							<tbody style="text-align: center;">
 								<tr th:each="data:${openList}">
 									<td th:text="${data.majorName}"></td>
+									<td th:text="${data.courseTitle}" style="font-weight: 900; font-family: 'Nanum Gothic Coding', monospace;"></td>
 									<td th:text="${data.userName}"></td>
-									<td th:text="${data.courseTitle}"></td>
 									<td th:text="${data.courseType}"></td>
 									<td th:text="|${data.courseCredit}학점|"></td>
 									<td th:text="|${data.courseGrade}학년|"></td>
 									<td th:text="|${data.classSem}학기|"></td>
-									<td th:text=|${data.classCk}/${data.classTo}|></td>
-									
+									<td style="text-align: center;" th:text=|${data.classCk}/${data.classTo}|></td>
+
 									<td>
-										
-									<ul style="list-style:none;" th:each="schCk:${classScheduleCk}" th:if="${data.classId} == ${schCk.classId}">
-										<li>
-										<span th:text="${schCk.scheduleTitle}"></span>
-										<span th:text="${schCk.classTimetableName}"></span>
-										</li>
-									</ul>
+										<ul style="list-style: none;" class="p-0"
+											th:each="schCk:${classScheduleCk}"
+											th:if="${data.classId} == ${schCk.classId}">
+											<li style="text-align: center;"><span th:text="${schCk.scheduleTitle}"></span> <span
+												th:text="${schCk.classTimetableName}"></span></li>
+										</ul>
 									</td>
-									
-									<td><i class="fa-solid fa-file"></i><a th:href="${'/download?classSyl='+data.classSyl}"
+
+									<td><i class="fa-solid fa-file"></i><a
+										th:href="${'/download?classSyl='+data.classSyl}"
 										th:text="강의계획서"></a></td>
 
 									<th:block th:each="geades:${gradesCk}">
@@ -133,7 +166,8 @@
 
 												<th:block th:if="${data.classCk} < ${data.classTo}">
 													<td><button class="btn btn btn-secondary btn-sm btn1"
-															th:text="신청" th:data-class_id="${data.classId}" th:data-grade_test="${data.courseGrade}"></button></td>
+															th:text="신청" th:data-class_id="${data.classId}"
+															th:data-grade_test="${data.courseGrade}"></button></td>
 												</th:block>
 
 												<th:block th:if="${data.classCk} >= ${data.classTo}">
@@ -151,7 +185,7 @@
 										</th:block>
 
 										<th:block th:if="${data.majorName} != ${myMajor.userDept}">
-										
+
 											<td><button class="btn btn btn-secondary btn-sm btn3"
 													th:text="신청"></button></td>
 										</th:block>
@@ -175,22 +209,21 @@
 					</div>
 				</div>
 				<div class="card-body">
-					<div class="table-responsive  overflow-auto" style="height: 300px">
-						<table
-							class="table align-items-center table table-hover">
+					<div class="table-responsive p-0  overflow-auto" style="height: 300px">
+						<table class="table align-items-center table table-hover" style="    text-align: center;">
 							<thead>
 								<tr>
-									
+
 									<th
 										class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
 										th:text="전공"></th>
 									<th
 										class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
-										th:text="교수"></th>
+										th:text="교과목"></th>
 									<th
 										class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
-										th:text="교과목"></th>
-									
+										th:text="교수"></th>
+
 									<th
 										class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
 										th:text="이수구분"></th>
@@ -210,23 +243,24 @@
 										class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"></th>
 								</tr>
 							</thead>
-							<tbody>
+							<tbody style="text-align: center;">
 								<tr th:each="data:${enrolmentlist}">
 									<td th:text="${data.major_name}"></td>
+									<td th:text="${data.course_title}" style="font-weight: 900; font-family: 'Nanum Gothic Coding', monospace;"></td>
 									<td th:text="${data.user_name}"></td>
-									<td th:text="${data.course_title}"></td>
 									<td th:text="${data.course_type}"></td>
 									<td th:text="|${data.course_credit}학점|"></td>
 									<td th:text="|${data.class_sem}학기|"></td>
 									<td>
-									<ul style="list-style:none;" th:each="schCk:${classScheduleCk}" th:if="${data.class_id} == ${schCk.classId}">
-										<li>
-										<span th:text="${schCk.scheduleTitle}"></span>
-										<span th:text="${schCk.classTimetableName}"></span>
-										</li>
-									</ul>
+										<ul style="list-style: none;"
+											th:each="schCk:${classScheduleCk}"
+											th:if="${data.class_id} == ${schCk.classId}">
+											<li  style="text-align: center;"><span th:text="${schCk.scheduleTitle}"></span> <span
+												th:text="${schCk.classTimetableName}"></span></li>
+										</ul>
 									</td>
-									<td><i class="fa-solid fa-file"></i><a th:href="${'/download?classSyl='+data.class_syl}"
+									<td><i class="fa-solid fa-file"></i><a
+										th:href="${'/download?classSyl='+data.class_syl}"
 										th:text="강의계획서"></a></td>
 									<td><button class="btn btn btn-secondary btn-sm enbtn"
 											th:text="삭제" th:data-en_class_id="${data.class_id}"></button></td>
