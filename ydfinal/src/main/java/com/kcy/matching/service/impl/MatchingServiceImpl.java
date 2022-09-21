@@ -101,5 +101,11 @@ public class MatchingServiceImpl implements MatchingService {
 		
 	}
 
+	@Override
+	public void gradulChange() {
+		mapper.gradulChange();
+		
+	}
+
 
 }

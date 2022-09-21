@@ -194,18 +194,18 @@
 											data-bs-whatever="NO" th:if="${bill.payHS1 == 0}">1차 분납</button>
 							</div>
 							<div th:if="${payVO.payCount == 'p2'}">
-								<button type="button" class="btn btn-secondary payFirst"
-											data-bs-toggle="modal" data-bs-target="#payFirst"
+								<button type="button" class="btn btn-secondary paySplit"
+											data-bs-toggle="modal" data-bs-target="#paySplit"
 											data-bs-whatever="NO" th:if="${bill.payHS2 == 0} AND ${bill.payHS1 != 0}">2차 분납</button>
 							</div>
 							<div th:if="${payVO.payCount == 'p3'}">
-								<button type="button" class="btn btn-secondary payFirst"
-											data-bs-toggle="modal" data-bs-target="#payFirst"
+								<button type="button" class="btn btn-secondary paySplit"
+											data-bs-toggle="modal" data-bs-target="#paySplit"
 											data-bs-whatever="NO" th:if="${bill.payHS3 == 0} AND ${bill.payHS2 != 0}">3차 분납</button>
 							</div>
 							<div th:if="${payVO.payCount == 'p4'}">
-								<button type="button" class="btn btn-secondary payFirst"
-											data-bs-toggle="modal" data-bs-target="#payFirst"
+								<button type="button" class="btn btn-secondary paySplit"
+											data-bs-toggle="modal" data-bs-target="#paySplit"
 											data-bs-whatever="NO" th:if="${bill.payHYn == 's'} AND ${bill.payHS3 != 0}">4차 분납</button>
 							</div>
 						</div>
@@ -336,7 +336,7 @@
 											<div>
 												<select class="form-control" name="bank2" id="bank2" required>
 													<option value="">입금처를 선택해주세요</option>
-													<option value="농">농협</option>
+													<option value="농협">농협</option>
 													<option value="KB">KB</option>
 												</select>
 											</div>
@@ -366,6 +366,10 @@
 			year.value = date.getFullYear();	
 		} else {			
 			year.value = id;
+		}
+		
+		function sm() {
+			document.billCheck.submit();
 		}
 			
 		$(".change").on("click", function() {
@@ -514,13 +518,7 @@
 					},
 					success : function(result) {
 						if (result == "1") {
-							swal({
-							    title: "전환 완료!",
-							    text: "등록금 일괄 납부로 전환하였습니다.",
-							    icon: "success"
-							}).then(function() {
-								document.location.href = document.location.href;
-							});	
+							alert("일괄 납부로 전환하였습니다")
 						}
 					}					
 				});
@@ -528,10 +526,7 @@
 				return false;
 			}
 		});
-
-		function sm() {
-			document.billCheck.submit();
-		}
+		
 	</script>
 
 	<!-- 본문 end-->
