@@ -107,7 +107,7 @@
 							<tr>
 								<td class="table-secondary">납부기간</td>
 								<td
-									th:text="${#calendars.format(bill.kbs, 'yyyy-MM-dd')}+' ~ '+${#calendars.format(bill.kbe, 'yyyy-MM-dd')}"></td>
+									th:text="${#calendars.format(bill.kbs, 'yyyy-MM-dd')}+' ~ '+${#calendars.format(bill.kbe, 'yyyy-MM-dd')}" colspan="3"></td>
 							</tr>
 						</span>	
 					
@@ -130,7 +130,7 @@
 							<td th:text="${bill.payHS3}" name="amount" id="amount"></td>
 						</span>
 							<td class="table-secondary">납부방식</td>
-							<td><span th:if="${bill.payHType.toString().equals('b')}">일괄납부</span>
+							<td colspan="3"><span th:if="${bill.payHType.toString().equals('b')}">일괄납부</span>
 								<span th:if="${bill.payHType.toString().equals('s1')}">분할납부A</span>
 								<span th:if="${bill.payHType.toString().equals('s2')}">분할납부B</span>
 							</td>
@@ -519,6 +519,7 @@
 					success : function(result) {
 						if (result == "1") {
 							alert("일괄 납부로 전환하였습니다")
+							location.href =  location.href;
 						}
 					}					
 				});
