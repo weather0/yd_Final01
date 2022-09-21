@@ -77,7 +77,6 @@ public class LectureController {
 	@Autowired
 	EnrolmentService enrolmentService;
 
-	String filePath;
 
 	Logger logger = LoggerFactory.getLogger(LectureController.class);
 
@@ -145,8 +144,6 @@ public class LectureController {
 	@GetMapping("/download")
 	public ResponseEntity<Resource> download(@ModelAttribute LectureVO dto) throws IOException {
 
-		System.out.println("ㅎㅇ");
-		System.out.println("!!!!!!!!!!" + dto.getClassSyl());
 		Path path = Paths.get("/aa/" + dto.getClassSyl());
 		String contentType = Files.probeContentType(path);
 		HttpHeaders headers = new HttpHeaders();
