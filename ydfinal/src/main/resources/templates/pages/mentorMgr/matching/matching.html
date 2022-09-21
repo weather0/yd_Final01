@@ -224,7 +224,11 @@
 					jQuery.ajaxSettings.traditional = true;
 				});				
 				if (stuctn > Pmentee) {
-					alert("선택한 학생의 수가 교수가 담당 할 수 있는 학생의 수를 초과했습니다.")					
+					swal({
+					    title: "매칭 불가!",
+					    text: "교수가 담당 할 수 있는 학생의 수를 초과합니다",
+					    icon: "error"
+					})					
 				} else {
 					if(confirm('매칭을 진행하시겠습니까?')) {
 						$.ajax({

@@ -29,5 +29,6 @@ public interface MatchingMapper {
 	public void matchingNo(MatchingChangeVO vo);
 	public void changeStatus(MatchingStdVO vo);
 	public void changeCancel(MatchingChangeVO vo);
+	public void gradulChange();
 	
 }
