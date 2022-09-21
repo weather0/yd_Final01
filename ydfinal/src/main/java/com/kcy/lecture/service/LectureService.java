@@ -16,8 +16,7 @@ public interface LectureService {
 	public void lectureInsertClass(LectureVO vo);
 	
 	public List<OpenLectureVO> openLectureList(OpenLectureVO vo);
-	
-	 public List<OpenLectureVO> majorSelect(OpenLectureVO vo);
+
 	 
 	
 	

@@ -21,7 +21,7 @@
 	<!-- 본문 start -->
 	<div class="container-fluid">
 		<div class="row justify-content-center">
-			<div class="card p-3 me-3 col-10 border border-5">
+			<div class="card p-3 me-3 col-7 border border-5">
 				<div class="card-header p-0 position-relative mt-n4 mb-4 z-index-2">
 					<div
 						class="bg-secondary bg-gradient-secondary shadow-secondary border-radius-lg py-3">
@@ -58,7 +58,7 @@
 						<div class="input-group input-group-outline my-3">
 							<label class="form-label"></label> <select class="form-control"
 								name="payCount" id="payCount" onchange="sm()">
-								<option value="">회차선택</option>
+								<option value="">회차</option>
 								<option value="p1" th:selected="${payVO.payCount}=='p1'">1회차</option>
 								<option value="p2" th:selected="${payVO.payCount}=='p2'"
 									th:if="${bill.payHS1 != 0}">2회차</option>
@@ -107,7 +107,7 @@
 							<tr>
 								<td class="table-secondary">납부기간</td>
 								<td
-									th:text="${#calendars.format(bill.kbs, 'yyyy-MM-dd')}+' ~ '+${#calendars.format(bill.kbe, 'yyyy-MM-dd')}"></td>
+									th:text="${#calendars.format(bill.kbs, 'yyyy-MM-dd')}+' ~ '+${#calendars.format(bill.kbe, 'yyyy-MM-dd')}" colspan="3"></td>
 							</tr>
 						</span>	
 					
@@ -130,7 +130,7 @@
 							<td th:text="${bill.payHS3}" name="amount" id="amount"></td>
 						</span>
 							<td class="table-secondary">납부방식</td>
-							<td><span th:if="${bill.payHType.toString().equals('b')}">일괄납부</span>
+							<td colspan="3"><span th:if="${bill.payHType.toString().equals('b')}">일괄납부</span>
 								<span th:if="${bill.payHType.toString().equals('s1')}">분할납부A</span>
 								<span th:if="${bill.payHType.toString().equals('s2')}">분할납부B</span>
 							</td>
@@ -194,18 +194,18 @@
 											data-bs-whatever="NO" th:if="${bill.payHS1 == 0}">1차 분납</button>
 							</div>
 							<div th:if="${payVO.payCount == 'p2'}">
-								<button type="button" class="btn btn-secondary payFirst"
-											data-bs-toggle="modal" data-bs-target="#payFirst"
+								<button type="button" class="btn btn-secondary paySplit"
+											data-bs-toggle="modal" data-bs-target="#paySplit"
 											data-bs-whatever="NO" th:if="${bill.payHS2 == 0} AND ${bill.payHS1 != 0}">2차 분납</button>
 							</div>
 							<div th:if="${payVO.payCount == 'p3'}">
-								<button type="button" class="btn btn-secondary payFirst"
-											data-bs-toggle="modal" data-bs-target="#payFirst"
+								<button type="button" class="btn btn-secondary paySplit"
+											data-bs-toggle="modal" data-bs-target="#paySplit"
 											data-bs-whatever="NO" th:if="${bill.payHS3 == 0} AND ${bill.payHS2 != 0}">3차 분납</button>
 							</div>
 							<div th:if="${payVO.payCount == 'p4'}">
-								<button type="button" class="btn btn-secondary payFirst"
-											data-bs-toggle="modal" data-bs-target="#payFirst"
+								<button type="button" class="btn btn-secondary paySplit"
+											data-bs-toggle="modal" data-bs-target="#paySplit"
 											data-bs-whatever="NO" th:if="${bill.payHYn == 's'} AND ${bill.payHS3 != 0}">4차 분납</button>
 							</div>
 						</div>
@@ -336,7 +336,7 @@
 											<div>
 												<select class="form-control" name="bank2" id="bank2" required>
 													<option value="">입금처를 선택해주세요</option>
-													<option value="농">농협</option>
+													<option value="농협">농협</option>
 													<option value="KB">KB</option>
 												</select>
 											</div>
@@ -366,6 +366,10 @@
 			year.value = date.getFullYear();	
 		} else {			
 			year.value = id;
+		}
+		
+		function sm() {
+			document.billCheck.submit();
 		}
 			
 		$(".change").on("click", function() {
@@ -514,13 +518,8 @@
 					},
 					success : function(result) {
 						if (result == "1") {
-							swal({
-							    title: "전환 완료!",
-							    text: "등록금 일괄 납부로 전환하였습니다.",
-							    icon: "success"
-							}).then(function() {
-								document.location.href = document.location.href;
-							});	
+							alert("일괄 납부로 전환하였습니다")
+							location.href =  location.href;
 						}
 					}					
 				});
@@ -528,10 +527,7 @@
 				return false;
 			}
 		});
-
-		function sm() {
-			document.billCheck.submit();
-		}
+		
 	</script>
 
 	<!-- 본문 end-->

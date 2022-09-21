@@ -208,19 +208,6 @@ public class BillsController {
 		vo.setId(id);		
 		service.chkPayInsert(vo);
 		return "1";
-	}
-	
-	//개인 인증 + 토큰 발급
-//	@RequestMapping(value="/bankcallBack", produces = "application/json" )
-//	public String bankCallback(@RequestParam Map map, String code, Principal principal, PayVO vo) throws JsonMappingException, JsonProcessingException {
-//		System.out.println("callback===" + map);
-//		String token = OpenBank.getAccessToken(code);
-//		ObjectMapper objectMapper = new ObjectMapper();
-//		JsonNode node = objectMapper.readValue(token, JsonNode.class);
-//		vo.setAccessToken(node.get("access_token").asText());	
-//		vo.setStuId(principal.getName());
-//		service.insertToken(vo);		
-//		return "redirect:billCheck";
-//	}
+	}	
 		
 }
