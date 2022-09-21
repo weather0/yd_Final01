@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class-diagram version="1.2.4" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
+  associations="true" dependencies="false" nesting-relationships="true" router="FAN">  
+  <class id="1" language="java" name="com.kcy.matching.service.impl.MatchingServiceImpl" project="ydfinal" 
+    file="/ydfinal/src/main/java/com/kcy/matching/service/impl/MatchingServiceImpl.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="351" width="355" x="1199" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="2" language="java" name="com.kcy.matching.service.MatchingListVO" project="ydfinal" 
+    file="/ydfinal/src/main/java/com/kcy/matching/service/MatchingListVO.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="639" width="166" x="41" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <interface id="3" language="java" name="com.kcy.matching.service.MatchingService" project="ydfinal" 
+    file="/ydfinal/src/main/java/com/kcy/matching/service/MatchingService.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="333" width="355" x="804" y="878"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <interface id="4" language="java" name="com.kcy.matching.mapper.MatchingMapper" project="ydfinal" 
+    file="/ydfinal/src/main/java/com/kcy/matching/mapper/MatchingMapper.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="333" width="355" x="1199" y="878"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <class id="5" language="java" name="com.kcy.matching.service.MatchingChangeListVO" project="ydfinal" 
+    file="/ydfinal/src/main/java/com/kcy/matching/service/MatchingChangeListVO.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="693" width="217" x="1594" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="6" language="java" name="com.kcy.matching.service.MatchingStdVO" project="ydfinal" 
+    file="/ydfinal/src/main/java/com/kcy/matching/service/MatchingStdVO.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="801" width="205" x="2108" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="7" language="java" name="com.kcy.matching.controller.MatchingController" project="ydfinal" 
+    file="/ydfinal/src/main/java/com/kcy/matching/controller/MatchingController.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="315" width="516" x="453" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="8" language="java" name="com.kcy.matching.service.MatchingVO" project="ydfinal" 
+    file="/ydfinal/src/main/java/com/kcy/matching/service/MatchingVO.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="531" width="166" x="247" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="9" language="java" name="com.kcy.matching.service.MatchingChangeVO" project="ydfinal" 
+    file="/ydfinal/src/main/java/com/kcy/matching/service/MatchingChangeVO.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="747" width="217" x="1851" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="10" language="java" name="com.kcy.matching.service.MatchingProfVO" project="ydfinal" 
+    file="/ydfinal/src/main/java/com/kcy/matching/service/MatchingProfVO.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="423" width="150" x="1009" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <realization id="11">    
+    <end type="SOURCE" refId="1"/>    
+    <end type="TARGET" refId="3"/>  
+  </realization>  
+  <association id="12">    
+    <end type="SOURCE" refId="7" navigable="false">      
+      <attribute id="13" name="service"/>      
+      <multiplicity id="14" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="3" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="15">    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="16" name="mapper"/>      
+      <multiplicity id="17" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="4" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+    sort-features="false" accessors="true" visibility="true">    
+    <attributes public="true" package="true" protected="true" private="true" static="true"/>    
+    <operations public="true" package="true" protected="true" private="true" static="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>
