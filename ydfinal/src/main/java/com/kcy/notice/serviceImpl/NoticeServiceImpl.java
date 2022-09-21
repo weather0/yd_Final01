@@ -51,5 +51,5 @@ public class NoticeServiceImpl implements NoticeService {
 		map.noticeModify(vo);
 		
 	}
-	
+
 }

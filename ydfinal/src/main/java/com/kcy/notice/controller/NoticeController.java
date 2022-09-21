@@ -44,9 +44,7 @@ public class NoticeController {
 	NoticeMapper map;
 	@Autowired
 	NoticeService noticeService;
-	@Value("${spring.servlet.multipart.location}")
-	String filePath;
-	
+
 	// 강좌 코드
 	@ModelAttribute("classId") 
 	public List<NoticeVo> getClassId(Principal principal, NoticeVo vo) {
@@ -78,7 +76,7 @@ public class NoticeController {
 			String fileName = dto.getUuid() + "_" + dto.getFileName();
 			String oriFileName = classNoticeFileSyl.getOriginalFilename();
 			System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!" + classNoticeFileSyl.getOriginalFilename());
-			File newFileName = new File(fileName);
+			File newFileName = new File("/aa/", fileName);
 			classNoticeFileSyl.transferTo(newFileName);
 			vo.setClassNoticeFile(fileName);
 			vo.setClassNoticeOriginal(oriFileName);
@@ -107,7 +105,7 @@ public class NoticeController {
 			String fileName = dto.getUuid() + "_" + dto.getFileName();
 			String oriFileName = classNoticeFileSyl.getOriginalFilename();
 			System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!" + classNoticeFileSyl.getOriginalFilename());
-			File newFileName = new File(fileName);
+			File newFileName = new File("/aa/", fileName);
 			classNoticeFileSyl.transferTo(newFileName);
 			vo.setClassNoticeFile(fileName);
 			vo.setClassNoticeOriginal(oriFileName);
@@ -122,8 +120,9 @@ public class NoticeController {
 	@GetMapping("/noticelist")
 	public String noticelist(Model model, Principal principal, NoticeVo vo) {
 		vo.setUserId(principal.getName());
-		System.out.println("!!!!!!!!!!!!!!!!!" + vo.getClassId());
-		System.out.println("!!!!!!!!!!!!!!!!!!!!!" + vo.getClassNoticeType());
+		String str = principal.getName();
+		String cnRoles = str.substring(2, 3);
+		vo.setCnRoles(cnRoles);
 		model.addAttribute("noticeList", noticeService.noticeList(vo));
 		return "pages/classMgr/noticeList";
 	}
@@ -139,8 +138,8 @@ public class NoticeController {
 	// 파일 다운로드
 	@GetMapping("/noticedownload")
 	public ResponseEntity<Resource> download(@ModelAttribute NoticeVo dto) throws IOException {
-
-		Path path = Paths.get(filePath + "/" + dto.getClassNoticeFile());
+		
+		Path path = Paths.get("/aa/" + dto.getClassNoticeFile());
 		String contentType = Files.probeContentType(path);
 		HttpHeaders headers = new HttpHeaders();
 		
