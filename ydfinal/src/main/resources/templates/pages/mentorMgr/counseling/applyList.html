@@ -227,16 +227,10 @@ td {
 
 
 					});
-
-			 //$('.busquedaSem').hide();
-			  //se clonan radios html
 			  $("div.toolbar").html('<div>'+$('.busquedaSem').html()+'</div>');
-			  //se elimina el elemento clonado
 			  $('.busquedaSem').remove();
-			  //se agrega clase para filtro
 			  $(".fill").addClass("fs");
 			  
-			    //Event Listener for custom radio buttons to filter datatable
 			$('.fs').change(function () {
 			  table1.columns(4).search(this.value).draw();
 			});
