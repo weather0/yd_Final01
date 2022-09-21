@@ -39,75 +39,68 @@
 </head>
 
 <style>
-/* fadein,fadeInDown 애니메이션 정의 */
-@
-keyframes fadein { 0% {
-	opacity: 0;
-}
-
-100
-%
-{
-opacity
-:
-1;
-}
-}
-@
-keyframes fadeInDown { 0% {
-	opacity: 0;
-	transform: translate3d(0, -30%, 0);
-}
-
-to {
-	opacity: 1;
-	transform: translateZ(0);
-}
-
-}
-
-/* 전체화면 fade in */
-body {
-	background: black;
-	animation: fadein 1s;
-}
-/* 로그인창 fade in + 내려오기 */
-.card {
-	position: relative;
-	animation: fadeInDown 1s;
-}
-
-/* 비디오 배경 마스킹 */
-video {
-	-webkit-mask-image: linear-gradient(black 50%, transparent);
-	mask-image: linear-gradient(black 50%, transparent);
-}
-
-/* 로그인 버튼 */
-.bg-gradient-dark {
-	background-image: linear-gradient(195deg, #42424a 0%, #0a2351 100%);
-}
-
-/* 비번찾기 버튼 */
-#goFind {
-	cursor: pointer /* 커서 모양 손가락 */
-}
-
-/* 푸터로고 */
-#KCYfooter {
-	position: absolute;
-	bottom: 0px;
-}
-
-.alert {
-	color: #FA7070;
-	font-size: 12px;
-	font-weight: 700;
-}
-
-.my-4 {
-	margin-top: 0px !important;
-}
+  /* fadein,fadeInDown 애니메이션 정의 */
+  @keyframes fadein {
+    0% {
+      opacity:0;
+    }
+    100% {
+      opacity:1;
+    }
+  }
+  
+  @keyframes fadeInDown {
+    0% {
+        opacity: 0;
+        transform: translate3d(0, -30%, 0);
+    }
+    to {
+        opacity: 1;
+        transform: translateZ(0);
+    }
+  }
+  
+  /* 전체화면 fade in */
+  body {
+    background: black;
+    animation: fadein 1s;
+  }
+  /* 로그인창 fade in + 내려오기 */
+  .card {
+    position: relative;
+    animation: fadeInDown 1s;
+  }
+  
+  /* 비디오 배경 마스킹 */
+  video {
+    -webkit-mask-image: linear-gradient(black 50%, transparent);
+    mask-image: linear-gradient(black 50%, transparent);
+  }
+  
+  /* 로그인 버튼 */
+  .bg-gradient-dark {
+    background-image: linear-gradient(195deg, #42424a 0%, #0a2351 100%);
+  }
+  
+  /* 비번찾기 버튼 */
+  #goFind { 
+    cursor: pointer /* 커서 모양 손가락 */
+  }
+  
+  /* 푸터로고 */
+  #KCYfooter {
+    position: absolute;
+    bottom: 0px;
+  }
+  
+  .alert {
+  	color: #FA7070;
+  	font-size: 12px;
+  	font-weight: 700;
+  }
+  .my-4 {
+  	margin-top: 0px !important;
+  }
 </style>
 
 <body>

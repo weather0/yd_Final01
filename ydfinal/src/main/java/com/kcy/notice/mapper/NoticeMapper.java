@@ -20,4 +20,5 @@ public interface NoticeMapper {
 	
 	// 공지 세부
 	public NoticeVo noticeView(int classNoticeNo);
+	
 }

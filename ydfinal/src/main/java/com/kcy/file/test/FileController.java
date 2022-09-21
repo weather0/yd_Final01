@@ -32,11 +32,6 @@ public class FileController {
 	@Value("${spring.servlet.multipart.location}")
 	String filePath;
 	
-	@GetMapping("/uploadForm")
-	public String uploadForm() {
-		return "uploadForm";
-	}
-	
 	@RequestMapping("/upload")
 	public String upload(@RequestParam("uploadfile") MultipartFile[] uploadfile, Model model) throws IllegalStateException, IOException {
 		
@@ -53,16 +48,6 @@ public class FileController {
 			file.transferTo(newFileName);
 						
 			}				
-//			file.getContentType());
-//			FileDto dto = new FileDto(file.getOriginalFilename(), file.getContentType(), filePath);
-//			list.add(dto);
-//			File newFileName = new File(dto.getFileName());
-//			
-//			try {
-//				file.transferTo(newFileName);
-//			} catch (Exception e) {
-//				e.printStackTrace();
-//			}
 			
 		}
 		model.addAttribute("files", list);
