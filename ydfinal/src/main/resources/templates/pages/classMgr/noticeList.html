@@ -79,10 +79,8 @@ table.type09 td {
           <div class="bg-secondary bg-gradient-secondary shadow-secondary border-radius-lg py-3">
             <h6 class="text-white ps-3 m-0">공지 및 자료 게시판</h6>
           </div>
-        </div>
-        
+        </div>   
    <form name="searchform" autocomplete="off">
-   <input th:value="${#authentication.principal.username}" type="hidden" id="userid">
    <div class="col-md-6 flex">
    <div class="input-group input-group-outline my-3 left" sec:authorize="hasRole('ROLE_STU')">
      <select class="form-control" name="classId">
@@ -124,19 +122,19 @@ table.type09 td {
         </thead>
         <tbody>
            <tr th:each="data : ${noticeList}">
-              <td th:text="${data.class_notice_no}"></td>
+              <td th:text="${data.classNoticeNo}"></td>
               <td>
-              <a th:text="${data.class_notice_title}" th:href="@{/noticeview(classNoticeNo=${data.class_notice_no})}"></a>
+              <a th:text="${data.classNoticeTitle}" th:href="@{/noticeview(classNoticeNo=${data.classNoticeNo})}"></a>
               </td> 
-              <th:block th:if="${data.class_notice_type} == 'noticedata'">
+              <th:block th:if="${data.classNoticeType} == 'noticedata'">
               <td th:text="자료"></td>
               </th:block>
-              <th:block th:unless="${data.class_notice_type} == 'noticedata'">
+              <th:block th:unless="${data.classNoticeType} == 'noticedata'">
               <td th:text="공지"></td>
               </th:block>
-              <td th:text="${data.course_title}"></td>
-              <td th:text="${data.user_name}"></td>
-              <td th:text="${data.class_notice_date}"></td>
+              <td th:text="${data.courseTitle}"></td>
+              <td th:text="${data.userName}"></td>
+              <td th:text="${data.classNoticeDate}"></td>
            </tr>
         </tbody>
   <!-- 본문 end-->

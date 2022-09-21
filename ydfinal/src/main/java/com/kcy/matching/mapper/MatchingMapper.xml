@@ -3,8 +3,14 @@
 <mapper namespace="com.kcy.matching.mapper.MatchingMapper">
 
 <select id="majorbList" resultType="com.kcy.bill.service.MajorbVO">
-	SELECT major_id, major_name 
-	FROM k_major 
+	SELECT m.major_id, m.major_name, COUNT(u.user_type) AS cnt
+	FROM k_users u
+	JOIN k_major m 
+	ON u.user_dept = m.major_name 
+	WHERE user_type = 'ROLE_STU'
+	GROUP BY user_dept
+	<![CDATA[HAVING cnt > 0]]>
+	ORDER BY major_id asc
 </select>
 
 <select id="matchingList" resultType="com.kcy.matching.service.MatchingListVO">
@@ -13,6 +19,7 @@
   		   u.user_dept AS pr_dept, 
   		   ku.user_name AS st_name, 
 		   ku.user_dept AS st_dept, 
+		   ks.student_aca_yn,
 		   m.matching_type, 
 		   m.matching_date
 	FROM k_matching AS m 
@@ -20,6 +27,8 @@
 	ON u.user_id = m.prof_id  
 	JOIN k_users AS ku 
 	ON ku.user_id = m.stu_id
+	JOIN k_students ks 
+	ON ks.stu_id = ku.user_id
 	<where>
 		<if test="userDept != null and userDept != ''">
 			and u.user_dept = #{userDept}
@@ -45,9 +54,9 @@
 	JOIN k_students AS s
 	ON u.user_id = s.stu_id
 	<where>
-	and user_type = 'ROLE_STU'
-	and s.student_prof IS NULL
-	and s.student_aca_yn = '재학'
+		and user_type = 'ROLE_STU'
+		and s.student_prof IS NULL
+		and NOT s.student_aca_yn = '졸업'
 		<if test="stdDept != null and stdDept != ''">
 			and u.user_dept = #{stdDept}
 		</if>			
@@ -188,5 +197,14 @@
 		DELETE FROM k_matching_change 
 		WHERE stu_id = #{stuId}
 </delete>
+
+<update id="gradulChange" parameterType="com.kcy.matching.service.MatchingListVO">
+		UPDATE k_matching m 
+		JOIN k_students s 
+		ON m.stu_id = s.stu_id
+		SET m.matching_type = '2'
+		WHERE m.matching_type = '0'
+		AND s.student_aca_yn = '졸업'
+</update>
 
 </mapper>

@@ -66,6 +66,7 @@
 			kc.course_credit, 
 			kcr.class_to, 
 			kcr.class_sem,
+			kcr.class_syl,
 			kcr.class_syl_original,
 			kcr.class_yn
 			 from k_class_reg kcr 
@@ -126,34 +127,16 @@
 			 where class_id not in  (SELECT class_id  
 			                           from k_class_member 
 			                          where stu_id =#{userId})
+			
+			<if test="majorName != null and majorName != '' ">
+				and j.major_name = #{majorName}
+			</if>
+			<if test="courseGrade != null and courseGrade != ''">
+				and co.course_grade = #{courseGrade}
+			</if>
 			order by class_id
 		</select>
 		
-		
-		<select id="majorSelect" resultType="com.kcy.lecture.service.OpenLectureVO">
-			   SELECT             
-                   c.class_id,
-			       j.major_name, 
-			       u.user_name, 
-			       co.course_title, 
-			       c.course_id, 
-			       co.course_type, 
-			       co.course_credit, 
-			       CONCAT(c.class_sem,'학기') as classSem,
-			       c.class_to, 
-			       c.class_ck, 
-			       c.class_syl
-			  from k_class  as c 
-			  join k_course as co  on c.course_id  = co.course_id 
-			  join k_users  as u   on u.user_id = c.prof_id  
-			  join k_major  as j   on j.major_id = co.major_id 
-			 where class_id not in  (SELECT class_id  
-			                           from k_class_member 
-			                          where stu_id = #{userId} ) and j.major_name = #{majorName}
-			order by class_id
-		
-		
-		</select>
 		
 		<select id="myMajor" resultType="com.kcy.lecture.service.OpenLectureVO">
 		

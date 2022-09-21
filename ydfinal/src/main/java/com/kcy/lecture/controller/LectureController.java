@@ -68,16 +68,15 @@ public class LectureController {
 	MajorMapper majormapper;
 	@Autowired
 	LectureMapper mapper;
-	
+
 	@Autowired
 	TimetableMapper tmapper;
-	
+
 	@Autowired
 	LectureService lectureService;
 	@Autowired
 	EnrolmentService enrolmentService;
-	
-	@Value("${spring.servlet.multipart.location}")
+
 	String filePath;
 
 	Logger logger = LoggerFactory.getLogger(LectureController.class);
@@ -88,25 +87,27 @@ public class LectureController {
 		vo.setUserId(principal.getName());
 		return cmapper.getCourse(vo);
 	}
+
 	// 기준이 되는 모든 강의 시간표를 보내는 부분
 	@ModelAttribute("schedule")
 	public List<ClassScheduleVO> getScheduleDay(ClassScheduleVO vo) {
 		return scmapper.getScheduleDays(vo);
 
 	}
+
 	// 학교에 모든 강의실에 데이터를 보내는 부분
 	@ModelAttribute("room")
 	public List<RoomVO> getRoomId(RoomVO vo) {
 
 		return rmapper.getRoomId(vo);
 	}
+
 	// 전공 이름 데이터를 보내는 부분
 	@ModelAttribute("major")
 	public List<MajorVO> getMajor() {
 
 		return majormapper.majorlist();
 	}
-	
 
 	// 강좌신청 form 보여주는 페이지
 	@GetMapping("/lectureinsert")
@@ -129,7 +130,7 @@ public class LectureController {
 					classFileSyl.getContentType());
 			String fileName = dto.getUuid() + "_" + dto.getFileName();
 			String oriFileName = classFileSyl.getOriginalFilename();
-			File newFileName = new File(fileName);
+			File newFileName = new File("/aa/", fileName);
 			classFileSyl.transferTo(newFileName);
 			vo.setClassSylOriginal(oriFileName);
 			vo.setClassSyl(fileName);
@@ -144,9 +145,7 @@ public class LectureController {
 	@GetMapping("/download")
 	public ResponseEntity<Resource> download(@ModelAttribute LectureVO dto) throws IOException {
 
-		System.out.println("ㅎㅇ");
-
-		Path path = Paths.get(filePath + "/" + dto.getClassSyl());
+		Path path = Paths.get("/aa/" + dto.getClassSyl());
 		String contentType = Files.probeContentType(path);
 		HttpHeaders headers = new HttpHeaders();
 
@@ -164,7 +163,6 @@ public class LectureController {
 		model.addAttribute("ltrList", lectureService.lectureList(null));
 		return "pages/classMgr/admin/LectureList";
 	}
-
 
 	// 강좌신청 승인 하면 업데이트 후 수강신청목록 테이블로 추가하는 부분
 	@PostMapping("/lectureupdate")
@@ -186,22 +184,11 @@ public class LectureController {
 		model.addAttribute("openList", lectureService.openLectureList(vo1));
 		model.addAttribute("enrolmentlist", enrolmentService.enrolmentList(vo));
 		model.addAttribute("gradesCk", enrolmentService.gradesCheck(vo));
-		model.addAttribute("myMajor",mapper.myMajor(vo1));
-		model.addAttribute("classMemberTimeCk",tmapper.classMembertimeselect(vo2));
-		model.addAttribute("classScheduleCk",scmapper.classFindSchedule(null));
-		model.addAttribute("mygrade",mapper.myGrade(vo1));
+		model.addAttribute("myMajor", mapper.myMajor(vo1));
+		model.addAttribute("classMemberTimeCk", tmapper.classMembertimeselect(vo2));
+		model.addAttribute("classScheduleCk", scmapper.classFindSchedule(null));
+		model.addAttribute("mygrade", mapper.myGrade(vo1));
 		return "pages/classMgr/OpenLectureList";
-	}
-	
-	// 수강신청시 자신에 전공에 맞는 강좌만 보여주는 페이지
-	@GetMapping("/openlectureSelect")
-	public String openlectureSelect(Model model,OpenLectureVO vo, EnrolmentVO vo1) {
-		model.addAttribute("enrolmentlist", enrolmentService.enrolmentList(vo1));
-		model.addAttribute("openList",lectureService.majorSelect(vo));
-		model.addAttribute("gradesCk", enrolmentService.gradesCheck(vo1));
-		model.addAttribute("myMajor",mapper.myMajor(vo));
-		model.addAttribute("classScheduleCk",scmapper.classFindSchedule(null));
-		return "pages/classMgr/OpenLectureList"; 
 	}
 
 	// 수강신청페이지에서 수강신청완료 테이블로 데이터 추가하는 부분
@@ -220,43 +207,41 @@ public class LectureController {
 		enrolmentService.enrolmentDelete(vo);
 		return true;
 	}
-	//시간 코드에 맞는 강의 시간표 정보를 보여주는 부분
+
+	// 시간 코드에 맞는 강의 시간표 정보를 보여주는 부분
 	@GetMapping("/schedulelist")
 	@ResponseBody
 	public List<ClassScheduleVO> schedulelist(Model model, ClassScheduleVO vo) {
 		model.addAttribute("list", scmapper.selectschedule(vo));
 		return scmapper.selectschedule(vo);
-		
+
 	}
-	//강좌에 맞는 시간표를 출력
+
+	// 강좌에 맞는 시간표를 출력
 	@GetMapping("/timeselect")
 	@ResponseBody
-	public List<TimetableVO> timeSelect( Model model, TimetableVO vo){
-		model.addAttribute("classTimeCk",tmapper.classtimeselect(vo));
+	public List<TimetableVO> timeSelect(Model model, TimetableVO vo) {
+		model.addAttribute("classTimeCk", tmapper.classtimeselect(vo));
 		return tmapper.classtimeselect(vo);
 	}
-	
-	
-	
-	
-	
-	
-	
-	//행정처가 체크한 시간/강의실을 추가하는 부분
+
+	// 행정처가 체크한 시간/강의실을 추가하는 부분
 	@PostMapping("/scheduleinsert")
 	@ResponseBody
 	public String scheduleInsert(@RequestBody List<ClassScheduleVO> list) {
 		scheduleservice.scheduleAllInsert(list);
 		return "true";
 	}
-	//행정처에서 시간표를 넣었는지 확인하는 부분
+
+	// 행정처에서 시간표를 넣었는지 확인하는 부분
 	@PostMapping("/lectureCheck")
 	@ResponseBody
 	public String lectureCheck(LectureVO vo) {
 		scmapper.lectureCheck(vo);
 		return "true";
 	}
-	//나의 맞는 강의 시간표를 보여주는 페이지
+
+	// 나의 맞는 강의 시간표를 보여주는 페이지
 	@GetMapping("/classScheduleSelect")
 	public String classScheduleSelect(Model model, Principal principal, ClassScheduleVO vo) {
 		vo.setUserId(principal.getName());
@@ -264,9 +249,5 @@ public class LectureController {
 		model.addAttribute("scheduleSelect", scmapper.classScheduleSelect(vo));
 		return "pages/classMgr/ClassScheduleSelect";
 	}
-	
-	
-	
-	
 
 }

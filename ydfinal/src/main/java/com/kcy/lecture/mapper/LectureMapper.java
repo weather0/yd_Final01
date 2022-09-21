@@ -20,8 +20,6 @@ public interface LectureMapper {
 	public void lectureInsertClass(LectureVO vo);
 	//강좌신청 완료 목록
 	public List<OpenLectureVO> openLectureList(OpenLectureVO vo);
-	//전공에 맞게 검색
-    public List<OpenLectureVO> 	majorSelect(OpenLectureVO vo);
     //자기 전공 데이터
     public OpenLectureVO myMajor(OpenLectureVO vo);
     //자기 학년 체크

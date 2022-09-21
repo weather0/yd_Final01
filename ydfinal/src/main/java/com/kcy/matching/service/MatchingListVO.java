@@ -15,6 +15,7 @@ public class MatchingListVO {
 	private Date matchingDate;
 	private String userDept;
 	private String stdDept;
+	private String studentAcaYn;
 	
-
 }
+

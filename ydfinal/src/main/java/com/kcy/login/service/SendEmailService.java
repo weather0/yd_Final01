@@ -82,7 +82,7 @@ public class SendEmailService {
         		+ mailDto.getMessage()
         		+ "</p>"
         		+ "<br><a href=" 
-        		+ "http://localhost/changePw?userEmail=" 
+        		+ "http://kcy.lol/changePw?userEmail=" 
         		+ mailDto.getAddress() 
         		+ " style='text-decoration: none;'>비밀번호 변경</a>"
         		+ "</div>"

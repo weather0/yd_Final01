@@ -17,6 +17,11 @@
 .page-link:focus {
 	box-shadow: 0 0 0 0.2rem rgb(123 128 154/ 25%);
 }
+
+.table td {
+	text-align: center;
+}
+
 </style>
 	<!-- 상단 내비바 -->
 	<th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
@@ -93,7 +98,7 @@
 						</div>
 					</div>
 				</form>
-
+			<div class="table-responsive">
 				<table class="table" id="payCheckInfo" style="width: 100%">
 					<thead>
 						<tr>
@@ -125,6 +130,7 @@
 						</tr>
 					</tbody>
 				</table>
+				</div>
 			</div>
 		</div>
 	</div>
