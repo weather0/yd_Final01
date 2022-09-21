@@ -25,6 +25,14 @@
 .page-link:focus {
 	box-shadow: 0 0 0 0.2rem rgb(123 128 154/ 25%);
 }
+
+.table td {
+	text-align: center;
+}
+
+.table.dataTable thead>tr>th.sorting {
+	text-align: center;
+}
 </style>
 
 	<!-- 상단 내비바 -->
@@ -63,32 +71,34 @@
 						</div>
 					</div>
 				</form>
-				<table class="table" id="matchingStd">				
-					<thead>
-						<tr>							
-							<th>학번</th>
-							<th>이름</th>
-							<th>전공</th>
-							<th>학년</th>
-							<th>연락처</th>
-							<th>학적</th>
-							<th>매칭</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr th:each="std:${matchingStd}">							
-							<td th:text="${std.stuId}"></td>
-							<td th:text="${std.userName}"></td>
-							<td th:text="${std.userDept}"></td>
-							<td th:text="${std.studentGrade}"></td>
-							<td th:text="${std.userPhone}"></td>
-							<td th:text="${std.studentAcaYn}"></td>
-							<td>
-								<input type="checkbox" name="stdchk" id="stdchk" onclick="stdset(this)"> 선택
-							</td>
-						</tr>
-					</tbody>
-				</table>
+				<div class="table-responsive">
+					<table class="table align-items-center" id="matchingStd">				
+						<thead>
+							<tr>							
+								<th>학번</th>
+								<th>이름</th>
+								<th>전공</th>
+								<th>학년</th>
+								<th>연락처</th>
+								<th>학적</th>
+								<th>매칭</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="std:${matchingStd}">							
+								<td th:text="${std.stuId}"></td>
+								<td th:text="${std.userName}"></td>
+								<td th:text="${std.userDept}"></td>
+								<td th:text="${std.studentGrade}"></td>
+								<td th:text="${std.userPhone}"></td>
+								<td th:text="${std.studentAcaYn}"></td>
+								<td>
+									<input type="checkbox" name="stdchk" id="stdchk" onclick="stdset(this)"> 선택
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
 			</div>
 		</div>
 
@@ -102,7 +112,7 @@
 							<h6 class="text-white ps-3 m-0">매칭 가능한 교수 목록</h6>
 						</div>
 					</div>					
-				<iframe name='blankifr' style='display:none;'></iframe>				 
+				<div class="table-responsive">
 					<table class="table" id="matchingProf">
 						<thead>
 							<tr>
@@ -126,7 +136,8 @@
 								</td>
 							</tr>
 						</tbody>
-					</table>					
+					</table>
+				</div>					
 				</div>
 			</div>
 		</div>
@@ -215,7 +226,7 @@
 				var stuctn = $('input[name=stdchk]:checked').length;
 				var prof = ($(this).closest("tr").find("td:eq(0)").text())
 	 			var Pmentee = ($(this).closest("tr").find("td:eq(4)").text())	 			
-	 			var matchingArr = new Array();	 			
+	 			var matchingArr = new Array();
 				checkbox.each(function(i) {
 					tr = checkbox.parent().parent().eq(i);
 					td = tr.children();

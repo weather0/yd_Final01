@@ -25,6 +25,14 @@ label {
   
 }
 
+.table td {
+	text-align: center;
+}
+
+.table.dataTable thead>tr>th.sorting {
+	text-align: center;
+}
+
 span {
   vertical-align: middle;
 }
@@ -86,7 +94,8 @@ span {
 									name="matchingType" id="matchingType">
 									<option value="">매칭 상태</option>
 									<option value="0">매칭중</option>
-									<option value="1">매칭해지</option>									
+									<option value="1">매칭해지</option>
+									<option value="2">졸업생</option>											
 								</select>
 							</div>
 						</div>
@@ -97,7 +106,7 @@ span {
 						</div>
 					</div>
 				</form>
-
+				<div class="table-responsive">
 				<table class="table" id="matchingTable" style="width: 100%">
 					<thead>
 						<tr>
@@ -129,6 +138,7 @@ span {
 						</tr>
 					</tbody>
 				</table>
+				</div>
 			</div>
 			 	<div class="input-group input-group-outline my-3">
 						<button class="btn btn-secondary gradul">졸업생 매칭 상태 변경</button>
