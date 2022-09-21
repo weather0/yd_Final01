@@ -1,5 +1,5 @@
 /////////////////////////////////////////////////////////////////////////////
-// gradle 빌드하기(굳이 안해줘도 됨. 젠킨스로 자동화할거니깐)
+// gradle 빌드하기(굳이 안해줘도 됨. 이제 젠킨스로 자동화할거니깐)
 
 // 방법1: 이클립스
 https://kitty-geno.tistory.com/109
@@ -9,7 +9,7 @@ https://kitty-geno.tistory.com/109
 ydfinal\ 위치에서
 gradlew build
 
-// ydfinal\build\libs 위치에서 cmd로 실행해보자(이클립스 없이도 단독 run 가능함)
+// ydfinal\build\libs 위치에서 cmd로 실행해보자(이제 이클립스 없이도 단독 run이 가능하다)
 java -jar ydfinal-0.0.1-SNAPSHOT.jar
 // 종료
 명령창 아무데나 찍고 Ctrl+C
@@ -17,17 +17,41 @@ java -jar ydfinal-0.0.1-SNAPSHOT.jar
 
 
 /////////////////////////////////////////////////////////////////////////////
-// 아마존 AWS EC2
+// 아마존 AWS EC2 (아마존리눅스2, 아마존우분투 등 프리티어)
 
-// 써드파티 SSH클라이언트로 접속할 경우
-// ec2 인스턴스에 연결 - SSH클라이언트 탭 참고
-chmod 400 kcykey.pem
-ssh -i "kcykey.pem" ec2-user@ec2-3-34-95-242.ap-northeast-2.compute.amazonaws.com
+// 가입할 때 주의! 최종단계에서 '자기EC2키.pem'은 딱 한번 그 때만 다운 받을 수 있다!(분실 주의!)
 
-// 아니면 걍 aws 거 사이트 거기서 시발 주황색 버튼 눌르면 됨 시발 위에꺼 무시
-// 블로그새끼들 시발 SSH클라이언트 접속할 경우라고 시발 명시좀 하지 시발것
-// 하 난 또 주황색버튼 눌러서 이미 접속한 그 창에서 저거 치고 있었네
-// 당연히 거기엔 kcykey.pem이 없지 가상머신이니깐
+// 보안그룹 생성
+AWS EC2 > 네트워크 및 보안 > 보안 그룹 > 보안 그룹 생성 (포트주의!)
+EC2 인스턴스 우클릭 > 보안 > 보안 그룹 변경해서 방금 생성한 거 지정.
+
+// 보안그룹 인바운드 규칙추가 (매우중요!)
+포트범위: 80 추가. 도커쪽에서 8080으로 세팅할 거면 8080도 추가해주자.
+소스: 일단 내 네트워크환경(집,학원 등)에서만 접속하고 싶으면 "내IP"선택. 일반적으로는 공개니깐 Anywhere-IPv4(0.0.0.0) 선택하면 됨.
+
+// 접속하기
+// 방법1: AWS웹사이트에서 바로 접속
+AWS사이트 > EC2 > 인스턴스에 연결: 주황색 '연결'버튼 눌르면 됨
+
+// 방법2: PuTTY로 접속(가장 추천!)
+1. PuTTY Key Generator 실행
+  File > Load Private Key > All Files(*.*)해서 자기EC2키.pem 열기
+  딴 거 건드리지 말고 Save private key(passphrase뭐시기 Warning창 떠도 무시하고 '예'하면 됨)
+  → 자기EC2키.ppk
+
+2. PuTTY 실행 (PuTTY Configuration 세팅)
+  Connection > SSH > Auth탭: Private key file에 자기EC2키.ppk 선택
+  Session탭: Host Name에  ec2-3-37-203-116.ap-northeast-2.compute.amazonaws.com
+    (AWS사이트 > EC2 > 인스턴스에 연결 > SSH클라이언트탭에서 확인 가능)
+    하단 Saved Session에 프리셋으로 Save해놓자.
+    그리고 OPEN!!!
+    → login as: 라고 뜨면 ec2-user 입력
+    → EC2로고 그래픽 뜨면 성공! 
+  *터미널창에 아무것도 안 뜰 경우: EC2 보안그룹 인바운드규칙에 22번포트 Anywhere-IPv4 되어있는지 확인
+
+
+
+
 
 
 // 패키지 업데이트
@@ -59,7 +83,7 @@ $ sudo service docker start
 // Docker 그룹에 sudo 추가
 // (인스턴스 접속 후 도커 바로 제어할 수 있도록
 // = ec2-user를 사용하지 않고도 도커 명령을 실행할 수 있도록
-// = sudo 안치고 docker명령어 입력가능하게 라고 좀 쉽게 말해주지 하..)
+// = 번거롭게 sudo 안치고 docker명령어 입력가능하게 라고 좀 쉽게 말해주지 하..)
 $ sudo usermod -aG docker ec2-user
 $ sudo usermod -a -G docker jenkins // 젠킨스도 해주자
   // 권한 확인
@@ -69,10 +93,6 @@ $ sudo usermod -a -G docker jenkins // 젠킨스도 해주자
 
 // 테스트 실행
 $ docker run hello-world
-
-// 보안그룹 인바운드 규칙추가
-// 포트범위:8080(위에 도커 설정한 것과 일치). 80으로 했어도 여기서 규칙 추가해줘야 함
-// 소스: 일단 내 작업컴(네트워크환경)에서만 접속하고 싶으면 "내IP"선택. 일반적으로는 공개니깐 Anywhere-IPv4(0.0.0.0) 선택하면 됨.
 
 
 
@@ -148,9 +168,10 @@ D:\ci\docker_bat.bat
     Remote directory: /home
     Exec command: 
       docker pull weather0/test_kcy
-      docker rm -f $(docker ps -aq)
-      docker run -dp 8080:80 weather0/test_kcy // 도커이미지 생성: 내로컬 localhost:80 프로젝트 → ec2(최종사용자접속) x.x.x.x:8080 
-      // (그냥 80:80이 젤 낫다. 브라우저가 80은 기본값이라 생략해도 인정하기 때문에)
+      docker rm -f $(docker ps -aq) // 기존 컨테이너를 삭제
+      docker run -dp 8080:80 weather0/test_kcy // 도커이미지 생성: 내로컬 localhost:80 프로젝트 → ec2(최종사용자접속) x.x.x.x:8080
+      // 이 8080을 EC2 보안그룹에서 규칙 추가해줘야 함(위에 설명 참고)
+      // 그냥 80:80이 젤 낫다. 브라우저상 80은 기본값이라 생략해도 접속되기 때문에. 안 그럼 도메인 사서 연결해도 kcy.com:8080 이렇게 쳐야 들어가짐
 
 
 
@@ -160,23 +181,59 @@ D:\ci\docker_bat.bat
 
 
 /////////////////////////////////////////////////////////////////////////////
-// 푸티PuTTy
 
-// SSH EC2접속하기(블로그 참고)
-login as: ec2-user
+
 
 // ECS서버(아마존리눅스2, 아마존우분투등)에서 로그 찍기
 docker ps -a // 여기서 실행중인 컨테이너 ID확인
 docker logs 컨테이너ID // 예. 91512c2846e3
+
+
+
+
+
+
+
+
+/////////////////////////////////////////////////////////////////////////////
+// 서버 띄우고 반드시 처리해야할 후작업
 
 // 로컬에서 잘되는데 서버띄운 사이트에서 특정페이지 안들어가지는 경우!
 (새싹코더 https://jg-han.tistory.com/100)
 컨트롤러에서 return "/pages~~ 여기서 슬래시/빼고 바로 "pages~ 해야 서버 500오류 안 남
 
 
+// DB연결 안되는 경우(도커 이미지에 매퍼.xml파일이 빠져서 올라가는 경우)
+build.gradle에 다음을 추가해주자
+(매퍼.xml 위치가 정석인 resources안에 모여있지 않고 각 기능패키지 안에 들어간 구조인 경우 필수!)
+  sourceSets {
+    main {
+      resources {
+        srcDir "src/main/java"
+      }
+    }
+  }
+
+
+// 파일 업로드 처리 (도커볼륨이용)
+
+
+// 캘린더 일정 등 각종 시간관련 데이터가 UTC기준으로 표시되는 경우
+EC2리눅스 타임존 설정
 
 
 
+
+
+
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////////
+// 도메인 연결
+porkbun에서 A레코드에 탄력적ip추가해주면 끝.
+(구글링 도배되어있는 aws route53 안해도 됨. 그거 유료임)
 
 
 
@@ -210,17 +267,12 @@ $ docker pull {Docker hub id}/{Docker hub repository name}
   // 이미지 확인
   $ docker images
 
-// AWS EC2에서 인바운드 규칙 설정!(중요!)
-AWS EC2 > 네트워크 및 보안 > 보안 그룹 > 보안 그룹 생성 (포트주의!)
-EC2 인스턴스 우클릭 > 보안 > 보안 그룹 변경해서 지정.
+
 
 // 이미지→컨테이너화
 docker run -d -p 8080:8080 {docker hub id}/{docker buh repository name}:latest
   // 컨테이너 확인
   $ docker ps
-
-
-
 
 
 
