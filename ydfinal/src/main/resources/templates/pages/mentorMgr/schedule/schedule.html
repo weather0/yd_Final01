@@ -105,17 +105,17 @@
 							url : "/allSchProc",
 							type : "post",
 							data : {
-								schType : "APPLY"
+								schType : "APPLY",
+								schSubType : "상담-"
 							},
 							dataType : "json",
 							success : function(data) {
-								for(var i = 0; i < data.length ; i++){
-									if(data[i].schTitle.includes('상담')){
-										console.log(data[i].schStart)
-										console.log(data[i].schEnd)
+							
+									
+										console.log(data[0].schStart)
+										console.log(data[0].schEnd)
 										
-									}
-								}
+									
 							}
 						})
 				 		
