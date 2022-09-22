@@ -13,7 +13,6 @@ import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ContentDisposition;
@@ -49,9 +48,6 @@ import com.kcy.lecture.service.OpenLectureVO;
 import com.kcy.lecture.service.RoomVO;
 import com.kcy.lecture.service.TimetableVO;
 import com.kcy.lecture.service.Impl.ScheduleServiceImpl;
-import com.kcy.mentoring.schedule.vo.scheduleVO;
-
-import lombok.RequiredArgsConstructor;
 
 @Controller
 public class LectureController {
