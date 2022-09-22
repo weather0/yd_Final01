@@ -25,8 +25,8 @@ public class SchController {
     // 학사 일정 표시 (모든 사용자)
     @ResponseBody
     @RequestMapping("/allSchProc")
-    public List<Map<?, ?>> allSchProc(String schType) {
-        List<Map<?, ?>> list = service.allSchProc(schType);
+    public List<Map<?, ?>> allSchProc(String schType, String schSubType) {
+        List<Map<?, ?>> list = service.allSchProc(schType, schSubType);
         return list;
     };
     

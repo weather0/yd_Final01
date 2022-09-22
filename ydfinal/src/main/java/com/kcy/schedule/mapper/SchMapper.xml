@@ -9,6 +9,7 @@
    <where>
      sch_type != 'SEMESTER'
      <if test=" schType != null">AND sch_type = #{schType}</if>
+     <if test=" schType != null">AND sch_title LIKE concat('%',#{schSubType},'%')</if>
    </where>
 </select>
 

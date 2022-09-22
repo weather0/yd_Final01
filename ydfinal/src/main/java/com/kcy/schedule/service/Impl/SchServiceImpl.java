@@ -14,8 +14,8 @@ public class SchServiceImpl implements SchService {
     @Autowired SchMapper mapper;
     
     @Override
-    public List<Map<?, ?>> allSchProc(String schType) {
-        return mapper.allSchProc(schType);
+    public List<Map<?, ?>> allSchProc(String schType, String schSubType) {
+        return mapper.allSchProc(schType, schSubType);
     }
 
     @Override
