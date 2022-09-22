@@ -44,18 +44,17 @@
 .btn-dark {
 	width: 63.16px;
 }
+
 .custom-control-label {
-	font-size : 1.2em;
+	font-size: 1.2em;
 }
 
 .form-check {
-	align-items:center;
+	align-items: center;
 }
-
 </style>
 <script>
 	document.addEventListener('DOMContentLoaded', function() {
-
 		$.ajax({
 			url : "/schedules",
 			type : "get",
@@ -64,14 +63,14 @@
 			},
 			dataType : "json",
 			success : function(data) {
+				
 
 				for (var i = 0; i < data.length; i++) {
 					if (data[i].chk === '1') {
 						data[i].color = 'red'
-						data[i].title = '예약중'
+						data[i].title = '마감'
 					} else {
 						data[i].title = ''
-
 					}
 				}
 				fullCalendar(data);
@@ -79,8 +78,8 @@
 		});
 	})
 	function fullCalendar(data) {
+		
 		var calendarEl = document.getElementById('calendar');
-
 		var calendar = new FullCalendar.Calendar(
 				calendarEl,
 				{
@@ -91,9 +90,9 @@
 					headerToolbar : {
 						left : 'prev,next today',
 						center : 'title',
-						right : 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+						right : 'dayGridMonth'
 					},
-					editable : true,
+					editable : false,
 					droppable : true, // this allows things to be dropped onto the calendar
 					drop : function(arg) {
 						if (document.getElementById('drop-remove').checked) {
@@ -102,37 +101,56 @@
 					},
 					selectable : true,
 					selectMirror : true,
+				 	selectAllow: function (info) {
+				 		
+				 		
+			            if(info.start > moment().add(-1,'d')){
+			              return true;
+			            } 
+			        },
+			          
 					select : function(arg) { // 등록 이벤트
-						var today = new Date();
-						const year = today.getFullYear();
-						const month = today.getMonth() + 1;
-						const date = today.getDate();
-
-						var clickDate = new Date(arg.startStr);
-						var now = new Date(
-								`${year}-${month >= 10 ? month : '0' + month}-${date >= 10 ? date : '0' + date}`)
-
-						if (clickDate >= now) {
-							$("#calendar_insert_modal").modal("show");
-						} else {
-							Swal.fire({
-								icon: 'error',
-								title: '이전 일정은 등록이 불가능합니다.',
-								confirmButtonColor: '#3788d8'
-							})
-						}
-
-						var start = arg.startStr;
-						$("#calendar_start_date").val(start);
+						//상담 신청 기간에만 일정 등록 할 수 있게
+						//데이터로 신청 타입과 제목에 상담에 관련된 값을 넘겨서 상담 신청기간을 특정
+						$.ajax({
+							url : "/allSchProc",
+							type : "post",
+							data : {
+								schType : "APPLY",
+								schSubType : "상담-"
+							},
+							dataType : "json",
+							success : function(data) {
+								for(var i = 0 ; i < data.length ; i ++){
+									let sta = moment(data[i].schStart)
+									let end = moment(data[i].schEnd).add(-1,"d")
+									let now = arg.start.getTime()
+									
+									
+										if(sta <= now && now <= end){
+											$("#calendar_insert_modal").modal("show");
+											var start = arg.startStr;
+											$("#calendar_start_date").val(start);
+											
+										} 
+										
+								}
+							
+							}
+						})
+						
+				
+						
+					
 
 					},
 					eventClick : function(info) { // 수정 이벤트
 						calendarSelect(info.event._def.extendedProps.MtrSchId);
-						if(info.event._def.extendedProps.chk == '1'){
+						if (info.event._def.extendedProps.chk == '1') {
 							Swal.fire({
-								icon: 'error',
-								title: '상담 신청이 완료된 일자는 삭제할 수 없습니다.',
-								confirmButtonColor: '#3788d8'
+								icon : 'error',
+								title : '상담 신청이 완료된 일자는 삭제할 수 없습니다.',
+								confirmButtonColor : '#3788d8'
 							})
 							return;
 						}
@@ -144,7 +162,7 @@
 					},
 					dayMaxEvents : true,
 					events : function(info, successCallback) {
-
+						ing();
 						for (var i = 0; i < data.length; i++) {
 
 							data[i].id = data[i].MtrSchId;
@@ -156,12 +174,47 @@
 							data[i].end = data[i].date + "T" + data[i].timeEnd;
 						}
 						successCallback(data);
+					},
+					viewDidMount : function(info){
+						
 					}
 
 				});
+		
+		
+    
 
 		calendar.render();
 	}
+	function ing(){
+		$.ajax({
+			url : "/allSchProc",
+			type : "post",
+			data : {
+				schType : "APPLY",
+				schSubType : "상담-"
+			},
+			dataType : "json",
+			success : function(data) {
+				for(var i = 0 ; i < data.length ; i ++){
+					let sta = moment(data[i].schStart)
+					let end = moment(data[i].schEnd)
+					let aaa = end.diff(sta,"day")
+					
+					if( moment($('td').prop('data-date') >= sta && moment($('td').prop('data-date') < end))){
+						for(var y = 0 ; y < aaa ; y++){
+							let now = moment(data[i].schStart).add(y,'d')
+							let nowDate = now.format('YYYY-MM-DD')
+							$('td[data-date='+nowDate+']').css("background","#FFFFEE")
+
+						}
+					}
+				}
+			}
+		})
+	}
+	
+       
 
 	function calendarInsert() {
 		var cob_check = document
@@ -171,17 +224,17 @@
 
 		var chk_arr = [];
 
-		$("input[name=mtrSchTimecode]:checked").each(function() {
+		$(cob_check).each(function() {
 			var chk = $(this).val();
 			chk_arr.push(chk);
 		})
 
 		if (cob_check.length == 0) {
 			Swal.fire({
-						icon: 'error',
-						title: '체크박스를 하나 이상 선택해주세요~',
-						confirmButtonColor: '#3788d8'
-					})
+				icon : 'error',
+				title : '체크박스를 하나 이상 선택해주세요~',
+				confirmButtonColor : '#3788d8'
+			})
 			return false;
 
 		} else if (cob_check.length > 1) {
@@ -237,9 +290,6 @@
 	}
 
 	function calendarDelete(calendar_id) {
-		if (!confirm("정말 삭제 하시겠습니까? 확인(예) 또는 취소(아니오)를 선택해주세요.")) {
-			return;
-		}
 		$.ajax({
 			url : "/scheduleDelete",
 			type : "get",
@@ -283,59 +333,48 @@
 					</div>
 					<div class="modal-body">
 						<form id="frm" th:action="@{/scheduleInsert}" method="post" class="text-start">
-							<input type="hidden" id="userId" name="userId" th:value="${#authentication.name}"> 
+							<input type="hidden" id="userId" name="userId" th:value="${#authentication.name}">
 							<div class="input-group input-group-static">
-							     <label>신청 날짜</label>
-							     <input type="date" class="form-control" id="calendar_start_date" name="mtrSchDate" required="required" readonly>
-						    </div>
+								<label>신청 날짜</label> <input type="date" class="form-control" id="calendar_start_date" name="mtrSchDate" required="required" readonly>
+							</div>
 							<br />
 							<div class="form-check">
-								<input class="form-check-input" type="checkbox" id="time0" name="mtrSchTimecode" value="0"> 
-								<label class="custom-control-label" for="time0">09:00 ~ 09:50</label> <br />
+								<input class="form-check-input" type="checkbox" id="time0" name="mtrSchTimecode" value="0"> <label class="custom-control-label" for="time0">09:00 ~ 09:50</label> <br />
 							</div>
 							<div class="form-check">
-								<input class="form-check-input" type="checkbox" id="time1" name="mtrSchTimecode" value="1"> 
-								<label class="custom-control-label" for="time1">10:00 ~ 10:50</label> <br />
+								<input class="form-check-input" type="checkbox" id="time1" name="mtrSchTimecode" value="1"> <label class="custom-control-label" for="time1">10:00 ~ 10:50</label> <br />
 							</div>
 							<div class="form-check">
-								<input class="form-check-input" type="checkbox" id="time2" name="mtrSchTimecode" value="2">
-								<label class="custom-control-label" for="time2">11:00 ~ 11:50</label> <br />
+								<input class="form-check-input" type="checkbox" id="time2" name="mtrSchTimecode" value="2"> <label class="custom-control-label" for="time2">11:00 ~ 11:50</label> <br />
 							</div>
-							
+
 							<div class="form-check">
-								<input class="form-check-input" type="checkbox" id="time3" name="mtrSchTimecode" value="3"> 
-								<label class="custom-control-label" for="time3">12:00 ~ 12:50</label> <br />
+								<input class="form-check-input" type="checkbox" id="time3" name="mtrSchTimecode" value="3"> <label class="custom-control-label" for="time3">12:00 ~ 12:50</label> <br />
 							</div>
-							
+
 							<div class="form-check">
-								<input class="form-check-input" type="checkbox" id="time4" name="mtrSchTimecode" value="4">
-								<label class="custom-control-label" for="time4">13:00 ~ 13:50</label> <br />
+								<input class="form-check-input" type="checkbox" id="time4" name="mtrSchTimecode" value="4"> <label class="custom-control-label" for="time4">13:00 ~ 13:50</label> <br />
 							</div>
-							
+
 							<div class="form-check">
-								<input class="form-check-input" type="checkbox" id="time5" name="mtrSchTimecode" value="5">
-								<label class="custom-control-label" for="time5">14:00 ~ 14:50</label> <br />
+								<input class="form-check-input" type="checkbox" id="time5" name="mtrSchTimecode" value="5"> <label class="custom-control-label" for="time5">14:00 ~ 14:50</label> <br />
 							</div>
-							
+
 							<div class="form-check">
-								<input class="form-check-input" type="checkbox" id="time6" name="mtrSchTimecode" value="6">
-								<label class="custom-control-label" for="time6">15:00 ~ 15:50</label> <br />
+								<input class="form-check-input" type="checkbox" id="time6" name="mtrSchTimecode" value="6"> <label class="custom-control-label" for="time6">15:00 ~ 15:50</label> <br />
 							</div>
-							
+
 							<div class="form-check">
-								<input class="form-check-input" type="checkbox" id="time7" name="mtrSchTimecode" value="7">
-								<label class="custom-control-label" for="time7">16:00 ~ 16:50</label> <br />
+								<input class="form-check-input" type="checkbox" id="time7" name="mtrSchTimecode" value="7"> <label class="custom-control-label" for="time7">16:00 ~ 16:50</label> <br />
 							</div>
-							
+
 							<div class="form-check">
-								<input class="form-check-input" type="checkbox" id="time8" name="mtrSchTimecode" value="8">
-								<label class="custom-control-label" for="time8">17:00 ~ 17:50</label> <br />
+								<input class="form-check-input" type="checkbox" id="time8" name="mtrSchTimecode" value="8"> <label class="custom-control-label" for="time8">17:00 ~ 17:50</label> <br />
 							</div>
 							<div class="form-check">
-								<input class="form-check-input" type="checkbox" id="time9" name="mtrSchTimecode" value="9">
-								<label class="custom-control-label" for="time9">18:00 ~ 18:50</label> <br />
+								<input class="form-check-input" type="checkbox" id="time9" name="mtrSchTimecode" value="9"> <label class="custom-control-label" for="time9">18:00 ~ 18:50</label> <br />
 							</div>
-				
+
 							<div class="modal-footer">
 								<button type="button" id="add" class="btn-dark" onclick="calendarInsert();">등록</button>
 								<button type="button" class="btn-dark btn-secondary" data-dismiss="modal" onclick="close1();">닫기</button>

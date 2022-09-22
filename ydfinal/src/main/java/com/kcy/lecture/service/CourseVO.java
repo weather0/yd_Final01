@@ -15,6 +15,7 @@ public class CourseVO {
 	private String courseContent;
 	private String courseType;
 	private int courseCredit;
+	private String courseGrade;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date courseOpenday;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")

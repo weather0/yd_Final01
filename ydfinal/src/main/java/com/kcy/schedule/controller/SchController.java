@@ -3,6 +3,8 @@ package com.kcy.schedule.controller;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.collections4.bag.SynchronizedSortedBag;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,8 +27,9 @@ public class SchController {
     // 학사 일정 표시 (모든 사용자)
     @ResponseBody
     @RequestMapping("/allSchProc")
-    public List<Map<?, ?>> allSchProc() {
-        List<Map<?, ?>> list = service.allSchProc();
+    public List<Map<?, ?>> allSchProc( String schType, String schSubType) {
+    	System.out.println(schType + schSubType);
+    	List<Map<?, ?>> list = service.allSchProc(schType, schSubType);
         return list;
     };
     

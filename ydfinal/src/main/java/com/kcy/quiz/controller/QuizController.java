@@ -41,9 +41,7 @@ public class QuizController {
 	QuizMapper map;
 	@Autowired
 	QuizService quizService;
-	@Value("${spring.servlet.multipart.location}")
-	String filePath;
-	
+
 	// 강좌 코드
 	@ModelAttribute("classId") 
 	public List<QuizVo> getClassId(Principal principal, QuizVo vo) {
@@ -74,7 +72,7 @@ public class QuizController {
 					classQuizFileSyl.getContentType());
 			String fileName = dto.getUuid() + "_" + dto.getFileName();
 			String oriFileName = classQuizFileSyl.getOriginalFilename();
-			File newFileName = new File(fileName);
+			File newFileName = new File("/aa/", fileName);
 			classQuizFileSyl.transferTo(newFileName);
 			vo.setQuizHOriginal(oriFileName);
 			vo.setQuizHFile(fileName);
@@ -148,7 +146,7 @@ public class QuizController {
 					classQuizFileSyl.getContentType());
 			String fileName = dto.getUuid() + "_" + dto.getFileName();
 			String oriFileNmae = classQuizFileSyl.getOriginalFilename();
-			File newFileName = new File(fileName);
+			File newFileName = new File("/aa/", fileName);
 			classQuizFileSyl.transferTo(newFileName);
 			vo.setUserId(principal.getName());
 			vo.setClassId(classId);
@@ -172,7 +170,7 @@ public class QuizController {
 					classQuizFileSyl.getContentType());
 			String fileName = dto.getUuid() + "_" + dto.getFileName();
 			String oriFileNmae = classQuizFileSyl.getOriginalFilename();
-			File newFileName = new File(fileName);
+			File newFileName = new File("/aa/", fileName);
 			classQuizFileSyl.transferTo(newFileName);
 			vo.setUserId(principal.getName());
 			vo.setClassId(classId);
@@ -189,7 +187,7 @@ public class QuizController {
 	@GetMapping("/quizdownload")
 	public ResponseEntity<Resource> download(@ModelAttribute QuizVo dto) throws IOException {
 		
-		Path path = Paths.get(filePath + "/" + dto.getQuizHFile());
+		Path path = Paths.get("/aa/" + dto.getQuizHFile());
 		String contentType = Files.probeContentType(path);
 		HttpHeaders headers = new HttpHeaders();
 		
@@ -206,7 +204,7 @@ public class QuizController {
 	@GetMapping("/quizrdownload")
 	public ResponseEntity<Resource> rdownload(@ModelAttribute QuizVo dto) throws IOException {
 		
-		Path path = Paths.get(filePath + "/" + dto.getQuizRFile());
+		Path path = Paths.get("/aa/" +  dto.getQuizRFile());
 		String contentType = Files.probeContentType(path);
 		HttpHeaders headers = new HttpHeaders();
 		
@@ -225,7 +223,7 @@ public class QuizController {
 	@GetMapping("/quizAcceptdownload")
 	public ResponseEntity<Resource> download2(@ModelAttribute QuizVo dto) throws IOException {
 		
-		Path path = Paths.get(filePath + "/" + dto.getQuizRFile());
+		Path path = Paths.get("/aa/" +  dto.getQuizRFile());
 		String contentType = Files.probeContentType(path);
 		HttpHeaders headers = new HttpHeaders();
 		

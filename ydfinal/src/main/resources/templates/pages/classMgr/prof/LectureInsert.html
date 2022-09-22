@@ -19,7 +19,37 @@
 .test {
 	display: flex;
 	justify-content: flex-start;
-	
+}
+.filebox .upload-name {
+    display: inline-block;
+    height: 40px;
+    padding: 0 10px;
+    vertical-align: middle;
+    border: 1px solid #dddddd;
+    width: 78%;
+    color: #999999;
+    border-radius: 5px;
+}
+.filebox label {
+    display: inline-block;
+    padding: 10px 20px;
+    color: #fff;
+    vertical-align: middle;
+    background-color: #7b809a;
+    cursor: pointer;
+    height: 40px;
+    margin-left: 5px;
+    margin-top: 7px;
+    border-radius: 5px;
+    
+}
+.filebox input[type="file"] {
+    position: absolute;
+    width: 0;
+    height: 0;
+    padding: 0;
+    overflow: hidden;
+    border: 0;
 }
 </style>
 
@@ -41,22 +71,22 @@
 				<form action="lectureinsert" method="post"
 					enctype="multipart/form-data">
 					<div class="test col-8 ">
-					<div style="margin-right: 10px; width: 200px">
-						<select class="form-select" name="courseId" id="courseId">
-							<option value="">교과목 선택</option>
-							<th:block th:each="course : ${course}">
-								<option th:text="${course.courseTitle}"
-									th:value="${course.courseId}"></option>
-							</th:block>
-						</select> 
-					</div>
-					<div style="width: 200px">
-						<select class="form-select" name="classSem">
-							<option>학기 선택</option>
-							<option th:text="1학기" th:value=1></option>
-							<option th:text="2학기" th:value=2></option>
-						</select>
-					</div>
+						<div style="margin-right: 10px; width: 200px">
+							<select class="form-select" name="courseId" id="courseId">
+								<option value="">교과목 선택</option>
+								<th:block th:each="course : ${course}">
+									<option th:text="|${course.courseTitle}/${course.courseGrade}학년|"
+										th:value="${course.courseId}"></option>
+								</th:block>
+							</select>
+						</div>
+						<div style="width: 200px">
+							<select class="form-select" name="classSem">
+								<option>학기 선택</option>
+								<option th:text="1학기" th:value=1></option>
+								<option th:text="2학기" th:value=2></option>
+							</select>
+						</div>
 					</div>
 
 					<div class="input-group input-group-outline my-3">
@@ -64,9 +94,11 @@
 							class="form-control" name="classTitle">
 					</div>
 
-					<div class="input-group input-group-outline my-3">
-						<input type="file" class="form-control" multiple="multiple"
-							name="classFileSyl"> <input type="hidden"
+
+					<div class="filebox">
+						<input class="upload-name" placeholder="업로드할 파일을 선택하시오" multiple="multiple" name="classFileSyl">
+						<label for="file">파일찾기</label> <input type="file" id="file">
+					 <input type="hidden"
 							class="form-control" multiple="multiple" name="classSylOriginal">
 					</div>
 
@@ -83,7 +115,7 @@
 
 
 
-				<p style="font-size: 12px; color:red">*성적 비율은 직접 입력해주세요*</p>
+					<p style="font-size: 12px; color: red">*성적 비율은 직접 입력해주세요*</p>
 					<div class="flex">
 						<div class="col-md-2">
 							<div class="input-group input-group-outline my-3">
@@ -121,5 +153,11 @@
 	<!-- 본문 end-->
 
 	</script>
+	<script type="text/javascript">
+	$("#file").on('change',function(){
+		  var fileName = $("#file").val();
+		  $(".upload-name").val(fileName);
+		});
+</script>
 </th:block>
 </html>

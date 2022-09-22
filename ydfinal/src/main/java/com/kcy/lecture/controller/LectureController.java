@@ -13,7 +13,6 @@ import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ContentDisposition;
@@ -49,9 +48,6 @@ import com.kcy.lecture.service.OpenLectureVO;
 import com.kcy.lecture.service.RoomVO;
 import com.kcy.lecture.service.TimetableVO;
 import com.kcy.lecture.service.Impl.ScheduleServiceImpl;
-import com.kcy.mentoring.schedule.vo.scheduleVO;
-
-import lombok.RequiredArgsConstructor;
 
 @Controller
 public class LectureController {
@@ -77,8 +73,6 @@ public class LectureController {
 	@Autowired
 	EnrolmentService enrolmentService;
 
-	@Value("${spring.servlet.multipart.location}")
-	String filePath;
 
 	Logger logger = LoggerFactory.getLogger(LectureController.class);
 
@@ -131,7 +125,7 @@ public class LectureController {
 					classFileSyl.getContentType());
 			String fileName = dto.getUuid() + "_" + dto.getFileName();
 			String oriFileName = classFileSyl.getOriginalFilename();
-			File newFileName = new File(fileName);
+			File newFileName = new File("/aa/", fileName);
 			classFileSyl.transferTo(newFileName);
 			vo.setClassSylOriginal(oriFileName);
 			vo.setClassSyl(fileName);
@@ -146,9 +140,7 @@ public class LectureController {
 	@GetMapping("/download")
 	public ResponseEntity<Resource> download(@ModelAttribute LectureVO dto) throws IOException {
 
-		System.out.println("ㅎㅇ");
-
-		Path path = Paths.get(filePath + "/" + dto.getClassSyl());
+		Path path = Paths.get("/aa/" + dto.getClassSyl());
 		String contentType = Files.probeContentType(path);
 		HttpHeaders headers = new HttpHeaders();
 

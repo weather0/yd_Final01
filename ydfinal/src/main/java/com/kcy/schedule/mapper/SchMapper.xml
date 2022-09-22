@@ -6,7 +6,11 @@
 <select id="allSchProc" resultType="CustomMap">
   select * 
     from k_schedule
-   where sch_type != 'SEMESTER'
+   <where>
+     sch_type != 'SEMESTER'
+     <if test=" param1 != null">AND sch_type = #{param1}</if>
+     <if test=" param2 != null">AND sch_title LIKE concat('%',#{param2},'%')</if>
+   </where>
 </select>
 
 

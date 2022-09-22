@@ -8,6 +8,11 @@
 /*      background-color: darkgray;  */
 /*      color: white  */
 /*    }  */
+
+   /* 줄바꿈 */
+  .preline {
+    white-space: pre-line;
+  }
 </style>
   <!-- 상단 내비바 -->
   <th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
@@ -21,7 +26,7 @@
           <h6 class="text-white ps-3 m-0">교수 정보</h6>
         </div>
       </div>
-      
+
       <div class="col-lg-3 col-sm-3 mb-4">
         <div class="card ratio ratio-1x1">
           <img th:src="@{ '../aa/userImg/'+ *{userPic} }" 
@@ -65,9 +70,9 @@
 
         </div> <!-- card -->
         
-        <div>[[*{profEdu}]]</div>
-        <div>[[*{profCareer}]]</div>
-        <div>[[*{profPaper}]]</div>
+        <span class="preline">[[*{profEdu}]]</span><hr>
+        <span class="preline">[[*{profCareer}]]</span><hr>
+        <span class="preline">[[*{profPaper}]]</span>
         
       </div> <!-- col -->
 
