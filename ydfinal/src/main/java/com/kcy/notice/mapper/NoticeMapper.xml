@@ -1,119 +1,150 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kcy.notice.mapper.NoticeMapper">
-<!-- 황하경 220831 -->
+	<!-- 황하경 220831 -->
 
 	<!-- 공지 등록 -->
 	<insert id="noticeInsert">
 		INSERT INTO k_class_notice
 		(
-			class_notice_id, 
-			class_id, 
-			class_notice_no, 
-			class_notice_title, 
-			class_notice_con, 
-			class_notice_date, 
-			class_notice_file, 
-			class_notice_original, 
-			class_notice_type
+		class_notice_id,
+		class_id,
+		class_notice_no,
+		class_notice_title,
+		class_notice_con,
+		class_notice_date,
+		class_notice_file,
+		class_notice_original,
+		class_notice_type
 		)
 		VALUES
-		( 
-			NEXTVAL(notice_id_seq), 
-			#{classId}, 
-			NEXTVAL(notice_no_seq), 
-			#{classNoticeTitle}, 
-			#{classNoticeCon}, 
-			date_format(now(), '%Y%m%d'), 
-			#{classNoticeFile}, 
-			#{classNoticeOriginal}, 
-			#{classNoticeType} 
+		(
+		NEXTVAL(notice_id_seq),
+		#{classId},
+		NEXTVAL(notice_no_seq),
+		#{classNoticeTitle},
+		#{classNoticeCon},
+		date_format(now(), '%Y%m%d'),
+		#{classNoticeFile},
+		#{classNoticeOriginal},
+		#{classNoticeType}
 		)
-	<!-- , clasS_id 전공값으로 불러 오기 -->
+		<!-- , clasS_id 전공값으로 불러 오기 -->
 	</insert>
-	
+
 	<!-- 공지 목록 -->
-	<select id="noticeList" resultType="map">
+	<select id="noticeList"
+		resultType="com.kcy.notice.service.NoticeVo">
 		SELECT
-			cn.class_notice_no, 
-			cn.class_notice_type, 
-			cn.class_notice_title, 
-			cn.class_notice_date,
-            cn.class_notice_con,
+		cn.class_notice_no,
+		cn.class_notice_type,
+		cn.class_notice_title,
+		cn.class_notice_date,
+		cn.class_notice_con,
 
-            cs.course_title,
+		cs.course_title,
 
-			c.class_id, 
-			c.prof_id,
+		c.class_id,
+		c.prof_id,
 
-			u.user_id, 
-			u.user_name
-            
+		u.user_name
+
 		FROM
-			k_class_notice as cn
+		k_class_notice as cn
 		JOIN
-			k_class as c
+		k_class as
+		c
 		ON
-			cn.class_id = c.class_id
+		cn.class_id = c.class_id
 		JOIN
-			k_users as u
+		k_users as u
 		ON
-			c.prof_id = u.user_id
-        JOIN
-            k_course as cs
-        ON
-            cs.course_id = c.course_id
+		c.prof_id = u.user_id
+		JOIN
+		k_course as cs
+		ON
+		cs.course_id = c.course_id
+		<choose>
+			<when test="cnRoles == 0">
+				where
+				c.class_id IN (select class_id from
+				k_class_member where stu_id = #{userId})
+			</when>
+			<when test="cnRoles == 2">
+				where
+				c.class_id IN (select class_id from k_class
+				where prof_id = #{userId})
+			</when>
+			<otherwise>
+				where
+				1 = 1
+			</otherwise>
+		</choose>
+		<if test="classId != null and classId != ''">
+			and
+			c.class_id = #{classId}
+		</if>
+		<if test="classNoticeType != null and classNoticeType != ''">
+			and
+			cn.class_notice_type = #{classNoticeType}
+		</if>
 	</select>
-	
+
 	<!-- 공지 수정 -->
 	<update id="noticeModify">
 		UPDATE
-			k_class_notice
+		k_class_notice
 		SET
-			class_notice_title = #{classNoticeTitle}, class_notice_con = #{classNoticeCon}, class_notice_file = #{classNoticeFile}, class_notice_original = #{classNoticeOriginal}
+		class_notice_title =
+		#{classNoticeTitle}, class_notice_con = #{classNoticeCon},
+		class_notice_file = #{classNoticeFile}, class_notice_original =
+		#{classNoticeOriginal}
 		WHERE
-			class_notice_no = #{classNoticeNo}
+		class_notice_no = #{classNoticeNo}
 	</update>
-	
+
 	<!-- 공지 상세보기 -->
-	<select id="noticeView" resultType="com.kcy.notice.service.NoticeVo">
+	<select id="noticeView"
+		resultType="com.kcy.notice.service.NoticeVo">
 		SELECT
-			*
+		*
 		FROM
-			k_class_notice
+		k_class_notice
 		WHERE
-			class_notice_no = #{classNoticeNo}
+		class_notice_no =
+		#{classNoticeNo}
 	</select>
-	
-		<!-- 강좌 코드 -->
-	<select id="getClassId" resultType="com.kcy.notice.service.NoticeVo">
-       SELECT
-			c.class_id, co.course_title, cm.class_member_id
+
+	<!-- 강좌 코드 -->
+	<select id="getClassId"
+		resultType="com.kcy.notice.service.NoticeVo">
+		SELECT
+		c.class_id, co.course_title, cm.class_member_id
 		FROM
-			k_class_member as cm
-        join
-            k_class as c
-        on
-            c.class_id = cm.class_id
-        join
-            k_course as co
-        on
-            co.course_id = c.course_id
+		k_class_member as cm
+		join
+		k_class as c
+		on
+		c.class_id = cm.class_id
+		join
+		k_course as co
+		on
+		co.course_id = c.course_id
 		WHERE
-			cm.stu_id = #{userId}
+		cm.stu_id = #{userId}
 	</select>
-	
-	<select id="getClassIdProf" resultType="com.kcy.quiz.service.QuizVo">
-        SELECT
-			c.class_id, co.course_title
+
+	<select id="getClassIdProf"
+		resultType="com.kcy.quiz.service.QuizVo">
+		SELECT
+		c.class_id, co.course_title
 		FROM
-            k_class as c
-        join
-            k_course as co
-        on
-            co.course_id = c.course_id
-        where
-			c.prof_id = #{userId}
+		k_class as c
+		join
+		k_course as co
+		on
+		co.course_id = c.course_id
+		where
+		c.prof_id = #{userId}
 	</select>
-	
 </mapper>

@@ -143,4 +143,13 @@ public class MatchingController {
 		return "1";
 	}
 	
+	//졸업생 매칭 변경
+	@PostMapping("/gradulChange")
+	@ResponseBody
+	public String gradulChange() {
+		service.gradulChange();
+		return "1";
+	}
+	
+	
 }

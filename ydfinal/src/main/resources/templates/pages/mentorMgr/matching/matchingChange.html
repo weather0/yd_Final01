@@ -21,6 +21,16 @@
 .page-link:focus {
 	box-shadow: 0 0 0 0.2rem rgb(123 128 154/ 25%);
 }
+
+.table td {
+	text-align: center;
+}
+
+.table.dataTable thead>tr>th.sorting {
+	text-align: center;
+}
+
+
 </style>
 
 	<!-- 상단 내비바 -->
@@ -128,45 +138,44 @@
 				</div>
 		
 		
-		<div class="row justify-content-center">      
-			<div id="profList"
-				th:if="${matchingName.studentChangeStatus.toString().equals('0')}">
-				<div class="card p-3 me-3 border border-5">
-					<div class="card-header p-0 position-relative mt-n4 mb-4 z-index-2">
-						<div
-							class="bg-secondary bg-gradient-secondary shadow-secondary border-radius-lg py-3">
-							<h6 class="text-white ps-3 m-0">교수 목록</h6>
+			<div id="profList"	th:if="${matchingName.studentChangeStatus.toString().equals('0')}">
+				<div class="row justify-content-center">      
+					<div class="card p-3 me-3 col-10 border border-5">
+						<div class="card-header p-0 position-relative mt-n4 mb-4 z-index-2">
+							<div
+								class="bg-secondary bg-gradient-secondary shadow-secondary border-radius-lg py-3">
+								<h6 class="text-white ps-3 m-0">교수 목록</h6>
+							</div>
+						</div>
+						<div class="table-responsive">
+						<table class="table align-items-center" id="matchingProf" style="width:100%">
+							<thead>
+								<tr>
+									<th>교번</th>
+									<th>이름</th>
+									<th>전공</th>
+									<th>연구실</th>
+									<th>담당 가능 학생 수</th>
+									<th>선택</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="Prof:${matchingProf}">
+									<td th:text="${Prof.profId}"></td>
+									<td th:text="${Prof.userName}"></td>
+									<td th:text="${Prof.userDept}"></td>
+									<td th:text="${Prof.profLab}"></td>
+									<td th:text="${Prof.mentee}"></td>
+									<td>
+										<button class="btn btn-secondary" onclick="select()">선택</button>
+									</td>
+								</tr>
+							</tbody>
+						</table>
 						</div>
 					</div>
-					<div class="table-responsive">
-					<table class="table align-items-center" id="matchingProf" style="width:100%">
-						<thead>
-							<tr>
-								<th>교번</th>
-								<th>이름</th>
-								<th>전공</th>
-								<th>연구실</th>
-								<th>담당 가능 학생 수</th>
-								<th>선택</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr th:each="Prof:${matchingProf}">
-								<td th:text="${Prof.profId}"></td>
-								<td th:text="${Prof.userName}"></td>
-								<td th:text="${Prof.userDept}"></td>
-								<td th:text="${Prof.profLab}"></td>
-								<td th:text="${Prof.mentee}"></td>
-								<td>
-									<button class="btn btn-secondary" onclick="select()">선택</button>
-								</td>
-							</tr>
-						</tbody>
-					</table>
-					</div>
 				</div>
-			</div>
-		</div>	
+			</div>	
 		
 	
 

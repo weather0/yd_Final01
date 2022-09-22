@@ -150,11 +150,13 @@
 		$(".OK").on("click", function() {
 			var matchingS = ($(this).closest("tr").find("td:first").text())
 			var matchingO = ($(this).closest("tr").find("td:eq(5)").text())
-			var matchingN = ($(this).closest("tr").find("td:eq(8)").text())
+			var matchingN = ($(this).closest("tr").find("td:eq(9)").text())			
 			$.ajax({
 				type : "POST",
 				url : "/changeMatching",
 				data : {
+					Id : matchingS,
+					stuId : matchingS,
 					userId : matchingN,
 					studentId : matchingS,
 					beforeProf : matchingO

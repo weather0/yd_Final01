@@ -20,8 +20,8 @@ public class OpenLectureVO {
 	private int courseCredit;
 	private String courseTitle;
 	private String userDept;
-	private int courseGrade;
-	private int studentGrade;
+	private String courseGrade;
+	private String studentGrade;
 	// 하경
 	private String classSylOriginal;
 	

@@ -3,8 +3,14 @@
 <mapper namespace="com.kcy.bill.mapper.BillsMapper">
 
 <select id="majorbList" resultType="com.kcy.bill.service.MajorbVO">
-	SELECT major_id, major_name 
-	FROM k_major
+	SELECT m.major_id, m.major_name, COUNT(u.user_type) AS cnt
+	FROM k_users u
+	JOIN k_major m 
+	ON u.user_dept = m.major_name 
+	WHERE user_type = 'ROLE_STU'
+	GROUP BY user_dept
+	<![CDATA[HAVING cnt > 0]]>
+	ORDER BY major_id asc
 </select>
 
 <insert id="billsInsert" parameterType="com.kcy.bill.service.BillsVO">
@@ -97,9 +103,8 @@ SELECT #{billId},
 </select>
 
 <insert id="payInsert" parameterType="com.kcy.bill.service.PayVO">
-	INSERT INTO k_pay_h (bill_id, pay_h_bal, pay_id, stu_id, pay_h_grade, pay_h_sem)
+	INSERT INTO k_pay_h (bill_id, pay_id, stu_id, pay_h_grade, pay_h_sem)
 	SELECT  b.bill_id,
-			b.bill_amount,
 			CONCAT(s.stu_id, b.bill_id),
 			s.stu_id, 
 			s.student_grade, 
@@ -116,9 +121,8 @@ SELECT #{billId},
 </insert>
 
 <insert id="chkPayInsert" parameterType="com.kcy.bill.service.PayVO">
-	INSERT INTO k_pay_h (bill_id, pay_h_bal, pay_id, stu_id, pay_h_grade, pay_h_sem)
-	SELECT  b.bill_id,
-			b.bill_amount,
+	INSERT INTO k_pay_h (bill_id, pay_id, stu_id, pay_h_grade, pay_h_sem)
+	SELECT  b.bill_id,			
 			CONCAT(s.stu_id, b.bill_id),
 			s.stu_id, 
 			s.student_grade, 
