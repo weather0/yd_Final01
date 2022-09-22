@@ -58,7 +58,7 @@ td {
 				        "<'row'<'col-sm-12'tr>>" +
 				        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
 						orderMulti: true,
-						scrollY: 550,
+						scrollY: 450,
 						ajax: {
 							url: "/applyList",
 							type: "POST",
@@ -101,7 +101,7 @@ td {
 									} else if (data == 'end') {
 										var data = '상담종료'
 									} else if (data == 'fill') {
-										var data = '일지작성필요'
+										var data = '일지작성'
 									} else if (data == 'com') {
 										var data = '상담완료'
 									}
@@ -519,7 +519,7 @@ td {
 
 	<div class="container-fluid ">
 
-		<div class="row justify-content-center" style="margin: 6px">
+		<div class="row justify-content-center mt-3" style="margin: 6px">
 			<div class="card py-3 col-10">
 				<div class="card-header p-0 position-relative mt-n4 mb-4 z-index-2">
 					<div class="bg-secondary bg-gradient-secondary shadow-secondary border-radius-lg py-3">
@@ -532,7 +532,7 @@ td {
 							<th>이름</th>
 							<th>회차</th>
 							<th>상담일자</th>
-							<th>상담시작시간</th>
+							<th>시작시간</th>
 							<th>진행현황</th>
 							<th>진행현황(숫자)</th>
 							<th>상담일지</th>
