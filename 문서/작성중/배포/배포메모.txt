@@ -50,9 +50,20 @@ AWS사이트 > EC2 > 인스턴스에 연결: 주황색 '연결'버튼 눌르면 
   *터미널창에 아무것도 안 뜰 경우: EC2 보안그룹 인바운드규칙에 22번포트 Anywhere-IPv4 되어있는지 확인
 
 
+// 타임존 변경
+$ sudo su - root // 루트계정으로 변경
+$ sudo rm /etc/localtime
+$ sudo ln -s /usr/share/zoneinfo/Asia/Seoul /etc/localtime
+$ date // 타임존 확인
+  // 재부팅해도 고정되게
+  $ vim /etc/sysconfig/clock 파일 열어서
+  ZONE="Asia/Seoul" 로 수정저장(vi편집기 사용법 알제?)
+  // 인스턴스 재부팅하고 $ date로 확인해보자
 
 
 
+/////////////////////////////////////////////////////////////////////////////
+// docker (EC2리눅스에서 작업)
 
 // 패키지 업데이트
 $ sudo yum update -y
@@ -86,13 +97,51 @@ $ sudo service docker start
 // = 번거롭게 sudo 안치고 docker명령어 입력가능하게 라고 좀 쉽게 말해주지 하..)
 $ sudo usermod -aG docker ec2-user
 $ sudo usermod -a -G docker jenkins // 젠킨스도 해주자
-  // 권한 확인
-  $ docker ps
+  // 컨테이너 확인
+  $ docker ps -a
   // 실행중 도커서비스 확인
   $ docker info
 
-// 테스트 실행
-$ docker run hello-world
+// 테스트 실행(이미지 생성하면서 컨테이너 내부로 접속)
+$ docker run hello-world(이미지 이름)
+
+// 컨테이너에서 빠져나오기
+정지하면서 나오기: exit 또는 Ctrl+D
+정지안하고 나오기: Ctrl+P,Q
+
+// 이미 존재하는 컨테이너 실행
+$ docker start 컨테이너ID(예: 9cfe375d59b5)
+
+// 이미 실행중인 컨테이너 정지
+$ docker stop 컨테이너ID(예: 9cfe375d59b5)
+
+// 이미 실행중인 컨테이너 접속
+$ docker exec -it 컨테이너ID /bin/bash
+→ 터미널명령 주체가 root@컨테이너ID로 바뀜
+
+// 컨테이너 타임존 확인
+접속전이면: $ docker exec 컨테이너ID date
+접속상태면: date
+
+// 컨테이너 타임존 변경
+방법1: /etc/localtime 마운트(구글링)
+방법2: TZ변수 수정
+  run할때 -e TZ=Asia/Seoul 옵션 추가
+
+
+
+// 도커볼륨 생성 및 마운트
+$ docker volume create kcy-vol // kcy-vol명으로 볼륨 생성
+$ docker volume ls // 볼륨 목록 확인
+$ docker volume inspect kcy-vol // 볼륨 정보 확인
+  // 도커 안에 볼륨이라는 상시 고정 영역이 생겨서 젠킨스빌드작업 새로 해도 그 안의 데이터는 살아있음
+  // = 파일 업로드 용(간이파일서버)으로 쓸수 있다 이말임
+
+
+
+// 콘솔로그 찍기
+docker logs 컨테이너ID
+
 
 
 
@@ -167,30 +216,21 @@ D:\ci\docker_bat.bat
   Transfers
     Remote directory: /home
     Exec command: 
-      docker pull weather0/test_kcy
+      docker pull weather0/test_kcy // weather0/test_kcy 이미지를 pull
       docker rm -f $(docker ps -aq) // 기존 컨테이너를 삭제
-      docker run -dp 8080:80 weather0/test_kcy // 도커이미지 생성: 내로컬 localhost:80 프로젝트 → ec2(최종사용자접속) x.x.x.x:8080
-      // 이 8080을 EC2 보안그룹에서 규칙 추가해줘야 함(위에 설명 참고)
-      // 그냥 80:80이 젤 낫다. 브라우저상 80은 기본값이라 생략해도 접속되기 때문에. 안 그럼 도메인 사서 연결해도 kcy.com:8080 이렇게 쳐야 들어가짐
+      docker run -v kcy-vol:/aa -e TZ=Asia/Seoul -dp 8080:80 weather0/test_kcy 
+      // run: 도커이미지 실행
+      // -dp: 내로컬 localhost:80 프로젝트 → ec2(최종사용자접속) x.x.x.x:8080
+        // 이 8080을 EC2 보안그룹에서 규칙 추가해줘야 함(위에 설명 참고)
+        // 그냥 80:80이 젤 낫다. 브라우저상 80은 기본값이라 생략해도 접속되기 때문에. 안 그럼 도메인 사서 연결해도 kcy.com:8080 이렇게 쳐야 들어가짐
+      // -v kcy-vol:/aa: 도커볼륨 kcy-vol의 /aa/폴더를 사용하겠다 지정
+      // -e TZ=Asia/Seoul: 타임존을 서울로 설정
 
 
 
 // 일단 이 시점에서 테스트로 한번 지금 빌드 해보자
   "지금 빌드" 실행:
     (혹시나 fail 뜨면 docker desktop 프로그램 켜자.)
-
-
-/////////////////////////////////////////////////////////////////////////////
-
-
-
-// ECS서버(아마존리눅스2, 아마존우분투등)에서 로그 찍기
-docker ps -a // 여기서 실행중인 컨테이너 ID확인
-docker logs 컨테이너ID // 예. 91512c2846e3
-
-
-
-
 
 
 
@@ -218,13 +258,9 @@ build.gradle에 다음을 추가해주자
 // 파일 업로드 처리 (도커볼륨이용)
 
 
-// 캘린더 일정 등 각종 시간관련 데이터가 UTC기준으로 표시되는 경우
-EC2리눅스 타임존 설정
 
-
-
-
-
+// 풀캘린더 일정 등 각종 시간관련 데이터 +9시간으로 뜨는 경우(로컬판이랑 실시간으로 차이날때)
+EC2리눅스 타임존 KST로 설정 + 도커 타임존 KST로 설정(위에 매뉴얼 참고)
 
 
 
@@ -234,6 +270,18 @@ EC2리눅스 타임존 설정
 // 도메인 연결
 porkbun에서 A레코드에 탄력적ip추가해주면 끝.
 (구글링 도배되어있는 aws route53 안해도 됨. 그거 유료임)
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
