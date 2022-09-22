@@ -109,8 +109,13 @@
 							},
 							dataType : "json",
 							success : function(data) {
-								console.log(data[0].schTitle)
-								console.log(data[0].schType)
+								for(var i = 0; i < data.length ; i++){
+									if(data[i].schTitle.includes('상담')){
+										console.log(data[i].schStart)
+										console.log(data[i].schEnd)
+										
+									}
+								}
 							}
 						})
 				 		
