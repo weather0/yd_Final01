@@ -18,8 +18,8 @@
       $('option:disabled').css('background-color','lightgray');
       
       // 초기화면 로딩시 휴학 필수항목 세팅
-      $('#leaveReason input').attr('required', true);
-      $('#leavePeriod select').attr('required', true);
+//       $('#leaveReason input').attr('required', true);
+//       $('#leavePeriod select').attr('required', true);
       
       
       // 휴,복학,자퇴 신청폼 양식 전환
@@ -28,21 +28,21 @@
           $('#table2 tr:eq(2) td:first-child').text('휴학구분');
           $('#table2 tr:gt(1)').removeClass('d-none');
           $('#table2 tr:eq(1)').addClass('d-none');
-          $('#leaveReason input').prop('required', true); // checked, selected, required 같은 상태변화 관련 옵션은 attr보다 prop을 사용하자!(비슷한 듯 다르다고. 구글링ㄱㄱ)
-          $('#leavePeriod select').prop('required', true);
+//           $('#leaveReason input').prop('required', true); // checked, selected, required 같은 상태변화 관련 옵션은 attr보다 prop을 사용하자!(비슷한 듯 다르다고. 구글링ㄱㄱ)
+//           $('#leavePeriod select').prop('required', true);
         }
         if(this.value == "복학"){
           $('#table2 tr:eq(1)').removeClass('d-none');
           $('#table2 tr:gt(1)').addClass('d-none');
           $('#leaveReason input').removeAttr('required');
           $('#leavePeriod select').removeAttr('required');
-          $('#returnPeriod select').prop('required', true);
+//           $('#returnPeriod select').prop('required', true);
         }
         if(this.value == "자퇴"){
           $('#table2 tr:eq(2) td:first-child').text('자퇴구분');
           $('#table2 tr:gt(1)').removeClass('d-none');
           $('#table2 tr:eq(1), #table2 tr:eq(3)').addClass('d-none');
-          $('#leaveReason input').prop('required', true);
+//           $('#leaveReason input').prop('required', true);
           $('#leavePeriod select').removeAttr('required');
           $('#returnPeriod select').removeAttr('required');
           
