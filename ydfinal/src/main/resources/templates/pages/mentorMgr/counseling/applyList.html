@@ -184,7 +184,7 @@ td {
 								$(row).children('td:nth-child(6)').children().attr('disabled', true).css("background-color", "#5975a4");
 							}
 
-							if (data.mtrStatus == 'can') {
+							if (data.mtrStatus == 'can' || data.mtrStatus == 'ing') {
 								$(row).children('td:nth-child(7)').children().attr('disabled', true).css("background-color", "#5975a4");
 							}
 
@@ -520,7 +520,7 @@ td {
 	<div class="container-fluid ">
 
 		<div class="row justify-content-center mt-3" style="margin: 6px">
-			<div class="card py-3 col-10">
+			<div class="card py-3 col-11">
 				<div class="card-header p-0 position-relative mt-n4 mb-4 z-index-2">
 					<div class="bg-secondary bg-gradient-secondary shadow-secondary border-radius-lg py-3">
 						<h6 class="text-white ps-3 m-0">상담신청 이력관리</h6>

@@ -77,6 +77,7 @@
 		});
 	})
 	function fullCalendar(data) {
+		
 		var calendarEl = document.getElementById('calendar');
 		var calendar = new FullCalendar.Calendar(
 				calendarEl,
@@ -99,18 +100,25 @@
 					},
 					selectable : true,
 					selectMirror : true,
-					 selectAllow: function (info) {
-				            if(info.start > moment().add(-1,'d')){
-				              return true;
-				            } else {
-				            	Swal.fire({
-									icon : 'error',
-									title : '이전 일정은 등록이 불가능합니다.',
-									confirmButtonColor : '#3788d8'
-								})
-				            }
-				          },
-				          
+				 	selectAllow: function (info) {
+				 		$.ajax({
+							url : "/allSchProc",
+							type : "post",
+							data : {
+								schType : "APPLY"
+							},
+							dataType : "json",
+							success : function(data) {
+								console.log(data[0].schTitle)
+								console.log(data[0].schType)
+							}
+						})
+				 		
+			            if(info.start > moment().add(-1,'d')){
+			              return true;
+			            } 
+			        },
+			          
 					select : function(arg) { // 등록 이벤트
 				
 						
