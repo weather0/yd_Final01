@@ -249,6 +249,7 @@
           
           // 이벤트 꾸미기
           eventContent: function(arg) {
+            console.log(arg.event)
             // 이벤트막대 밖으로 타이틀이 삐져나오는 거 방지(이거 꼭 해줘야 빈칸이랑 이벤이랑 확실히 구분됨)
             $('.fc-event-main').css('overflow','hidden'); 
             
