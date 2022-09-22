@@ -110,12 +110,20 @@
 							},
 							dataType : "json",
 							success : function(data) {
-							
+								for(var i = 0 ; i < data.length ; i ++){
+									let sta = new Date(data[i].schStart)
+									let end = new Date(data[i].schEnd)
+										console.log(sta)
 									
-										console.log(data[0].schStart)
-										console.log(data[0].schEnd)
-										
+										if(data[i].schStart < info.start && info.start >= data[i].schEnd){
+										console.log(info.start)
+										console.log(data[i].schStart)
+						              return true;
+											
+										}
+								}
 									
+		
 							}
 						})
 				 		
