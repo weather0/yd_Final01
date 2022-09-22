@@ -299,8 +299,8 @@
 				}
 
 				//학점이랑 내가 선택한 시간표랑 비교 하여 같으면 JSON타입으로 만들어서 INSERT로 넘겨서 추가하는 부분이다
-				else if (classTimetableId.length > 1
-						&& classTimetableId.length == courseCredit) {
+				else if (
+						classTimetableId.length == courseCredit) {
 					var testList = new Array();
 					for (var i = 0; i < classTimetableId.length; i++) {
 
