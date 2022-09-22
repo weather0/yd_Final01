@@ -6,8 +6,8 @@
 <select id="allSchProc" resultType="CustomMap">
   select * 
     from k_schedule
-   where sch_type != 'SEMESTER'
    <where>
+     sch_type != 'SEMESTER'
      <if test=" schType != null">AND sch_type = #{schType}</if>
    </where>
 </select>
