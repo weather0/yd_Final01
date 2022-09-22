@@ -13,6 +13,11 @@
 .page-link:focus {
 	box-shadow: 0 0 0 0.2rem rgb(123 128 154/ 25%);
 }
+.test{
+	display: flex;
+	justify-content: flex-end;
+	margin-top: 5px;
+}
 
 </style>
 
@@ -32,10 +37,10 @@
 					</div>
 
 					<form action="studentinchargelist">
-							
-						<div class="input-group input-group-static mt-2" id="test">
-						<i class="fa-solid fa-magnifying-glass" style="line-height: 40px;"></i>
-							<select class="form-control mb-3 w-3"
+						<div class="test">
+						 <div class="w-20" style="margin-right: 5px; display: flex;">
+						<span><i class="fa-solid fa-magnifying-glass" style="line-height: 40px;"></i></span>
+							<select class="form-select mb-3"
 								name="classId">
 								<option value="">강좌선택</option>
 								<th:block th:each="classId : ${classId}">
@@ -43,9 +48,11 @@
 										th:value="${classId.classId}"></option>
 								</th:block>
 							</select>
-							
+						</div>
+						<div>
 							<button class="btn btn-outline-secondary" type="submit"
 								id="button-addon2">검색</button>
+						</div>							
 						</div>
 					</form>
 					

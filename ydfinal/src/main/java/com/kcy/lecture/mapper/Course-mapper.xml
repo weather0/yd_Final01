@@ -4,7 +4,7 @@
 
 	<select id="getCourse" resultType="com.kcy.lecture.service.CourseVO">
 	
-		SELECT c.course_title,c.course_id
+		SELECT c.course_title,c.course_id,c.course_grade
 		from k_course as c join k_major as m on c.major_id = m.major_id
 		JOIN k_users as u on u.user_dept = m.major_name 
 		where u.user_id = #{userId};
