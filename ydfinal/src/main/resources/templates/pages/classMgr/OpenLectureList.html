@@ -286,7 +286,6 @@
 	 [# th:each="time:${classMemberTimeCk}"]
 		classMemberTime.push([[${time.classTimetableId}]])
 	 [/]
-	 	console.log(classMemberTime)
 	
 	
 	
@@ -299,8 +298,6 @@
 			var id = $("#userid").val()
 			var test = $(this).data("grade_test")
 			var test1 = [[${mygrade.studentGrade}]]
-			console.log(test)
-			console.log(test1)
 			$.ajax({
 				url:"/timeselect",
 				data:{
@@ -312,7 +309,6 @@
 					for(var i=0;i<data.length; i++ ){
 						classTime.push(data[i].classTimetableId);
 					}			
-						console.log(classTime);
 						
 						
 						var timeCk=false;

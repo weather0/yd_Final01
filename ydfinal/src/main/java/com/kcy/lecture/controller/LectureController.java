@@ -176,13 +176,13 @@ public class LectureController {
 
 		// 한 페이지에서 수강신청과 수강신청완료 페이지를 보여주기 위해서 두 데이터를 같이 넘긴다
 		// gradesCheck는 총 학점을 체크하기 위한 데이터를 보내는 부분
-		model.addAttribute("openList", lectureService.openLectureList(vo1));
-		model.addAttribute("enrolmentlist", enrolmentService.enrolmentList(vo));
-		model.addAttribute("gradesCk", enrolmentService.gradesCheck(vo));
-		model.addAttribute("myMajor", mapper.myMajor(vo1));
-		model.addAttribute("classMemberTimeCk", tmapper.classMembertimeselect(vo2));
-		model.addAttribute("classScheduleCk", scmapper.classFindSchedule(null));
-		model.addAttribute("mygrade", mapper.myGrade(vo1));
+		model.addAttribute("openList", lectureService.openLectureList(vo1));//수강신청 목록
+		model.addAttribute("enrolmentlist", enrolmentService.enrolmentList(vo));//수강신청 완료 목록
+		model.addAttribute("gradesCk", enrolmentService.gradesCheck(vo));//총 학점 체크
+		model.addAttribute("myMajor", mapper.myMajor(vo1));//전공 체크
+		model.addAttribute("classMemberTimeCk", tmapper.classMembertimeselect(vo2)); //유저가 신청한 강좌에 시간표
+		model.addAttribute("classScheduleCk", scmapper.classFindSchedule(null)); //강좌 시간표 체크
+		model.addAttribute("mygrade", mapper.myGrade(vo1));  //학년체크
 		return "pages/classMgr/OpenLectureList";
 	}
 

@@ -128,7 +128,6 @@
 		var stuId= [];
 		
 		
-		console.log(classId);
 		
 		for(var i=0; i<test.length; i++){
 		 test1="attendance" + i;
@@ -136,7 +135,6 @@
 				attnType.push($(this).val());
 			})
 		}
-			console.log(attnType);
 			
 			[# th:each="list : ${list}"]
 			 stuId.push([[${list.stu_id}]])
@@ -154,7 +152,6 @@
 				attendanceList.push(data);
 			}
 			var jsonData = JSON.stringify(attendanceList);
-			console.log(jsonData);
 		
 		$.ajax({
 			url:"/attendanceInsert",

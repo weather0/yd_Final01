@@ -201,9 +201,7 @@
 			$(document).ready(function() {
 				$('#schedule').on('show.bs.modal', function(event) {
 					classId = $(event.relatedTarget).data('schedule_class_id');
-					console.log(classId);
 					courseCredit = $(event.relatedTarget).data('grades');
-					console.log(courseCredit)
 				});
 			});
 
@@ -247,7 +245,6 @@
 
 			function schedule() {
 				let ctd = $(this).data("schedule_ck")
-				console.log(ctd)
 				
 				var idx = $(this).index()
 				$(".days").removeClass("btn-info")
@@ -273,8 +270,6 @@
 
 			function scheduleInsert() {
 				let roomId = $(".roomId").val();
-				console.log(classId);
-				console.log(roomId);
 
 				let classTimetableId = [];
 				$("input[name='timeselect']:checked").each(function(i) {
@@ -313,7 +308,6 @@
 					}
 
 					var jsonData = JSON.stringify(testList);
-					console.log(jsonData);
 				}
 
 				$.ajax({
