@@ -118,7 +118,7 @@
 
 					dayMaxEvents: true,
 					events: function (info, successCallback) {
-
+						 ing();
 						for (var i = 0; i < data.length; i++) {
 
 							data[i].id = data[i].MtrSchId;
@@ -230,6 +230,34 @@
 
 
 			
+			}
+			
+			function ing(){
+				$.ajax({
+					url : "/allSchProc",
+					type : "post",
+					data : {
+						schType : "APPLY",
+						schSubType : "상담-"
+					},
+					dataType : "json",
+					success : function(data) {
+						for(var i = 0 ; i < data.length ; i ++){
+							let sta = moment(data[i].schStart)
+							let end = moment(data[i].schEnd)
+							let aaa = end.diff(sta,"day")
+							
+							if( moment($('td').prop('data-date') >= sta && moment($('td').prop('data-date') < end))){
+								for(var y = 0 ; y < aaa ; y++){
+									let now = moment(data[i].schStart).add(y,'d')
+									let nowDate = now.format('YYYY-MM-DD')
+									$('td[data-date='+nowDate+']').css("background","#FFFFEE")
+
+								}
+							}
+						}
+					}
+				})
 			}
 
 

@@ -63,11 +63,12 @@
 			},
 			dataType : "json",
 			success : function(data) {
+				
 
 				for (var i = 0; i < data.length; i++) {
 					if (data[i].chk === '1') {
 						data[i].color = 'red'
-						data[i].title = '예약중'
+						data[i].title = '마감'
 					} else {
 						data[i].title = ''
 					}
@@ -89,9 +90,9 @@
 					headerToolbar : {
 						left : 'prev,next today',
 						center : 'title',
-						right : 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+						right : 'dayGridMonth'
 					},
-					editable : true,
+					editable : false,
 					droppable : true, // this allows things to be dropped onto the calendar
 					drop : function(arg) {
 						if (document.getElementById('drop-remove').checked) {
@@ -101,7 +102,17 @@
 					selectable : true,
 					selectMirror : true,
 				 	selectAllow: function (info) {
-				 		$.ajax({
+				 		
+				 		
+			            if(info.start > moment().add(-1,'d')){
+			              return true;
+			            } 
+			        },
+			          
+					select : function(arg) { // 등록 이벤트
+						//상담 신청 기간에만 일정 등록 할 수 있게
+						//데이터로 신청 타입과 제목에 상담에 관련된 값을 넘겨서 상담 신청기간을 특정
+						$.ajax({
 							url : "/allSchProc",
 							type : "post",
 							data : {
@@ -111,35 +122,26 @@
 							dataType : "json",
 							success : function(data) {
 								for(var i = 0 ; i < data.length ; i ++){
-									let sta = new Date(data[i].schStart)
-									let end = new Date(data[i].schEnd)
-										console.log(sta)
+									let sta = moment(data[i].schStart)
+									let end = moment(data[i].schEnd).add(-1,"d")
+									let now = arg.start.getTime()
 									
-										if(data[i].schStart < info.start && info.start >= data[i].schEnd){
-										console.log(info.start)
-										console.log(data[i].schStart)
-						              return true;
+									
+										if(sta <= now && now <= end){
+											$("#calendar_insert_modal").modal("show");
+											var start = arg.startStr;
+											$("#calendar_start_date").val(start);
 											
-										}
+										} 
+										
 								}
-									
-		
+							
 							}
 						})
-				 		
-			            if(info.start > moment().add(-1,'d')){
-			              return true;
-			            } 
-			        },
-			          
-					select : function(arg) { // 등록 이벤트
+						
 				
 						
-						$("#calendar_insert_modal").modal("show");
-						
-
-						var start = arg.startStr;
-						$("#calendar_start_date").val(start);
+					
 
 					},
 					eventClick : function(info) { // 수정 이벤트
@@ -160,7 +162,7 @@
 					},
 					dayMaxEvents : true,
 					events : function(info, successCallback) {
-
+						ing();
 						for (var i = 0; i < data.length; i++) {
 
 							data[i].id = data[i].MtrSchId;
@@ -172,12 +174,47 @@
 							data[i].end = data[i].date + "T" + data[i].timeEnd;
 						}
 						successCallback(data);
+					},
+					viewDidMount : function(info){
+						
 					}
 
 				});
+		
+		
+    
 
 		calendar.render();
 	}
+	function ing(){
+		$.ajax({
+			url : "/allSchProc",
+			type : "post",
+			data : {
+				schType : "APPLY",
+				schSubType : "상담-"
+			},
+			dataType : "json",
+			success : function(data) {
+				for(var i = 0 ; i < data.length ; i ++){
+					let sta = moment(data[i].schStart)
+					let end = moment(data[i].schEnd)
+					let aaa = end.diff(sta,"day")
+					
+					if( moment($('td').prop('data-date') >= sta && moment($('td').prop('data-date') < end))){
+						for(var y = 0 ; y < aaa ; y++){
+							let now = moment(data[i].schStart).add(y,'d')
+							let nowDate = now.format('YYYY-MM-DD')
+							$('td[data-date='+nowDate+']').css("background","#FFFFEE")
+
+						}
+					}
+				}
+			}
+		})
+	}
+	
+       
 
 	function calendarInsert() {
 		var cob_check = document
