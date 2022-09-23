@@ -108,7 +108,7 @@ SELECT #{billId},
 			CONCAT(s.stu_id, b.bill_id),
 			s.stu_id, 
 			s.student_grade, 
-			s.student_sem
+			b.bill_sem
 	FROM k_students s
 	JOIN k_users u
 	ON s.stu_id = u.user_id 
@@ -126,7 +126,7 @@ SELECT #{billId},
 			CONCAT(s.stu_id, b.bill_id),
 			s.stu_id, 
 			s.student_grade, 
-			s.student_sem
+			b.bill_sem
 	FROM k_students s
 	JOIN k_users u
 	ON s.stu_id = u.user_id 

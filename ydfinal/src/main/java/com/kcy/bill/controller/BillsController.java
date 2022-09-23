@@ -51,7 +51,8 @@ public class BillsController {
 		service.billsInsert(vo);
 		} catch(DuplicateKeyException e) {
 			redirectAttributes.addFlashAttribute("message", "중복되는 청구코드가 존재합니다");			
-		}		
+		}
+		redirectAttributes.addFlashAttribute("message", "등록 완료");
 		return "redirect:billsInsert";
 	}
 

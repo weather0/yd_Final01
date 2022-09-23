@@ -56,7 +56,7 @@
 					<div class="col-md-2"
 						th:if="${!bill.payHType.toString().equals('b')}">
 						<div class="input-group input-group-outline my-3">
-							<label class="form-label"></label> <select class="form-control"
+							<label class="form-label"></label><select class="form-control"
 								name="payCount" id="payCount" onchange="sm()">
 								<option value="p0" selected="selected">납부회차</option>		
 								<option value="p1" th:selected="${payVO.payCount}=='p1'">1회차</option>
@@ -108,7 +108,6 @@
 								<td class="table-secondary">납부기간</td>
 								<td
 									th:text="${#calendars.format(bill.kbs, 'yyyy-MM-dd')}+' ~ '+${#calendars.format(bill.kbe, 'yyyy-MM-dd')}" colspan="3" name="pb" id="pb"></td>
-								<
 							</tr>
 						</span>	
 					
@@ -409,7 +408,7 @@
 		
 		$(".payB").on("click", function() {	
 			var id = document.getElementById("payId").innerHTML;
-			var amount = document.getElementById("amt").innerHTML;
+			var amount = document.getElementById("amt").innerHTML.replace(/,/g, "");
 			$(".pay").on("click", function() {				
 				var bank = $("#bank").val();
 				var balance = parseInt(0);
@@ -446,8 +445,8 @@
 
 		$(".payFirst").on("click", function() {		
 			var id = document.getElementById("payId").innerHTML;
-			var amount = document.getElementById("amount").innerHTML;
-			var first = document.getElementById("first").innerHTML;
+			var amount = document.getElementById("amount").innerHTML.replace(/,/g, "");
+			var first = document.getElementById("first").innerHTML.replace(/,/g, "");
 			$(".pay1").on("click", function() {
 				var money = document.getElementById("s1").value;
 				if (money == '') {
@@ -455,7 +454,7 @@
 				}
 				var advance = parseInt(first) + parseInt(money);
 				var balance = parseInt(amount) - parseInt(advance);
-				var bank = $("#bank1").val();
+				var bank = $("#bank1").val();				
 				if(advance > amount) {
 					swal({
 						    title: "납부 실패!",
@@ -496,8 +495,8 @@
 		$(".paySplit").on("click", function() {
 			var id = document.getElementById("payId").innerHTML;
 			var p = document.getElementById("payCount").value;
-			var amount = document.getElementById("amount").innerHTML;
-			var split = document.getElementById("split").innerHTML;	
+			var amount = document.getElementById("amount").innerHTML.replace(/,/g, "");
+			var split = document.getElementById("split").innerHTML.replace(/,/g, "");	
 			var balance = parseInt(amount) - parseInt(split)
 			if (p == 'p2') {
 				var url = "/secondPay"
@@ -506,6 +505,8 @@
 			} else {
 				var url = "/fourthPay"
 			}
+			console.log(amount)
+			console.log(split)
 				$(".pay2").on("click", function() {				
 				var bank = $("#bank2").val();
 				if (bank == null) {
@@ -566,13 +567,7 @@
 	/*<![CDATA[*/
 	
     	var today = new Date();    	
-    	var kbs = new Date(/*[[ ${billCheck} ]]*/);
-    	if(kbs == '') {
-    		
-    	} else {
-    		var kb = new Date(/*[[ ${billCheck[0]} ]]*/);	
-    	}
-    	
+    	    	
 	/*]]>*/	
 	</script>
 
