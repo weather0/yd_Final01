@@ -307,7 +307,7 @@
 					dataType: "json",
 					contentType : 'application/json; charset=UTF-8',
 					success:function(data) {
-						alert("성적 등록 완료");
+						Swal.fire("성적이 등록되었습니다.", "", "success");
 						location.reload();
 					}
 				}); 

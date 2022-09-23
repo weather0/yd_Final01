@@ -47,7 +47,7 @@ public class ScoresController {
 		model.addAttribute("count", map.scoresCtn(vo));
 		model.addAttribute("standard", map.standardSelect(vo));
 		model.addAttribute("attnCtn", map.AttnCtn(vo));
-		return "pages/scoreMgr/prof/scoreInsert";
+		return "pages/scoreMgr/prof/ScoreInsert";
 	}
 	
 	// 성적 입력 proc
