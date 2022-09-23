@@ -22,7 +22,7 @@
         </div>
       </div>
       
-      <div class="col-lg-3 col-sm-3 mb-4">
+      <div style="max-width: 300px">
         <div class="card ratio ratio-1x1">
           <img th:src="@{ '../aa/userImg/'+ ${myInfo.userPic} }" 
                class="img-fluid border-radius-lg shadow border border-5"
@@ -31,11 +31,11 @@
         </div>
       </div>
 
-      <div class="col-lg-7 col-sm-9 mb-4">
+      <div style="max-width: 800px">
         <div class="card">
 
           <div class="table-responsive border-radius-lg border border-5">
-            <table class="table align-items-center text-center mb-0 fw-bold" style="height: 60vh" id="myTable">
+            <table class="table align-items-center text-center mb-0 fw-bold" style="height: 270px" id="myTable">
               <tr>
                 <td class="table-secondary">학번</td>
                 <td>[[${myInfo.userId}]]</td>
@@ -68,16 +68,18 @@
               </tr>
               <tr>
                 <td class="table-secondary">졸업일</td>
-                <td>[[${myInfo.studentGraddate}]]</td>
+                <td th:text=" ${myInfo.studentGraddate} ? ${myInfo.studentGraddate} : '-' "></td>
                 <td class="table-secondary">이메일</td>
                 <td>[[${myInfo.userEmail}]]</td>
               </tr>
+              <!-- 
               <tr>
                 <td class="table-secondary">학점<sub>(이수/졸업)</sub></td>
                 <td>[[${myInfo.creditTotal}]]</td>
                 <td class="table-secondary">최종성적</td>
                 <td>..</td>
               </tr>
+              -->
             </table>
           </div> <!-- div table-responsive -->
 

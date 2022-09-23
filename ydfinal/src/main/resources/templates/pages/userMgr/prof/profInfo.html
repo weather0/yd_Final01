@@ -27,7 +27,7 @@
         </div>
       </div>
 
-      <div class="col-lg-3 col-sm-3 mb-4">
+      <div style="max-width: 270px">
         <div class="card ratio ratio-1x1">
           <img th:src="@{ '../aa/userImg/'+ *{userPic} }" 
                class="img-fluid border-radius-lg shadow border border-5"
@@ -36,11 +36,11 @@
         </div>
       </div>
 
-      <div class="col-lg-7 col-sm-9 mb-4">
+      <div style="max-width: 800px">
         <div class="card">
 
           <div class="table-responsive border-radius-lg border border-5">
-            <table class="table align-items-center text-center mb-0 fw-bold" style="height: 40vh" id="myTable">
+            <table class="table align-items-center text-center mb-0 fw-bold" style="height: 235px" id="myTable">
               <tr>
                 <td class="table-secondary">교번</td>
                 <td>[[*{userId}]]</td>
@@ -70,10 +70,22 @@
 
         </div> <!-- card -->
         
-        <span class="preline">[[*{profEdu}]]</span><hr>
-        <span class="preline">[[*{profCareer}]]</span><hr>
-        <span class="preline">[[*{profPaper}]]</span>
-        
+        <div class="my-4">
+          <div>
+            <h5>학력 사항</h5>
+            <span class="preline">[[*{profEdu}]]</span>
+          </div>
+          <hr>
+          <div>
+            <h5>경력 사항</h5>
+            <span class="preline">[[*{profCareer}]]</span>
+          </div>
+          <hr>
+          <div>
+            <h5>연구 실적</h5>
+            <span class="preline">[[*{profPaper}]]</span>
+          </div>
+        </div>
       </div> <!-- col -->
 
     </div> <!-- row -->
