@@ -50,10 +50,7 @@ public class PayVO {
 	private String majorbId;
 	private int billAmount;
 	private List<String> id;
-	private String[] billArr;
-	private String token;
-	private String accessToken;	
-	private String studentToken;
+	private String[] billArr;	
 	private int payDBalance;	
 	private int payHS1;
 	private int payHS2;

@@ -21,3 +21,4 @@ public class CareerProfVO {
 	private String careerQContent; //문항 내용
 	private String careerQYn; //문항 사용 여
 }
+

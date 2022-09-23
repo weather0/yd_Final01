@@ -178,8 +178,7 @@
 					td = tr.children();
 					billId = td.eq(1).text();
 					billArr.push(billId);
-					jQuery.ajaxSettings.traditional = true;
-					console.log(billArr)
+					jQuery.ajaxSettings.traditional = true;					
 				});
 				$.ajax({
 					type : "POST",
@@ -194,7 +193,8 @@
 							    text: "선택한 학과의 등록금 고지서를 고지하였습니다",
 							    icon: "success"
 							}).then(function() {
-								document.location.href = document.location.href;
+								document.location.href 
+								= document.location.href;
 							});
 						}
 					}

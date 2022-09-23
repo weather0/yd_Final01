@@ -95,7 +95,7 @@
 									readonly="readonly">
 							</div>										
 						</div>
-							<div id="changeProgress" class="table-responsive border-radius-lg border border-5" style="margin-bottom: 10px;">
+							<div id="changeProgress" class="table-responsive border-radius-lg border border-5 active" style="margin-bottom: 10px;">
 							<th:block th:each="cp:${changeProgress}">
 								<table class="table text-center mb-0">
 									<tr>
@@ -112,15 +112,21 @@
 									</tr>
 									<tr>
 										<td class="table-secondary">진행 상황</td>
-										<td colspan="3"><span
+										<td><span
 											th:if="${cp.matchingChangeYn.toString().equals('0')}">매칭 변경 검토중</span>
 											<span th:if="${cp.matchingChangeYn.toString().equals('1')}">매칭 승인</span>
 											<span th:if="${cp.matchingChangeYn.toString().equals('2')}">매칭 거부</span>
 										</td>
+										<td class="table-secondary">매칭일</td>
+										<td> 
+											<span th:if="${cp.matchingChangeYn.toString().equals('1')}" th:text="${#calendars.format(cp.matchingChangeDate, 'yyyy-MM-dd')}"></span>
+											<span th:if="${!cp.matchingChangeYn.toString().equals('1')}">승인시 표기</span>
+										</td>										
 									</tr>
 									<tr th:if="${cp.matchingChangeYn.toString().equals('2')}">
 										<td class="table-secondary">거부 사유</td>
 										<td colspan="3" th:text="${cp.matchingChangeReject}"></td>
+										
 									</tr>
 								</table>
 							</th:block>

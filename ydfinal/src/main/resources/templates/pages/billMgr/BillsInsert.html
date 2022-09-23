@@ -14,7 +14,7 @@
 	<!-- 본문 start -->
 	<div class="container-fluid">
       <div class="row justify-content-center">
-		<div class="card p-3 me-3 col-lg-8 col-md-10 border border-5">
+		<div class="card p-3 me-3 col-lg-6 col-md-10 border border-5">
 		  <div class="card-header p-0 position-relative mt-n4 mb-4 z-index-2">
 			<div
 				class="bg-secondary bg-gradient-secondary shadow-secondary border-radius-lg py-3">
@@ -59,7 +59,7 @@
 					</div>			
 				<div class="input-group input-group-outline my-3">
 					<label class="form-label">청구액</label> <input type="number"
-						class="form-control" name="billAmount" min="0" required>
+						class="form-control" id="billAmount" name="billAmount" min="0" required>
 				</div>
 					<button class="btn btn-secondary On" style="width: 100%; margin: 0 auto;">등록금 고지서 등록</button>
 			</form>
@@ -94,8 +94,9 @@
 			let sem = document.getElementById('billSem').value
 			let major = document.getElementById('majorbId').value
 			code.value = year.value + sem + major
-			hakgi.value = "%"+ sem + "학기%"
+			hakgi.value = "%"+ sem + "학기%"			
 		})
+		
 	</script>
 
 	<!-- 본문 end-->

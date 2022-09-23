@@ -171,8 +171,9 @@
 
 <update id="matchingYes" parameterType="com.kcy.matching.service.MatchingVO">		
 		UPDATE k_matching_change 
-		SET matching_change_yn = '1'
-		WHERE stu_id = #{studentId} 
+		SET matching_change_yn = '1',
+			matching_change_date = NOW()
+		WHERE stu_id = #{studentId}
 		AND prof_id = #{beforeProf} 
 		AND matching_want = #{userId}
 </update>

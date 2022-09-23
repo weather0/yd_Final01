@@ -150,7 +150,7 @@
 		$(".OK").on("click", function() {
 			var matchingS = ($(this).closest("tr").find("td:first").text())
 			var matchingO = ($(this).closest("tr").find("td:eq(5)").text())
-			var matchingN = ($(this).closest("tr").find("td:eq(9)").text())			
+			var matchingN = ($(this).closest("tr").find("td:eq(9)").text())				
 			$.ajax({
 				type : "POST",
 				url : "/changeMatching",
