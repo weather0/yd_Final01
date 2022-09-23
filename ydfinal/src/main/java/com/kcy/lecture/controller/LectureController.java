@@ -245,4 +245,9 @@ public class LectureController {
 		return "pages/classMgr/ClassScheduleSelect";
 	}
 
+	@GetMapping("/eventPage")
+	public String eventPage() {
+	
+		return"pages/classMgr/admin/EventPage";
+	}
 }
