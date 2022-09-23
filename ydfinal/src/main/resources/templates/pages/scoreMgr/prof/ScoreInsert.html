@@ -300,7 +300,7 @@
 
 				var jsonData = JSON.stringify(scoreList);
 
-				/* $.ajax({
+				 $.ajax({
 					url: "http://localhost/scoreinsert",
 					type: "post",
 					data: jsonData,
@@ -310,7 +310,7 @@
 						alert("성적 등록 완료");
 						location.reload();
 					}
-				}); */
+				}); 
 
 			} else {
 				Swal.fire("점수를 모두 입력해 주세요.", "", "warning");

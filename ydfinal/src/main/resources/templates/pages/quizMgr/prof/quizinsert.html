@@ -4,7 +4,12 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layouts/layout}">
 <th:block layout:fragment="content">
+<style>
 
+.right {
+float: right
+}
+</style>
 	<!-- 상단 내비바 -->
 	<th:block th:replace="fragments/navbar :: navbarFragment"></th:block>
 
@@ -113,7 +118,7 @@
 
 						<div class="input-group input-group-outline my-3">
 							<input type="file" class="form-control" multiple="multiple"
-								name="classQuizFileSyl" required> <input type="hidden"
+								name="classQuizFileSyl"> <input type="hidden"
 								class="form-control" multiple="multiple" name="quizHOriginal">
 						</div>
 
@@ -122,8 +127,8 @@
 								required>
 						</div>
 
-						<button class="btn bg-gradient-secondary">신청</button>
-						<button class="btn bg-gradient-secondary backBtn">목록</button>
+						<button class="btn bg-gradient-secondary right">신청</button>
+						<button class="btn bg-gradient-secondary backBtn right" style="margin-right: 5px">목록</button>
 				</form>
 
 				<!-- 본문 end-->
