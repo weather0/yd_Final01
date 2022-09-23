@@ -31,7 +31,7 @@
 					<div class="card">
 
 						<div class="table-responsive border-radius-lg border border-5">
-							<table class="table align-items-center text-center mb-0 fw-bold" style="height: 40vh" id="myTable">
+							<table class="table align-items-center text-center mb-0 fw-bold" style="height: 235px" id="myTable">
 								<tr>
 									<td class="table-secondary">성명</td>
 									<td th:text="${vo.userName}"></td>
@@ -65,13 +65,24 @@
 					</div>
 					<!-- card -->
 
-				</div>
-				<div>[[${vo.profEdu}]]</div>
-				<div>[[${vo.profCareer}]]</div>
-				<div>[[${vo.profPaper}]]</div>
-			</div>
+					<div class="my-4">
+						<div>
+							<h5>학력 사항</h5>
+							<span class="preline">[[${vo.profEdu}]]</span>
+						</div>
+						<hr>
+						<div>
+							<h5>경력 사항</h5>
+							<span class="preline">[[${vo.profCareer}]]</span>
+						</div>
+						<hr>
+						<div>
+							<h5>연구 실적</h5>
+							<span class="preline">[[${vo.profPaper}]]</span>
+						</div>
+					</div>
 
-		</div>
+				</div>
 	</body>
 </th:block>
 </html>
