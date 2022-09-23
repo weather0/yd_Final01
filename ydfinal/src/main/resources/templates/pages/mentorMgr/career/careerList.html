@@ -69,8 +69,6 @@
 					cancelButtonText: '취소'
 				}).then((result) => {
 					if (result.isConfirmed) {
-
-
 						$.ajax({
 							url: "/careerUpdateY",
 							type: "get",
@@ -81,14 +79,13 @@
 								location.reload();
 							},
 							error: function () {
-								console.log("실패요")
+								Swal.fire({
+									
+								})
 							}
 						})
-
 					}
 				})
-
-
 			}
 			function carUpdateN(id) {
 				e = window.event || e
