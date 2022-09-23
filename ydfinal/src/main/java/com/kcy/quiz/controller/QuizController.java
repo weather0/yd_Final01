@@ -132,11 +132,14 @@ public class QuizController {
 		vo.setUserId(principal.getName());
 		qvo.setUserId(principal.getName());
 		model.addAttribute("quizlist", qvo);		
+		
+		
 		vo.setQuizDId(qvo.getQuizDId());
 		model.addAttribute("quizaccept", quizService.quizAcceptDetail(vo));
 		return "pages/quizMgr/quizaccept";
+			
 	}
-	
+
 	// 과제 제출 프로그램(학생)
 	@PostMapping("/quizAccept")
 	public String quizAccept(QuizVo vo, @RequestParam("classQuizFileSyl") MultipartFile classQuizFileSyl, @RequestParam("classId") String classId, Principal principal, Model model) throws IllegalStateException, IOException {

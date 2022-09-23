@@ -57,6 +57,37 @@ table.type09 td {
 	vertical-align: top;
 	border-bottom: 1px solid #ccc;
 }
+.filebox .upload-name {
+    display: inline-block;
+    height: 40px;
+    padding: 0 10px;
+    vertical-align: middle;
+    border: 1px solid #dddddd;
+    width: 90%;
+    color: #999999;
+    border-radius: 5px;
+}
+.filebox label {
+    display: inline-block;
+    padding: 10px 20px;
+    color: #fff;
+    vertical-align: middle;
+    background-color: #999999;
+    cursor: pointer;
+    height: 40px;
+    margin-left: 10px;
+}
+.filebox input[type="file"] {
+    position: absolute;
+    width: 0;
+    height: 0;
+    padding: 0;
+    overflow: hidden;
+    border: 0;
+}
+.right {
+float: right
+}
 </style>
 	<!-- 본문 start -->
 	<!-- 상단 내비바 -->
@@ -109,7 +140,7 @@ table.type09 td {
 					</table>
 					<!-- 본문 end-->
 				</div>
-
+				<hr>
 				<th:block th:if="${quizaccept} != null">
 					<form action="quizModify" method="post"
 						enctype="multipart/form-data">
@@ -122,18 +153,17 @@ table.type09 td {
 							<textarea type="text" id="contents" class="form-control"
 								th:text="${quizaccept.quizRContent}" name="quizRContent"></textarea>
 						</div>
-						<div class="input-group input-group-outline my-3">
-							<a
-								th:href="${'/quizAcceptdownload?quizRFile='+quizaccept.quizRFile}"><label
-								th:id="quizRFile" th:text="${quizaccept.quizROrginal}"
-								class="form-label"></label></a> <input type="file"
+							<a th:href="${'/quizAcceptdownload?quizRFile='+quizaccept.quizRFile}"><label class="btn bg-gradient-secondary"
+								th:id="quizRFile" for="file"></label></a> 
+							<input type="file"
 								class="form-control" multiple="multiple"
-								th:name="classQuizFileSyl"> <input type="hidden"
+								th:name="classQuizFileSyl"> 
+							<input type="hidden"
 								th:id="quizROrginal" class="form-control" multiple="multiple"
 								th:value="${quizaccept.quizROrginal}" th:name="quizROrginal">
-						</div>
-						<button class="btn bg-gradient-secondary hidBtn">수정</button>
-						<button class="btn bg-gradient-secondary">목록</button>
+						<button class="btn bg-gradient-secondary right">목록</button>
+						<button class="btn bg-gradient-secondary right hidBtn" style="margin-right: 5px">수정</button>
+
 					</form>
 				</th:block>
 
@@ -141,23 +171,28 @@ table.type09 td {
 					<form action="quizAccept" method="post"
 						enctype="multipart/form-data">
 						<input type="hidden" id="classId" name="classId"
-							th:value="${quizlist.classId}" /> <input type="hidden"
-							id="quizDId" name="quizDId" th:value="${quizlist.quizDId}" /> <input
+							th:value="${quizlist.classId}" /> 
+						<input type="hidden"
+							id="quizDId" name="quizDId" th:value="${quizlist.quizDId}" /> 
+						<input
 							type="hidden" id="quizRId" name="quizRId"
 							th:value="${quizlist.quizRId}" />
+							
 						<div class="input-group input-group-outline my-3">
 							<label class="form-label"></label>
 							<textarea type="text" id="contents" class="form-control"
 								th:name="quizRContent"></textarea>
 						</div>
 						<div class="input-group input-group-outline my-3">
-							<label class="form-label"></label> <input type="file"
+							<label class="form-label"></label> 
+							<input type="file"
 								class="form-control" multiple="multiple"
-								th:name="classQuizFileSyl"> <input type="hidden"
+								th:name="classQuizFileSyl"> 
+							<input type="hidden"
 								class="form-control" multiple="multiple" th:name="quizROriginal">
 						</div>
-						<button class="btn bg-gradient-secondary hidBtn">제출</button>
-						<button class="btn bg-gradient-secondary backBtn">목록</button>
+						<button class="btn bg-gradient-secondary hidBtn right">제출</button>
+						<button class="btn bg-gradient-secondary backBtn right" style="margin-right: 5px">목록</button>
 					</form>
 				</th:block>
 
@@ -178,6 +213,7 @@ table.type09 td {
 		$(".backBtn").on("click", function() {
 			window.history.back();
 		});
+		
 	</script>
 
 </th:block>

@@ -17,31 +17,45 @@
 	border: 1px soild #6a7281;
 }
 
-.th-default {
-	background: #6a7281 !important;
-	border-bottom: 1px solid #d2d6da;
-	border-top: 1px solid #d2d6da;
-	width: 120px;
+table td p {
+	white-space: pre-line;
 }
 
-.th-default label {
-	color: #fff;
-	text-align: center;
-	display: flex;
-	justify-content: center;
-	line-height: 43px;
-	margin-bottom: 0px !important;
+table {
+	
 }
 
-.td-content {
-	padding: 0 20px 0 20px;
-	border-bottom: 1px solid #d2d6da;
-	border-right: 1px solid #d2d6da;
-	border-top: 1px solid #d2d6da;
+pre {
+	word-break: break-all;
+	white-space: pre-line;
 }
 
-.td-content p {
-	height: 10px;
+table.type09 {
+	border-collapse: collapse;
+	text-align: left;
+	line-height: 1.5;
+}
+
+table.type09 thead th {
+	padding: 10px;
+	font-weight: bold;
+	vertical-align: top;
+	color: #369;
+	border-bottom: 3px solid #036;
+}
+
+table.type09 tbody th {
+	padding: 10px;
+	font-weight: bold;
+	vertical-align: top;
+	border-bottom: 1px solid #ccc;
+	background: #f3f6f7;
+}
+
+table.type09 td {
+	padding: 10px;
+	vertical-align: top;
+	border-bottom: 1px solid #ccc;
 }
 </style>
 	<!-- 본문 start -->
@@ -52,42 +66,42 @@
 				<div class="card-header p-0 position-relative mt-n4 mb-4 z-index-2">
 					<div
 						class="bg-secondary bg-gradient-secondary shadow-secondary border-radius-lg py-3">
-						<h6 class="text-white ps-3 m-0">페이지명</h6>
+						<h6 class="text-white ps-3 m-0">과제 제출 확인</h6>
 					</div>
 				</div>
-
+				<div class="row" style="padding: 15px">
 				<input th:value="${#authentication.principal.username}"
 					type="hidden" id="userId" /> <input
 					th:value="${quiz.classMemberId}" type="hidden" />
-				<table id="layout1" name="layout1" cellspacing="0" cellpadding="0"
-					class="lec-table insert hwk-table">
+				<table id="layout1" name="layout1" 
+					class="type09">
 					<tbody>
-						<tr style="height: 43px;">
-							<td class="th-default"><label class="label_default">제출자명</label></td>
+						<tr>
+							<th class="th-default"><label class="label_default">제출자명</label></td>
 							<td class="td-content"><p th:text="${quiz.userName}"></p></td>
 						</tr>
-						<tr style="height: 43px;">
-							<td class="th-default"><label class="label_default">과제
+						<tr>
+							<th class="th-default"><label class="label_default">과제
 									내용</label></td>
 							<td class="td-content"><p th:text="${quiz.quizRContent}"></p></td>
 						</tr>
-						<tr style="height: 43px;">
-							<td class="th-default"><label class="label_default">제출
+						<tr>
+							<th class="th-default"><label class="label_default">제출
 									날짜</label></td>
 							<td class="td-content"><p
 									th:text="${#dates.format(quiz.quizRDate, 'yyyy-MM-dd')}"></p></td>
 						</tr>
-						<tr style="height: 43px;">
-							<td class="th-default"><label class="label_default">제출
+						<tr>
+							<th class="th-default"><label class="label_default">제출
 									파일</label></td>
 							<td class="td-content"><a
 								th:href="${'/quizAcceptdownload?quizRFile='+quiz.quizRFile}">
 									<p th:text="${quiz.quizROrginal}"></p>
 							</a></td>
 						</tr>
-						<th:block th:if="${quiz.quizRPoint} == null">
-						<tr style="height: 43px;">
-							<td class="th-default"><label class="label_default">점수</label></td>
+						<th:block th:if="${quiz.quizRPoint} == 0">
+						<tr>
+							<th class="th-default"><label class="label_default">점수</label></td>
 							<form action="quizdetailview" method="post">
 								<input type="hidden" th:value="${quiz.quizRId}"
 									th:name="quizRId">
@@ -98,9 +112,9 @@
 							</form>
 						</tr>
 						</th:block>
-						<th:block th:unless="${quiz.quizRPoint} == null">
-							<tr style="height: 43px;">
-							<td class="th-default"><label class="label_default">점수</label></td>
+						<th:block th:unless="${quiz.quizRPoint} == 0">
+							<tr>
+							<th class="th-default"><label class="label_default">점수</label></td>
 								<input type="hidden" th:value="${quiz.quizRId}"
 									th:name="quizRId">
 								<td class="td-content"><input type="number"
@@ -112,7 +126,6 @@
 			</div>
 		</div>
 	</div>
-
-	<script></script>
+</div>
 </th:block>
 </html>
