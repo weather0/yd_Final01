@@ -17,9 +17,11 @@ java -jar ydfinal-0.0.1-SNAPSHOT.jar
 
 
 /////////////////////////////////////////////////////////////////////////////
-// 아마존 AWS EC2 (아마존리눅스2, 아마존우분투 등 프리티어)
+// 아마존 AWS EC2
 
-// 가입할 때 주의! 최종단계에서 '자기EC2키.pem'은 딱 한번 그 때만 다운 받을 수 있다!(분실 주의!)
+// 가입 및 탄력적IP세팅은 구글링
+  가입할 때 주의! 최종단계에서 '자기EC2키.pem'은 딱 한번 그 때만 다운 받을 수 있다!(분실 주의!)
+  리눅스는 우분투,아마존리눅스2 등 프리티어 아무거나 하면 되는데 여기서는 갓마존리눅스2로 진행한다
 
 // 보안그룹 생성
 AWS EC2 > 네트워크 및 보안 > 보안 그룹 > 보안 그룹 생성 (포트주의!)
@@ -63,8 +65,23 @@ $ date // 타임존 확인
 
 
 /////////////////////////////////////////////////////////////////////////////
-// docker (EC2리눅스에서 작업)
+// docker 
 
+/////// (윈도우 작업) /////////////
+1. WSL2설치(https://learn.microsoft.com/ko-kr/windows/wsl/install-manual#step-4---download-the-linux-kernel-update-package)
+  // 6단계 마소스토어에서 리눅스 받는거 안해도 됨!
+  // 1,2,3건너뛰고 4단계 - Linux 커널 업데이트 패키지(wsl_update_x64.msi) 다운로드만 받아서 실행해주면 됨!
+
+2. 도커 데스크톱 윈도우버전 설치
+
+3. DockerFile 작성 - 프로젝트 루트폴더에 보관(build.gradle이랑 같이 있으면 됨)
+FROM openjdk:11-jre
+ARG JAR_FILE=build/libs/*.jar
+COPY ${JAR_FILE} app.jar
+ENTRYPOINT ["java","-jar", "/app.jar"]
+
+
+/////// (EC2리눅스 작업) /////////////
 // 패키지 업데이트
 $ sudo yum update -y
 
@@ -149,88 +166,117 @@ docker logs 컨테이너ID
 /////////////////////////////////////////////////////////////////////////////
 // 젠킨스 
 
-// 윈도우버전 설치 (D:\ci에 설치)
+// 윈도우버전 설치 (D:\ci에 설치, 설치단계중 포트번호 800으로 입력)
 D:\ci\jenkins.xml 열어서 수정
 <env name="JENKINS_HOME" value="D:\ci\jenkins_home"/>
  // 윈도우서비스 - jenkins 다시시작
 
+
 // localhost:800 처음 접속하면 key요구함→
 D:\ci\jenkins_home\secrets\initialAdminPassword 확인
-최초가입: 계정명,암호,이름 무시하고 밑에 skip as admin
-권장플러그인 설치
+install suggested plug-in선택하면 권장플러그인 설치진행됨
+최초가입폼: 계정명,암호,이름 무시하고 밑에 skip and continue as admin
+
 
 // 로그인기능 끄기
 D:\ci\jenkins_home\config.xml 열어서 수정 
 <useSecurity>false</useSecurity>
  // 윈도우서비스 - jenkins 다시시작
 
-// Global Tool Configuration 세팅(캡처 참고)
-그래들은 그냥 Install automatically하자
 
-// Dashboard > Jenkins 관리 > Plugin Manager
-설치가능탭 검색해서 설치: Publish Over SSH
-젠킨스 재시작
+// Jenkins 관리 > Global Tool Configuration 세팅(캡처 참고)
+JDK
+  Name: 아무거나
+  JAVA_HOME: C:\Program Files\Java\jdk-11.0.16 // 자기 java설치 경로 입력
+Git
+  Name: 아무거나
+  Path to Git exe: C:\Program Files\Git\bin\git.exe // 자기 git설치 경로 입력
+Gradle
+  // 그래들은 Install automatically하자
 
-// Dashboard > Jenkins 관리 > 시스템관리(Configure System)
+
+// Jenkins 관리 > Plugin Manager
+설치가능탭(Available plugins) 검색해서 설치: Publish Over SSH
+설치진행완료되면 "설치가 끝나고 실행중인 작업이 없으면 젠킨스 재시작" 클릭
+→ "곧 Jenkins가 종료될 예정입니다" 상태로 무한 멈춤상태되는데
+  걍 적당히 있다가 창 껐다가 다시 들어오면 됨
+
+
+// Jenkins 관리 > 시스템설정(Configure System)
 Usage Statistics: 체크해제
 
-Publish over SSH
-  kcykey.pem내용 복붙 (캡쳐참고)
-  Hostname: 탄력적ip
-  username: ec2-user // 주의!! 다른거 입력하면 fail남 
+Publish over SSH(꽤 하단에 있음) (캡쳐참고)
+  Key: kcykey.pem내용 복붙
+  SSH Servers:
+    Nmae: 아무거나
+    Hostname: EC2탄력적ip
+    username: ec2-user // 오타주의!! 잘못 입력하면 접속 fail남
+    → Test Configuration눌러서 Success 뜨는지 확인해보자
+
 
 
 // 새로운 item - Freestyle프로젝트('git빌드프로젝트')하나 만들기
 
-// Dashboard > git빌드프로젝트 > 구성Configuration(캡처참고)
+// git빌드프로젝트 > 구성Configuration(캡처참고)
 1.소스코드관리 - Git선택하고 자기 주소 넣기
 
-2.Build Steps
-  -Invoke Gradle script
+2.Build Steps(거의 젤 밑에)
+  Add built step - Invoke Gradle script
     그래들 버전: myGradle(쫌전에 만든거)
+    Tasks: (줄바꿈으로 한줄씩 입력)
+      clean // 기존 빌드 클린
+      build // 실제 빌드 작업
     고급-Build File: ydfinal/build.gradle (깃 경로 주의!)
 
-  - Execute Windows batch command
+  Add built step - Execute Windows batch command
     (방식1: 직접 타이핑)
-docker build -t test_kcy . // 깃에서 땡겨온 프로젝트를 빌드해서 test_kcy라는 이미지 생성
-docker tag test_kcy weather0/test_kcy // 로컬 이미지 'test_kcy' 내용을 복사해서 weather0/test_kcy(도커원격repo명)라는 명으로 새 이미지를 복사생성하는 명령
-docker push weather0/test_kcy // 도커허브에 푸시(근데 이부분 오류남ㅜ이창호쌤도 해결 못함)
-@echo end of batch
-    (방식2: 배치파일 만들어서 경로적기)
-D:\ci\docker_bat.bat
+    docker build -t test_kcy . // (끝에 마침표(.) 누락안되게 주의!) 깃에서 땡겨온 프로젝트를 빌드해서 test_kcy라는 이미지 생성
+    docker tag test_kcy weather0/test_kcy // 로컬 이미지 'test_kcy' 내용을 복사해서 weather0/test_kcy(도커원격repo명)라는 명으로 새 이미지를 복사생성하는 명령
+    docker login // 윈도우 docker desktop 프로그램 켜놓으면 자동으로 로그인 됨
+    docker push weather0/test_kcy
+    @echo end of batch
 
-  배치파일 내용
-  cd ydfinal
-  docker login -u 도커아디 -p 도커비번
-  docker build -t test_kcy .
-  docker tag test_kcy weather0/test_kcy
-  docker push weather0/test_kcy
-  @echo end of batch
+    (방식2: 배치파일 만들고 그 경로 입력)
+    D:\ci\docker_bat.bat
 
-  배치파일 위치
-  D:\ci
+      배치파일 내용
+      cd ydfinal
+      docker login -u 도커아디 -p 도커비번 // 보안상 위험하다
+      docker build -t test_kcy .
+      docker tag test_kcy weather0/test_kcy
+      docker push weather0/test_kcy
+      @echo end of batch
 
-3.빌드 후 조치
+      배치파일 위치(아무데나 크게 상관은 없다. 위에 경로 지정만 잘해주면 됨)
+      D:\ci
+
+
+3.빌드 후 조치 - 빌드 후 조치 추가
   Send build artifacts over SSH
-    SSH Server: mySSH
-  Transfers
-    Remote directory: /home
-    Exec command: 
-      docker pull weather0/test_kcy // weather0/test_kcy 이미지를 pull
-      docker rm -f $(docker ps -aq) // 기존 컨테이너를 삭제
-      docker run -v kcy-vol:/aa -e TZ=Asia/Seoul -dp 8080:80 weather0/test_kcy 
-      // run: 도커이미지 실행
-      // -dp: 내로컬 localhost:80 프로젝트 → ec2(최종사용자접속) x.x.x.x:8080
-        // 이 8080을 EC2 보안그룹에서 규칙 추가해줘야 함(위에 설명 참고)
-        // 그냥 80:80이 젤 낫다. 브라우저상 80은 기본값이라 생략해도 접속되기 때문에. 안 그럼 도메인 사서 연결해도 kcy.com:8080 이렇게 쳐야 들어가짐
-      // -v kcy-vol:/aa: 도커볼륨 kcy-vol의 /aa/폴더를 사용하겠다 지정
-      // -e TZ=Asia/Seoul: 타임존을 서울로 설정
+    SSH Server:
+      Name: mySSH
+      Transfers:
+        Remote directory: /home
+        Exec command: 
+          docker pull weather0/test_kcy // weather0/test_kcy 이미지를 pull
+          docker rm -f $(docker ps -aq) // 기존 컨테이너를 삭제
+          docker run -v kcy-vol:/aa -e TZ=Asia/Seoul -dp 8080:80 weather0/test_kcy 
+          // run: 도커이미지 실행
+          // -dp: 내로컬 localhost:80 프로젝트 → ec2(최종사용자접속) x.x.x.x:8080
+            // 이 8080을 EC2 보안그룹에서 규칙 추가해줘야 함(위에 설명 참고)
+            // 그냥 80:80이 젤 낫다. 브라우저상 80은 기본값이라 생략해도 접속되기 때문에. 안 그럼 도메인 사서 연결해도 kcy.com:8080 이렇게 쳐야 들어가짐
+          // -v kcy-vol:/aa: 도커볼륨 kcy-vol의 /aa/폴더를 사용하겠다 지정
+          // -e TZ=Asia/Seoul: 타임존을 서울로 설정
 
 
 
 // 일단 이 시점에서 테스트로 한번 지금 빌드 해보자
   "지금 빌드" 실행:
-    (혹시나 fail 뜨면 docker desktop 프로그램 켜자.)
+    fail 뜨면 일단 docker desktop 프로그램 켰는지 확인해보자. 
+    clean task부터 compileJava 오류나면 일단 컴 재부팅해서 다시 해보고(종종 재부팅 재실행만으로도 해결됨), 
+    그래도 안되면 clean --debug 옵션 추가해서 로그확인해보자.
+    이건 jdk버전 호환문제일 수 있으니 build.gradle의 jdk버전과 젠킨스에서 위에 설정한 
+    jdk버전과 일치하는지 확인해보자. 안되면 구글링ㄱㄱ
 
 
 
@@ -270,6 +316,7 @@ EC2리눅스 타임존 KST로 설정 + 도커 타임존 KST로 설정(위에 매
 // 도메인 연결
 porkbun에서 A레코드에 탄력적ip추가해주면 끝.
 (구글링 도배되어있는 aws route53 안해도 됨. 그거 유료임)
+리눅스는 우분투,아마존리눅스2 등 프리티어 아무거나 하면 되는데 여기서는 갓마존리눅스2로 진행한다
 
 
 
