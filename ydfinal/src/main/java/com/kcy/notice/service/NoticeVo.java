@@ -37,6 +37,5 @@ public class NoticeVo {
 		this.uuid = uuid;
 		this.fileName = fileName;
 		this.contentType = contentType;
-		System.out.println(contentType);
 	}	
 }

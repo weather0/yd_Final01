@@ -30,7 +30,6 @@ public class SendEmailService {
 	// 임시 비밀번호 설정과 mail 내용
 	public MailDto createMailAndChangePassword(String userEmail, String myName) {
 		String str = getTempPassword();
-		System.out.println("str!!" + str);
 		MailDto dto = new MailDto();
 		dto.setAddress(userEmail);
 		dto.setTitle(myName + " 님의 KCY UNIV 임시비밀번호 안내 이메일입니다.");
@@ -57,7 +56,6 @@ public class SendEmailService {
                 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' };
 
         String str = "";
-        System.out.println(str);
 
         int idx = 0;
         for (int i = 0; i < 10; i++) {
@@ -69,7 +67,6 @@ public class SendEmailService {
 	
 	// mail 전송을 위한 html 작성
 	public void mailSend(MailDto mailDto) {
-        System.out.println("이멜 전송 완료!");
         MimeMessage message = ms.createMimeMessage();  
         
         String htmlStr = 
@@ -119,8 +116,6 @@ public class SendEmailService {
 			e.printStackTrace();
 			return;
 		}
-        
-        System.out.println(message);
         ms.send(message);
 	}
 	

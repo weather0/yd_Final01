@@ -54,6 +54,5 @@ public class QuizVo {
 		this.uuid = uuid;
 		this.fileName = fileName;
 		this.contentType = contentType;
-		System.out.println(contentType);
 	}	
 }

@@ -75,7 +75,6 @@ public class NoticeController {
 					classNoticeFileSyl.getContentType());
 			String fileName = dto.getUuid() + "_" + dto.getFileName();
 			String oriFileName = classNoticeFileSyl.getOriginalFilename();
-			System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!" + classNoticeFileSyl.getOriginalFilename());
 			File newFileName = new File("/aa/", fileName);
 			classNoticeFileSyl.transferTo(newFileName);
 			vo.setClassNoticeFile(fileName);
@@ -104,7 +103,6 @@ public class NoticeController {
 					classNoticeFileSyl.getContentType());
 			String fileName = dto.getUuid() + "_" + dto.getFileName();
 			String oriFileName = classNoticeFileSyl.getOriginalFilename();
-			System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!" + classNoticeFileSyl.getOriginalFilename());
 			File newFileName = new File("/aa/", fileName);
 			classNoticeFileSyl.transferTo(newFileName);
 			vo.setClassNoticeFile(fileName);
