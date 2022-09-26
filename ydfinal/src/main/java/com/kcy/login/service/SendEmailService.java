@@ -77,7 +77,6 @@ public class SendEmailService {
         			+ "<div class='content' style='text-align: center; padding: 15px; height: 300px; border-radius: 5px; box-shadow: 4.0px 8.0px 8.0px hsl(0deg 0% 0% / 0.20); background-color: #fff;'>"
 
           			+ "<div class='content_1' style='font-size: 12px;' >"
-          			+ "<img src='/aa/logo/KCYlogo.png' style='border: 1px solid #ddd; width: 200px; height: 200px'>"
           			+ "<p>"
 
           			+ mailDto.getName() + " 님, 안녕하세요. <br>"
