@@ -89,11 +89,11 @@ public class SendEmailService {
 
         			+ "<div class='btn' style='text-align: center; margin-top: 20px; display: flex; flex-direction: column; align-items: center;'>"
         			+ "<button style='padding: 5px; width: 400px; height: 45px; background-color: #fff; color: #000; border: none; border-radius: 20px; margin-bottom: 15px; margin-top: 15px; box-shadow: 4.0px 8.0px 8.0px hsl(0deg 0% 0% / 0.20);'>"
-        			+ "<a href='http://kcy.lol/changePw?userEmail=" + mailDto.getAddress() + "'>비밀번호 재설정</a>"
+        			+ "<a style='text-decoration: none; color: #344767; font-weight: 700;' href='http://kcy.lol/changePw?userEmail=" + mailDto.getAddress() + "'>비밀번호 재설정</a>"
         			+ "</button>"
         			+ "<button style='box-shadow: 4.0px 8.0px 8.0px hsl(0deg 0% 0% / 0.20); padding: 5px; width: 400px; height: 45px; background-color: #fff; color: #000; border: none; border-radius: 20px;'>"
         			
-              		+ "<a href='http://kcy.lol/login'>로그인</a>"
+              		+ "<a style='text-decoration: none; color: #344767; font-weight: 700;' href='http://kcy.lol/login'>로그인</a>"
               		+ "</button>"
               		+ "</div>"
                     + "</div>"
