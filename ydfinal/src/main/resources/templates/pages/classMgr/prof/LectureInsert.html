@@ -20,37 +20,7 @@
 	display: flex;
 	justify-content: flex-start;
 }
-.filebox .upload-name {
-    display: inline-block;
-    height: 40px;
-    padding: 0 10px;
-    vertical-align: middle;
-    border: 1px solid #dddddd;
-    width: 78%;
-    color: #999999;
-    border-radius: 5px;
-}
-.filebox label {
-    display: inline-block;
-    padding: 10px 20px;
-    color: #fff;
-    vertical-align: middle;
-    background-color: #7b809a;
-    cursor: pointer;
-    height: 40px;
-    margin-left: 5px;
-    margin-top: 7px;
-    border-radius: 5px;
-    
-}
-.filebox input[type="file"] {
-    position: absolute;
-    width: 0;
-    height: 0;
-    padding: 0;
-    overflow: hidden;
-    border: 0;
-}
+
 </style>
 
 
@@ -120,25 +90,25 @@
 						<div class="col-md-2">
 							<div class="input-group input-group-outline my-3">
 								<label for="mid" class="form-label " th:text="중간" ></label> <input
-									type="number" class="form-control" name="gpaStandardMid" id='mid'>
+									type="number" class="form-control" name="gpaStandardMid" id='mid' maxlength="3" oninput="numberMaxLength(this)">
 							</div>
 						</div>
 						<div class="col-md-2">
 							<div class="input-group input-group-outline my-3">
 								<label for="final" class="form-label" th:text="기말" ></label> <input
-									type="number" class="form-control" name="gpaStandardFinal" id='final'>
+									type="number" class="form-control" name="gpaStandardFinal" id='final' maxlength="3" oninput="numberMaxLength(this)">
 							</div>
 						</div>
 						<div class="col-md-2">
 							<div class="input-group input-group-outline my-3">
 								<label for="quiz" class="form-label" th:text="과제" ></label> <input
-									type="number" class="form-control" name="gpaStandardQuiz" id="quiz">
+									type="number" class="form-control" name="gpaStandardQuiz" id="quiz" maxlength="3" oninput="numberMaxLength(this)">
 							</div>
 						</div>
 						<div class="col-md-2">
 							<div class="input-group input-group-outline my-3">
 								<label for="attn" class="form-label" th:text="출석" ></label> <input
-									type="number" class="form-control" name="gpaStandardAttn" id='attn'>
+									type="number" class="form-control" name="gpaStandardAttn" id='attn' maxlength="3" oninput="numberMaxLength(this)">
 							</div>
 						</div>
 					</div>
@@ -171,6 +141,15 @@
 				return false;
 			}
 		})
+		 function numberMaxLength(e){
+		        if(e.value.length > e.maxLength){
+		            e.value = e.value.slice(0, e.maxLength);
+		        }
+		        else if(e.value >100){
+		        	alert("100이상 입력은 불가능 합니다")
+		        	return e.value = 0;
+		        }
+		    }
 </script>
 </th:block>
 </html>
