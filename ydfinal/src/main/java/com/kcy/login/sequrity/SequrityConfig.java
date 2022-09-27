@@ -102,7 +102,7 @@ public class SequrityConfig extends WebSecurityConfigurerAdapter {
 			.logoutSuccessUrl("/login");
 		
 		 http.sessionManagement()
-         .maximumSessions(5) //세션 최대 허용 수 
+         .maximumSessions(100) //세션 최대 허용 수 
          .maxSessionsPreventsLogin(true); // false이면 중복 로그인하면 이전 로그인이 풀린다.
 	}
 

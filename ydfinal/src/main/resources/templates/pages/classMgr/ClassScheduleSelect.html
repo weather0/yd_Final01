@@ -69,12 +69,12 @@
 		
 	[# th:each="list:${scheduleSelect}"]
 	 console.log([[${list.class_timetable_id}]])
-		var test1 = `
+		var schedule = `
 			<span class="class-title">[(${list.course_title})]수업</span>
 			<span class="class-teacher">강의실:[(${list.room_building})] [(${list.room_no})]호</span>
 			<span class="class-teacher">교수:[(${list.user_name})]</span>
 			`
-			$('.'+[[${list.class_timetable_id}]]).append(test1)
+			$('.'+[[${list.class_timetable_id}]]).append(schedule)
 			$('.'+[[${list.class_timetable_id}]]).addClass("danceclass blue-light")
 	[/] 
 	

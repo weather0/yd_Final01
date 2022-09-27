@@ -260,7 +260,14 @@
 								//기준이 되는 시간표를 JSON타입으로 받아와서 반복문을 이용하여 만들어주고 append하여 버튼을 누를시에 시간표가 나오게 하는 부분
 								$('#check_the_timetable').empty();
 								for (var i = 0; i < 8; i++) {
-									let sch = `<lable class="custom-control-label"><input class="form-check-input" type="checkbox" value="${data[i].classTimetableId}" name="timeselect" id="test`+i+`" style="margin-right: 10px;">${data[i].classTimetableName}${data[i].classTimetableStart}~${data[i].classTimetableEnd}</lable><br>`
+									let sch = `<lable class="custom-control-label">
+									<input class="form-check-input" 
+									type="checkbox" 
+									value="${data[i].classTimetableId}" 
+									name="timeselect" 
+									id="test`+i+`" 
+									style="margin-right: 10px;">
+									${data[i].classTimetableName}${data[i].classTimetableStart}~${data[i].classTimetableEnd}</lable><br>`
 									$("#check_the_timetable").append(sch)
 								}
 

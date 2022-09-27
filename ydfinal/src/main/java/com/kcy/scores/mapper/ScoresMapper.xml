@@ -167,8 +167,6 @@
 		    co.course_type,
 		    co.course_credit,
 		    
-		    ((sc.score_attn + sc.score_quiz + sc.score_mid + sc.score_final) / 4) as total,
-		    
 		    g.gpa_grade,
 		    g.gpa_point,
 		    
