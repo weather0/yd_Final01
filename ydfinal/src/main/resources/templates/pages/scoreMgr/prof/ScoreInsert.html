@@ -97,11 +97,11 @@
 									<td><input
 										class="form-control jt_form_field wt500 scoreMid"
 										type="number" th:id="scoreMid"
-										th:name="|scoreMid${idx.index}|" required /></td>
+										th:name="|scoreMid${idx.index}|"  max="100" min="1" maxlength="3" oninput="numberMaxLength(this)" required /></td>
 									<td><input
 										class="form-control jt_form_field wt500 scoreFinal"
 										type="number" th:id="scoreFinal"
-										th:name="|scoreFinal${idx.index}|" required /></td>
+										th:name="|scoreFinal${idx.index}|" max="100" min="1" maxlength="3" oninput="numberMaxLength(this)" required /></td>
 									<td><input
 										class="form-control jt_form_field wt500 scoreQuiz"
 										type="number" readonly="readonly"
@@ -110,7 +110,7 @@
 									<td><input
 										class="form-control jt_form_field wt500 scoreAttn"
 										type="number" th:id="scoreAttn"
-										th:name="|scoreAttn${idx.index}|" required /></td>
+										th:name="|scoreAttn${idx.index}|" max="100" min="1" maxlength="3" oninput="numberMaxLength(this)" required /></td>
 									<td><input class="form-control gpaGrade"
 										th:name="|gpaGrade${idx.index}|" readonly="readonly"
 										th:id="gpaGrade" /></td>
@@ -330,6 +330,16 @@
 			}
 			return ret;
 		}
+		
+		 function numberMaxLength(e){
+		        if(e.value.length > e.maxLength){
+		            e.value = e.value.slice(0, e.maxLength);
+		        }
+		        else if(e.value >100){
+		        	alert("100이상 입력은 불가능 합니다")
+		        	return e.value = 0;
+		        }
+		    }
 	</script>
 </th:block>
 </html>

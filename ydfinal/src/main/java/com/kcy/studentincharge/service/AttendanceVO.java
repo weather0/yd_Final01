@@ -13,6 +13,6 @@ public class AttendanceVO {
 	private String userId;
 	private String stuId;
 	private String attnType;
-	private String attnDate;
+	private Date attnDate;
 	
 }

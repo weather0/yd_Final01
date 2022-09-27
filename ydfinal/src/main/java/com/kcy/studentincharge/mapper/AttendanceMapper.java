@@ -15,4 +15,7 @@ public interface AttendanceMapper {
 	
 	//모든 학생에 출결을 등록하는 부분
 	public void attendanceInsertAll(List<AttendanceVO> list);
+	
+	//출석에 찍힌 날짜를 조회하는 부분
+	public List<AttendanceVO> selectDate(AttendanceVO vo);
 }

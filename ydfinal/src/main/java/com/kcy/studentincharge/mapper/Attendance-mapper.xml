@@ -20,4 +20,8 @@
 				       )
 		
 		</insert>
+		
+		<select id="selectDate" resultType="com.kcy.studentincharge.service.AttendanceVO">
+			select attn_date from k_attendance
+		</select>
 </mapper>
