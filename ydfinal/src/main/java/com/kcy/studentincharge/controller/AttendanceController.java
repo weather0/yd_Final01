@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.kcy.studentincharge.mapper.AttendanceMapper;
 import com.kcy.studentincharge.mapper.ClassIdMapper;
 import com.kcy.studentincharge.service.AttendanceService;
 import com.kcy.studentincharge.service.AttendanceVO;
@@ -27,6 +28,7 @@ public class AttendanceController {
 	Logger logger = LoggerFactory.getLogger(AttendanceController.class);
 
 	@Autowired AttendanceService service;
+	@Autowired AttendanceMapper amapper;
 	@Autowired  ClassIdMapper classId;
 	@Autowired AttendanceServiceImpl serviceImpl;
 	
@@ -52,6 +54,7 @@ public class AttendanceController {
 			vo.setUserId(principal.getName());
 			model.addAttribute("classId",classId);
 			model.addAttribute("list",service.attendanceList(vo));
+			model.addAttribute("selectTime",amapper.selectDate(vo));
 			
 			
 		return "pages/classMgr/prof/AttendanceList";

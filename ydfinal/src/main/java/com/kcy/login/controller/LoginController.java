@@ -50,7 +50,6 @@ public class LoginController {
     @GetMapping("/changePw")
     public void changePwPage(UserVo vo, Model model, @Param("userEmail") String userEmail) {
     	model.addAttribute("info", map.userChangePw(userEmail));
-    	System.out.println("userEmail" + "!!!!!!" + userEmail);
     }
     
     // 비밀번호 변경 프로그램
@@ -58,7 +57,6 @@ public class LoginController {
     @ResponseBody
     public void changePwPageProc(@Param("userEmail") String userEmail, @Param("newPw") String newPw) {
     	UserVo vo = new UserVo();
-    	System.out.println(newPw);
     	String nPw = password.encode(newPw);
     	vo.setNewPw(nPw);
     	vo.setUserEmail(userEmail);

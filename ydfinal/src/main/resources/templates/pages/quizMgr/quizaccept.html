@@ -153,8 +153,6 @@ float: right
 							<textarea type="text" id="contents" class="form-control"
 								th:text="${quizaccept.quizRContent}" name="quizRContent"></textarea>
 						</div>
-							<a th:href="${'/quizAcceptdownload?quizRFile='+quizaccept.quizRFile}"><label class="btn bg-gradient-secondary"
-								th:id="quizRFile" for="file"></label></a> 
 							<input type="file"
 								class="form-control" multiple="multiple"
 								th:name="classQuizFileSyl"> 

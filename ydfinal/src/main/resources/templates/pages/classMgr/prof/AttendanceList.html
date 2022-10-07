@@ -113,25 +113,53 @@
 		            }
 		          }
 		});
-	
-	
 		
+		var attnDate = [];
+		[# th:each="time : ${selectTime}"]
+		 attnDate.push([[${time.attnDate}]].substring(0,10))
+	   [/];	
+		console.log(attnDate)
+		   var today = new Date();
+
+		var year = today.getFullYear();
+		var month = ('0' + (today.getMonth() + 1)).slice(-2);
+		var day = ('0' + today.getDate()).slice(-2);
+
+		var dateString = year + '-' + month  + '-' + day;
+	
+		console.log(dateString);
 		
+		var timeCk=false;
+	attnDate.forEach(time=>{
+
+		if(dateString.indexOf(time) == 0){
+			console.log(dateString.indexOf(time))
+			timeCk=true;
+		}
+	})	
+		
+	console.log(timeCk);
+
 		
 		$("#attendanceInsert").on("click",attendanceInsert)
 		
 		function attendanceInsert(){
+	
+		
+		if(timeCk == false ){
+			
+			
 		var classId = $("#classId").val();
-		var test = [[${list}]];
-		var test1 = ""
+		var classList = [[${list}]];
+		var attnId = ""
 		let attnType =[];
 		var stuId= [];
 		
 		
 		
-		for(var i=0; i<test.length; i++){
-		 test1="attendance" + i;
-			$("input[name= "+test1+"]:checked").each(function(){
+		for(var i=0; i<classList.length; i++){
+		 attnId="attendance" + i;
+			$("input[name= "+attnId+"]:checked").each(function(){
 				attnType.push($(this).val());
 			})
 		}
@@ -140,10 +168,9 @@
 			 stuId.push([[${list.stu_id}]])
 		   [/];	
 			
-			console.log(stuId);
 			
 			var attendanceList = new Array();
-			for(var i=0; i<test.length; i++){
+			for(var i=0; i<classList.length; i++){
 				var data = new Object();
 				data.classId = classId;
 				data.stuId= stuId[i];
@@ -166,6 +193,11 @@
 			}
 		})
 		}
+		else if(timeCk == true){
+			alert("이미 출석 체크를 완료 하셨습니다.")
+		}
+		}
+		
 		$("#backBtn").on("click",function(){
 			window.history.back();
 		})

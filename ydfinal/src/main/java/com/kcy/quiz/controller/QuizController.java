@@ -120,7 +120,6 @@ public class QuizController {
 	@PostMapping("/quizdetailview")
 	public String quizDetailView(Model model, QuizVo vo, Principal principal) {
 		vo.setUserId(principal.getName());
-		System.out.println("!!!!!!!!!!!!!!" + vo.getQuizRId());
 		quizService.quizPointInsert(vo);
 		return "redirect:quizviewlist";
 	}
