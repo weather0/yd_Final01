@@ -1,3 +1,7 @@
+<!--작성자: 김용현
+	페이지 역활: 수강신청한 교과목을 시간표 형식으로 표현 해준다.
+	업데이트 날짜: 2022-09-26//-->
+
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org"
@@ -46,11 +50,11 @@
 
 							<li><h3 class="class-days-title">5교시</h3><span class="class-time">14:00~14:50</span> </li>
 
-							<li><h3>6교시</h3><span class="class-time">15:00~15:50</span> </li>
+							<li><h3 class="class-days-title">6교시</h3><span class="class-time">15:00~15:50</span> </li>
 
-							<li><h3>7교시</h3><span class="class-time">16:00~16:50</span> </li>
+							<li><h3 class="class-days-title">7교시</h3><span class="class-time">16:00~16:50</span> </li>
 
-							<li><h3>8교시</h3><span class="class-time">17:00~17:50</span> </li>
+							<li><h3 class="class-days-title">8교시</h3><span class="class-time">17:00~17:50</span> </li>
 							
 								<th:block th:each="list,index: ${scheduleAllSelect}">
 							<li th:classappend="${index.index<10}?'T100'+${index.index}:'T10'+${index.index}" class="danceclass blue p-2">
@@ -68,7 +72,7 @@
 	<script  th:inline="javascript">
 		
 	[# th:each="list:${scheduleSelect}"]
-	 console.log([[${list.class_timetable_id}]])
+	//자신의 수업에 맞게 시간표 형식으로 교시와 요일에 맞게 표현하는 부분
 		var schedule = `
 			<span class="class-title">[(${list.course_title})]수업</span>
 			<span class="class-teacher">강의실:[(${list.room_building})] [(${list.room_no})]호</span>

@@ -1,3 +1,6 @@
+<!--작성자: 김용현
+	페이지 역활: 강좌개설 신청하는 페이지
+	업데이트 날짜: 2022-09-26//-->
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org"
@@ -131,6 +134,7 @@
 			var quiz = $("#quiz").val();
 			var attn = $("#attn").val();
 			
+			//성적비율 합계가 100이상 넘지 않게 체크하는 부분
 			var sum = parseInt(mid) + parseInt(finalVal) + parseInt(quiz) + parseInt(attn);
 			if(sum > 100){
 			 alert("성적비율 합계는 100이상이 불가능 합니다")

@@ -1,3 +1,7 @@
+<!--작성자: 김용현
+	페이지 역활: 학생 출석체크 하는 페이지
+	업데이트 날짜: 2022-09-26//-->
+
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org"
@@ -118,27 +122,24 @@
 		[# th:each="time : ${selectTime}"]
 		 attnDate.push([[${time.attnDate}]].substring(0,10))
 	   [/];	
-		console.log(attnDate)
-		   var today = new Date();
-
+		//오늘 날짜를 생성하는 부분
+		var today = new Date();
 		var year = today.getFullYear();
 		var month = ('0' + (today.getMonth() + 1)).slice(-2);
 		var day = ('0' + today.getDate()).slice(-2);
 
 		var dateString = year + '-' + month  + '-' + day;
 	
-		console.log(dateString);
 		
 		var timeCk=false;
+		//출석체크한 데이터를 반복문을 이용하여 오늘 날짜와 같은 날이 있는지 체크하는 부분이다. 만약 오늘 날짜와 같으면 true를 반환하여 출석체크를 못하게 하였다
 	attnDate.forEach(time=>{
 
 		if(dateString.indexOf(time) == 0){
-			console.log(dateString.indexOf(time))
 			timeCk=true;
 		}
 	})	
 		
-	console.log(timeCk);
 
 		
 		$("#attendanceInsert").on("click",attendanceInsert)
@@ -156,7 +157,7 @@
 		var stuId= [];
 		
 		
-		
+		//출석체크한 값을 json형식으로 만들어 insert하는 부분이다.
 		for(var i=0; i<classList.length; i++){
 		 attnId="attendance" + i;
 			$("input[name= "+attnId+"]:checked").each(function(){

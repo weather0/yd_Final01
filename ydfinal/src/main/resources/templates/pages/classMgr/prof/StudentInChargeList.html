@@ -1,3 +1,6 @@
+<!--작성자: 김용현
+	페이지 역활: 담당학생을 조회하는 페이지
+	업데이트 날짜: 2022-09-26//-->
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org"
@@ -13,7 +16,7 @@
 .page-link:focus {
 	box-shadow: 0 0 0 0.2rem rgb(123 128 154/ 25%);
 }
-.test{
+.selectbox{
 	display: flex;
 	justify-content: flex-end;
 	margin-top: 5px;
@@ -37,7 +40,7 @@
 					</div>
 
 					<form action="studentinchargelist">
-						<div class="test">
+						<div class="selectbox">
 						 <div class="w-20" style="margin-right: 5px; display: flex;">
 						<span><i class="fa-solid fa-magnifying-glass" style="line-height: 40px;"></i></span>
 							<select class="form-select mb-3"
@@ -51,7 +54,7 @@
 						</div>
 						<div>
 							<button class="btn btn-outline-secondary" type="submit"
-								id="button-addon2">검색</button>
+								>검색</button>
 						</div>							
 						</div>
 					</form>
